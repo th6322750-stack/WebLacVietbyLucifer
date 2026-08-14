@@ -1,14 +1,1 @@
-{
-  "revision": "gd2-v1",
-  "global": ["SiteHeader", "DesktopNav", "MobileNavDrawer", "SiteFooter", "Container", "Section", "Breadcrumbs", "SectionEyebrow", "SectionHeading", "Button", "IconButton", "Chip", "Divider"],
-  "conversion": ["ConsultationCTA", "ConsultationModal", "ContactForm", "ContactChannelCard", "NewsletterForm", "Toast", "Alert"],
-  "content": ["ServiceCard", "ProjectCard", "ProjectMetric", "ArticleCard", "ArticleTOC", "RelatedArticles", "PricingCard", "TestimonialCard", "TrustLogoRow", "MetricStrip", "ProcessSteps", "FAQAccordion", "CategoryFilter"],
-  "systemStates": ["Skeleton", "Spinner", "EmptyState", "ErrorState", "NotFound404"],
-  "anatomyRules": {
-    "ServiceCard": ["icon", "title", "description", "optional bullet list", "text CTA"],
-    "ProjectCard": ["16:10 media", "category chip", "title", "summary/result", "CTA", "demoOnly flag when data is not factual"],
-    "ArticleCard": ["16:9 media", "category", "title", "excerpt", "author/date/read time"],
-    "PricingCard": ["plan", "price or contact CTA", "feature list", "CTA", "optional featured badge"],
-    "ContactForm": ["labels", "required indicators", "field helper/error", "privacy consent", "submit state"]
-  }
-}
+{"revision":"gd2-v1","components":[{"componentId":"SiteHeader","scope":"global","rules":["desktop nav >=1024","mobile drawer <1024","sticky optional but must not obscure content"]},{"componentId":"SiteFooter","scope":"global","rules":["desktop multi-column","mobile accordion groups"]},{"componentId":"Button","scope":"global","variants":["primary gold","secondary dark","outline","text"],"minHeightPx":44},{"componentId":"ServiceCard","scope":"content","anatomy":["icon","title","description","optional bullets","CTA"]},{"componentId":"ProjectCard","scope":"content","anatomy":["media 16:10","category","title","summary/result","CTA","demoOnly flag"]},{"componentId":"ArticleCard","scope":"content","anatomy":["media 16:9","category","title","excerpt","author/date/read time"]},{"componentId":"PricingCard","scope":"content","anatomy":["plan","price/contact","features","CTA","featured badge optional"]},{"componentId":"ContactForm","scope":"conversion","anatomy":["labels","required markers","helper/error","privacy consent","submit state"]},{"componentId":"ConsultationModal","scope":"conversion","states":["closed","open","submitting","success","error"]},{"componentId":"FAQAccordion","scope":"content","states":["closed","open"]},{"componentId":"ArticleTOC","scope":"content","rules":["sticky desktop","inline/collapsible mobile","active heading highlight"]},{"componentId":"MetricStrip","scope":"content","rules":["demo metrics must not ship as factual claims"]},{"componentId":"ProcessSteps","scope":"content"},{"componentId":"CategoryFilter","scope":"content"},{"componentId":"Skeleton","scope":"system"},{"componentId":"Spinner","scope":"system"},{"componentId":"ErrorState","scope":"system"},{"componentId":"NotFound404","scope":"system"}]}

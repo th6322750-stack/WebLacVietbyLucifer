@@ -1,16 +1,1 @@
-{
-  "revision": "gd2-v1",
-  "routes": [
-    {"path": "/", "name": "Trang chủ", "priority": "P0", "primaryCTA": "Nhận tư vấn"},
-    {"path": "/website", "name": "Thiết kế Website", "priority": "P0", "primaryCTA": "Nhận tư vấn"},
-    {"path": "/support-mxh", "name": "Support Mạng Xã Hội", "priority": "P0", "primaryCTA": "Gửi yêu cầu hỗ trợ"},
-    {"path": "/dich-vu-so", "name": "Dịch vụ số", "priority": "P0", "primaryCTA": "Xem dịch vụ / Nhận hỗ trợ"},
-    {"path": "/du-an", "name": "Dự án", "priority": "P1", "primaryCTA": "Xem case study / Nhận tư vấn"},
-    {"path": "/du-an/[slug]", "name": "Chi tiết dự án", "priority": "P1", "primaryCTA": "Làm dự án tương tự"},
-    {"path": "/kien-thuc", "name": "Kiến thức", "priority": "P1", "primaryCTA": "Đọc bài / Nhận tư vấn"},
-    {"path": "/kien-thuc/[slug]", "name": "Chi tiết kiến thức", "priority": "P1", "primaryCTA": "Dịch vụ liên quan"},
-    {"path": "/gioi-thieu", "name": "Giới thiệu", "priority": "P1", "primaryCTA": "Nhận tư vấn"},
-    {"path": "/lien-he", "name": "Liên hệ", "priority": "P0", "primaryCTA": "Gửi thông tin nhận tư vấn"},
-    {"path": "/404", "name": "404", "priority": "system", "primaryCTA": "Quay về trang chủ"}
-  ]
-}
+{"revision":"gd3-v1","routes":[{"path":"/","renderDesktop":"home-approved-composite.svg","renderMobile":"home-approved-composite.svg","primaryCTA":"Nhận tư vấn"},{"path":"/website","renderDesktop":"website-approved-composite.svg","renderMobile":"website-approved-composite.svg","primaryCTA":"Nhận tư vấn"},{"path":"/support-mxh","renderDesktop":"support-mxh-approved-composite.svg","renderMobile":"support-mxh-approved-composite.svg","primaryCTA":"Gửi yêu cầu hỗ trợ"},{"path":"/dich-vu-so","renderDesktop":"dich-vu-so-approved-composite.svg","renderMobile":"dich-vu-so-approved-composite.svg","primaryCTA":"Nhận tư vấn"},{"path":"/du-an","renderDesktop":"du-an-approved-composite.svg","renderMobile":"du-an-approved-composite.svg","primaryCTA":"Nhận tư vấn"},{"path":"/du-an/[slug]","renderDesktop":"du-an-detail-approved-panel.svg","renderMobile":"du-an-detail-approved-panel.svg","primaryCTA":"Nhận tư vấn"},{"path":"/kien-thuc","renderDesktop":"kien-thuc-approved-composite.svg","renderMobile":"kien-thuc-approved-composite.svg","primaryCTA":"Nhận tư vấn"},{"path":"/kien-thuc/[slug]","renderDesktop":"kien-thuc-detail-approved-panel.svg","renderMobile":"kien-thuc-detail-approved-panel.svg","primaryCTA":"Nhận tư vấn"},{"path":"/gioi-thieu","renderDesktop":"gioi-thieu-approved-panel.svg","renderMobile":"gioi-thieu-approved-panel.svg","primaryCTA":"Nhận tư vấn"},{"path":"/lien-he","renderDesktop":"lien-he-approved-composite.svg","renderMobile":"lien-he-approved-composite.svg","primaryCTA":"Gửi thông tin nhận tư vấn"},{"path":"/404","renderDesktop":"404-approved-panel.svg","renderMobile":"404-approved-panel.svg","primaryCTA":"Nhận tư vấn"}]}
