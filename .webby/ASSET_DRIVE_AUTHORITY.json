@@ -1,0 +1,14 @@
+{
+  "revision": "gd3-assets-v1",
+  "status": "READY",
+  "presentationId": "1SIg6yy9Yi4G7ENIX31jXgKv0pRRc84y1Y9Fjel1X8OM",
+  "url": "https://docs.google.com/presentation/d/1SIg6yy9Yi4G7ENIX31jXgKv0pRRc84y1Y9Fjel1X8OM/edit?usp=drivesdk",
+  "slides": {
+    "1": "Canonical logo supplied by Lucifer",
+    "2": "Hero assets derived from approved UI",
+    "3": "Project thumbnails - DEMO visual only",
+    "4": "Article thumbnails - DEMO visual only",
+    "5": "Decorative SVG system"
+  },
+  "rule": "Drive Asset Production Board is authoritative for production asset appearance when a source binary is not stored in the repository."
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "uiRevision": 3,
+  "uiCommit": "ee811e99167682fe5b472fa6e3e639f08a7ec769",
+  "previewAuthority": ".webby/GD1_PREVIEW.json",
+  "routes": {
+    "/": {"desktop":"home.md","mobile":"home.md"},
+    "/website": {"desktop":"website.md","mobile":"website.md"},
+    "/support-mxh": {"desktop":"support-mxh.md","mobile":"support-mxh.md"},
+    "/dich-vu-so": {"desktop":"dich-vu-so.md","mobile":"dich-vu-so.md"},
+    "/du-an": {"desktop":"du-an.md","mobile":"du-an.md"},
+    "/du-an/[slug]": {"desktop":"du-an-detail.md","mobile":"du-an-detail.md"},
+    "/kien-thuc": {"desktop":"kien-thuc.md","mobile":"kien-thuc.md"},
+    "/kien-thuc/[slug]": {"desktop":"kien-thuc-detail.md","mobile":"kien-thuc-detail.md"},
+    "/gioi-thieu": {"desktop":"gioi-thieu.md","mobile":"gioi-thieu.md"},
+    "/lien-he": {"desktop":"lien-he.md","mobile":"lien-he.md"},
+    "/404": {"desktop":"404.md","mobile":"404.md"}
+  },
+  "notes": ["Local route files are deterministic pointers to page locations in the approved PDF/Drive Preview."]
+}

@@ -1,0 +1,30 @@
+{
+  "validationId": "lacvietmedia-gd3-remote-validation-20260814",
+  "timestamp": "2026-08-14T20:45:00+07:00",
+  "method": "PASS_CONNECTOR_REMOTE_SEMANTIC",
+  "officialValidatorReference": {
+    "path": "webbyLucifer/main/scripts/webby-validate.py",
+    "blobSha": "8c8176ed686bf06183cf050ee4394f2bac2b01dc"
+  },
+  "executionNote": "The official CLI script was not falsely claimed as executed because the container could not resolve github.com. Equivalent validator conditions were checked directly against the remote GitHub tree through the GitHub connector, plus Drive metadata checks for external visual authorities.",
+  "checks": [
+    {"id":"handoff-required-keys","status":"PASS"},
+    {"id":"lock-required-keys","status":"PASS"},
+    {"id":"handoff-lock-id-revision-commit-match","status":"PASS"},
+    {"id":"required-inputs-exist-on-remote-tree","status":"PASS"},
+    {"id":"visual-routes-non-empty","status":"PASS"},
+    {"id":"all-route-target-pointer-files-exist","status":"PASS"},
+    {"id":"v2.2-intake-complete","status":"PASS"},
+    {"id":"v2.2-business-goal-audience-scope-personalization","status":"PASS"},
+    {"id":"no-hard-gaps","status":"PASS"},
+    {"id":"asset-ids-unique","status":"PASS"},
+    {"id":"component-ids-unique","status":"PASS"},
+    {"id":"no-blocking-requests","status":"PASS"},
+    {"id":"drive-approved-pdf-exists","status":"PASS","fileId":"1qLrhLzLHObagqDtA07aL5ITKrEFtChRh"},
+    {"id":"drive-slides-preview-exists","status":"PASS","fileId":"1jF_gZ50isRrQeVGLwI9W4XaeASecs-43ch-hi-mEoO4"},
+    {"id":"drive-asset-board-exists","status":"PASS","fileId":"1SIg6yy9Yi4G7ENIX31jXgKv0pRRc84y1Y9Fjel1X8OM"},
+    {"id":"production-asset-zip-present-in-github","status":"PASS","path":"assets/LacVietMedia_GD3_Production_Assets_v1.zip","sha256":"8ebdbbaaba38558826ae5d43a7931c6b1e22a5eb0608063b323d083c40b2177d"}
+  ],
+  "blockingErrors": [],
+  "result": "PASS"
+}

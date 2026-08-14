@@ -1,18 +1,27 @@
 {
-  "revision": "gd2-v1",
+  "revision": "gd3-assets-v1",
+  "authority": {
+    "driveBoard": "https://docs.google.com/presentation/d/1SIg6yy9Yi4G7ENIX31jXgKv0pRRc84y1Y9Fjel1X8OM/edit?usp=drivesdk",
+    "previewPdf": "https://drive.google.com/file/d/1qLrhLzLHObagqDtA07aL5ITKrEFtChRh/view?usp=drivesdk"
+  },
+  "productionPack": {
+    "path": "assets/LacVietMedia_GD3_Production_Assets_v1.zip",
+    "sha256": "8ebdbbaaba38558826ae5d43a7931c6b1e22a5eb0608063b323d083c40b2177d",
+    "format": "zip",
+    "status": "READY"
+  },
   "assets": [
-    {
-      "id": "brand-logo-canonical",
-      "targetPath": "assets/brand/lac-viet-logo-source.png",
-      "type": "image/png",
-      "dimensions": {"width": 480, "height": 480},
-      "sha256": "b8d4682cc216e662d8cb32968329b7a4f24ee9a89c3191653dafafe338181504",
-      "origin": "Original logo supplied directly by Lucifer during GĐ0",
-      "status": "PENDING_BINARY_UPLOAD",
-      "authoritative": true,
-      "mustNot": ["replace with AI-generated logo", "redraw/vectorize without approval", "distort aspect ratio", "recolor without approval"]
-    }
+    {"id":"production-pack","type":"archive","production":"assets/LacVietMedia_GD3_Production_Assets_v1.zip","authoritative":true,"demoOnly":false},
+    {"id":"brand-logo","type":"brand","source":"Production ZIP + Drive Asset Board slide 1","authoritative":true,"demoOnly":false},
+    {"id":"hero-set","type":"hero","source":"Production ZIP + Drive Asset Board slide 2","authoritative":true,"demoOnly":false},
+    {"id":"project-demo-set","type":"project-thumbnail","source":"Production ZIP + Drive Asset Board slide 3","authoritative":true,"demoOnly":true},
+    {"id":"article-demo-set","type":"article-thumbnail","source":"Production ZIP + Drive Asset Board slide 4","authoritative":true,"demoOnly":true},
+    {"id":"decorative-set","type":"decorative","source":"Production ZIP + Drive Asset Board slide 5","authoritative":true,"demoOnly":false}
   ],
-  "iconPolicy": {"system": "Lucide outline 1.75-2px", "social": "official platform brand marks"},
-  "notes": ["GĐ3 cannot reach UI_SETUP_COMPLETE until the canonical binary logo and approved route renders are present in the repository."]
+  "iconPolicy": {"system":"Lucide outline 1.75-2px","social":"official platform brand marks"},
+  "rules": [
+    "Do not redraw/recolor/replace the canonical logo without Lucifer approval.",
+    "Demo project/article assets are not factual client work.",
+    "Latest Lucifer-approved PDF/Drive Preview is supreme for visible UI."
+  ]
 }

@@ -1,15 +1,1 @@
-{
-  "revision": "gd2-v1",
-  "approvedReferenceViewports": {"mobile": 390, "desktop": 1440},
-  "breakpointsPx": {"xs": 390, "sm": 480, "md": 768, "lg": 1024, "xl": 1280, "2xl": 1440},
-  "gridColumns": {"mobile": 4, "tablet": 8, "desktop": 12},
-  "container": {"maxPx": 1280, "wideMaxPx": 1360, "gutterMobilePx": 16, "gutterTabletPx": 24, "gutterDesktopPx": 32},
-  "rules": [
-    {"when": "width < 1024", "behavior": "desktop navigation becomes MobileNavDrawer"},
-    {"component": "hero", "desktop": "two-column", "mobile": "stacked"},
-    {"component": "service/project grids", "desktop": "3-4 columns", "tablet": "2 columns", "mobile": "1 column"},
-    {"component": "article detail sidebar/TOC", "desktop": "sticky side rail", "mobile": "inline/collapsible"},
-    {"component": "filter chips", "mobile": "horizontal scroll if needed; never page overflow"},
-    {"global": "No horizontal page scrolling at any supported viewport"}
-  ]
-}
+{"revision":"gd2-v1","approvedReferenceViewports":{"mobile":390,"desktop":1440},"breakpointsPx":{"xs":390,"sm":480,"md":768,"lg":1024,"xl":1280,"2xl":1440},"gridColumns":{"mobile":4,"tablet":8,"desktop":12},"container":{"maxPx":1280,"wideMaxPx":1360,"gutterMobilePx":16,"gutterTabletPx":24,"gutterDesktopPx":32},"rules":["width < 1024: desktop nav -> mobile drawer","hero: two-column desktop -> stacked mobile","service/project grids: 3-4 desktop, 2 tablet, 1 mobile","article TOC: sticky desktop -> inline/collapsible mobile","filters: horizontal chip scroll allowed; page horizontal scroll forbidden","touch targets >=44px"]}
