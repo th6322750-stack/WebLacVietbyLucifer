@@ -1,8 +1,8 @@
 projectId: lacvietmedia-web
 repository: th6322750-stack/WebLacVietbyLucifer
 workflow: webbyLucifer-v2.2
-updatedAt: 2026-08-14T20:45:00+07:00
-phase: GD3
+updatedAt: 2026-08-14T21:04:00+07:00
+phase: GD3_HARDENING
 intakeComplete: true
 visualDirection: APPROVED
 visualAuthority:
@@ -10,36 +10,25 @@ visualAuthority:
   revision: gd1-preview-v1
   status: APPROVED
   drivePdf: https://drive.google.com/file/d/1qLrhLzLHObagqDtA07aL5ITKrEFtChRh/view?usp=drivesdk
-  slidesMirror: https://docs.google.com/presentation/d/1jF_gZ50isRrQeVGLwI9W4XaeASecs-43ch-hi-mEoO4/edit?usp=drivesdk
 designSystem:
   status: LOCKED
   revision: gd2-v1
   authority: ChatGPT
-visualHandoff:
-  status: COMPLETE
-  uiRevision: 3
-assetPackage:
-  status: COMPLETE
-  productionPack: assets/LacVietMedia_GD3_Production_Assets_v1.zip
-  sha256: 8ebdbbaaba38558826ae5d43a7931c6b1e22a5eb0608063b323d083c40b2177d
-  driveBoard: https://docs.google.com/presentation/d/1SIg6yy9Yi4G7ENIX31jXgKv0pRRc84y1Y9Fjel1X8OM/edit?usp=drivesdk
-behaviorContract:
-  status: COMPLETE
-validation:
-  method: PASS_CONNECTOR_REMOTE_SEMANTIC
-  receipt: .webby/qa/GD3_REMOTE_VALIDATION.json
-  result: PASS
+hardening:
+  status: IN_PROGRESS
+  goal: ZERO_GUESSWORK
 implementation:
   authority: Claude
-  status: READY
-  authorized: true
-  stage: GD4
+  status: BLOCKED
+  authorized: false
+  reason: GĐ3 hardening revision is being rebuilt; inherited GĐ4 authorization is stale for this branch.
 gd3:
-  status: COMPLETE
-  uiSetupComplete: true
-  validator: PASS_CONNECTOR_REMOTE_SEMANTIC
+  status: IN_PROGRESS
+  uiSetupComplete: false
+  validator: PENDING_HARDENING_VALIDATION
 policies:
   previewIsSupremeVisualAuthority: true
   noAutoMerge: true
   noVisualInventionByClaude: true
   demoContentMustNotBecomeProductionClaim: true
+  noGD4UntilHardeningComplete: true
