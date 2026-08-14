@@ -30,8 +30,11 @@
     {"path":".webby/route-map.json","required":true},
     {"path":".webby/asset-manifest.json","required":true},
     {"path":".webby/visual-contract.json","required":true},
-    {"path":".webby/CLAUDE_TASK.md","required":true}
+    {"path":".webby/CLAUDE_TASK.md","required":true},
+    {"path":".webby/qa/GD3_REMOTE_VALIDATION.json","required":true},
+    {"path":".webby/UI_SETUP_COMPLETE","required":true},
+    {"path":"assets/LacVietMedia_GD3_Production_Assets_v1.zip","required":true,"sha256":"8ebdbbaaba38558826ae5d43a7931c6b1e22a5eb0608063b323d083c40b2177d"}
   ],
   "authority": {"visual":"LUCIFER_APPROVED_PDF_DRIVE_PREVIEW","designSystem":"CHATGPT","implementation":"CLAUDE"},
-  "mustNot": ["merge without Lucifer approval","change locked visual system","treat demo claims as factual","replace canonical logo","start GĐ4 before UI_SETUP_COMPLETE"]
+  "mustNot": ["merge without Lucifer approval","change locked visual system","treat demo claims as factual","replace canonical logo"]
 }
