@@ -1,7 +1,7 @@
 projectId: lacvietmedia-web
 repository: th6322750-stack/WebLacVietbyLucifer
 workflow: webbyLucifer-v2.2
-updatedAt: 2026-08-14T21:49:00+07:00
+updatedAt: 2026-08-14T21:59:00+07:00
 phase: GD3
 intakeComplete: true
 visualDirection: APPROVED
@@ -11,30 +11,36 @@ visualAuthority:
   status: USER_APPROVED_FINAL
   approvalReceipt: .webby/USER_VISUAL_APPROVAL.json
   approvedAt: 2026-08-14T21:49:00+07:00
+  approvedPdfSha256: f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f
   drivePdf: https://drive.google.com/file/d/1qLrhLzLHObagqDtA07aL5ITKrEFtChRh/view?usp=drivesdk
 designSystem:
   status: LOCKED
   revision: gd2-v1
   authority: ChatGPT
+gitSelfContainedHandoff:
+  status: IN_PROGRESS
+  requirement: CLONE_REPO_MUST_BE_SUFFICIENT_FOR_IMPLEMENTATION_WITHOUT_GOOGLE_DRIVE
+  blockers:
+    - approved visual master binary/pages are not yet committed as Git-resident implementation masters
+    - production asset binaries are still external Drive dependencies
+    - existing MASTER_BINARY_AUTHORITY points to an obsolete snapshot whose sourcePdfSha256 does not match the user-approved PDF
 hardening:
-  status: COMPLETE
-  goal: ZERO_GUESSWORK
-  uiCommit: 129d73d68b57f26d6a8afaa3d03594198d0b36b5
-  validation: PASS_CONNECTOR_REMOTE_SEMANTIC_PLUS_BINARY_ROUNDTRIP
+  status: REOPENED
+  goal: ZERO_GUESSWORK_GIT_SELF_CONTAINED
 implementation:
   authority: Claude
-  status: READY
-  authorized: true
-  stage: GD4
+  status: BLOCKED
+  authorized: false
+  stage: GD3_HARDENING
 gd3:
-  status: COMPLETE
-  uiSetupComplete: true
+  status: IN_PROGRESS
+  uiSetupComplete: false
   userVisualApproval: true
-  validator: PASS_CONNECTOR_REMOTE_SEMANTIC_PLUS_BINARY_ROUNDTRIP
 policies:
   previewIsSupremeVisualAuthority: true
   userApprovalRequiredForMaterialVisualRevision: true
+  cloneRepoMustBeSufficient: true
+  noExternalBinaryDependencyForImplementation: true
   noAutoMerge: true
   noVisualInventionByClaude: true
   demoContentMustNotBecomeProductionClaim: true
-  binaryShaVerificationBeforeCode: true
