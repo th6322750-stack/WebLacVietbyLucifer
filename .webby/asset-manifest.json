@@ -1,0 +1,18 @@
+{
+  "revision": "gd2-v1",
+  "assets": [
+    {
+      "id": "brand-logo-canonical",
+      "targetPath": "assets/brand/lac-viet-logo-source.png",
+      "type": "image/png",
+      "dimensions": {"width": 480, "height": 480},
+      "sha256": "b8d4682cc216e662d8cb32968329b7a4f24ee9a89c3191653dafafe338181504",
+      "origin": "Original logo supplied directly by Lucifer during GĐ0",
+      "status": "PENDING_BINARY_UPLOAD",
+      "authoritative": true,
+      "mustNot": ["replace with AI-generated logo", "redraw/vectorize without approval", "distort aspect ratio", "recolor without approval"]
+    }
+  ],
+  "iconPolicy": {"system": "Lucide outline 1.75-2px", "social": "official platform brand marks"},
+  "notes": ["GĐ3 cannot reach UI_SETUP_COMPLETE until the canonical binary logo and approved route renders are present in the repository."]
+}

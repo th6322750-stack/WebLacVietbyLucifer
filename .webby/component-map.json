@@ -1,0 +1,14 @@
+{
+  "revision": "gd2-v1",
+  "global": ["SiteHeader", "DesktopNav", "MobileNavDrawer", "SiteFooter", "Container", "Section", "Breadcrumbs", "SectionEyebrow", "SectionHeading", "Button", "IconButton", "Chip", "Divider"],
+  "conversion": ["ConsultationCTA", "ConsultationModal", "ContactForm", "ContactChannelCard", "NewsletterForm", "Toast", "Alert"],
+  "content": ["ServiceCard", "ProjectCard", "ProjectMetric", "ArticleCard", "ArticleTOC", "RelatedArticles", "PricingCard", "TestimonialCard", "TrustLogoRow", "MetricStrip", "ProcessSteps", "FAQAccordion", "CategoryFilter"],
+  "systemStates": ["Skeleton", "Spinner", "EmptyState", "ErrorState", "NotFound404"],
+  "anatomyRules": {
+    "ServiceCard": ["icon", "title", "description", "optional bullet list", "text CTA"],
+    "ProjectCard": ["16:10 media", "category chip", "title", "summary/result", "CTA", "demoOnly flag when data is not factual"],
+    "ArticleCard": ["16:9 media", "category", "title", "excerpt", "author/date/read time"],
+    "PricingCard": ["plan", "price or contact CTA", "feature list", "CTA", "optional featured badge"],
+    "ContactForm": ["labels", "required indicators", "field helper/error", "privacy consent", "submit state"]
+  }
+}

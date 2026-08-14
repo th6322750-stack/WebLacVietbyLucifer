@@ -1,0 +1,28 @@
+{
+  "revision": "gd2-v1",
+  "families": {
+    "heading": {"name": "Noto Serif Display", "fallback": "Georgia, 'Times New Roman', serif", "weights": [500, 600, 700]},
+    "body": {"name": "Be Vietnam Pro", "fallback": "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif", "weights": [400, 500, 600, 700]}
+  },
+  "desktop": {
+    "display": {"sizePx": 64, "lineHeight": 1.05, "weight": 600, "letterSpacingEm": -0.025},
+    "h1": {"sizePx": 56, "lineHeight": 1.08, "weight": 600, "letterSpacingEm": -0.022},
+    "h2": {"sizePx": 40, "lineHeight": 1.15, "weight": 600, "letterSpacingEm": -0.018},
+    "h3": {"sizePx": 28, "lineHeight": 1.25, "weight": 600, "letterSpacingEm": -0.012},
+    "h4": {"sizePx": 22, "lineHeight": 1.30, "weight": 600},
+    "bodyXL": {"sizePx": 20, "lineHeight": 1.65, "weight": 400},
+    "bodyLG": {"sizePx": 18, "lineHeight": 1.70, "weight": 400},
+    "body": {"sizePx": 16, "lineHeight": 1.70, "weight": 400},
+    "small": {"sizePx": 14, "lineHeight": 1.60, "weight": 400},
+    "caption": {"sizePx": 12, "lineHeight": 1.50, "weight": 500},
+    "eyebrow": {"sizePx": 12, "lineHeight": 1.20, "weight": 700, "letterSpacingEm": 0.14, "textTransform": "uppercase"}
+  },
+  "mobile": {
+    "display": {"sizePx": 40, "lineHeight": 1.10, "weight": 600},
+    "h1": {"sizePx": 40, "lineHeight": 1.10, "weight": 600},
+    "h2": {"sizePx": 32, "lineHeight": 1.18, "weight": 600},
+    "h3": {"sizePx": 24, "lineHeight": 1.28, "weight": 600},
+    "h4": {"sizePx": 20, "lineHeight": 1.30, "weight": 600},
+    "body": {"sizePx": 16, "lineHeight": 1.70, "weight": 400}
+  }
+}

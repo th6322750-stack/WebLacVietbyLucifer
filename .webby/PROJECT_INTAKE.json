@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "webbyLucifer-project-intake-1",
+  "projectId": "lacvietmedia-web",
+  "projectName": "Lạc Việt Media Agency Website",
+  "domain": "lacvietmedia.com",
+  "repository": "th6322750-stack/WebLacVietbyLucifer",
+  "status": "INTAKE_COMPLETE",
+  "completedAt": "2026-08-14T18:01:00+07:00",
+  "facts": {
+    "business": {"state": "KNOWN", "value": "Lạc Việt Media Agency"},
+    "slogan": {"state": "KNOWN", "value": "Cần Kiệm Liêm Chính"},
+    "market": {"state": "KNOWN", "value": "Việt Nam"},
+    "primaryGoal": {"state": "KNOWN", "value": "Website bán hàng/nhận lead/trust hub cho Lạc Việt Media Agency"},
+    "conversionGoal": {"state": "KNOWN", "value": "Nhận tư vấn qua form/contact panel, sau này nối CRM"},
+    "servicePriority": {"state": "KNOWN", "value": ["Website doanh nghiệp", "Support mạng xã hội", "Dịch vụ số/tài khoản"]},
+    "audience": {"state": "KNOWN", "value": ["Doanh nghiệp Việt Nam cần website", "Cá nhân/doanh nghiệp cần support MXH", "Khách hàng dịch vụ số"]},
+    "brandDirection": {"state": "KNOWN", "value": "Premium Modern; ivory/white chủ đạo, charcoal + gold accent"},
+    "logoPolicy": {"state": "KNOWN", "value": "Dùng logo gốc user cung cấp; không redesign ở vòng này"},
+    "responsive": {"state": "KNOWN", "value": "Desktop + mobile; approved references 1440px và 390px"},
+    "portfolio": {"state": "KNOWN", "value": "Cho phép demo content khi thiết kế; production phải thay/labelling rõ nếu không phải dữ liệu thật"}
+  },
+  "routes": ["/", "/website", "/support-mxh", "/dich-vu-so", "/du-an", "/du-an/[slug]", "/kien-thuc", "/kien-thuc/[slug]", "/gioi-thieu", "/lien-he", "/404"],
+  "softGaps": ["Facebook URL cuối cùng", "logo transparent/vector production variant", "case study/metrics/testimonials thật", "content production cuối cùng"],
+  "hardGaps": [],
+  "intakeComplete": true
+}

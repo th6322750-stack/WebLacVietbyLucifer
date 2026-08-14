@@ -1,0 +1,12 @@
+{
+  "revision": "gd2-v1",
+  "motion": {"fastMs": 160, "normalMs": 240, "slowMs": 360, "easing": "cubic-bezier(.2,.8,.2,1)"},
+  "button": {"hover": "translateY(-1px) + stronger shadow", "active": "translateY(0)", "focusVisible": "3px gold ring"},
+  "card": {"pointerHover": "translateY(-3px), shadow md, gold-300 border", "imageHover": "scale(1.02) max"},
+  "accordion": {"durationMs": 240, "behavior": "height/opacity transition; keyboard accessible"},
+  "mobileNav": {"pattern": "drawer/full sheet", "durationMs": 280, "closeOnEscape": true, "trapFocus": true},
+  "consultationModal": {"desktop": "center modal", "mobile": "bottom/full-height drawer", "backdropClose": true, "closeOnEscape": true, "trapFocus": true},
+  "sectionReveal": {"allowed": true, "effect": "opacity + translateY(12px)", "durationMaxMs": 360, "mustNotDelayAboveFoldContent": true},
+  "reducedMotion": {"required": true, "rule": "disable non-essential transform/reveal when prefers-reduced-motion: reduce"},
+  "forbidden": ["heavy autoplay motion", "large parallax", "cursor gimmicks", "persistent glow animation", "motion that delays CTA/content"]
+}

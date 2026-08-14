@@ -1,0 +1,24 @@
+projectId: lacvietmedia-web
+repository: th6322750-stack/WebLacVietbyLucifer
+workflow: webbyLucifer-v2.2
+updatedAt: 2026-08-14T18:01:00+07:00
+phase: GD2
+intakeComplete: true
+visualDirection: APPROVED
+designSystem:
+  status: LOCKED
+  revision: gd2-v1
+  authority: ChatGPT
+implementation:
+  authority: Claude
+  status: NOT_STARTED
+gd3:
+  status: NOT_STARTED
+  uiSetupComplete: false
+  blockers:
+    - Approved route renders have not yet been published into this repository.
+    - Canonical binary logo source is recorded by hash but still needs binary upload at assets/brand/lac-viet-logo-source.png.
+policies:
+  noAutoMerge: true
+  noVisualInventionByClaude: true
+  demoContentMustNotBecomeProductionClaim: true

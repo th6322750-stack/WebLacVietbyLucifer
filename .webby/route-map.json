@@ -1,0 +1,16 @@
+{
+  "revision": "gd2-v1",
+  "routes": [
+    {"path": "/", "name": "Trang chủ", "priority": "P0", "primaryCTA": "Nhận tư vấn"},
+    {"path": "/website", "name": "Thiết kế Website", "priority": "P0", "primaryCTA": "Nhận tư vấn"},
+    {"path": "/support-mxh", "name": "Support Mạng Xã Hội", "priority": "P0", "primaryCTA": "Gửi yêu cầu hỗ trợ"},
+    {"path": "/dich-vu-so", "name": "Dịch vụ số", "priority": "P0", "primaryCTA": "Xem dịch vụ / Nhận hỗ trợ"},
+    {"path": "/du-an", "name": "Dự án", "priority": "P1", "primaryCTA": "Xem case study / Nhận tư vấn"},
+    {"path": "/du-an/[slug]", "name": "Chi tiết dự án", "priority": "P1", "primaryCTA": "Làm dự án tương tự"},
+    {"path": "/kien-thuc", "name": "Kiến thức", "priority": "P1", "primaryCTA": "Đọc bài / Nhận tư vấn"},
+    {"path": "/kien-thuc/[slug]", "name": "Chi tiết kiến thức", "priority": "P1", "primaryCTA": "Dịch vụ liên quan"},
+    {"path": "/gioi-thieu", "name": "Giới thiệu", "priority": "P1", "primaryCTA": "Nhận tư vấn"},
+    {"path": "/lien-he", "name": "Liên hệ", "priority": "P0", "primaryCTA": "Gửi thông tin nhận tư vấn"},
+    {"path": "/404", "name": "404", "priority": "system", "primaryCTA": "Quay về trang chủ"}
+  ]
+}
