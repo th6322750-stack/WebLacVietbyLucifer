@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "projectId": "lacvietmedia-web",
+  "approvalId": "lacvietmedia-gd1-v1-user-approval-20260814",
+  "approvedBy": "Lucifer",
+  "approvedAt": "2026-08-14T21:49:00+07:00",
+  "approvalStatement": "DUYỆT GIAO DIỆN V1",
+  "status": "USER_APPROVED_FINAL",
+  "visualRevision": "gd1-preview-v1",
+  "uiRevision": 4,
+  "uiCommit": "129d73d68b57f26d6a8afaa3d03594198d0b36b5",
+  "pdfAuthority": {
+    "name": "LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "driveFileId": "1qLrhLzLHObagqDtA07aL5ITKrEFtChRh",
+    "url": "https://drive.google.com/file/d/1qLrhLzLHObagqDtA07aL5ITKrEFtChRh/view?usp=drivesdk"
+  },
+  "slidesMirror": {
+    "fileId": "1jF_gZ50isRrQeVGLwI9W4XaeASecs-43ch-hi-mEoO4",
+    "url": "https://docs.google.com/presentation/d/1jF_gZ50isRrQeVGLwI9W4XaeASecs-43ch-hi-mEoO4/edit?usp=drivesdk"
+  },
+  "scope": "All routes/viewports/states contained in the approved GĐ1 V1 preview package.",
+  "rules": [
+    "This approval freezes visible UI V1 as implementation authority.",
+    "Any material visual change requires a new ChatGPT-owned UI revision and Lucifer approval.",
+    "Claude may implement but may not redesign the approved visual truth.",
+    "Final production visual acceptance remains ChatGPT-owned at GĐ7."
+  ]
+}
