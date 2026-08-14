@@ -1,14 +1,16 @@
 projectId: lacvietmedia-web
 repository: th6322750-stack/WebLacVietbyLucifer
 workflow: webbyLucifer-v2.2
-updatedAt: 2026-08-14T21:45:00+07:00
+updatedAt: 2026-08-14T21:49:00+07:00
 phase: GD3
 intakeComplete: true
 visualDirection: APPROVED
 visualAuthority:
   type: PDF_DRIVE_PREVIEW
   revision: gd1-preview-v1
-  status: APPROVED
+  status: USER_APPROVED_FINAL
+  approvalReceipt: .webby/USER_VISUAL_APPROVAL.json
+  approvedAt: 2026-08-14T21:49:00+07:00
   drivePdf: https://drive.google.com/file/d/1qLrhLzLHObagqDtA07aL5ITKrEFtChRh/view?usp=drivesdk
 designSystem:
   status: LOCKED
@@ -27,9 +29,11 @@ implementation:
 gd3:
   status: COMPLETE
   uiSetupComplete: true
+  userVisualApproval: true
   validator: PASS_CONNECTOR_REMOTE_SEMANTIC_PLUS_BINARY_ROUNDTRIP
 policies:
   previewIsSupremeVisualAuthority: true
+  userApprovalRequiredForMaterialVisualRevision: true
   noAutoMerge: true
   noVisualInventionByClaude: true
   demoContentMustNotBecomeProductionClaim: true
