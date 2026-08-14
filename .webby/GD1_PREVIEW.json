@@ -1,6 +1,8 @@
 {
   "revision": "gd1-preview-v1",
-  "status": "APPROVED_VISUAL_AUTHORITY",
+  "status": "USER_APPROVED_FINAL_VISUAL_AUTHORITY",
+  "approvedAt": "2026-08-14T21:49:00+07:00",
+  "approvalReceipt": ".webby/USER_VISUAL_APPROVAL.json",
   "pdf": {
     "name": "LacVietMedia_GD1_UI_Approved_v1.pdf",
     "driveFileId": "1qLrhLzLHObagqDtA07aL5ITKrEFtChRh",
@@ -10,5 +12,5 @@
     "fileId": "1jF_gZ50isRrQeVGLwI9W4XaeASecs-43ch-hi-mEoO4",
     "url": "https://docs.google.com/presentation/d/1jF_gZ50isRrQeVGLwI9W4XaeASecs-43ch-hi-mEoO4/edit?usp=drivesdk"
   },
-  "rule": "Latest Lucifer-approved PDF/Drive preview is the supreme visual authority for visible UI."
+  "rule": "LacVietMedia_GD1_UI_Approved_v1.pdf, explicitly approved by Lucifer, is the supreme visual authority for visible UI V1. Any material change requires a new UI revision and new Lucifer approval."
 }
