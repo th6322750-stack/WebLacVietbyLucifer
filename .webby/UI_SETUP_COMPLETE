@@ -1,10 +1,7 @@
-UI_SETUP_COMPLETE=true
-handoffId=lacvietmedia-gd3-hardening-v1-20260814
-uiRevision=4
-uiCommit=129d73d68b57f26d6a8afaa3d03594198d0b36b5
-validation=.webby/qa/GD3_HARDENING_VALIDATION.json
-binaryPreflight=scripts/verify-webby-artifacts.py
+UI_SETUP_COMPLETE=false
+reason=Git handoff is not yet self-contained; approved visual master and production asset binaries still require external Drive retrieval.
 userVisualApproval=.webby/USER_VISUAL_APPROVAL.json
 userApprovalStatus=USER_APPROVED_FINAL
-userApprovalAt=2026-08-14T21:49:00+07:00
-visualAuthority=LacVietMedia_GD1_UI_Approved_v1.pdf
+approvedPdfSha256=f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f
+implementationAuthorized=false
+nextGate=commit Git-resident visual masters + production assets, rebuild manifests/locks, validate clone-only workflow
