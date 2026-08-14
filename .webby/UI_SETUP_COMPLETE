@@ -1,0 +1,7 @@
+UI_SETUP_COMPLETE=true
+handoffId=lacvietmedia-gd3-hardening-v1-20260814
+uiRevision=4
+uiCommit=129d73d68b57f26d6a8afaa3d03594198d0b36b5
+validation=.webby/qa/GD3_HARDENING_VALIDATION.json
+binaryPreflight=scripts/verify-webby-artifacts.py
+visualAuthority=latest Lucifer-approved GĐ1 PDF/Drive Preview
