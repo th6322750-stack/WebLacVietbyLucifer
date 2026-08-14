@@ -1,0 +1,1 @@
+Verified 2026-08-14 against official W3C/WAI WCAG 2.2 materials. Target for this project: WCAG 2.2 Level AA. The implementation executor should consult current W3C docs if a criterion interpretation is ambiguous.

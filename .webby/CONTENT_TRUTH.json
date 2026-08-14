@@ -1,0 +1,25 @@
+{
+  "revision": "gd3-hardening-v1",
+  "confirmed": {
+    "brandName": "Lạc Việt Media Agency",
+    "slogan": "Cần Kiệm Liêm Chính",
+    "market": "Việt Nam",
+    "zalo": "0355636882",
+    "telegram": "@lucifer_dvmxh",
+    "domain": "lacvietmedia.com",
+    "servicePriority": ["Website doanh nghiệp","Support mạng xã hội","Dịch vụ số / tài khoản"]
+  },
+  "pending": {
+    "facebookUrl": "TBD - user will provide later",
+    "productionEmail": "TBD - emails shown inside visual mockups are not confirmed factual contact data",
+    "streetAddress": "TBD - addresses shown inside visual mockups are not confirmed factual contact data",
+    "verifiedCaseStudies": "TBD",
+    "verifiedMetricsTestimonials": "TBD"
+  },
+  "demoOnly": [
+    "all project/company names and results shown in GĐ1 project mockups unless later verified",
+    "all customer counts, experience-year counts, satisfaction percentages and testimonials shown in GĐ1 renders unless later verified",
+    "digital service prices/products shown in mockups unless later confirmed as current production offer"
+  ],
+  "implementationRule": "Preserve demo content for visual parity in non-production preview, tag it in data as demoOnly=true, and block PRODUCTION_READY until required factual replacements are verified. Never inject fake structured Review/AggregateRating schema."
+}

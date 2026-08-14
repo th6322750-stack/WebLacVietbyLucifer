@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "revision": "gd1-preview-v1",
+  "status": "APPROVED_VISUAL_AUTHORITY",
+  "authorityOrder": ["approved original/source asset", "latest Lucifer-approved PDF/Drive Preview", "Drive master snapshot ZIP verified by SHA-256", "locked design system / explicit contract", "browser implementation"],
+  "sourcePdf": {"name":"LacVietMedia_GD1_UI_Approved_v1.pdf","sha256":"6b8ef6b73c71f50aae6aca6f78f809cf750c5cded5d5e6d86abd70931e2a0991","pages":14,"driveFileId":"1qLrhLzLHObagqDtA07aL5ITKrEFtChRh","url":"https://drive.google.com/file/d/1qLrhLzLHObagqDtA07aL5ITKrEFtChRh/view?usp=drivesdk"},
+  "masterSnapshot": {"name":"LacVietMedia_GD1_Master_Snapshot_v1-lite72.zip","sha256":"d70b0cd19e59e00811bee81bd2eb037228651468443ef09e156acb993e60936e","bytes":511869,"driveFileId":"19N4s8LxRuUq2YgZ6fuvyhVfMjG-95-vn","url":"https://drive.google.com/file/d/19N4s8LxRuUq2YgZ6fuvyhVfMjG-95-vn/view?usp=drivesdk","verifyScript":"scripts/verify-webby-artifacts.py"},
+  "pages": [
+    {"page":1,"role":"cover"},{"page":2,"role":"index"},
+    {"page":3,"role":"route","route":"/","sha256":"1a3c242ad50173d2b34964a06df9e7c1bdf2c1097e16c3049a487ac4bcd93287"},
+    {"page":4,"role":"route","route":"/website","sha256":"dc05c63b8438dc87634ba616b374b58424694e9a01d93daf8d9f829a5bf428cd"},
+    {"page":5,"role":"route","route":"/support-mxh","sha256":"bf1faca66dbaed17639d85426c4b3d228bfd5be4ce2aa7d802a9dc2dee2bbad0"},
+    {"page":6,"role":"route","route":"/dich-vu-so","sha256":"70c543ca24e8197731de4d570427a3e0060e7533dbb8d17560e03fb759e5ed79"},
+    {"page":7,"role":"route","route":"/du-an","sha256":"f61f08858d8d3f0fa8d1517ebf271e5a2c713dea940fea48d81ca83e24db9b4b"},
+    {"page":8,"role":"route","route":"/kien-thuc","sha256":"253294ecb8c1b601419bfdca2ee0d4c5c6abd2b7d3f547d7ca134daa1d20671f"},
+    {"page":9,"role":"route","route":"/gioi-thieu","sha256":"6fc970863c171cc408c5a962f61f0eb103d1b4f18f0cd11534215cbdbf815ff8"},
+    {"page":10,"role":"route","route":"/du-an/[slug]","sha256":"0cab0831945001d9051dc3ca2b2393862ea85cf5af675d6ede126870eff2ff64"},
+    {"page":11,"role":"route","route":"/kien-thuc/[slug]","sha256":"42e1d9a56856b4ed3a05237c9f81b902291575fc4a329f91f9d41c5a3e98858b"},
+    {"page":12,"role":"route","route":"/lien-he","sha256":"92b0d32c64a607cd03f0d57edc72d1fc357191282d6a936950fd1d73590771e3"},
+    {"page":13,"role":"state-board","contains":["mobile-menu","consultation-modal","form-success","form-error","faq-open","loading","404","focus-visible"],"sha256":"144597249293b859943a0f9b142d367df40f273a8763e241ed46d5e0d81d875e"},
+    {"page":14,"role":"authority-lock"}
+  ],
+  "rule":"If implementation conflicts visually with the latest Lucifer-approved PDF/Drive Preview, fix implementation unless Lucifer approves a new visual revision."
+}

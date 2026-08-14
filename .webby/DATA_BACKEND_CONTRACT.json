@@ -1,0 +1,14 @@
+{
+  "revision":"gd3-hardening-v1",
+  "entities":{
+    "Service":{"required":["slug","category","title","summary","ctaLabel"],"optional":["features","priceMode","priceVnd","heroAssetId","faqIds"],"rules":["priceMode in fixed|from|contact|hidden","production pricing requires verification"]},
+    "Project":{"required":["slug","title","category","summary","demoOnly"],"optional":["heroAssetId","challenge","solution","results","technology","galleryAssetIds"],"rules":["demoOnly projects cannot become factual client claims"]},
+    "Article":{"required":["slug","title","category","excerpt","content","publishedAt","author"],"optional":["coverAssetId","readMinutes","seoTitle","seoDescription"],"rules":["content must support heading IDs for TOC"]},
+    "FAQ":{"required":["id","scope","question","answer","order"]},
+    "Lead":{"required":["name","phone","need","service","preferredChannel","consent","sourceRoute","createdAt"],"optional":["email","utm","referrer"],"rules":["phone required","consent required","PII never embedded into analytics event payload"]},
+    "Subscriber":{"required":["email","consent","createdAt"],"optional":["sourceRoute"]},
+    "SiteSettings":{"required":["brandName","slogan","domain","zalo","telegram"],"optional":["facebookUrl","email","address"]}
+  },
+  "apiBehavior":{"leadSubmit":{"method":"POST","pathSuggestion":"/api/leads","success":"2xx + stable receipt id","validation":"4xx field errors","serverFailure":"5xx generic user-safe message"},"newsletterSubscribe":{"method":"POST","pathSuggestion":"/api/newsletter","success":"2xx","duplicate":"idempotent success or clear already-subscribed state"}},
+  "crmFutureProofing":"Persist external_sync_status + external_id fields or equivalent adapter metadata so Agency OS/CRM integration can be added without changing public form contract."
+}

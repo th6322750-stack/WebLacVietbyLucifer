@@ -1,22 +1,28 @@
-# CLAUDE TASK — GĐ4 Implementation
+# CLAUDE TASK — GĐ4/GĐ5/GĐ6 ZERO-GUESSWORK IMPLEMENTATION
 
-**AUTHORIZED: GĐ3 is complete and `UI_SETUP_COMPLETE = true`. Begin GĐ4 only on your own implementation branch. Never merge without Lucifer approval.**
+**DO NOT START unless `.webby/PROJECT_STATE.yaml` on the active hardening revision says `implementation.authorized: true` and `.webby/UI_SETUP_COMPLETE` names the same handoff/uiCommit.**
 
-Read in this order:
-1. `.webby/GD1_PREVIEW.json` + `.webby/PREVIEW_AUTHORITY.md`
-2. The latest Lucifer-approved PDF/Google Drive Preview — supreme visible-UI authority
-3. `.webby/HANDOFF.json` + `.webby/WEBBY_LOCK.json`
-4. `.webby/visual-handoff/routes.json` + route pointer files
-5. `.webby/ASSET_DRIVE_AUTHORITY.json` + Drive Asset Production Board
-6. `assets/LacVietMedia_GD3_Production_Assets_v1.zip` — extract and use the production source files
-7. tokens / typography / responsive / interactions / visual-contract / component-map / route-map / asset-manifest
+## Mandatory preflight
+1. Read `.webby/HANDOFF.json` and `.webby/WEBBY_LOCK.json`; reject stale/mismatched state.
+2. Run the canonical webby validator when available.
+3. Run `python scripts/reconstruct-webby-artifacts.py --root . --extract`; SHA verification MUST pass for both master snapshot and production assets.
+4. Read `.webby/MASTER_INDEX.json`; the latest Lucifer-approved PDF/Drive preview is the supreme visible-UI authority.
+5. For each route, load only its entry in `.webby/ROUTE_IMPLEMENTATION_MAP.json`, corresponding visual pointer/master page, required assets, shared tokens/components, and non-visible contracts.
 
-Implementation rules:
-- Do not redesign visible UI.
-- If a text contract conflicts visually with the latest Lucifer-approved PDF/Drive Preview, follow the preview and report the conflict.
-- Use the original Lucifer-supplied logo from the production ZIP.
-- Demo project/article/client/metric content is placeholder only, not a production fact.
-- Implement reusable semantic accessible components.
-- Use browser/Playwright for implementation QA; final visual acceptance remains ChatGPT-owned at GĐ7.
-- Create `.webby/implementation/IMPLEMENTATION_RECEIPT.json` with consumed handoffId/uiRevision/uiCommit, implementation commit, routes, tests/build and blockers.
-- Do not merge PR.
+## Hard rules
+- Build semantic responsive HTML/components; NEVER use the screenshot/PDF as a page image, whole-page canvas, or visual cheat.
+- Zero intentional visual deviation: no redesign, section deletion/reorder, replacement logo/font/color/spacing, or simplified mobile composition.
+- Original Lucifer-supplied logo is authoritative.
+- Demo projects/articles/metrics/testimonials/prices remain `demoOnly` until factual approval.
+- If material UI is ambiguous in both master and contract, create a `.webby/requests/` blocker; do not invent it.
+- Framework/backend architecture is Claude-owned, but architecture may not trade away approved UI, accessibility, performance, security, data shape, or behavior.
+- No secrets in repo/client bundle. Do not merge PR.
+
+## Phase order
+GĐ4 static visual parity → GĐ5 UX/states/accessibility → GĐ6 backend/data/SEO/analytics → Playwright evidence → implementation receipt → ChatGPT GĐ7 QA.
+
+## Mandatory contracts
+Read: `IMPLEMENTATION_CONTRACT.json`, `DATA_BACKEND_CONTRACT.json`, `CONTENT_TRUTH.json`, `SEO_CONTRACT.json`, `ANALYTICS_CONTRACT.json`, `ACCESSIBILITY_CONTRACT.json`, `QA_ACCEPTANCE.json`, `section-map.json`, `placement-map.json`, `asset-catalog.json`.
+
+## Handoff back to ChatGPT
+Create `.webby/implementation/IMPLEMENTATION_RECEIPT.json` from the template with exact consumed uiCommit/uiRevision, implementation commit, routes/components, build/tests, artifact reconstruction result, Playwright screenshots at 1440 and 390, required state captures, and blockers. Visual acceptance is ChatGPT-owned.

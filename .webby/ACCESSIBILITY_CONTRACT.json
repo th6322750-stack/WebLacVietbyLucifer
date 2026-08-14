@@ -1,0 +1,7 @@
+{
+  "revision": "gd3-hardening-v1",
+  "target": "WCAG 2.2 AA",
+  "verifiedSource": "W3C WCAG 2.2 recommendation; AA remains an active conformance level as checked 2026-08-14",
+  "must": ["keyboard-operable navigation and dialogs","visible focus not obscured by sticky UI","minimum pointer target sizing consistent with design tokens","labels for all form fields","error identification + instructions","alt text for meaningful images","decorative images empty alt","heading hierarchy","lang=vi","skip link","reduced-motion support","sufficient contrast"],
+  "dialog": ["role=dialog or native equivalent","aria-modal=true where appropriate","labelled dialog","focus trap","escape close","restore focus"]
+}

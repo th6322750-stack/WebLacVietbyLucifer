@@ -1,0 +1,12 @@
+{
+  "revision": "gd3-hardening-v1",
+  "principle": "Master page controls visible placement; values here disambiguate layout only.",
+  "global": {"containerMaxPx":1280,"desktopReferencePx":1440,"mobileReferencePx":390,"desktopGridColumns":12,"tabletGridColumns":8,"mobileGridColumns":4,"gutterPx":{"desktop":32,"tablet":24,"mobile":16},"sectionGapPx":{"desktop":96,"tablet":72,"mobile":56}},
+  "patterns": {
+    "hero": {"desktop":"two-column copy/visual where shown","mobile":"single-column stacked, copy before visual unless master explicitly shows otherwise"},
+    "contentGrid": {"desktop":"3-4 columns according to master","tablet":"2 columns","mobile":"1 column"},
+    "detailSidebar": {"desktop":"sticky side rail when visible in master","mobile":"moves inline below/above content as shown"},
+    "footer": {"desktop":"multi-column","mobile":"accordion groups"},
+    "filterChips": {"mobile":"horizontal overflow allowed inside chip container only; page must never horizontally scroll"}
+  }
+}

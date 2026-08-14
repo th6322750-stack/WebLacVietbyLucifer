@@ -1,0 +1,1 @@
+{"schemaVersion":1,"status":"DEPRECATED_BY_DRIVE_BINARY_AUTHORITY","reason":"GitHub connector cannot safely stream large local binaries. GĐ3 hardening uses Drive binary packs plus exact SHA-256, while Git remains the versioned control plane for master indexes/contracts/locks.","master":".webby/MASTER_BINARY_AUTHORITY.json","assets":"assets/PRODUCTION_ASSETS_AUTHORITY.json"}

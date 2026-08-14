@@ -1,0 +1,15 @@
+{
+  "revision": "gd3-hardening-v1",
+  "privacy": "Never send phone, email, message body or other PII in analytics events.",
+  "events": [
+    {"name":"consultation_open","props":["sourceRoute","sourceComponent"]},
+    {"name":"lead_submit_start","props":["sourceRoute","service"]},
+    {"name":"lead_submit_success","props":["sourceRoute","service","preferredChannel"]},
+    {"name":"lead_submit_error","props":["sourceRoute","errorClass"]},
+    {"name":"contact_channel_click","props":["channel","sourceRoute"]},
+    {"name":"service_click","props":["serviceSlug","sourceRoute"]},
+    {"name":"project_open","props":["projectSlug","demoOnly"]},
+    {"name":"article_open","props":["articleSlug","category"]},
+    {"name":"filter_change","props":["route","filter"]}
+  ]
+}

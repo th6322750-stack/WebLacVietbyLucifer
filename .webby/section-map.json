@@ -1,0 +1,17 @@
+{
+  "revision":"gd3-hardening-v1",
+  "routes":{
+    "/":["site-header","hero","service-overview","featured-projects","metrics-strip","work-process","testimonials","latest-knowledge","final-cta","site-footer"],
+    "/website":["site-header","website-hero","industry-fit-grid","website-packages","benefit-strip","website-projects","website-process","faq","final-cta","site-footer"],
+    "/support-mxh":["site-header","support-hero","support-service-grid","common-issues-grid","why-lac-viet","support-process","trust-client-row","support-metrics","faq","support-lead-cta","impact-cta","site-footer"],
+    "/dich-vu-so":["site-header","digital-hero","service-category-strip","featured-digital-products","why-lac-viet","purchase-process","trust-metrics","faq","support-card","final-cta","site-footer"],
+    "/du-an":["site-header","projects-hero","category-filters","projects-grid","featured-case-study","project-cta","site-footer"],
+    "/du-an/[slug]":["site-header","breadcrumbs","case-study-hero","project-meta","case-tabs","overview","problem","solution","results","technology","visual-showcase","related-projects","final-cta","site-footer"],
+    "/kien-thuc":["site-header","knowledge-hero","category-filters","featured-article","article-grid","load-more","newsletter","service-cta","site-footer"],
+    "/kien-thuc/[slug]":["site-header","breadcrumbs","article-header","article-layout","article-toc","article-body","related-articles","service-cta","site-footer"],
+    "/gioi-thieu":["site-header","breadcrumbs","about-hero","brand-values","service-ecosystem","brand-story","principles","final-cta","site-footer"],
+    "/lien-he":["site-header","contact-hero","consultation-section","contact-form","contact-channels","contact-process","faq","secondary-contact-card","final-cta","site-footer"],
+    "/404":["site-header-minimal","not-found-state","home-cta","site-footer-minimal"]
+  },
+  "stateBoard":{"masterPage":13,"states":["mobile-menu-open","consultation-modal","form-success","form-error","faq-open","loading","404","hover","focus-visible"]}
+}
