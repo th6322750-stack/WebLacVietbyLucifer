@@ -1,24 +1,18 @@
-# CLAUDE TASK — GĐ4 Implementation
+# CLAUDE TASK - GĐ4 Implementation
 
-**STATUS: BLOCKED — DO NOT START GĐ4.**
+**BLOCKED until `.webby/PROJECT_STATE.yaml` says `uiSetupComplete: true` and implementation is explicitly authorized.**
 
-The previous GĐ3 readiness claim was revoked after repository verification found missing production assets and missing approved route render files. Claude must not implement any route until `.webby/HANDOFF.json` is explicitly changed to `UI_SETUP_COMPLETE` by ChatGPT after a successful final validator pass against the actual GitHub tree.
+When authorized, read in order:
+1. `.webby/GD1_PREVIEW.json` and `.webby/PREVIEW_AUTHORITY.md`
+2. Approved PDF/Drive Preview (supreme visible-UI authority)
+3. `.webby/HANDOFF.json` and `.webby/WEBBY_LOCK.json`
+4. `.webby/visual-handoff/routes.json` + route pointer files
+5. `.webby/ASSET_DRIVE_AUTHORITY.json` + Drive Asset Production Board
+6. tokens / typography / responsive / interactions / visual-contract / component-map / route-map / asset-manifest
 
-When GĐ4 is later authorized, read in order:
-1. `.webby/HANDOFF.json`
-2. `.webby/WEBBY_LOCK.json`
-3. `.webby/visual-handoff/routes.json` and every mapped route render
-4. `.webby/tokens.json`, `typography.json`, `responsive.json`, `interactions.json`
-5. `.webby/visual-contract.json`, `component-map.json`, `route-map.json`, `asset-manifest.json`
-6. `assets/`
-
-Implementation rules after authorization:
-- Reconstruct visible UI from approved renders; do not redesign.
-- Original logo only.
-- Use Noto Serif Display + Be Vietnam Pro.
-- Use `#D4AF37` brand gold, ivory/white content surfaces and charcoal hero/header/footer.
-- Mobile-first responsive; QA references 1440 and 390.
-- Demo metrics/testimonials/project claims must be labelled/demo or replaced with verified real data before production.
-- Prefer reusable components and semantic accessible HTML.
-- After each implementation milestone create `.webby/implementation/IMPLEMENTATION_RECEIPT.json` with consumed uiCommit/uiRevision, implementation commit, routes, build/tests and blockers.
-- Do not merge PR.
+Rules:
+- Do not redesign visible UI.
+- If a text contract conflicts visually with the latest Lucifer-approved PDF/Drive Preview, follow the preview and report the conflict.
+- Canonical logo appearance is Asset Board slide 1 / original Lucifer-supplied logo.
+- Demo case studies, metrics, testimonials and client names are placeholders, not production facts.
+- No merge without Lucifer approval.

@@ -1,12 +1,37 @@
 {
-  "schemaVersion":1,
-  "skillVersion":"2.2.0",
-  "handoffId":"lacvietmedia-gd3-v1-20260814",
-  "uiRevision":2,
-  "uiCommit":"ee811e99167682fe5b472fa6e3e639f08a7ec769",
-  "files":[
-    {"path":".webby/PROJECT_INTAKE.json","required":true},{"path":".webby/tokens.json","required":true},{"path":".webby/typography.json","required":true},{"path":".webby/responsive.json","required":true},{"path":".webby/interactions.json","required":true},{"path":".webby/component-map.json","required":true},{"path":".webby/route-map.json","required":true},{"path":".webby/asset-manifest.json","required":true},{"path":".webby/visual-contract.json","required":true},{"path":".webby/visual-handoff/routes.json","required":true},{"path":".webby/CLAUDE_TASK.md","required":true},{"path":"assets/brand/lac-viet-logo-production.svg","required":true},{"path":"assets/brand/lac-viet-logo-source.png.base64","required":true},{"path":".webby/visual-handoff/home-approved-composite.svg","required":true},{"path":".webby/visual-handoff/website-approved-composite.svg","required":true},{"path":".webby/visual-handoff/support-mxh-approved-composite.svg","required":true},{"path":".webby/visual-handoff/dich-vu-so-approved-composite.svg","required":true},{"path":".webby/visual-handoff/du-an-approved-composite.svg","required":true},{"path":".webby/visual-handoff/du-an-detail-approved-panel.svg","required":true},{"path":".webby/visual-handoff/kien-thuc-approved-composite.svg","required":true},{"path":".webby/visual-handoff/kien-thuc-detail-approved-panel.svg","required":true},{"path":".webby/visual-handoff/gioi-thieu-approved-panel.svg","required":true},{"path":".webby/visual-handoff/lien-he-approved-composite.svg","required":true},{"path":".webby/visual-handoff/404-approved-panel.svg","required":true},{"path":".webby/visual-handoff/ui-states-approved-board.svg","required":true},{"path":"assets/decorative/dong-son-ring.svg","required":true},{"path":"assets/decorative/gold-divider.svg","required":true},{"path":"assets/decorative/gold-noise.svg","required":true},{"path":"assets/hero/home-hero-visual.svg","required":true},{"path":"assets/hero/website-hero-visual.svg","required":true},{"path":"assets/hero/support-mxh-hero-visual.svg","required":true},{"path":"assets/hero/dich-vu-so-hero-visual.svg","required":true},{"path":"assets/hero/kien-thuc-hero-visual.svg","required":true},{"path":"assets/hero/lien-he-hero-visual.svg","required":true},{"path":"assets/projects/project-demo-01.svg","required":true},{"path":"assets/projects/project-demo-02.svg","required":true},{"path":"assets/projects/project-demo-03.svg","required":true},{"path":"assets/projects/project-demo-04.svg","required":true},{"path":"assets/projects/project-demo-05.svg","required":true},{"path":"assets/projects/project-demo-06.svg","required":true},{"path":"assets/articles/article-demo-01.svg","required":true},{"path":"assets/articles/article-demo-02.svg","required":true},{"path":"assets/articles/article-demo-03.svg","required":true},{"path":"assets/articles/article-demo-04.svg","required":true},{"path":"assets/articles/article-demo-05.svg","required":true},{"path":"assets/articles/article-demo-06.svg","required":true}
+  "schemaVersion": 1,
+  "skillVersion": "2.2.0",
+  "handoffId": "lacvietmedia-gd3-v2-20260814",
+  "uiRevision": 3,
+  "uiCommit": "ee811e99167682fe5b472fa6e3e639f08a7ec769",
+  "files": [
+    {"path":".webby/PROJECT_INTAKE.json","required":true},
+    {"path":".webby/GD1_PREVIEW.json","required":true},
+    {"path":".webby/PREVIEW_AUTHORITY.md","required":true},
+    {"path":".webby/ASSET_DRIVE_AUTHORITY.json","required":true},
+    {"path":".webby/visual-handoff/routes.json","required":true},
+    {"path":".webby/visual-handoff/home.md","required":true},
+    {"path":".webby/visual-handoff/website.md","required":true},
+    {"path":".webby/visual-handoff/support-mxh.md","required":true},
+    {"path":".webby/visual-handoff/dich-vu-so.md","required":true},
+    {"path":".webby/visual-handoff/du-an.md","required":true},
+    {"path":".webby/visual-handoff/du-an-detail.md","required":true},
+    {"path":".webby/visual-handoff/kien-thuc.md","required":true},
+    {"path":".webby/visual-handoff/kien-thuc-detail.md","required":true},
+    {"path":".webby/visual-handoff/gioi-thieu.md","required":true},
+    {"path":".webby/visual-handoff/lien-he.md","required":true},
+    {"path":".webby/visual-handoff/404.md","required":true},
+    {"path":".webby/visual-handoff/ui-states.md","required":true},
+    {"path":".webby/tokens.json","required":true},
+    {"path":".webby/typography.json","required":true},
+    {"path":".webby/responsive.json","required":true},
+    {"path":".webby/interactions.json","required":true},
+    {"path":".webby/component-map.json","required":true},
+    {"path":".webby/route-map.json","required":true},
+    {"path":".webby/asset-manifest.json","required":true},
+    {"path":".webby/visual-contract.json","required":true},
+    {"path":".webby/CLAUDE_TASK.md","required":true}
   ],
-  "authority":{"visual":"CHATGPT","implementation":"CLAUDE"},
-  "mustNot":["merge without Lucifer approval","change locked visual system","treat demo claims as factual","replace canonical logo"]
+  "authority": {"visual":"LUCIFER_APPROVED_PDF_DRIVE_PREVIEW","designSystem":"CHATGPT","implementation":"CLAUDE"},
+  "mustNot": ["merge without Lucifer approval","change locked visual system","treat demo claims as factual","replace canonical logo","start GĐ4 before UI_SETUP_COMPLETE"]
 }

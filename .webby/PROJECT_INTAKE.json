@@ -1,13 +1,29 @@
 {
   "schemaVersion": 1,
   "status": "INTAKE_COMPLETE",
-  "projectId": "lacvietmedia-web",
-  "project": {"name":"Lạc Việt Media Agency Website","businessOrOffer":"Website bán hàng/nhận lead/trust hub cho Lạc Việt Media Agency; ưu tiên Website doanh nghiệp, Support MXH, Dịch vụ số/tài khoản","domain":"lacvietmedia.com","market":"Việt Nam"},
-  "goal": {"primary":"Tạo website thương hiệu có khả năng thuyết phục và nhận lead","conversion":"Nhận tư vấn qua form/contact panel, về sau nối CRM"},
-  "audience": {"primary":["Doanh nghiệp Việt Nam cần website","Cá nhân/doanh nghiệp cần hỗ trợ mạng xã hội","Khách hàng quan tâm dịch vụ số"]},
-  "scope": {"routes":["/","/website","/support-mxh","/dich-vu-so","/du-an","/du-an/[slug]","/kien-thuc","/kien-thuc/[slug]","/gioi-thieu","/lien-he","/404"],"features":["responsive desktop/mobile","consultation modal/form","mobile navigation","FAQ accordion","project portfolio","knowledge/blog","contact channels","404/loading/success/error states"]},
-  "brand": {"name":"Lạc Việt Media Agency","slogan":"Cần Kiệm Liêm Chính","direction":"Premium Modern Vietnamese Agency","logoAuthority":"Original logo supplied by Lucifer; archived exactly as base64 and exposed through production SVG wrapper"},
-  "personalizationSignals": ["Biểu tượng chim Lạc/trống đồng","Slogan Cần Kiệm Liêm Chính","Ivory/charcoal/gold system","Website doanh nghiệp là service priority #1","TikTok/social ecosystem feeds leads into the site"],
-  "constraints": ["Không tự đổi visual truth","Không tự đổi framework/business logic without approval","No fake factual claims in production","No secret/token in repo","Mobile-first responsive","Playwright/browser visual QA at GĐ7"],
-  "gaps": [{"field":"facebookUrl","status":"SOFT_GAP","note":"Có thể cập nhật sau, không chặn UI"},{"field":"realCaseStudiesMetricsTestimonials","status":"SOFT_GAP","note":"UI dùng DEMO placeholders; production phải thay dữ liệu thật hoặc ghi demo"},{"field":"finalLegalCopy","status":"SOFT_GAP","note":"Privacy/terms copy can be supplied during content/backend phase"}]
+  "project": {
+    "id": "lacvietmedia-web",
+    "name": "Lạc Việt Media Agency Website",
+    "businessOrOffer": "Thiết kế website doanh nghiệp, support mạng xã hội và dịch vụ số cho thị trường Việt Nam",
+    "domain": "lacvietmedia.com"
+  },
+  "goal": {
+    "primary": "Website bán hàng, nhận lead và xây dựng trust cho Lạc Việt Media Agency",
+    "conversion": "Nhận tư vấn qua form/contact panel, sau này nối CRM"
+  },
+  "audience": {
+    "primary": ["Doanh nghiệp Việt Nam cần website", "Cá nhân/doanh nghiệp cần support MXH", "Khách hàng dịch vụ số"]
+  },
+  "scope": {
+    "routes": ["/", "/website", "/support-mxh", "/dich-vu-so", "/du-an", "/du-an/[slug]", "/kien-thuc", "/kien-thuc/[slug]", "/gioi-thieu", "/lien-he", "/404"]
+  },
+  "personalizationSignals": [
+    "Premium Modern Vietnamese Agency",
+    "Website doanh nghiệp là service priority số 1",
+    "Slogan: Cần Kiệm Liêm Chính",
+    "Visual authority: PDF/Google Drive Preview revision mới nhất được Lucifer duyệt"
+  ],
+  "gaps": [],
+  "hardGaps": [],
+  "softGaps": ["Facebook URL cuối cùng", "production content/case study thật"]
 }

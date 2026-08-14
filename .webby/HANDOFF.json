@@ -1,15 +1,16 @@
 {
   "schemaVersion": 1,
-  "handoffId": "lacvietmedia-gd3-v1-20260814",
+  "handoffId": "lacvietmedia-gd3-v2-20260814",
   "producer": "CHATGPT",
   "executor": "CLAUDE",
-  "status": "BLOCKED_IN_GD3",
-  "uiRevision": 2,
+  "status": "READY_FOR_VALIDATION",
+  "uiRevision": 3,
   "uiCommit": "ee811e99167682fe5b472fa6e3e639f08a7ec769",
-  "createdAt": "2026-08-14T18:35:00+07:00",
-  "correctedAt": "2026-08-14T19:57:00+07:00",
   "requiredInputs": [
     ".webby/PROJECT_INTAKE.json",
+    ".webby/GD1_PREVIEW.json",
+    ".webby/PREVIEW_AUTHORITY.md",
+    ".webby/ASSET_DRIVE_AUTHORITY.json",
     ".webby/tokens.json",
     ".webby/typography.json",
     ".webby/responsive.json",
@@ -21,32 +22,10 @@
     ".webby/visual-handoff/routes.json",
     ".webby/CLAUDE_TASK.md"
   ],
-  "intake": {
-    "file": ".webby/PROJECT_INTAKE.json",
-    "status": "INTAKE_COMPLETE"
-  },
-  "visualHandoff": {
-    "mode": "VISUAL_FIRST",
-    "routesFile": ".webby/visual-handoff/routes.json",
-    "status": "INCOMPLETE",
-    "blocker": "Approved route render binaries referenced by the routes file are not yet all present in the repository."
-  },
-  "designSystem": {
-    "revision": "gd2-v1",
-    "status": "LOCKED"
-  },
-  "assetPackage": {
-    "manifest": ".webby/asset-manifest.json",
-    "status": "INCOMPLETE",
-    "blocker": "Several production assets declared by the manifest are not yet present as repository files."
-  },
+  "intake": {"file":".webby/PROJECT_INTAKE.json","status":"INTAKE_COMPLETE"},
+  "visualHandoff": {"mode":"VISUAL_FIRST_DRIVE_AUTHORITY","routesFile":".webby/visual-handoff/routes.json","supremePreview":".webby/GD1_PREVIEW.json"},
+  "assetPackage": {"manifest":".webby/asset-manifest.json","authority":".webby/ASSET_DRIVE_AUTHORITY.json","status":"READY"},
   "behaviorContract": ".webby/visual-contract.json",
-  "implementationGate": {
-    "authorized": false,
-    "blocked": true,
-    "note": "Claude MUST NOT start GĐ4 until ChatGPT verifies all required render/asset files exist, validator passes against the actual GitHub tree, and HANDOFF status is explicitly changed to UI_SETUP_COMPLETE."
-  },
-  "contentIntegrity": {
-    "demoClaimsAreNotFacts": true
-  }
+  "implementationGate": {"authorized":false,"note":"Claude remains blocked until remote validator passes and PROJECT_STATE is explicitly changed to UI_SETUP_COMPLETE."},
+  "contentIntegrity": {"demoClaimsAreNotFacts":true}
 }
