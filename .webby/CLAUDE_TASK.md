@@ -1,16 +1,18 @@
 # CLAUDE TASK — GĐ4 Implementation
 
-**DO NOT START UNTIL USER/ChatGPT explicitly says to start GĐ4.**
+**STATUS: BLOCKED — DO NOT START GĐ4.**
 
-When authorized, implement the site from this handoff without visual invention. Read in order:
+The previous GĐ3 readiness claim was revoked after repository verification found missing production assets and missing approved route render files. Claude must not implement any route until `.webby/HANDOFF.json` is explicitly changed to `UI_SETUP_COMPLETE` by ChatGPT after a successful final validator pass against the actual GitHub tree.
+
+When GĐ4 is later authorized, read in order:
 1. `.webby/HANDOFF.json`
 2. `.webby/WEBBY_LOCK.json`
-3. `.webby/visual-handoff/routes.json` and route renders
+3. `.webby/visual-handoff/routes.json` and every mapped route render
 4. `.webby/tokens.json`, `typography.json`, `responsive.json`, `interactions.json`
 5. `.webby/visual-contract.json`, `component-map.json`, `route-map.json`, `asset-manifest.json`
 6. `assets/`
 
-Implementation rules:
+Implementation rules after authorization:
 - Reconstruct visible UI from approved renders; do not redesign.
 - Original logo only.
 - Use Noto Serif Display + Be Vietnam Pro.
