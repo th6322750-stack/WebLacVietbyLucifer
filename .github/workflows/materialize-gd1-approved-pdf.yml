@@ -1,0 +1,50 @@
+name: Materialize Approved GD1 PDF
+on:
+  push:
+    branches: [chatgpt/gd3-git-self-contained-v1]
+    paths: ['.github/workflows/materialize-gd1-approved-pdf.yml']
+permissions:
+  contents: write
+jobs:
+  materialize-pdf:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/gd3-git-self-contained-v1
+      - name: Download PDF carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://oaisdmntprindiasocentral.blob.core.windows.net/files/00000000-7e38-8211-84dc-57cd4c3df5cc/raw?se=2026-08-15T05%3A07%3A46Z&sp=r&sv=2026-02-06&sr=b&scid=01a003c4-2d42-776b-9bfb-10b0c34bf6b3&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-14T23%3A29%3A43Z&ske=2026-08-15T23%3A29%3A43Z&sks=b&skv=2026-02-06&sig=ZckWg1AAjJm2RVWOeMg6H9rMSLumPvQjZg94TgN0Bbg%3D'
+          curl -L --fail --retry 3 --silent --show-error "$URL" -o /tmp/gd1-pdf-carrier.png
+          echo '194d6474411fb77097cf217e55b1f6b2b2a17367da888d95eeff158cf816dc43  /tmp/gd1-pdf-carrier.png' | sha256sum -c -
+      - name: Decode exact approved PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image
+          import hashlib,struct,pathlib
+          raw=Image.open('/tmp/gd1-pdf-carrier.png').convert('RGB').tobytes()
+          assert raw[:8] == b'LVPDFV1!'
+          n=struct.unpack('>Q',raw[8:16])[0]
+          expected=raw[16:48]
+          data=raw[48:48+n]
+          assert hashlib.sha256(data).digest()==expected
+          out=pathlib.Path('.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf')
+          out.parent.mkdir(parents=True,exist_ok=True)
+          out.write_bytes(data)
+          print('decoded_pdf_bytes',len(data),'sha256',hashlib.sha256(data).hexdigest())
+          PY
+          echo 'f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f  .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf' | sha256sum -c -
+      - name: Commit exact approved PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf
+          git commit -m 'webby(gd3): commit exact Lucifer-approved GD1 PDF authority'
+          git push origin HEAD:chatgpt/gd3-git-self-contained-v1
