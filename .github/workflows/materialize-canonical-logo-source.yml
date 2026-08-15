@@ -1,0 +1,31 @@
+name: Materialize Canonical Logo Source
+on:
+  push:
+    branches: [chatgpt/gd3-git-self-contained-v1]
+    paths: ['.github/workflows/materialize-canonical-logo-source.yml']
+permissions:
+  contents: write
+jobs:
+  materialize-logo:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/gd3-git-self-contained-v1
+      - name: Download and verify canonical source PNG
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://oaisdmntprseasia.blob.core.windows.net/files/00000000-642c-8207-93d3-d70339417c0e/raw?se=2026-08-15T05%3A10%3A12Z&sp=r&sv=2026-02-06&sr=b&scid=01a003c4-2d42-776b-9bfb-10b0c34bf6b3&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-14T23%3A29%3A44Z&ske=2026-08-15T23%3A29%3A44Z&sks=b&skv=2026-02-06&sig=VOvAnIjth1FJC9Pu7I3BK8LX3R%2BeW42IeSoBzGW%2BZB8%3D'
+          mkdir -p assets/production/brand
+          curl -L --fail --retry 3 --silent --show-error "$URL" -o assets/production/brand/lac-viet-logo-source.png
+          echo 'b8d4682cc216e662d8cb32968329b7a4f24ee9a89c3191653dafafe338181504  assets/production/brand/lac-viet-logo-source.png' | sha256sum -c -
+      - name: Commit canonical source PNG
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/production/brand/lac-viet-logo-source.png
+          git commit -m 'webby(gd3): commit exact canonical logo source PNG'
+          git push origin HEAD:chatgpt/gd3-git-self-contained-v1
