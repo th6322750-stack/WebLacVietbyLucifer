@@ -1,0 +1,11 @@
+{
+  "authority": "Lucifer user-approved visual V1",
+  "approvedPdfSha256": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f",
+  "canonicalOriginalPngSha256": "b8d4682cc216e662d8cb32968329b7a4f24ee9a89c3191653dafafe338181504",
+  "productionLosslessWebpPath": "assets/brand/lac-viet-logo-canonical-lossless.webp",
+  "productionLosslessWebpSha256": "8d7b16902ff157857e11a736ba4b7ef1157085906048d4ffdb6cc2d0df6da7c0",
+  "pixelEquivalentRGBA480x480": true,
+  "visualMasterCount": 14,
+  "implementationDependencyOnDrive": false,
+  "driveRole": "review mirror / backup only; not required for implementation"
+}
