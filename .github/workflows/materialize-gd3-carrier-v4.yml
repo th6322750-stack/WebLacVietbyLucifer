@@ -1,0 +1,91 @@
+name: Materialize GD3 Carrier V4
+on:
+  push:
+    branches: [chatgpt/gd3-git-self-contained-v1]
+    paths: ['.github/workflows/materialize-gd3-carrier-v4.yml']
+permissions:
+  contents: write
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/gd3-git-self-contained-v1
+      - name: Download and verify carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://oaisdmntprindiasocentral.blob.core.windows.net/files/00000000-45a4-8211-ba9d-e037c8c2c5d4/raw?se=2026-08-15T05%3A04%3A42Z&sp=r&sv=2026-02-06&sr=b&scid=01a003c4-2d42-776b-9bfb-10b0c34bf6b3&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-14T22%3A49%3A13Z&ske=2026-08-15T22%3A49%3A13Z&sks=b&skv=2026-02-06&sig=1lDnD8NyffQTguQ0mPMi5VJBqFsm8Ptrt/3aD5brpAw%3D'
+          curl -L --fail --retry 3 --silent --show-error "$URL" -o /tmp/gd3-carrier.png
+          echo 'd143cb2538af66097f81a2beafd758d0a5a6e4dfc9b2c42ded26682966b02a25  /tmp/gd3-carrier.png' | sha256sum -c -
+      - name: Decode and verify payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image
+          import hashlib, struct
+          p='/tmp/gd3-carrier.png'
+          raw=Image.open(p).convert('RGB').tobytes()
+          assert raw[:8] == b'LVG4BIN1', raw[:8]
+          n=struct.unpack('>Q',raw[8:16])[0]
+          expected=raw[16:48]
+          data=raw[48:48+n]
+          got=hashlib.sha256(data).digest()
+          assert got == expected, (got.hex(), expected.hex())
+          open('/tmp/gd3-payload.zip','wb').write(data)
+          print('decoded_bytes',len(data),'sha256',got.hex())
+          PY
+          echo '5431a15ab52f0c33df115949e2f00094fb59d3c3e0eed0546763b55a331ead16  /tmp/gd3-payload.zip' | sha256sum -c -
+          unzip -t /tmp/gd3-payload.zip
+      - name: Materialize Git-resident masters and assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/gd3-stage
+          mkdir -p /tmp/gd3-stage
+          unzip -q /tmp/gd3-payload.zip -d /tmp/gd3-stage
+          rm -rf .webby/visual-master/gd1-v1/pages assets/production
+          mkdir -p .webby/visual-master/gd1-v1/pages assets/production
+          cp -a /tmp/gd3-stage/visual/. .webby/visual-master/gd1-v1/pages/
+          cp -a /tmp/gd3-stage/assets/. assets/production/
+          cp /tmp/gd3-stage/GIT_SELF_CONTAINED_MANIFEST.json .webby/GIT_BINARY_MANIFEST.json
+          cp /tmp/gd3-stage/SOURCE_AUTHORITY.json .webby/SOURCE_AUTHORITY.json
+          printf '%s\n' 'carrierSha256=d143cb2538af66097f81a2beafd758d0a5a6e4dfc9b2c42ded26682966b02a25' 'payloadSha256=5431a15ab52f0c33df115949e2f00094fb59d3c3e0eed0546763b55a331ead16' > .webby/GD3_CARRIER_RECEIPT.txt
+          test "$(find .webby/visual-master/gd1-v1/pages -type f -name 'page-*.webp' | wc -l)" -eq 14
+          test "$(find assets/production -type f -name '*.webp' | wc -l)" -eq 23
+      - name: Verify every package member after mapping
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, hashlib, pathlib
+          m=json.load(open('.webby/GIT_BINARY_MANIFEST.json',encoding='utf-8'))
+          assert m['implementationRequiresGoogleDrive'] is False
+          assert m['approvedPdfSha256']=='f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f'
+          assert m['visualMasterCount']==14
+          for e in m['entries']:
+              src=e['path']
+              if src.startswith('visual/'):
+                  p=pathlib.Path('.webby/visual-master/gd1-v1/pages')/src.split('/',1)[1]
+              elif src.startswith('assets/'):
+                  p=pathlib.Path('assets/production')/src.split('/',1)[1]
+              else:
+                  raise AssertionError(src)
+              b=p.read_bytes()
+              assert len(b)==e['bytes'], (p,len(b),e['bytes'])
+              assert hashlib.sha256(b).hexdigest()==e['sha256'], p
+          print('PASS: all',len(m['entries']),'binary entries match manifest')
+          PY
+      - name: Commit verified binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .webby/visual-master/gd1-v1/pages .webby/GIT_BINARY_MANIFEST.json .webby/SOURCE_AUTHORITY.json .webby/GD3_CARRIER_RECEIPT.txt assets/production
+          git diff --cached --stat
+          git commit -m 'webby(gd3): commit verified Git-resident visual masters and assets'
+          git push origin HEAD:chatgpt/gd3-git-self-contained-v1
