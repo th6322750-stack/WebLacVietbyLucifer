@@ -1,4 +1,5 @@
 name: Validate GD3 Release Gate
+# final-head-gate: cleanup-complete
 on:
   push:
     branches: [chatgpt/gd3-git-self-contained-v1]
