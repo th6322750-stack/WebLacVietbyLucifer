@@ -10,6 +10,7 @@ on:
       - '.webby/WEBBY_LOCK.json'
       - '.webby/CLAUDE_TASK.md'
       - '.webby/qa/GD3_GIT_SELF_CONTAINED_VALIDATION.json'
+      - '.webby/qa/GD3_REMOTE_CLONE_VALIDATION.json'
 permissions:
   contents: read
 jobs:
