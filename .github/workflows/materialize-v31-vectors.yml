@@ -34,15 +34,20 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p assets/production/vectors/ui
-          icons=(
-            menu close chevron-down chevron-right arrow-right arrow-left external-link check circle-check circle-alert
-            star user users briefcase shield-check percent globe messages-square package badge-check clock calendar target mail phone
-            map-pin send monitor-smartphone building code palette headset shopping-bag credit-card lightbulb search filter lock-keyhole sparkles award
+          pairs=(
+            'menu:menu' 'close:x' 'chevron-down:chevron-down' 'chevron-right:chevron-right' 'arrow-right:arrow-right' 'arrow-left:arrow-left'
+            'external-link:external-link' 'check:check' 'circle-check:circle-check' 'circle-alert:circle-alert' 'star:star' 'user:user' 'users:users'
+            'briefcase:briefcase' 'shield-check:shield-check' 'percent:percent' 'globe:globe' 'messages-square:messages-square' 'package:package'
+            'badge-check:badge-check' 'clock:clock' 'calendar:calendar' 'target:target' 'mail:mail' 'phone:phone' 'map-pin:map-pin' 'send:send'
+            'monitor-smartphone:monitor-smartphone' 'building:building' 'code:code' 'palette:palette' 'headset:headset' 'shopping-bag:shopping-bag'
+            'credit-card:credit-card' 'lightbulb:lightbulb' 'search:search' 'filter:filter' 'lock-keyhole:lock-keyhole' 'sparkles:sparkles' 'award:award'
           )
-          for name in "${icons[@]}"; do
-            src="tmp-v31-vectors/node_modules/lucide-static/icons/${name}.svg"
-            test -f "$src" || { echo "MISSING_LUCIDE_ICON=$name"; exit 1; }
-            cp "$src" "assets/production/vectors/ui/icon-${name}.svg"
+          for pair in "${pairs[@]}"; do
+            id="${pair%%:*}"
+            source_name="${pair##*:}"
+            src="tmp-v31-vectors/node_modules/lucide-static/icons/${source_name}.svg"
+            test -f "$src" || { echo "MISSING_LUCIDE_ICON id=$id source=$source_name"; exit 1; }
+            cp "$src" "assets/production/vectors/ui/icon-${id}.svg"
           done
           test "$(find assets/production/vectors/ui -maxdepth 1 -type f -name 'icon-*.svg' | wc -l)" -eq 40
       - name: Export 10 pinned brand marks
