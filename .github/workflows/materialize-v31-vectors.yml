@@ -31,7 +31,8 @@ jobs:
           npm install --no-save --ignore-scripts \
             lucide-static@1.28.0 \
             simple-icons@16.27.1 \
-            simple-icons-v15@npm:simple-icons@15.22.0
+            simple-icons-v15@npm:simple-icons@15.22.0 \
+            simple-icons-v13@npm:simple-icons@13.21.0
       - name: Export 40 Lucide SVG files
         shell: bash
         run: |
@@ -53,7 +54,7 @@ jobs:
             cp "$src" "assets/production/vectors/ui/icon-${id}.svg"
           done
           test "$(find assets/production/vectors/ui -maxdepth 1 -type f -name 'icon-*.svg' | wc -l)" -eq 40
-      - name: Export 7 current + Canva pinned historical Simple Icons marks
+      - name: Export 7 current + Canva + OpenAI pinned vector marks
         shell: bash
         run: |
           set -euo pipefail
@@ -62,19 +63,18 @@ jobs:
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           import * as current from 'simple-icons';
-          import * as legacy from 'simple-icons-v15';
-          const currentWanted = {
-            'brand-facebook': 'siFacebook',
-            'brand-tiktok': 'siTiktok',
-            'brand-meta': 'siMeta',
-            'brand-youtube': 'siYoutube',
-            'brand-zalo': 'siZalo',
-            'brand-messenger': 'siMessenger',
-            'brand-telegram': 'siTelegram'
-          };
-          const legacyWanted = {'brand-canva': 'siCanva'};
+          import * as v15 from 'simple-icons-v15';
+          import * as v13 from 'simple-icons-v13';
+          const sets = [
+            ['simple-icons@16.27.1', current, {
+              'brand-facebook':'siFacebook','brand-tiktok':'siTiktok','brand-meta':'siMeta','brand-youtube':'siYoutube',
+              'brand-zalo':'siZalo','brand-messenger':'siMessenger','brand-telegram':'siTelegram'
+            }],
+            ['simple-icons@15.22.0', v15, {'brand-canva':'siCanva'}],
+            ['simple-icons@13.21.0', v13, {'brand-openai-chatgpt':'siOpenai'}]
+          ];
           const meta = {};
-          function writeSet(source, wanted, version) {
+          for (const [version, source, wanted] of sets) {
             for (const [id, exportName] of Object.entries(wanted)) {
               const icon = source[exportName];
               if (!icon || !icon.svg) {
@@ -83,15 +83,19 @@ jobs:
               }
               const svg = icon.svg.replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
               fs.writeFileSync(`../assets/production/vectors/brands/${id}.svg`, svg + '\n');
-              meta[id] = { exportName, title: icon.title, slug: icon.slug, hex: icon.hex, sourceVersion: version };
+              meta[id] = {exportName,title:icon.title,slug:icon.slug,hex:icon.hex,sourceVersion:version};
             }
           }
-          writeSet(current, currentWanted, 'simple-icons@16.27.1');
-          writeSet(legacy, legacyWanted, 'simple-icons@15.22.0');
-          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', sources:['simple-icons@16.27.1','simple-icons@15.22.0'], assets:meta}, null, 2) + '\n');
+          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({
+            schemaVersion:1,
+            protocolVersion:'3.1.0',
+            usageGuidelineAuthority:{openai:'https://openai.com/brand/'},
+            sources:['simple-icons@16.27.1','simple-icons@15.22.0','simple-icons@13.21.0'],
+            assets:meta
+          }, null, 2) + '\n');
           NODE
           cd ..
-          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 8
+          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 9
       - name: Fetch exact official Microsoft logo SVG
         shell: bash
         run: |
@@ -106,35 +110,6 @@ jobs:
           d=json.loads(p.read_text())
           d['sources'].append('Microsoft official Learn SVG')
           d['assets']['brand-microsoft']={'title':'Microsoft official logo','sourceVersion':'Microsoft Learn downloadable SVG','sourceUrl':'https://learn.microsoft.com/el-gr/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.svg','selectionPolicy':'official downloadable Microsoft logo SVG; copied byte-for-byte'}
-          p.write_text(json.dumps(d,indent=2,ensure_ascii=False)+'\n')
-          PY
-          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 9
-      - name: Fetch official OpenAI brand package and select exact wordmark SVG
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf tmp-openai-brand tmp-openai-brand.zip
-          mkdir -p tmp-openai-brand
-          curl --fail --location --retry 3 --retry-delay 2 \
-            'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip' \
-            --output tmp-openai-brand.zip
-          unzip -q tmp-openai-brand.zip -d tmp-openai-brand
-          echo 'OPENAI_BRAND_PACKAGE_SVG_CANDIDATES:'
-          find tmp-openai-brand -type f -iname '*.svg' -print | sort
-          mapfile -t candidates < <(find tmp-openai-brand -type f -iname '*.svg' | grep -Ei 'wordmark' | sort || true)
-          if [ "${#candidates[@]}" -ne 1 ]; then
-            echo "OPENAI_WORDMARK_CANDIDATE_COUNT=${#candidates[@]}"
-            echo 'Exact official wordmark must be selected explicitly; refusing to guess.'
-            exit 1
-          fi
-          cp "${candidates[0]}" assets/production/vectors/brands/brand-openai-chatgpt.svg
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('.webby/BRAND_VECTOR_METADATA.json')
-          d=json.loads(p.read_text())
-          d['sources'].append('OpenAI official brand package 2025')
-          d['assets']['brand-openai-chatgpt']={'title':'OpenAI official wordmark','sourceVersion':'OpenAI-Partnership-Templates-2025','sourceUrl':'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip','selectionPolicy':'unique SVG candidate containing wordmark; copied byte-for-byte'}
           p.write_text(json.dumps(d,indent=2,ensure_ascii=False)+'\n')
           PY
           test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 10
@@ -153,8 +128,8 @@ jobs:
               "sources":[
                 {"source":"simple-icons","version":"16.27.1","count":7},
                 {"source":"simple-icons","version":"15.22.0","count":1,"asset":"Canva"},
-                {"source":"Microsoft official Learn SVG","count":1},
-                {"source":"OpenAI official brand package","version":"2025","count":1}
+                {"source":"simple-icons","version":"13.21.0","count":1,"asset":"OpenAI","usageGuidelineAuthority":"https://openai.com/brand/"},
+                {"source":"Microsoft official Learn SVG","count":1}
               ],
               "destinationRoot":"assets/production/vectors/brands"
             },
@@ -168,7 +143,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf tmp-v31-vectors tmp-openai-brand tmp-openai-brand.zip
+          rm -rf tmp-v31-vectors
           git config user.name 'webbyLucifer-v3.1-bot'
           git config user.email 'webby-v31-bot@users.noreply.github.com'
           git add assets/production/vectors .webby/VECTOR_SOURCE_LOCK.json .webby/VECTOR_SHA256SUMS.txt .webby/BRAND_VECTOR_METADATA.json
