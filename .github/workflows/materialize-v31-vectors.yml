@@ -50,7 +50,7 @@ jobs:
             cp "$src" "assets/production/vectors/ui/icon-${id}.svg"
           done
           test "$(find assets/production/vectors/ui -maxdepth 1 -type f -name 'icon-*.svg' | wc -l)" -eq 40
-      - name: Export 10 pinned brand marks
+      - name: Export 9 pinned Simple Icons brand marks
         shell: bash
         run: |
           set -euo pipefail
@@ -64,7 +64,6 @@ jobs:
             'brand-tiktok': 'siTiktok',
             'brand-meta': 'siMeta',
             'brand-youtube': 'siYoutube',
-            'brand-openai-chatgpt': 'siOpenai',
             'brand-microsoft': 'siMicrosoft',
             'brand-canva': 'siCanva',
             'brand-zalo': 'siZalo',
@@ -82,9 +81,43 @@ jobs:
             fs.writeFileSync(`../assets/production/vectors/brands/${id}.svg`, svg + '\n');
             meta[id] = { exportName, title: icon.title, slug: icon.slug, hex: icon.hex, sourceVersion: 'simple-icons@16.27.1' };
           }
-          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', source:'simple-icons@16.27.1', assets:meta}, null, 2) + '\n');
+          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', sources:['simple-icons@16.27.1'], assets:meta}, null, 2) + '\n');
           NODE
           cd ..
+          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 9
+      - name: Fetch official OpenAI brand package and select exact wordmark SVG
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf tmp-openai-brand tmp-openai-brand.zip
+          mkdir -p tmp-openai-brand
+          curl --fail --location --retry 3 --retry-delay 2 \
+            'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip' \
+            --output tmp-openai-brand.zip
+          unzip -q tmp-openai-brand.zip -d tmp-openai-brand
+          echo 'OPENAI_BRAND_PACKAGE_SVG_CANDIDATES:'
+          find tmp-openai-brand -type f -iname '*.svg' -print | sort
+          mapfile -t candidates < <(find tmp-openai-brand -type f -iname '*.svg' | grep -Ei 'wordmark' | sort || true)
+          if [ "${#candidates[@]}" -ne 1 ]; then
+            echo "OPENAI_WORDMARK_CANDIDATE_COUNT=${#candidates[@]}"
+            echo 'Exact official wordmark must be selected explicitly; refusing to guess.'
+            exit 1
+          fi
+          cp "${candidates[0]}" assets/production/vectors/brands/brand-openai-chatgpt.svg
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('.webby/BRAND_VECTOR_METADATA.json')
+          data = json.loads(p.read_text())
+          data.setdefault('sources', []).append('OpenAI official brand package: https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip')
+          data['assets']['brand-openai-chatgpt'] = {
+              'title': 'OpenAI official wordmark',
+              'sourceVersion': 'OpenAI-Partnership-Templates-2025',
+              'sourceUrl': 'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip',
+              'selectionPolicy': 'exact unique SVG filename containing wordmark; no modification'
+          }
+          p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
+          PY
           test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 10
       - name: Write vector source lock and checksums
         shell: bash
@@ -102,9 +135,10 @@ jobs:
               "destinationRoot": "assets/production/vectors/ui"
             },
             "brandMarks": {
-              "source": "simple-icons",
-              "version": "16.27.1",
-              "license": "CC0-1.0 package; trademarks remain property of their owners",
+              "sources": [
+                {"source":"simple-icons","version":"16.27.1","count":9},
+                {"source":"OpenAI official brand package","version":"2025 partnership templates","count":1,"url":"https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip"}
+              ],
               "count": 10,
               "destinationRoot": "assets/production/vectors/brands"
             },
@@ -118,7 +152,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf tmp-v31-vectors
+          rm -rf tmp-v31-vectors tmp-openai-brand tmp-openai-brand.zip
           git config user.name 'webbyLucifer-v3.1-bot'
           git config user.email 'webby-v31-bot@users.noreply.github.com'
           git add assets/production/vectors .webby/VECTOR_SOURCE_LOCK.json .webby/VECTOR_SHA256SUMS.txt .webby/BRAND_VECTOR_METADATA.json
