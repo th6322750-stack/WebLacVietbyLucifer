@@ -53,7 +53,7 @@ jobs:
             cp "$src" "assets/production/vectors/ui/icon-${id}.svg"
           done
           test "$(find assets/production/vectors/ui -maxdepth 1 -type f -name 'icon-*.svg' | wc -l)" -eq 40
-      - name: Export 7 current + 2 pinned historical Simple Icons brand marks
+      - name: Export 7 current + Canva pinned historical Simple Icons marks
         shell: bash
         run: |
           set -euo pipefail
@@ -72,10 +72,7 @@ jobs:
             'brand-messenger': 'siMessenger',
             'brand-telegram': 'siTelegram'
           };
-          const legacyWanted = {
-            'brand-microsoft': 'siMicrosoft',
-            'brand-canva': 'siCanva'
-          };
+          const legacyWanted = {'brand-canva': 'siCanva'};
           const meta = {};
           function writeSet(source, wanted, version) {
             for (const [id, exportName] of Object.entries(wanted)) {
@@ -94,6 +91,23 @@ jobs:
           fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', sources:['simple-icons@16.27.1','simple-icons@15.22.0'], assets:meta}, null, 2) + '\n');
           NODE
           cd ..
+          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 8
+      - name: Fetch exact official Microsoft logo SVG
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://learn.microsoft.com/el-gr/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.svg'
+          curl --fail --location --retry 3 --retry-delay 2 "$url" --output assets/production/vectors/brands/brand-microsoft.svg
+          grep -qi '<svg' assets/production/vectors/brands/brand-microsoft.svg
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('.webby/BRAND_VECTOR_METADATA.json')
+          d=json.loads(p.read_text())
+          d['sources'].append('Microsoft official Learn SVG')
+          d['assets']['brand-microsoft']={'title':'Microsoft official logo','sourceVersion':'Microsoft Learn downloadable SVG','sourceUrl':'https://learn.microsoft.com/el-gr/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.svg','selectionPolicy':'official downloadable Microsoft logo SVG; copied byte-for-byte'}
+          p.write_text(json.dumps(d,indent=2,ensure_ascii=False)+'\n')
+          PY
           test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 9
       - name: Fetch official OpenAI brand package and select exact wordmark SVG
         shell: bash
@@ -120,12 +134,7 @@ jobs:
           p=Path('.webby/BRAND_VECTOR_METADATA.json')
           d=json.loads(p.read_text())
           d['sources'].append('OpenAI official brand package 2025')
-          d['assets']['brand-openai-chatgpt']={
-            'title':'OpenAI official wordmark',
-            'sourceVersion':'OpenAI-Partnership-Templates-2025',
-            'sourceUrl':'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip',
-            'selectionPolicy':'unique SVG candidate containing wordmark; copied byte-for-byte'
-          }
+          d['assets']['brand-openai-chatgpt']={'title':'OpenAI official wordmark','sourceVersion':'OpenAI-Partnership-Templates-2025','sourceUrl':'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip','selectionPolicy':'unique SVG candidate containing wordmark; copied byte-for-byte'}
           p.write_text(json.dumps(d,indent=2,ensure_ascii=False)+'\n')
           PY
           test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 10
@@ -143,8 +152,9 @@ jobs:
               "count":10,
               "sources":[
                 {"source":"simple-icons","version":"16.27.1","count":7},
-                {"source":"simple-icons","version":"15.22.0","count":2,"reason":"Microsoft and Canva removed from pinned current package; exact historical exports retained"},
-                {"source":"OpenAI official brand package","version":"2025","count":1,"url":"https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip"}
+                {"source":"simple-icons","version":"15.22.0","count":1,"asset":"Canva"},
+                {"source":"Microsoft official Learn SVG","count":1},
+                {"source":"OpenAI official brand package","version":"2025","count":1}
               ],
               "destinationRoot":"assets/production/vectors/brands"
             },
