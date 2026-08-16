@@ -27,7 +27,7 @@ jobs:
           rm -rf tmp-v31-vectors
           mkdir -p tmp-v31-vectors
           cd tmp-v31-vectors
-          printf '{"name":"webby-v31-vector-materializer","private":true}\n' > package.json
+          printf '{"name":"webby-v31-vector-materializer","private":true,"type":"module"}\n' > package.json
           npm install --no-save --ignore-scripts lucide-static@1.28.0 simple-icons@16.27.1
       - name: Export 40 Lucide SVG files
         shell: bash
@@ -55,9 +55,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p assets/production/vectors/brands
+          cd tmp-v31-vectors
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          import * as icons from './tmp-v31-vectors/node_modules/simple-icons/index.js';
+          import * as icons from 'simple-icons';
           const wanted = {
             'brand-facebook': 'siFacebook',
             'brand-tiktok': 'siTiktok',
@@ -78,11 +79,12 @@ jobs:
               process.exit(1);
             }
             const svg = icon.svg.replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
-            fs.writeFileSync(`assets/production/vectors/brands/${id}.svg`, svg + '\n');
+            fs.writeFileSync(`../assets/production/vectors/brands/${id}.svg`, svg + '\n');
             meta[id] = { exportName, title: icon.title, slug: icon.slug, hex: icon.hex, sourceVersion: 'simple-icons@16.27.1' };
           }
-          fs.writeFileSync('.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', source:'simple-icons@16.27.1', assets:meta}, null, 2) + '\n');
+          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', source:'simple-icons@16.27.1', assets:meta}, null, 2) + '\n');
           NODE
+          cd ..
           test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 10
       - name: Write vector source lock and checksums
         shell: bash
