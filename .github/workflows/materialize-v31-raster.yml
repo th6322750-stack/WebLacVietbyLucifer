@@ -1,0 +1,84 @@
+name: Materialize v3.1 Raster Assets
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - 'scripts/generate-v31-raster-assets.py'
+      - '.github/workflows/materialize-v31-raster.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  raster:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned raster generator dependency
+        run: python -m pip install --disable-pip-version-check pillow==11.3.0
+      - name: Generate native masters and web delivery
+        run: python scripts/generate-v31-raster-assets.py
+      - name: Strict raster QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find assets/production/masters/raster/hero -type f -name '*.webp' | wc -l)" -eq 7
+          test "$(find assets/production/masters/raster/projects -type f -name '*.webp' | wc -l)" -eq 12
+          test "$(find assets/production/masters/raster/articles -type f -name '*.webp' | wc -l)" -eq 7
+          test "$(find assets/production/masters/raster/detail -type f -name '*.webp' | wc -l)" -eq 3
+          test "$(find assets/production/masters/raster/avatars -type f -name '*.webp' | wc -l)" -eq 4
+          test "$(find assets/production/masters/raster -type f -name '*.webp' | wc -l)" -eq 33
+          test "$(find assets/production/delivery/raster -type f -name '*.webp' | wc -l)" -eq 33
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from PIL import Image
+          root=Path('.')
+          data=json.loads(Path('.webby/RASTER_ASSET_METADATA.json').read_text())
+          assert data['logicalRasterAssetCount']==34
+          assert data['generatedNewRasterAssetCount']==33
+          entries={e['id']:e for e in data['entries']}
+          hero_ids=['home-hero-master','website-hero-master','support-hero-master','digital-hero-master','projects-hero-master','knowledge-hero-master','contact-hero-master']
+          for aid in hero_ids:
+              e=entries[aid]
+              assert e['master']['width']==3840 and e['master']['height']==2160
+              assert e['master']['qualityClass']=='4K_CLASS'
+              assert e['master']['derivedFromLowRes'] is False
+          for aid,e in entries.items():
+              mp=root/e['master']['path']; dp=root/e['delivery']['path']
+              assert mp.exists(), mp
+              assert dp.exists(), dp
+              if aid!='lac-viet-logo-canonical':
+                  assert e['master']['width']>=1920 and e['master']['height']>=1080
+                  assert e['master']['nativeOrAuthoritativeHighRes'] is True
+                  assert e['master']['derivedFromLowRes'] is False
+          print('PASS_RASTER_QA entries=',len(entries))
+          PY
+          master_bytes=$(find assets/production/masters/raster -type f -printf '%s\n' | awk '{s+=$1} END{print s+0}')
+          delivery_bytes=$(find assets/production/delivery/raster -type f -printf '%s\n' | awk '{s+=$1} END{print s+0}')
+          echo "master_bytes=$master_bytes"
+          echo "delivery_bytes=$delivery_bytes"
+          test "$master_bytes" -lt 52428800
+          test "$delivery_bytes" -lt 26214400
+          find assets/production/masters/raster assets/production/delivery/raster -type f -name '*.webp' -print0 | sort -z | xargs -0 sha256sum > .webby/RASTER_SHA256SUMS.txt
+          test "$(wc -l < .webby/RASTER_SHA256SUMS.txt)" -eq 66
+      - name: Commit verified raster masters and delivery
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'webbyLucifer-v3.1-bot'
+          git config user.email 'webby-v31-bot@users.noreply.github.com'
+          git add assets/production/masters/raster assets/production/delivery/raster .webby/RASTER_ASSET_METADATA.json .webby/RASTER_SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo NO_RASTER_CHANGES
+            exit 0
+          fi
+          git commit -m 'webby(v3.1): add 33 native raster masters plus web delivery'
+          git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
