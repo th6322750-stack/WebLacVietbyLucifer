@@ -1,0 +1,123 @@
+name: Materialize v3.1 Vector Assets
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - '.github/workflows/materialize-v31-vectors.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  vectors:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned vector sources in temp workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .tmp-v31-vectors
+          mkdir -p .tmp-v31-vectors
+          cd .tmp-v31-vectors
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --ignore-scripts lucide-static@1.28.0 simple-icons@16.27.1
+      - name: Export 40 Lucide SVG files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/production/vectors/ui
+          icons=(
+            menu close chevron-down chevron-right arrow-right arrow-left external-link check circle-check circle-alert
+            star user users briefcase shield-check percent globe messages-square package badge-check clock calendar target mail phone
+            map-pin send monitor-smartphone building code palette headset shopping-bag credit-card lightbulb search filter lock-keyhole sparkles award
+          )
+          for name in "${icons[@]}"; do
+            src=".tmp-v31-vectors/node_modules/lucide-static/icons/${name}.svg"
+            test -f "$src" || { echo "MISSING_LUCIDE_ICON=$name"; exit 1; }
+            cp "$src" "assets/production/vectors/ui/icon-${name}.svg"
+          done
+          test "$(find assets/production/vectors/ui -maxdepth 1 -type f -name 'icon-*.svg' | wc -l)" -eq 40
+      - name: Export 10 pinned brand marks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/production/vectors/brands
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import * as icons from './.tmp-v31-vectors/node_modules/simple-icons/index.js';
+          const wanted = {
+            'brand-facebook': 'siFacebook',
+            'brand-tiktok': 'siTiktok',
+            'brand-meta': 'siMeta',
+            'brand-youtube': 'siYoutube',
+            'brand-openai-chatgpt': 'siOpenai',
+            'brand-microsoft': 'siMicrosoft',
+            'brand-canva': 'siCanva',
+            'brand-zalo': 'siZalo',
+            'brand-messenger': 'siMessenger',
+            'brand-telegram': 'siTelegram'
+          };
+          const meta = {};
+          for (const [id, exportName] of Object.entries(wanted)) {
+            const icon = icons[exportName];
+            if (!icon || !icon.svg) {
+              console.error(`MISSING_SIMPLE_ICON=${exportName}`);
+              process.exit(1);
+            }
+            const svg = icon.svg.replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
+            fs.writeFileSync(`assets/production/vectors/brands/${id}.svg`, svg + '\n');
+            meta[id] = { exportName, title: icon.title, slug: icon.slug, hex: icon.hex, sourceVersion: 'simple-icons@16.27.1' };
+          }
+          fs.writeFileSync('.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', source:'simple-icons@16.27.1', assets:meta}, null, 2) + '\n');
+          NODE
+          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 10
+      - name: Write vector source lock and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > .webby/VECTOR_SOURCE_LOCK.json <<'JSON'
+          {
+            "schemaVersion": 1,
+            "protocolVersion": "3.1.0",
+            "genericIcons": {
+              "source": "lucide-static",
+              "version": "1.28.0",
+              "license": "ISC",
+              "count": 40,
+              "destinationRoot": "assets/production/vectors/ui"
+            },
+            "brandMarks": {
+              "source": "simple-icons",
+              "version": "16.27.1",
+              "license": "CC0-1.0 package; trademarks remain property of their owners",
+              "count": 10,
+              "destinationRoot": "assets/production/vectors/brands"
+            },
+            "runtimePolicy": "PROJECT_PATH",
+            "claudeMaySubstitute": false
+          }
+          JSON
+          find assets/production/vectors -type f -name '*.svg' -print0 | sort -z | xargs -0 sha256sum > .webby/VECTOR_SHA256SUMS.txt
+          test "$(wc -l < .webby/VECTOR_SHA256SUMS.txt)" -eq 50
+      - name: Commit verified vector assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .tmp-v31-vectors
+          git config user.name 'webbyLucifer-v3.1-bot'
+          git config user.email 'webby-v31-bot@users.noreply.github.com'
+          git add assets/production/vectors .webby/VECTOR_SOURCE_LOCK.json .webby/VECTOR_SHA256SUMS.txt .webby/BRAND_VECTOR_METADATA.json
+          if git diff --cached --quiet; then
+            echo 'NO_VECTOR_CHANGES'
+            exit 0
+          fi
+          git commit -m 'webby(v3.1): add 50 pinned production vector assets'
+          git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
