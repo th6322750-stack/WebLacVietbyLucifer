@@ -1,0 +1,23 @@
+name: Diagnose OpenAI Brand Package
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths: ['.github/workflows/diagnose-openai-brand.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and inventory official package
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip' -o /tmp/openai-brand.zip
+          mkdir -p /tmp/openai-brand
+          unzip -q /tmp/openai-brand.zip -d /tmp/openai-brand
+          echo '=== ALL FILES ==='
+          find /tmp/openai-brand -type f -printf '%P\n' | sort
+          echo '=== TYPES ==='
+          find /tmp/openai-brand -type f -print0 | xargs -0 file
