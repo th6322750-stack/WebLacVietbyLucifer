@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "rule": "Exact asset IDs only; no array-index guessing or visual substitution.",
+  "shared": {
+    "logo": "lac-viet-logo-canonical",
+    "uiIcons": [
+      "icon-menu",
+      "icon-close",
+      "icon-chevron-down",
+      "icon-chevron-right",
+      "icon-arrow-right",
+      "icon-arrow-left",
+      "icon-external-link",
+      "icon-check",
+      "icon-circle-check",
+      "icon-circle-alert",
+      "icon-star",
+      "icon-user",
+      "icon-users",
+      "icon-briefcase",
+      "icon-shield-check",
+      "icon-percent",
+      "icon-globe",
+      "icon-messages-square",
+      "icon-package",
+      "icon-badge-check",
+      "icon-clock",
+      "icon-calendar",
+      "icon-target",
+      "icon-mail",
+      "icon-phone",
+      "icon-map-pin",
+      "icon-send",
+      "icon-monitor-smartphone",
+      "icon-building",
+      "icon-code",
+      "icon-palette",
+      "icon-headset",
+      "icon-shopping-bag",
+      "icon-credit-card",
+      "icon-lightbulb",
+      "icon-search",
+      "icon-filter",
+      "icon-lock-keyhole",
+      "icon-sparkles",
+      "icon-award"
+    ],
+    "brandMarks": [
+      "brand-facebook",
+      "brand-tiktok",
+      "brand-meta",
+      "brand-youtube",
+      "brand-openai-chatgpt",
+      "brand-microsoft",
+      "brand-canva",
+      "brand-zalo",
+      "brand-messenger",
+      "brand-telegram"
+    ],
+    "demoAvatars": [
+      "demo-avatar-01",
+      "demo-avatar-02",
+      "demo-avatar-03",
+      "demo-avatar-04"
+    ]
+  },
+  "routes": {
+    "/": {
+      "hero": "home-hero-master",
+      "featuredProjects": [
+        "project-cover-01",
+        "project-cover-02",
+        "project-cover-03",
+        "project-cover-04"
+      ],
+      "knowledge": [
+        "article-cover-01",
+        "article-cover-02",
+        "article-cover-03",
+        "article-cover-04"
+      ]
+    },
+    "/website": {
+      "hero": "website-hero-master",
+      "projects": [
+        "project-cover-01",
+        "project-cover-02",
+        "project-cover-03",
+        "project-cover-04"
+      ]
+    },
+    "/support-mxh": {
+      "hero": "support-hero-master",
+      "brandMarks": [
+        "brand-facebook",
+        "brand-tiktok",
+        "brand-meta",
+        "brand-youtube"
+      ]
+    },
+    "/dich-vu-so": {
+      "hero": "digital-hero-master",
+      "brandMarks": [
+        "brand-openai-chatgpt",
+        "brand-youtube",
+        "brand-microsoft",
+        "brand-canva"
+      ]
+    },
+    "/du-an": {
+      "hero": "projects-hero-master",
+      "projects": [
+        "project-cover-01",
+        "project-cover-02",
+        "project-cover-03",
+        "project-cover-04",
+        "project-cover-05",
+        "project-cover-06",
+        "project-cover-07",
+        "project-cover-08",
+        "project-cover-09",
+        "project-cover-10",
+        "project-cover-11",
+        "project-cover-12"
+      ]
+    },
+    "/kien-thuc": {
+      "hero": "knowledge-hero-master",
+      "articles": [
+        "article-cover-01",
+        "article-cover-02",
+        "article-cover-03",
+        "article-cover-04",
+        "article-cover-05",
+        "article-cover-06",
+        "article-cover-07"
+      ]
+    },
+    "/gioi-thieu": {
+      "detail": "about-bird-master"
+    },
+    "/du-an/[slug]": {
+      "detail": "project-detail-device-master",
+      "relatedProjects": [
+        "project-cover-01",
+        "project-cover-02",
+        "project-cover-03",
+        "project-cover-04"
+      ]
+    },
+    "/kien-thuc/[slug]": {
+      "detail": "article-seo-hero-master",
+      "relatedArticles": [
+        "article-cover-01",
+        "article-cover-02",
+        "article-cover-03"
+      ]
+    },
+    "/lien-he": {
+      "hero": "contact-hero-master",
+      "brandMarks": [
+        "brand-zalo",
+        "brand-messenger",
+        "brand-telegram"
+      ],
+      "contactIcon": "icon-phone"
+    },
+    "/404": {
+      "icons": [
+        "icon-circle-alert",
+        "icon-arrow-left"
+      ]
+    }
+  }
+}
