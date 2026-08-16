@@ -1,0 +1,929 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "generator": "scripts/generate-v31-raster-assets.py",
+  "sourcePolicy": "NATIVE_DETERMINISTIC_GENERATION; NO_LOW_RES_UPSCALE_AS_AUTHORITY",
+  "logicalRasterAssetCount": 34,
+  "generatedNewRasterAssetCount": 33,
+  "entries": [
+    {
+      "id": "home-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/home-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "79b78316dea9e6a67f157796e0d365239552f154f06ee2bd6818b350713c2ab1",
+        "bytes": 209514,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/home-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "d6cfa8986181a2f73d99703bff79f17d35c3aa04e313e7f9266b77a7837dcd4e",
+        "bytes": 51554,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "website-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/website-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "9d0e4b44dc7b3db92dfec0de6e02446fb0e117ba6cf3c678bf8492532c69eb00",
+        "bytes": 96324,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/website-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "25277834937cd3d9e00eedb170ea09e0debacbfb74aef59e8b05c08a954d265b",
+        "bytes": 23960,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "support-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/support-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "adb60687e0a0078819501a88104b18b889bc14e6946da735ae6ecb218cbad0d4",
+        "bytes": 98060,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/support-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "a2bb62b1ece9fabe11a56dac1e6a19917b9f7e78bbde7e16a451d5a7ba3a0d29",
+        "bytes": 25770,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "digital-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/digital-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "4b611b4ef9f6f78537fb4bb69d22b2b29a429bcdaeffded7d01cf46688c895dc",
+        "bytes": 35732,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/digital-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "1db8009c580e05b599da5aa77d915416ec37b31d6201b29a37b9d2c817999338",
+        "bytes": 10348,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "projects-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/projects-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "80077fa4e89064bb68e4a610688d97fe4ce12f9856c83a76d9a769de58cf9b13",
+        "bytes": 37420,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/projects-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "3bac40089d475d089042bdfe800b27f9c493d7d9a9fe3c0522f2c0e2d3932159",
+        "bytes": 11774,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "knowledge-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/knowledge-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "d848cc349e0d84a2c7cc823cc6a4eacfa23d35ee72db786ee34b5207fd435be3",
+        "bytes": 25398,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/knowledge-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "9845b7c19595221950355ec6db3b15ac22bc45ed6fa292d99a6f48f04cd8cd97",
+        "bytes": 7622,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "contact-hero-master",
+      "classification": "DECORATIVE",
+      "role": "HERO",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/hero/contact-hero-master.webp",
+        "width": 3840,
+        "height": 2160,
+        "format": "webp",
+        "qualityClass": "4K_CLASS",
+        "sha256": "1e4cd05b9162011d4e9dfc0d13dd693de1abdf4535d7ebc4d67a25c271e1eebd",
+        "bytes": 256378,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/hero/contact-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "sha256": "62b0419fdf01c13c613684fc3cf0ad7dff03a4d9e4f86bc0cbc0c27422ac52a8",
+        "bytes": 63840,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Native 3840x2160 deterministic artwork; low-res legacy WebP not used as source."
+    },
+    {
+      "id": "project-cover-01",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-01",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-01.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "018584fd26ab5ecd5571b51ffb8be32affed37abd8d90ded02a782a58b1de0a5",
+        "bytes": 17622,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-01.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "dfdccaff87aaedb287c439d5b5b7929e1e557a98c7fe922a5413be426781483c",
+        "bytes": 7528,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-02",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-02",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-02.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "fdbbe231f368dfe323926010d6e0e1821ecad59497bfa4a15709cfcacb4f49f8",
+        "bytes": 16910,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-02.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "fe67025a7dbb832662a2d15cddb8914d3e9a025b8e5839618b42c3cca754f4b7",
+        "bytes": 7702,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-03",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-03",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-03.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "dc0433259992b1cac7ffa3619e377f6468aeb0113eb1fa2861e60663caeccd17",
+        "bytes": 15522,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-03.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "8f3b6f1515128a35044ea003d2db0d52a2cfe73cbbd401a804531ee12a3c029d",
+        "bytes": 7174,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-04",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-04",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-04.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "eaea085dff075bd7d8439ea231020ff5ee8d4854b847f4a0aaad3664d43ce777",
+        "bytes": 18658,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-04.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "1a16670c595eef982101aa3f03c537d7c7cda5451fd0850242e4a4d3e618fef4",
+        "bytes": 8150,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-05",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-05",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-05.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "b566560926413751e59a6c4d06791e9b27fc4f023e931618cc892aa7eaf38ec3",
+        "bytes": 17924,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-05.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "aa58ad4bc2cf2b058ddce9ada5bce9913a150810dc6a15921b37c0e734758e78",
+        "bytes": 7466,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-06",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-06",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-06.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "078d04716b61fdf00e658b6e0d31e7252ddc6d437d732fddc6da9cf0df51e630",
+        "bytes": 17580,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-06.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "958580fb0150ce0f61563a2975ea47e3348698cc7490b2a6e244f97db6325460",
+        "bytes": 7752,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-07",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-07",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-07.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "40c4f5fe3ffb871c87c469e0bf35202dc89547706b1348e18c6ada4ece6ccf6c",
+        "bytes": 17096,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-07.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "0d968760a9c3cc584025aaa9b506ee362c12f38f609aea13194a5b75b17fde6f",
+        "bytes": 7910,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-08",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-08",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-08.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "147ccc08f3b2cea7dab6a8cdf8a28952a381fcea0fa8aa4dd96f7e486bfd04f9",
+        "bytes": 17356,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-08.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "8ff0475b67f1219804de6785cd09037075396c56585abba999fce9a165275018",
+        "bytes": 7498,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-09",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-09",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-09.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "ff0757049932858f11d587e277aca8d70f1e996c290ed5119b4a35aab04e135a",
+        "bytes": 15910,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-09.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "3dc288254866137fcb9f6b79b3d7047a460e20ab5440813fd412e92a87a4c787",
+        "bytes": 6972,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-10",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-10",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-10.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "58698e0a412bc5cb03fb6ef6877c7c47a273a2a9f211a16f60ebb305113dedcd",
+        "bytes": 17526,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-10.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "8aefe57fa4b076581c94620df822d14de6ea2ba48a2d80196acdc7174d016bcd",
+        "bytes": 8120,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-11",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-11",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-11.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "b589965fe18ea26e305a7de76c14fbd3741f3e8ba9c4d6a95ab942adc930e7fd",
+        "bytes": 17500,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-11.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "64ed989b58a0cb367460fcae52fa1c021ba15d9dd4e7dd4ff387947b7ae6d4c0",
+        "bytes": 7650,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "project-cover-12",
+      "classification": "DEMO",
+      "role": "PROJECT_COVER",
+      "item": "demo-project-12",
+      "master": {
+        "path": "assets/production/masters/raster/projects/project-cover-12.webp",
+        "width": 1920,
+        "height": 1200,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "b1eeab62488b65d5b194ae674668a97dd5f0770262966f988c499f53ed7f2733",
+        "bytes": 17642,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/projects/project-cover-12.webp",
+        "width": 1280,
+        "height": 800,
+        "format": "webp",
+        "sha256": "230f6e0143cd4eadfca849ca6a6cc048660ca23eba007c2c19d12388c776c1d8",
+        "bytes": 7894,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo-only visual identity; must not be presented as a real client claim."
+    },
+    {
+      "id": "article-cover-01",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-01",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-01.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "ba8094f95e7e0cd33619f8e738024ecfba16c96542276c4ad4bfca292ba97a2c",
+        "bytes": 86300,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-01.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "f74337c966d379d629e7166fb2047ad2e0efc0a598341f3fdba9ad3e0924952c",
+        "bytes": 34560,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "article-cover-02",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-02",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-02.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "e896f2f8fe8eef658e90a50b9f9749e3e648e617c3ed05e3c51653ebf3aa1add",
+        "bytes": 80406,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-02.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "a429206612c42700b2cecbf1be23906ad34a2f9a9757d8113bebbe531ed9fde5",
+        "bytes": 30968,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "article-cover-03",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-03",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-03.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "d80b16dd308a0c4b8846a8e921f9ed5f8d74d7638d44d52433118a16e78e5fc7",
+        "bytes": 75062,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-03.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "b6492fa16f81aecb554b0e40075f5af8f385f50e2f5d94331236237e382007c8",
+        "bytes": 29580,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "article-cover-04",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-04",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-04.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "e896f2f8fe8eef658e90a50b9f9749e3e648e617c3ed05e3c51653ebf3aa1add",
+        "bytes": 80406,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-04.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "a429206612c42700b2cecbf1be23906ad34a2f9a9757d8113bebbe531ed9fde5",
+        "bytes": 30968,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "article-cover-05",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-05",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-05.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "ba8094f95e7e0cd33619f8e738024ecfba16c96542276c4ad4bfca292ba97a2c",
+        "bytes": 86300,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-05.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "f74337c966d379d629e7166fb2047ad2e0efc0a598341f3fdba9ad3e0924952c",
+        "bytes": 34560,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "article-cover-06",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-06",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-06.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "b09913a3e96608f16241884623857ee56f325d1f13ebea7e589b301590189169",
+        "bytes": 69676,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-06.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "16c4c61f4a4dcc868f48fe0c9032b71020d0cf358ac6906e0c93d99472086ebc",
+        "bytes": 26312,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "article-cover-07",
+      "classification": "EDITORIAL",
+      "role": "NEWS_COVER",
+      "item": "demo-article-07",
+      "master": {
+        "path": "assets/production/masters/raster/articles/article-cover-07.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "ba8094f95e7e0cd33619f8e738024ecfba16c96542276c4ad4bfca292ba97a2c",
+        "bytes": 86300,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/articles/article-cover-07.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "f74337c966d379d629e7166fb2047ad2e0efc0a598341f3fdba9ad3e0924952c",
+        "bytes": 34560,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial/demo content artwork."
+    },
+    {
+      "id": "about-bird-master",
+      "classification": "DECORATIVE",
+      "role": "DETAIL_VISUAL",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/detail/about-bird-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "5e3340a649256315c6ae3e109b103f42db8259f22d77da2120b850d1918627f9",
+        "bytes": 141164,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/detail/about-bird-master.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "50bd72000eee7f667e24dcb5e7d2e7a1388db6aa28ea8cb7120a603005b52418",
+        "bytes": 44100,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Uses exact canonical source logo at <=420px inside a native FHD composition; logo is not redrawn or enlarged beyond source-safe bounds."
+    },
+    {
+      "id": "project-detail-device-master",
+      "classification": "DEMO",
+      "role": "DETAIL_VISUAL",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/detail/project-detail-device-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "f4243bf89de3a0b740b54ae461293e0d5be614053fd023b5565fa06ff7d8d664",
+        "bytes": 14148,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/detail/project-detail-device-master.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "b9d721c3a5878e786bd09c58d93eaea1fe42b5804990bc4a4b564dc8e6e39f8f",
+        "bytes": 6842,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Demo device mockup."
+    },
+    {
+      "id": "article-seo-hero-master",
+      "classification": "EDITORIAL",
+      "role": "DETAIL_VISUAL",
+      "item": null,
+      "master": {
+        "path": "assets/production/masters/raster/detail/article-seo-hero-master.webp",
+        "width": 1920,
+        "height": 1080,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "86bcac25e3060b00206a4867aac341e22d4b57b8fd3f26f6eacb9798947e4172",
+        "bytes": 18200,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/detail/article-seo-hero-master.webp",
+        "width": 1280,
+        "height": 720,
+        "format": "webp",
+        "sha256": "15827ef3f1df30685debee6f141f1fc0e6cbec33bd2fb571dfbcfad8d7eec905",
+        "bytes": 8252,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Editorial SEO/analytics artwork."
+    },
+    {
+      "id": "demo-avatar-01",
+      "classification": "DEMO",
+      "role": "AVATAR",
+      "item": "demo-avatar-01",
+      "master": {
+        "path": "assets/production/masters/raster/avatars/demo-avatar-01.webp",
+        "width": 1920,
+        "height": 1920,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "261b63bc07fc01a7896fa314a502e1ac5b67ebd1cf11db2286da1155350a771a",
+        "bytes": 64696,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/avatars/demo-avatar-01.webp",
+        "width": 512,
+        "height": 512,
+        "format": "webp",
+        "sha256": "0195349472bc30cb9eb6ded1a9ec0873139badda8f8095a36c1fc21f9524f2f7",
+        "bytes": 8420,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Non-photoreal fictional demo avatar; not a real customer/person claim."
+    },
+    {
+      "id": "demo-avatar-02",
+      "classification": "DEMO",
+      "role": "AVATAR",
+      "item": "demo-avatar-02",
+      "master": {
+        "path": "assets/production/masters/raster/avatars/demo-avatar-02.webp",
+        "width": 1920,
+        "height": 1920,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "aca4d2dc677e3e718833526363be8a56c1fc0f4f91f1b31ea7888e4dbc40bf0f",
+        "bytes": 72822,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/avatars/demo-avatar-02.webp",
+        "width": 512,
+        "height": 512,
+        "format": "webp",
+        "sha256": "d4816ab60b1206beb37942284da19068de92ce07048034fdfa6e52ef895418bc",
+        "bytes": 10248,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Non-photoreal fictional demo avatar; not a real customer/person claim."
+    },
+    {
+      "id": "demo-avatar-03",
+      "classification": "DEMO",
+      "role": "AVATAR",
+      "item": "demo-avatar-03",
+      "master": {
+        "path": "assets/production/masters/raster/avatars/demo-avatar-03.webp",
+        "width": 1920,
+        "height": 1920,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "72769cfdddf9bb507e9a6de0872edd96d7aee2838efd1cf1e533e894863c3896",
+        "bytes": 68966,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/avatars/demo-avatar-03.webp",
+        "width": 512,
+        "height": 512,
+        "format": "webp",
+        "sha256": "24072b04d375ef45afdcec6a1ffbcb7087e4bf70f3402600b24fa29d81f7477a",
+        "bytes": 9330,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Non-photoreal fictional demo avatar; not a real customer/person claim."
+    },
+    {
+      "id": "demo-avatar-04",
+      "classification": "DEMO",
+      "role": "AVATAR",
+      "item": "demo-avatar-04",
+      "master": {
+        "path": "assets/production/masters/raster/avatars/demo-avatar-04.webp",
+        "width": 1920,
+        "height": 1920,
+        "format": "webp",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "3e666a6c672767ec3c7f7cf7af60c5249cee5bf76a5181fabf24ff64c3dadc70",
+        "bytes": 68748,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false
+      },
+      "delivery": {
+        "path": "assets/production/delivery/raster/avatars/demo-avatar-04.webp",
+        "width": 512,
+        "height": 512,
+        "format": "webp",
+        "sha256": "2c18b41968e1c454189e5f27440b32f45658e2ecfa04e6abb8a6b34a2767b203",
+        "bytes": 9576,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Non-photoreal fictional demo avatar; not a real customer/person claim."
+    },
+    {
+      "id": "lac-viet-logo-canonical",
+      "classification": "BRAND",
+      "role": "LOGO",
+      "item": "Lac Viet Media Agency",
+      "master": {
+        "path": "assets/production/brand/lac-viet-logo-source.png",
+        "width": 480,
+        "height": 480,
+        "format": "png",
+        "qualityClass": "FHD_CLASS",
+        "sha256": "b8d4682cc216e662d8cb32968329b7a4f24ee9a89c3191653dafafe338181504",
+        "bytes": 347251,
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false,
+        "qualityException": "Exact Lucifer-approved 480x480 identity source. Never fake-upscale/redraw/vectorize; display within source-safe bounds."
+      },
+      "delivery": {
+        "path": "assets/production/brand/lac-viet-logo-canonical-lossless.webp",
+        "width": 480,
+        "height": 480,
+        "format": "webp",
+        "sha256": "8d7b16902ff157857e11a736ba4b7ef1157085906048d4ffdb6cc2d0df6da7c0",
+        "bytes": 230640,
+        "runtimeSourceType": "PROJECT_PATH"
+      },
+      "notes": "Canonical identity authority exception."
+    }
+  ]
+}
