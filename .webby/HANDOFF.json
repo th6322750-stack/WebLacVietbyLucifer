@@ -11,21 +11,9 @@
   "uiCommit": "09ad912eb5728395bafce96025734e4ac0491047",
   "parentUiCommit": "129d73d68b57f26d6a8afaa3d03594198d0b36b5",
   "createdAt": "2026-08-17T03:31:00+07:00",
-  "intake": {
-    "status": "INTAKE_COMPLETE",
-    "file": ".webby/PROJECT_INTAKE.json"
-  },
-  "assetPlan": {
-    "status": "REPORTED",
-    "file": ".webby/ASSET_COUNT_PLAN.json"
-  },
-  "assetManifest": {
-    "file": ".webby/asset-manifest.json",
-    "transportMode": "GIT",
-    "driveFolderRef": null,
-    "verifiedForSessionId": null,
-    "sessionVerifiedAt": null
-  },
+  "intake": {"status": "INTAKE_COMPLETE", "file": ".webby/PROJECT_INTAKE.json"},
+  "assetPlan": {"status": "REPORTED", "file": ".webby/ASSET_COUNT_PLAN.json"},
+  "assetManifest": {"file": ".webby/asset-manifest.json", "transportMode": "GIT", "driveFolderRef": null, "verifiedForSessionId": null, "sessionVerifiedAt": null},
   "implementationReady": {
     "userVisualApproved": true,
     "assetCountReported": true,
@@ -40,7 +28,7 @@
     "semanticGeometryLocked": true,
     "responsiveLocked": true,
     "statesLockedOrNA": true,
-    "motionFeelLockedOrNA": false,
+    "motionFeelLockedOrNA": true,
     "noBlockingSpecOrAssetGap": false
   },
   "requiredInputs": [
@@ -67,19 +55,8 @@
     ".webby/CLAUDE_TASK.md"
   ],
   "lockFile": ".webby/WEBBY_LOCK.json",
-  "visualHandoff": {
-    "mode": "DETERMINISTIC_SPEC_PLUS_RASTER",
-    "routesFile": ".webby/visual-handoff/routes.json",
-    "rasterRole": "HUMAN_ACCEPTANCE_AND_ARRANGEMENT_ONLY",
-    "implementationNumbersFrom": "SPEC_AND_MANIFEST",
-    "implementationTarget": "MATCH_APPROVED_V1_WITHOUT_PIXEL_MEASUREMENT_OR_VISUAL_INVENTION"
-  },
-  "contextPolicy": {
-    "routeScoped": true,
-    "componentScoped": true,
-    "onDemandContracts": true,
-    "defaultImplementationFileBudget": "1-3"
-  },
+  "visualHandoff": {"mode": "DETERMINISTIC_SPEC_PLUS_RASTER", "routesFile": ".webby/visual-handoff/routes.json", "rasterRole": "HUMAN_ACCEPTANCE_AND_ARRANGEMENT_ONLY", "implementationNumbersFrom": "SPEC_AND_MANIFEST", "implementationTarget": "MATCH_APPROVED_V1_WITHOUT_PIXEL_MEASUREMENT_OR_VISUAL_INVENTION"},
+  "contextPolicy": {"routeScoped": true, "componentScoped": true, "onDemandContracts": true, "defaultImplementationFileBudget": "1-3"},
   "hardRules": [
     "Do not redesign approved V1 while migrating readiness metadata/assets",
     "Do not search/generate/substitute visual assets in Claude",
