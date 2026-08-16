@@ -1,1 +1,99 @@
-{"schemaVersion":4,"handoffId":"lacvietmedia-gd3-git-self-contained-v1","handoffRevision":"git-self-contained-v1","producer":"CHATGPT","executor":"CLAUDE","status":"UI_SETUP_COMPLETE","branch":"chatgpt/gd3-git-self-contained-v1","uiRevision":4,"userApproval":{"receipt":".webby/USER_VISUAL_APPROVAL.json","status":"USER_APPROVED_FINAL","approvedAt":"2026-08-14T21:49:00+07:00","statement":"DUYỆT GIAO DIỆN V1","approvedPdfPath":".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf","approvedPdfSha256":"f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f"},"uiSetupComplete":true,"implementationAuthorized":true,"implementationRequiresGoogleDrive":false,"implementationStage":"GD4","coreValidation":{"result":"PASS","runId":31866194058,"command":"python scripts/validate-gd3-git-self-contained.py"},"preflightCommands":["python scripts/reconstruct-git-self-contained.py","python scripts/validate-gd3-git-self-contained.py --require-ready"],"requiredInputs":[".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",".webby/visual-master/gd1-v1/pages","assets/production",".webby/GIT_BINARY_MANIFEST.json",".webby/MASTER_INDEX.json",".webby/MASTER_BINARY_AUTHORITY.json",".webby/ROUTE_IMPLEMENTATION_MAP.json",".webby/section-map.json",".webby/placement-map.json",".webby/component-map.json",".webby/tokens.json",".webby/typography.json",".webby/responsive.json",".webby/interactions.json",".webby/CONTENT_TRUTH.json",".webby/IMPLEMENTATION_CONTRACT.json",".webby/DATA_BACKEND_CONTRACT.json",".webby/SEO_CONTRACT.json",".webby/ANALYTICS_CONTRACT.json",".webby/ACCESSIBILITY_CONTRACT.json",".webby/QA_ACCEPTANCE.json",".webby/USER_VISUAL_APPROVAL.json",".webby/WEBBY_LOCK.json",".webby/CLAUDE_TASK.md"],"executionOrder":["GD4_STATIC_FRONTEND_VISUAL_PARITY","GD5_UX_INTERACTIONS_ACCESSIBILITY","GD6_BACKEND_DATA_SEO_ANALYTICS","IMPLEMENTATION_RECEIPT_AND_PLAYWRIGHT_EVIDENCE","STOP_FOR_CHATGPT_GD7_VISUAL_QA"],"driveRole":"human review mirror / backup only","mustNot":["use Google Drive as an implementation dependency","merge without Lucifer approval","redesign approved V1","modify ChatGPT-owned visual truth to simplify code","redraw or replace the canonical logo","silently substitute missing resources","treat demo claims as production facts"]}
+{
+  "schemaVersion": 3,
+  "protocolVersion": "3.1.0",
+  "handoffId": "lacvietmedia-webby-v3.1-migration",
+  "workSessionId": "lacvietmedia-v31-20260817-0331",
+  "producer": "CHATGPT",
+  "executor": "CLAUDE",
+  "taskMode": "NEW_REDESIGN",
+  "status": "VISUAL_DIRECTION_APPROVED",
+  "uiRevision": 4,
+  "uiCommit": "09ad912eb5728395bafce96025734e4ac0491047",
+  "parentUiCommit": "129d73d68b57f26d6a8afaa3d03594198d0b36b5",
+  "createdAt": "2026-08-17T03:31:00+07:00",
+  "intake": {
+    "status": "INTAKE_COMPLETE",
+    "file": ".webby/PROJECT_INTAKE.json"
+  },
+  "assetPlan": {
+    "status": "PLANNED",
+    "file": ".webby/ASSET_COUNT_PLAN.json"
+  },
+  "assetManifest": {
+    "file": ".webby/asset-manifest.json",
+    "transportMode": "GIT",
+    "driveFolderRef": null,
+    "verifiedForSessionId": null,
+    "sessionVerifiedAt": null
+  },
+  "implementationReady": {
+    "userVisualApproved": true,
+    "assetCountReported": false,
+    "assetsComplete": false,
+    "highResMastersPass": false,
+    "deliveryComplete": false,
+    "transportReadyForSession": true,
+    "mappingComplete": false,
+    "iconInventoryComplete": false,
+    "layoutModeLocked": true,
+    "typographyLocked": true,
+    "semanticGeometryLocked": true,
+    "responsiveLocked": true,
+    "statesLockedOrNA": true,
+    "motionFeelLockedOrNA": false,
+    "noBlockingSpecOrAssetGap": false
+  },
+  "requiredInputs": [
+    ".webby/PROJECT_INTAKE.json",
+    ".webby/ASSET_COUNT_PLAN.json",
+    ".webby/asset-manifest.json",
+    ".webby/USER_VISUAL_APPROVAL.json",
+    ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    ".webby/MASTER_INDEX.json",
+    ".webby/ROUTE_IMPLEMENTATION_MAP.json",
+    ".webby/tokens.json",
+    ".webby/typography.json",
+    ".webby/responsive.json",
+    ".webby/interactions.json",
+    ".webby/CONTENT_TRUTH.json",
+    ".webby/IMPLEMENTATION_CONTRACT.json",
+    ".webby/DATA_BACKEND_CONTRACT.json",
+    ".webby/SEO_CONTRACT.json",
+    ".webby/ANALYTICS_CONTRACT.json",
+    ".webby/ACCESSIBILITY_CONTRACT.json",
+    ".webby/QA_ACCEPTANCE.json",
+    ".webby/WEBBY_LOCK.json",
+    ".webby/CLAUDE_TASK.md"
+  ],
+  "lockFile": ".webby/WEBBY_LOCK.json",
+  "visualHandoff": {
+    "mode": "DETERMINISTIC_SPEC_PLUS_RASTER",
+    "routesFile": ".webby/visual-handoff/routes.json",
+    "rasterRole": "HUMAN_ACCEPTANCE_AND_ARRANGEMENT_ONLY",
+    "implementationNumbersFrom": "SPEC_AND_MANIFEST",
+    "implementationTarget": "MATCH_APPROVED_V1_WITHOUT_PIXEL_MEASUREMENT_OR_VISUAL_INVENTION"
+  },
+  "contextPolicy": {
+    "routeScoped": true,
+    "componentScoped": true,
+    "onDemandContracts": true,
+    "defaultImplementationFileBudget": "1-3"
+  },
+  "hardRules": [
+    "Do not redesign approved V1 while migrating readiness metadata/assets",
+    "Do not search/generate/substitute visual assets in Claude",
+    "Do not measure raster screenshots to invent implementation geometry",
+    "Motion FEEL is ChatGPT-owned; technical MECHANISM is Claude-owned",
+    "Claude must report a material global behavior surface before applying it broadly",
+    "GIT transport is active; Drive session proof is NOT_REQUIRED for implementation",
+    "Drive is review/storage only and is not default runtime serving architecture",
+    "Visible approved icons require explicit inventory/mapping before IMPLEMENTATION_READY_UI",
+    "Report CRITICAL_FINDING immediately without turning it into an unauthorized broad audit",
+    "Do not merge without Lucifer approval"
+  ],
+  "visualAuthority": "CHATGPT",
+  "motionFeelAuthority": "CHATGPT",
+  "motionMechanismAuthority": "CLAUDE",
+  "finalAcceptanceAuthority": "USER",
+  "implementationAuthority": "CLAUDE"
+}
