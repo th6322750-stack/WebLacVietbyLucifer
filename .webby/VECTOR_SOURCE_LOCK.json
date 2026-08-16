@@ -1,0 +1,18 @@
+{
+  "schemaVersion":1,
+  "protocolVersion":"3.1.0",
+  "status":"MATERIALIZED",
+  "genericIcons":{"source":"lucide-static","version":"1.28.0","count":40,"destinationRoot":"assets/production/vectors/ui"},
+  "brandMarks":{
+    "count":10,
+    "sources":[
+      {"source":"simple-icons","version":"16.27.1","count":7},
+      {"source":"simple-icons","version":"15.22.0","count":1,"asset":"Canva"},
+      {"source":"simple-icons","version":"13.21.0","count":1,"asset":"OpenAI","usageGuidelineAuthority":"https://openai.com/brand/"},
+      {"source":"Microsoft official Learn SVG","count":1}
+    ],
+    "destinationRoot":"assets/production/vectors/brands"
+  },
+  "runtimePolicy":"PROJECT_PATH",
+  "claudeMaySubstitute":false
+}

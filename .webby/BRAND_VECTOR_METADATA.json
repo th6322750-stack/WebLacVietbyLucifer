@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "usageGuidelineAuthority": {
+    "openai": "https://openai.com/brand/"
+  },
+  "sources": [
+    "simple-icons@16.27.1",
+    "simple-icons@15.22.0",
+    "simple-icons@13.21.0",
+    "Microsoft official Learn SVG"
+  ],
+  "assets": {
+    "brand-facebook": {
+      "exportName": "siFacebook",
+      "title": "Facebook",
+      "slug": "facebook",
+      "hex": "0866FF",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-tiktok": {
+      "exportName": "siTiktok",
+      "title": "TikTok",
+      "slug": "tiktok",
+      "hex": "000000",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-meta": {
+      "exportName": "siMeta",
+      "title": "Meta",
+      "slug": "meta",
+      "hex": "0467DF",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-youtube": {
+      "exportName": "siYoutube",
+      "title": "YouTube",
+      "slug": "youtube",
+      "hex": "FF0000",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-zalo": {
+      "exportName": "siZalo",
+      "title": "Zalo",
+      "slug": "zalo",
+      "hex": "0068FF",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-messenger": {
+      "exportName": "siMessenger",
+      "title": "Messenger",
+      "slug": "messenger",
+      "hex": "0866FF",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-telegram": {
+      "exportName": "siTelegram",
+      "title": "Telegram",
+      "slug": "telegram",
+      "hex": "26A5E4",
+      "sourceVersion": "simple-icons@16.27.1"
+    },
+    "brand-canva": {
+      "exportName": "siCanva",
+      "title": "Canva",
+      "slug": "canva",
+      "hex": "00C4CC",
+      "sourceVersion": "simple-icons@15.22.0"
+    },
+    "brand-openai-chatgpt": {
+      "exportName": "siOpenai",
+      "title": "OpenAI",
+      "slug": "openai",
+      "hex": "412991",
+      "sourceVersion": "simple-icons@13.21.0"
+    },
+    "brand-microsoft": {
+      "title": "Microsoft official logo",
+      "sourceVersion": "Microsoft Learn downloadable SVG",
+      "sourceUrl": "https://learn.microsoft.com/el-gr/entra/identity-platform/media/howto-add-branding-in-apps/ms-symbollockup_mssymbol_19.svg",
+      "selectionPolicy": "official downloadable Microsoft logo SVG; copied byte-for-byte"
+    }
+  }
+}
