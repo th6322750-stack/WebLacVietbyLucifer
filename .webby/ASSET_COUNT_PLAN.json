@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "status": "REPORTED",
+  "projectId": "lacvietmedia-web",
+  "createdAt": "2026-08-17T03:31:00+07:00",
+  "protocolVersion": "3.1.0",
+  "taskMode": "NEW_REDESIGN",
+  "qualityPolicy": {
+    "rasterMasterMinimum": "FHD_CLASS",
+    "rasterMasterPreferred": "4K_CLASS",
+    "heroPreferred": "4K_CLASS",
+    "allowLowResUpscaleAsAuthority": false,
+    "allowLowResPatchwork": false,
+    "vectorPreferredForBrandIcons": true,
+    "canonicalLogoException": "The exact original 480x480 Lucifer-approved raster logo is identity authority. Do not fake-upscale, redraw or vectorize it. Keep display size within source-safe bounds; record the exception explicitly in the manifest."
+  },
+  "totals": {
+    "all": 84,
+    "existing": 1,
+    "chatgptCreateOrPrepare": 83,
+    "userMustSupply": 0,
+    "fhdClass": 27,
+    "fourKClass": 7,
+    "vector": 50,
+    "existingLowResReferenceOnlyNotMasterReady": 22
+  },
+  "uniqueAssetGroups": [
+    {
+      "assetId": "lac-viet-logo-canonical",
+      "role": "LOGO",
+      "quantity": 1,
+      "classification": "BRAND",
+      "sourceStatus": "EXISTING",
+      "masterQuality": "FHD_CLASS",
+      "identityRequired": true,
+      "notes": "Canonical-source exception documented in qualityPolicy; exact source must not be redrawn/vectorized/upscaled as new authority."
+    },
+    {
+      "assetId": "route-hero-masters",
+      "role": "HERO",
+      "quantity": 7,
+      "classification": "DECORATIVE",
+      "sourceStatus": "CHATGPT_CREATE",
+      "masterQuality": "4K_CLASS",
+      "identityRequired": false,
+      "notes": "Home, website, support, digital, projects, knowledge, contact. Existing tiny WebPs are composition references only."
+    },
+    {
+      "assetId": "project-cover-masters",
+      "role": "PROJECT_COVER",
+      "quantity": 12,
+      "classification": "DEMO",
+      "sourceStatus": "CHATGPT_CREATE",
+      "masterQuality": "FHD_CLASS",
+      "identityRequired": true,
+      "notes": "Twelve distinct demo project identities visible in approved project listing; homepage/related uses reuse this set."
+    },
+    {
+      "assetId": "article-cover-masters",
+      "role": "NEWS_COVER",
+      "quantity": 7,
+      "classification": "EDITORIAL",
+      "sourceStatus": "CHATGPT_CREATE",
+      "masterQuality": "FHD_CLASS",
+      "identityRequired": true,
+      "notes": "One featured + six latest/article-card covers; sidebar/home may reuse the same exact mapped covers."
+    },
+    {
+      "assetId": "detail-visual-masters",
+      "role": "DETAIL_VISUAL",
+      "quantity": 3,
+      "classification": "DEMO",
+      "sourceStatus": "CHATGPT_CREATE",
+      "masterQuality": "FHD_CLASS",
+      "identityRequired": false,
+      "notes": "About bird, project device mockup, article SEO hero."
+    },
+    {
+      "assetId": "demo-avatar-masters",
+      "role": "AVATAR",
+      "quantity": 4,
+      "classification": "DEMO",
+      "sourceStatus": "CHATGPT_CREATE",
+      "masterQuality": "FHD_CLASS",
+      "identityRequired": false,
+      "notes": "Reusable demo customer/testimonial/author avatars. Must never imply verified real clients."
+    },
+    {
+      "assetId": "approved-brand-social-marks",
+      "role": "LOGO",
+      "quantity": 10,
+      "classification": "AUTHENTIC",
+      "sourceStatus": "CHATGPT_PREPARE",
+      "masterQuality": "VECTOR",
+      "identityRequired": true,
+      "notes": "Exact mapped marks covering Facebook, TikTok, Meta, YouTube, OpenAI/ChatGPT, Microsoft, Canva, Zalo, Messenger and Telegram. Use exact authorized vector source/package mapping; no visually-similar substitution."
+    },
+    {
+      "assetId": "generic-ui-icon-inventory-v1",
+      "role": "ICON",
+      "quantity": 40,
+      "classification": "DECORATIVE",
+      "sourceStatus": "CHATGPT_PREPARE",
+      "masterQuality": "VECTOR",
+      "identityRequired": false,
+      "notes": "Conservative exact vector inventory for global navigation, CTA, form/state, metric, service, process, FAQ, project/article metadata and contact UI. Every required approved icon will be individually named/mapped in the v3.1 asset manifest."
+    }
+  ],
+  "routes": [
+    {
+      "route": "__shared__",
+      "sections": [
+        {
+          "section": "global-brand-navigation-states-footer",
+          "visibleItemCount": 55,
+          "assets": [
+            {"assetId":"lac-viet-logo-canonical","role":"LOGO","quantity":1,"classification":"BRAND","sourceStatus":"EXISTING","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_CANONICAL_SOURCE_WITH_SIZE_SAFE_DELIVERY","identityRequired":true,"notes":"Canonical exception; no redraw/vectorization."},
+            {"assetId":"approved-brand-social-marks","role":"LOGO","quantity":10,"classification":"AUTHENTIC","sourceStatus":"CHATGPT_PREPARE","masterQuality":"VECTOR","responsiveStrategy":"VECTOR_REUSE","identityRequired":true,"notes":"Exact brand/social marks."},
+            {"assetId":"generic-ui-icon-inventory-v1","role":"ICON","quantity":40,"classification":"DECORATIVE","sourceStatus":"CHATGPT_PREPARE","masterQuality":"VECTOR","responsiveStrategy":"VECTOR_REUSE","identityRequired":false,"notes":"Explicit inventory/mapping required before readiness."},
+            {"assetId":"demo-avatar-masters","role":"AVATAR","quantity":4,"classification":"DEMO","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":"Reusable demo-only portraits."}
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/",
+      "sections": [
+        {"section":"hero","visibleItemCount":1,"assets":[{"assetId":"home-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":"Recreate approved black/gold Lạc Việt hero composition without using the tiny delivery crop as authority."}]},
+        {"section":"featured-projects","visibleItemCount":4,"assets":[{"assetId":"project-cover-masters-reuse","role":"PROJECT_COVER","quantity":4,"classification":"DEMO","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"REUSE_EXACT_MAPPED_PROJECT_COVERS","identityRequired":true,"notes":"Subset of the twelve-project master set; not additional unique assets."}]},
+        {"section":"latest-knowledge","visibleItemCount":4,"assets":[{"assetId":"article-cover-masters-reuse","role":"NEWS_COVER","quantity":4,"classification":"EDITORIAL","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"REUSE_EXACT_MAPPED_ARTICLE_COVERS","identityRequired":true,"notes":"Subset of seven article masters; not additional unique assets."}]}
+      ]
+    },
+    {
+      "route": "/website",
+      "sections": [
+        {"section":"website-hero","visibleItemCount":1,"assets":[{"assetId":"website-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":null}]},
+        {"section":"website-projects","visibleItemCount":4,"assets":[{"assetId":"project-cover-masters-reuse","role":"PROJECT_COVER","quantity":4,"classification":"DEMO","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"REUSE_EXACT_MAPPED_PROJECT_COVERS","identityRequired":true,"notes":"No additional unique assets."}]}
+      ]
+    },
+    {
+      "route": "/support-mxh",
+      "sections": [
+        {"section":"support-hero","visibleItemCount":1,"assets":[{"assetId":"support-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":null}]},
+        {"section":"support-platform-grid","visibleItemCount":4,"assets":[{"assetId":"support-platform-marks-reuse","role":"LOGO","quantity":4,"classification":"AUTHENTIC","sourceStatus":"CHATGPT_PREPARE","masterQuality":"VECTOR","responsiveStrategy":"VECTOR_REUSE","identityRequired":true,"notes":"Facebook, TikTok, Meta, YouTube subset of shared brand marks."}]}
+      ]
+    },
+    {
+      "route": "/dich-vu-so",
+      "sections": [
+        {"section":"digital-hero","visibleItemCount":1,"assets":[{"assetId":"digital-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":null}]},
+        {"section":"featured-digital-products","visibleItemCount":4,"assets":[{"assetId":"digital-product-marks-reuse","role":"LOGO","quantity":4,"classification":"AUTHENTIC","sourceStatus":"CHATGPT_PREPARE","masterQuality":"VECTOR","responsiveStrategy":"VECTOR_REUSE","identityRequired":true,"notes":"OpenAI/ChatGPT, YouTube, Microsoft, Canva subset of shared brand marks."}]}
+      ]
+    },
+    {
+      "route": "/du-an",
+      "sections": [
+        {"section":"projects-hero","visibleItemCount":1,"assets":[{"assetId":"projects-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":null}]},
+        {"section":"projects-grid","visibleItemCount":12,"assets":[{"assetId":"project-cover-masters","role":"PROJECT_COVER","quantity":12,"classification":"DEMO","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_MASTER_PER_ITEM_WITH_DECLARED_CROP","identityRequired":true,"notes":"Distinct exact item mapping; no index guessing."}]}
+      ]
+    },
+    {
+      "route": "/kien-thuc",
+      "sections": [
+        {"section":"knowledge-hero","visibleItemCount":1,"assets":[{"assetId":"knowledge-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":null}]},
+        {"section":"featured-and-latest-articles","visibleItemCount":7,"assets":[{"assetId":"article-cover-masters","role":"NEWS_COVER","quantity":7,"classification":"EDITORIAL","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_MASTER_PER_ITEM_WITH_DECLARED_CROP","identityRequired":true,"notes":"One featured + six latest masters; exact article mapping."}]}
+      ]
+    },
+    {
+      "route": "/gioi-thieu",
+      "sections": [
+        {"section":"about-hero","visibleItemCount":1,"assets":[{"assetId":"about-bird-master","role":"DETAIL_VISUAL","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_SCALE","identityRequired":false,"notes":"Preserve approved gold bird visual language; canonical brand logo itself remains separate."}]}
+      ]
+    },
+    {
+      "route": "/du-an/[slug]",
+      "sections": [
+        {"section":"case-study-hero","visibleItemCount":1,"assets":[{"assetId":"project-detail-device-master","role":"DETAIL_VISUAL","quantity":1,"classification":"DEMO","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_SCALE","identityRequired":false,"notes":"Demo case-study device mockup."}]}
+      ]
+    },
+    {
+      "route": "/kien-thuc/[slug]",
+      "sections": [
+        {"section":"article-body-hero","visibleItemCount":1,"assets":[{"assetId":"article-seo-hero-master","role":"DETAIL_VISUAL","quantity":1,"classification":"EDITORIAL","sourceStatus":"CHATGPT_CREATE","masterQuality":"FHD_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":"Demo editorial SEO visual."}]}
+      ]
+    },
+    {
+      "route": "/lien-he",
+      "sections": [
+        {"section":"contact-hero","visibleItemCount":1,"assets":[{"assetId":"contact-hero-master","role":"HERO","quantity":1,"classification":"DECORATIVE","sourceStatus":"CHATGPT_CREATE","masterQuality":"4K_CLASS","responsiveStrategy":"ONE_MASTER_WITH_DECLARED_CROP","identityRequired":false,"notes":null}]},
+        {"section":"contact-channels","visibleItemCount":4,"assets":[{"assetId":"contact-social-marks-reuse","role":"LOGO","quantity":4,"classification":"AUTHENTIC","sourceStatus":"CHATGPT_PREPARE","masterQuality":"VECTOR","responsiveStrategy":"VECTOR_REUSE","identityRequired":true,"notes":"Zalo, Messenger, Telegram and phone/general channel icon from shared inventory; no additional unique assets."}]}
+      ]
+    }
+  ],
+  "reportedToUser": true,
+  "approvedToStartProduction": true,
+  "countingRule": "Totals count unique logical assets once. Route entries may reference/reuse shared asset groups without increasing totals."
+}
