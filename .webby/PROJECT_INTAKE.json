@@ -1,10 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "INTAKE_COMPLETE",
   "project": {
     "id": "lacvietmedia-web",
     "name": "Lạc Việt Media Agency Website",
     "businessOrOffer": "Thiết kế website doanh nghiệp, support mạng xã hội và dịch vụ số cho thị trường Việt Nam",
+    "projectType": "WEBSITE",
     "domain": "lacvietmedia.com"
   },
   "goal": {
@@ -12,18 +13,130 @@
     "conversion": "Nhận tư vấn qua form/contact panel, sau này nối CRM"
   },
   "audience": {
-    "primary": ["Doanh nghiệp Việt Nam cần website", "Cá nhân/doanh nghiệp cần support MXH", "Khách hàng dịch vụ số"]
+    "primary": [
+      "Doanh nghiệp Việt Nam cần website",
+      "Cá nhân/doanh nghiệp cần support MXH",
+      "Khách hàng dịch vụ số"
+    ],
+    "needs": ["clarity", "trust", "fast contact"],
+    "trustSignals": ["giao diện chuyên nghiệp", "quy trình rõ ràng", "dự án/case study khi đã được xác minh"]
   },
+  "businessPriority": [
+    "Website services",
+    "Support MXH",
+    "Digital services"
+  ],
+  "brand": {
+    "name": "Lạc Việt Media Agency",
+    "slogan": "Cần Kiệm Liêm Chính",
+    "canonicalLogo": "assets/production/brand/lac-viet-logo-source.png"
+  },
+  "content": {
+    "truthContract": ".webby/CONTENT_TRUTH.json",
+    "demoClaimsMustNotShipAsFacts": true
+  },
+  "assets": [
+    ".webby/GIT_BINARY_MANIFEST.json",
+    "assets/production"
+  ],
+  "references": [
+    ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    ".webby/visual-master/gd1-v1/pages"
+  ],
   "scope": {
-    "routes": ["/", "/website", "/support-mxh", "/dich-vu-so", "/du-an", "/du-an/[slug]", "/kien-thuc", "/kien-thuc/[slug]", "/gioi-thieu", "/lien-he", "/404"]
+    "routes": [
+      "/",
+      "/website",
+      "/support-mxh",
+      "/dich-vu-so",
+      "/du-an",
+      "/du-an/[slug]",
+      "/kien-thuc",
+      "/kien-thuc/[slug]",
+      "/gioi-thieu",
+      "/lien-he",
+      "/404"
+    ],
+    "features": [
+      "responsive header/mobile drawer",
+      "consultation modal",
+      "contact lead form",
+      "newsletter subscription",
+      "FAQ accordion",
+      "project/category filtering",
+      "article table of contents",
+      "loading/error/404/focus states"
+    ],
+    "responsive": ["390 mobile reference", "1440 desktop reference", "project breakpoints in .webby/responsive.json"]
   },
+  "layout": {
+    "mode": "FULL_BLEED_WITH_CONTAINER",
+    "confirmedBy": "APPROVED_REFERENCE_AND_RESPONSIVE_CONTRACT",
+    "notes": "Hero/header/footer and section backgrounds may span viewport; implementation content uses the declared 1280/1360 containers and gutters from .webby/responsive.json."
+  },
+  "environment": {
+    "github": {
+      "repository": "th6322750-stack/WebLacVietbyLucifer",
+      "branch": "chatgpt/webby-v3.1-implementation-ready",
+      "parentValidatedBranch": "chatgpt/gd3-git-self-contained-v1",
+      "parentValidatedHead": "09ad912eb5728395bafce96025734e4ac0491047",
+      "chatgptRemoteAccess": true,
+      "claudeAccess": true,
+      "claudeLocalUnpushedDrift": "NONE_REQUIRED_FOR_HANDOFF_MIGRATION"
+    },
+    "assetTransport": {
+      "mode": "GIT",
+      "driveSessionProofRequired": false,
+      "runtimeRule": "PROJECT_DESTINATION_PATHS_OR_DECLARED_RUNTIME_SOURCE"
+    },
+    "drive": {
+      "requiredForCurrentPhase": false,
+      "role": "OPTIONAL_HUMAN_REVIEW_BACKUP_ONLY",
+      "folderRef": null,
+      "note": "No DRIVE/HYBRID transport is used for implementation, so v3.1 session-scoped Drive proof is NOT_REQUIRED."
+    },
+    "vercel": {
+      "requiredForCurrentPhase": false,
+      "projectRef": null
+    },
+    "dataSource": {
+      "type": "CONTRACT_DEFINED_BACKEND_WITH_DEMO_CONTENT_UNTIL_REAL_DATA_IS_VERIFIED",
+      "ref": ".webby/DATA_BACKEND_CONTRACT.json"
+    },
+    "envSecretsReadiness": "NOT_REQUIRED_FOR_IMPLEMENTATION_READY_UI; backend integration must fail closed when secrets are absent"
+  },
+  "mustHave": [
+    "Exact user-approved visible UI hierarchy and composition",
+    "Canonical logo preserved",
+    "Vietnamese responsive content behavior",
+    "Accessible keyboard/focus/reduced-motion behavior"
+  ],
+  "mustNotHave": [
+    "Claude redesign",
+    "Claude asset search/generation/substitution",
+    "Raster pixel measurement to invent geometry",
+    "Demo claims presented as production facts",
+    "Google Drive used as live runtime image origin by default"
+  ],
   "personalizationSignals": [
     "Premium Modern Vietnamese Agency",
     "Website doanh nghiệp là service priority số 1",
     "Slogan: Cần Kiệm Liêm Chính",
-    "Visual authority: PDF/Google Drive Preview revision mới nhất được Lucifer duyệt"
+    "Visual authority: user-approved GĐ1 V1 PDF committed in Git"
   ],
-  "gaps": [],
-  "hardGaps": [],
-  "softGaps": ["Facebook URL cuối cùng", "production content/case study thật"]
+  "assumptions": [
+    "Current migration preserves approved V1; no material visual revision is authorized."
+  ],
+  "gaps": [
+    {
+      "field": "facebookUrl",
+      "status": "SOFT_GAP",
+      "note": "May be filled later without changing implementation-ready visual structure."
+    },
+    {
+      "field": "productionCaseStudiesAndMetrics",
+      "status": "SOFT_GAP",
+      "note": "Demo content remains clearly non-factual until verified production data is supplied."
+    }
+  ]
 }
