@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "status": "PLANNED_NEED_ASSET",
+  "rule": "ICON is a UI role, not an asset classification. IMPLEMENTATION_READY_UI remains blocked until each required visible icon/brand mark is mapped to an actual production asset or an explicitly authorized exact package export.",
+  "genericIconSourcePolicy": {
+    "preferred": "PINNED_EXACT_VECTOR_EXPORT",
+    "candidateFamily": "Lucide outline consistent with approved design system",
+    "strokeIntent": "1.75-2px visual feel",
+    "claudeMaySubstitute": false,
+    "notes": "Final source/version and destinationPath must be frozen in asset-manifest before readiness."
+  },
+  "brandMarkSourcePolicy": {
+    "preferred": "OFFICIAL_OR_PINNED_CANONICAL_VECTOR",
+    "claudeMayUseSimilarLogo": false,
+    "notes": "Identity-bearing marks require exact brand mapping; generic icon packages are not acceptable substitutes."
+  },
+  "genericIcons": [
+    "icon-menu",
+    "icon-close",
+    "icon-chevron-down",
+    "icon-chevron-right",
+    "icon-arrow-right",
+    "icon-arrow-left",
+    "icon-external-link",
+    "icon-check",
+    "icon-circle-check",
+    "icon-circle-alert",
+    "icon-star",
+    "icon-user",
+    "icon-users",
+    "icon-briefcase",
+    "icon-shield-check",
+    "icon-percent",
+    "icon-globe",
+    "icon-messages-square",
+    "icon-package",
+    "icon-badge-check",
+    "icon-clock",
+    "icon-calendar",
+    "icon-target",
+    "icon-mail",
+    "icon-phone",
+    "icon-map-pin",
+    "icon-send",
+    "icon-monitor-smartphone",
+    "icon-building",
+    "icon-code",
+    "icon-palette",
+    "icon-headset",
+    "icon-shopping-bag",
+    "icon-credit-card",
+    "icon-lightbulb",
+    "icon-search",
+    "icon-filter",
+    "icon-lock-keyhole",
+    "icon-sparkles",
+    "icon-award"
+  ],
+  "brandMarks": [
+    "brand-facebook",
+    "brand-tiktok",
+    "brand-meta",
+    "brand-youtube",
+    "brand-openai-chatgpt",
+    "brand-microsoft",
+    "brand-canva",
+    "brand-zalo",
+    "brand-messenger",
+    "brand-telegram"
+  ],
+  "counts": {
+    "genericIcons": 40,
+    "brandMarks": 10,
+    "totalVectorRoles": 50,
+    "actualMappedAssetsReady": 0
+  },
+  "gate": {
+    "iconInventoryComplete": false,
+    "blocker": "NEED_ASSET",
+    "completionCriteria": [
+      "every required generic icon has an actual vector source/export and destinationPath",
+      "every identity-bearing brand mark has an exact approved source and mapping",
+      "asset-manifest contains all required iconInventory entries",
+      "each required iconInventory id resolves to an asset with role=ICON where applicable; brand marks retain role=LOGO",
+      "canonical v3.1 validator passes"
+    ]
+  }
+}
