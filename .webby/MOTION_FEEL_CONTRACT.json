@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "authority": {
+    "feel": "CHATGPT",
+    "mechanism": "CLAUDE"
+  },
+  "feel": {
+    "timingMs": {
+      "fast": 160,
+      "normal": 240,
+      "slow": 360,
+      "mobileNav": 280
+    },
+    "easing": "cubic-bezier(.2,.8,.2,1)",
+    "button": {
+      "hover": "translateY(-1px) with stronger shadow",
+      "active": "translateY(0)",
+      "focusVisible": "3px gold focus ring"
+    },
+    "card": {
+      "hover": "translateY(-3px), shadow-md feel, gold-300 border emphasis",
+      "imageHover": "scale(1.02) maximum"
+    },
+    "accordion": {
+      "durationMs": 240,
+      "feel": "quick, calm expansion without bounce"
+    },
+    "modalAndDrawer": {
+      "feel": "direct and restrained; no dramatic travel or delayed content",
+      "mobileNavDurationMs": 280
+    },
+    "reducedMotion": {
+      "required": true,
+      "intent": "disable non-essential transforms/reveals while preserving immediate state change and usability"
+    },
+    "neverAnimate": [
+      "body text readability",
+      "critical CTA availability",
+      "form error accessibility",
+      "focus visibility",
+      "content in a way that delays access"
+    ],
+    "forbidden": [
+      "heavy autoplay motion",
+      "large parallax",
+      "cursor gimmicks",
+      "persistent glow animation",
+      "motion that delays CTA/content"
+    ]
+  },
+  "mechanismBoundary": {
+    "owner": "CLAUDE",
+    "mayChooseWithoutDesignApproval": [
+      "CSS versus JS for equivalent observable feel",
+      "IntersectionObserver strategy",
+      "requestAnimationFrame/interpolation when needed",
+      "listener cleanup and technical fallbacks",
+      "safe implementation that prevents permanently hidden content"
+    ],
+    "mustReportBeforeBroadApplication": [
+      "global wheel interception",
+      "global touch interception",
+      "global key interception",
+      "preventing or replacing default browser scroll behavior across routes",
+      "app-wide event capture",
+      "cross-route focus/navigation behavior changes",
+      "site-wide scroll/provider engine or equivalent global behavior surface"
+    ],
+    "blockerSignal": "TECHNICAL_CONSTRAINT",
+    "rule": "Claude may change technical mechanism without approval only when visible FEEL and observable behavior remain unchanged and no material global behavior surface is introduced."
+  }
+}
