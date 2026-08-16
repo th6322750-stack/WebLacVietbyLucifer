@@ -1,9 +1,18 @@
 projectId: lacvietmedia-web
 repository: th6322750-stack/WebLacVietbyLucifer
-workflow: webbyLucifer-v2.2
-updatedAt: 2026-08-15
-phase: GD3_COMPLETE
-intakeComplete: true
+workflow: webbyLucifer-v3.1.0
+canonicalSkill:
+  repository: th6322750-stack/webbyLucifer
+  branch: main
+  commit: b805dfdab336ff3942c68bb0e20a9edb0a047a18
+  version: 3.1.0
+updatedAt: 2026-08-17T03:31:00+07:00
+phase: V3_1_IMPLEMENTATION_READY_MIGRATION
+taskMode: NEW_REDESIGN
+parentValidatedHandoff:
+  branch: chatgpt/gd3-git-self-contained-v1
+  head: 09ad912eb5728395bafce96025734e4ac0491047
+  status: VALIDATED_UNDER_PRE_V3_1_HANDOFF
 visualDirection: APPROVED
 visualAuthority:
   type: GIT_RESIDENT_APPROVED_PDF
@@ -15,41 +24,48 @@ visualAuthority:
   approvedPdfSha256: f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f
   pageMasterRoot: .webby/visual-master/gd1-v1/pages
   pageMasterCount: 14
-  reviewMirror: GOOGLE_DRIVE_OPTIONAL_ONLY
 designSystem:
   status: LOCKED
   revision: gd2-v1
   authority: ChatGPT
-gitSelfContainedHandoff:
-  status: COMPLETE
-  branch: chatgpt/gd3-git-self-contained-v1
-  cloneRepoMustBeSufficient: true
+transport:
+  mode: GIT
+  driveSessionProofRequired: false
   implementationRequiresGoogleDrive: false
-  binaryManifest: .webby/GIT_BINARY_MANIFEST.json
-  assetsRoot: assets/production
-  canonicalLogoSource: assets/production/brand/lac-viet-logo-source.png
-  coreValidation:
-    result: PASS
-    workflow: Validate GD3 Git Self-Contained Core
-    runId: 31866194058
-hardening:
-  status: COMPLETE
-  goal: ZERO_GUESSWORK_GIT_SELF_CONTAINED
+  runtimeRule: PROJECT_DESTINATION_PATHS_ARE_AUTHORITATIVE
+v31Readiness:
+  status: NOT_READY
+  intakeV31: INCOMPLETE_METADATA
+  assetCountPlan: MISSING
+  assetManifestV31: NOT_MIGRATED
+  highResMasters: NOT_PROVEN_PER_ASSET
+  iconInventory: MISSING
+  motionFeelAuthority: PARTIALLY_DECLARED_NEEDS_V31_SPLIT
+  motionMechanismAuthority: CLAUDE_PENDING_CONTRACT_UPDATE
+  deterministicSpec: CARRY_FORWARD_PENDING_VALIDATOR
+  userVisualApproval: PASS
 implementation:
   authority: Claude
-  status: READY
-  authorized: true
-  stage: GD4
-gd3:
-  status: COMPLETE
-  uiSetupComplete: true
-  userVisualApproval: true
+  status: BLOCKED
+  authorized: false
+  reason: CANONICAL_V3_1_IMPLEMENTATION_READY_UI_GATE_NOT_YET_PASSED
+nextActions:
+  - upgrade PROJECT_INTAKE with layout and environment readiness
+  - create and report ASSET_COUNT_PLAN
+  - migrate asset-manifest to v3.1 GIT transport model with destinationPath/runtime source
+  - build explicit icon inventory and real mappings
+  - prove authoritative high-resolution master source per required raster asset or produce missing masters
+  - split motion FEEL authority from Claude-owned MECHANISM and declare global-behavior-surface rule
+  - migrate HANDOFF and WEBBY_LOCK to protocol 3.1.0
+  - run canonical webbyLucifer v3.1 validator plus project hash checks
+  - only then set IMPLEMENTATION_READY_UI and authorize Claude
 policies:
-  previewIsSupremeVisualAuthority: true
-  userApprovalRequiredForMaterialVisualRevision: true
-  cloneRepoMustBeSufficient: true
-  noExternalBinaryDependencyForImplementation: true
+  userIsFinalAcceptanceAuthority: true
+  chatgptOwnsDesignUiAssetStateMotionFeel: true
+  claudeOwnsImplementationAndMotionMechanism: true
   noAutoMerge: true
   noVisualInventionByClaude: true
-  demoContentMustNotBecomeProductionClaim: true
-  driveIsReviewBackupOnly: true
+  noAssetSearchGenerationSubstitutionByClaude: true
+  rasterMustNotBeMeasuredToInventGeometry: true
+  driveIsStorageDeliveryNotRuntime: true
+  criticalFindingMustBeReported: true
