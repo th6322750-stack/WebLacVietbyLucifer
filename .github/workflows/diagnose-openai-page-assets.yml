@@ -1,0 +1,22 @@
+name: Diagnose OpenAI Brand Page Assets
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths: ['.github/workflows/diagnose-openai-page-assets.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fetch brand page HTML and extract likely asset URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 -A 'Mozilla/5.0' 'https://openai.com/brand/' -o /tmp/openai-brand.html
+          echo '=== CDN/ASSET URL CANDIDATES ==='
+          grep -Eo 'https?[^"'"'"'<> ]+' /tmp/openai-brand.html | sed 's/&amp;/\&/g' | grep -Ei 'openai|cdn|logo|wordmark|blossom|\.svg|\.png|\.webp' | sort -u | head -400 || true
+          echo '=== RELATIVE FILE CANDIDATES ==='
+          grep -Eo '[A-Za-z0-9_./?&=%:+-]+\.(svg|png|webp|jpg|jpeg)(\?[^"'"'"'<> ]*)?' /tmp/openai-brand.html | sort -u | head -400 || true
+          echo '=== KEYWORD CONTEXT ==='
+          grep -Ein 'wordmark|blossom|download logos|logo' /tmp/openai-brand.html | head -120 || true
