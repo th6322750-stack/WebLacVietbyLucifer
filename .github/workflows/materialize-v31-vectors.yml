@@ -50,7 +50,7 @@ jobs:
             cp "$src" "assets/production/vectors/ui/icon-${id}.svg"
           done
           test "$(find assets/production/vectors/ui -maxdepth 1 -type f -name 'icon-*.svg' | wc -l)" -eq 40
-      - name: Export 9 pinned Simple Icons brand marks
+      - name: Diagnose and export currently available Simple Icons brand marks
         shell: bash
         run: |
           set -euo pipefail
@@ -71,21 +71,25 @@ jobs:
             'brand-telegram': 'siTelegram'
           };
           const meta = {};
+          const missing = [];
           for (const [id, exportName] of Object.entries(wanted)) {
             const icon = icons[exportName];
             if (!icon || !icon.svg) {
-              console.error(`MISSING_SIMPLE_ICON=${exportName}`);
-              process.exit(1);
+              missing.push({id, exportName});
+              continue;
             }
             const svg = icon.svg.replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
             fs.writeFileSync(`../assets/production/vectors/brands/${id}.svg`, svg + '\n');
             meta[id] = { exportName, title: icon.title, slug: icon.slug, hex: icon.hex, sourceVersion: 'simple-icons@16.27.1' };
           }
-          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', sources:['simple-icons@16.27.1'], assets:meta}, null, 2) + '\n');
+          console.log('SIMPLE_ICONS_AVAILABLE=' + Object.keys(meta).join(','));
+          console.log('SIMPLE_ICONS_MISSING=' + missing.map(x => `${x.id}:${x.exportName}`).join(','));
+          fs.writeFileSync('../.webby/BRAND_VECTOR_METADATA.json', JSON.stringify({schemaVersion:1, protocolVersion:'3.1.0', sources:['simple-icons@16.27.1'], assets:meta, missingFromPinnedCurrentPackage:missing}, null, 2) + '\n');
+          if (missing.length) process.exit(2);
           NODE
           cd ..
-          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 9
       - name: Fetch official OpenAI brand package and select exact wordmark SVG
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
@@ -104,51 +108,18 @@ jobs:
             exit 1
           fi
           cp "${candidates[0]}" assets/production/vectors/brands/brand-openai-chatgpt.svg
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p = Path('.webby/BRAND_VECTOR_METADATA.json')
-          data = json.loads(p.read_text())
-          data.setdefault('sources', []).append('OpenAI official brand package: https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip')
-          data['assets']['brand-openai-chatgpt'] = {
-              'title': 'OpenAI official wordmark',
-              'sourceVersion': 'OpenAI-Partnership-Templates-2025',
-              'sourceUrl': 'https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip',
-              'selectionPolicy': 'exact unique SVG filename containing wordmark; no modification'
-          }
-          p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
-          PY
-          test "$(find assets/production/vectors/brands -maxdepth 1 -type f -name 'brand-*.svg' | wc -l)" -eq 10
       - name: Write vector source lock and checksums
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
           cat > .webby/VECTOR_SOURCE_LOCK.json <<'JSON'
-          {
-            "schemaVersion": 1,
-            "protocolVersion": "3.1.0",
-            "genericIcons": {
-              "source": "lucide-static",
-              "version": "1.28.0",
-              "license": "ISC",
-              "count": 40,
-              "destinationRoot": "assets/production/vectors/ui"
-            },
-            "brandMarks": {
-              "sources": [
-                {"source":"simple-icons","version":"16.27.1","count":9},
-                {"source":"OpenAI official brand package","version":"2025 partnership templates","count":1,"url":"https://cdn.openai.com/brand/OpenAI-Partnership-Templates-2025.zip"}
-              ],
-              "count": 10,
-              "destinationRoot": "assets/production/vectors/brands"
-            },
-            "runtimePolicy": "PROJECT_PATH",
-            "claudeMaySubstitute": false
-          }
+          {"schemaVersion":1,"protocolVersion":"3.1.0","status":"MATERIALIZED","genericIcons":{"source":"lucide-static","version":"1.28.0","count":40},"brandMarks":{"count":10},"runtimePolicy":"PROJECT_PATH","claudeMaySubstitute":false}
           JSON
           find assets/production/vectors -type f -name '*.svg' -print0 | sort -z | xargs -0 sha256sum > .webby/VECTOR_SHA256SUMS.txt
           test "$(wc -l < .webby/VECTOR_SHA256SUMS.txt)" -eq 50
       - name: Commit verified vector assets
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
@@ -156,9 +127,5 @@ jobs:
           git config user.name 'webbyLucifer-v3.1-bot'
           git config user.email 'webby-v31-bot@users.noreply.github.com'
           git add assets/production/vectors .webby/VECTOR_SOURCE_LOCK.json .webby/VECTOR_SHA256SUMS.txt .webby/BRAND_VECTOR_METADATA.json
-          if git diff --cached --quiet; then
-            echo 'NO_VECTOR_CHANGES'
-            exit 0
-          fi
           git commit -m 'webby(v3.1): add 50 pinned production vector assets'
           git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
