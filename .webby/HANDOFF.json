@@ -16,7 +16,7 @@
     "file": ".webby/PROJECT_INTAKE.json"
   },
   "assetPlan": {
-    "status": "PLANNED",
+    "status": "REPORTED",
     "file": ".webby/ASSET_COUNT_PLAN.json"
   },
   "assetManifest": {
@@ -28,7 +28,7 @@
   },
   "implementationReady": {
     "userVisualApproved": true,
-    "assetCountReported": false,
+    "assetCountReported": true,
     "assetsComplete": false,
     "highResMastersPass": false,
     "deliveryComplete": false,
@@ -55,6 +55,7 @@
     ".webby/typography.json",
     ".webby/responsive.json",
     ".webby/interactions.json",
+    ".webby/MOTION_FEEL_CONTRACT.json",
     ".webby/CONTENT_TRUTH.json",
     ".webby/IMPLEMENTATION_CONTRACT.json",
     ".webby/DATA_BACKEND_CONTRACT.json",
