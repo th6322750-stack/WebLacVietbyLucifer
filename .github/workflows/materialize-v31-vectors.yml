@@ -24,10 +24,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .tmp-v31-vectors
-          mkdir -p .tmp-v31-vectors
-          cd .tmp-v31-vectors
-          npm init -y >/dev/null 2>&1
+          rm -rf tmp-v31-vectors
+          mkdir -p tmp-v31-vectors
+          cd tmp-v31-vectors
+          printf '{"name":"webby-v31-vector-materializer","private":true}\n' > package.json
           npm install --no-save --ignore-scripts lucide-static@1.28.0 simple-icons@16.27.1
       - name: Export 40 Lucide SVG files
         shell: bash
@@ -40,7 +40,7 @@ jobs:
             map-pin send monitor-smartphone building code palette headset shopping-bag credit-card lightbulb search filter lock-keyhole sparkles award
           )
           for name in "${icons[@]}"; do
-            src=".tmp-v31-vectors/node_modules/lucide-static/icons/${name}.svg"
+            src="tmp-v31-vectors/node_modules/lucide-static/icons/${name}.svg"
             test -f "$src" || { echo "MISSING_LUCIDE_ICON=$name"; exit 1; }
             cp "$src" "assets/production/vectors/ui/icon-${name}.svg"
           done
@@ -52,7 +52,7 @@ jobs:
           mkdir -p assets/production/vectors/brands
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          import * as icons from './.tmp-v31-vectors/node_modules/simple-icons/index.js';
+          import * as icons from './tmp-v31-vectors/node_modules/simple-icons/index.js';
           const wanted = {
             'brand-facebook': 'siFacebook',
             'brand-tiktok': 'siTiktok',
@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .tmp-v31-vectors
+          rm -rf tmp-v31-vectors
           git config user.name 'webbyLucifer-v3.1-bot'
           git config user.email 'webby-v31-bot@users.noreply.github.com'
           git add assets/production/vectors .webby/VECTOR_SOURCE_LOCK.json .webby/VECTOR_SHA256SUMS.txt .webby/BRAND_VECTOR_METADATA.json
