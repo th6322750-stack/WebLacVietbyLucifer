@@ -1,0 +1,114 @@
+name: Close webby v3.1 Final Metadata
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - '.github/workflows/v31-close-final-metadata.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  close:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+
+      - name: Verify release evidence before closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          h=json.loads(Path('.webby/HANDOFF.json').read_text())
+          lock=json.loads(Path('.webby/WEBBY_LOCK.json').read_text())
+          receipt=json.loads(Path('.webby/FINAL_RELEASE_RECEIPT.json').read_text())
+          state=Path('.webby/PROJECT_STATE.yaml').read_text()
+          assert h['status']=='IMPLEMENTATION_READY_UI'
+          assert h['validation']['finalReadyValidator']=='PASS'
+          assert h['validation']['finalReleaseRunId']==31992604636
+          assert h['implementationAuthorization']['authorized'] is True
+          assert h['implementationAuthorization']['releaseHold'] is False
+          assert lock['validation']['finalImplementationReady']=='PASS'
+          assert lock['validation']['finalReleaseRunId']==31992604636
+          assert lock['implementationAuthorized'] is True
+          assert lock['releaseHold'] is False
+          assert receipt['status']=='PASS'
+          assert receipt['runId']==31992604636
+          assert receipt['validatedHead']=='17bfcae8f3b4892dd7c91eea126200e84ed8b9f3'
+          assert receipt['runtimeSha256']=='PASS_84_OF_84'
+          assert receipt['implementationRequiresGoogleDrive'] is False
+          assert 'finalReleaseValidator: PASS' in state
+          assert 'releaseHold: false' in state
+          print('PRE_CLOSURE_EVIDENCE_PASS')
+          PY
+
+      - name: Close marker and migration audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          Path('.webby/UI_SETUP_COMPLETE').write_text('''UI_SETUP_COMPLETE=true
+implementationAuthorized=true
+releaseHold=false
+branch=chatgpt/webby-v3.1-implementation-ready
+handoffId=lacvietmedia-webby-v3.1-migration
+protocolVersion=3.1.0
+taskMode=NEW_REDESIGN
+migrationStatus=IMPLEMENTATION_READY_UI
+userApprovalStatus=USER_APPROVED_FINAL_V1_BASELINE
+userApprovalStatement=DUYỆT GIAO DIỆN V1
+assetIntegratedApproval=USER_APPROVED_FINAL
+assetIntegratedApprovalStatement=DUYỆT ASSET V3.1
+assetIntegratedApprovalReceipt=.webby/USER_ASSET_APPROVAL_V31.json
+approvedPdf=.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf
+approvedPdfSha256=f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f
+logicalAssetCount=84
+assetManifest=.webby/asset-manifest.json
+runtimeAssetRoot=public/assets
+transportMode=GIT
+implementationRequiresGoogleDrive=false
+canonicalPreapprovalValidator=PASS
+candidateReadyValidator=PASS
+candidateReadyRunId=31992347483
+candidateReadyHead=c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be
+finalReleaseValidator=PASS
+finalReleaseRunId=31992604636
+finalReleaseHead=17bfcae8f3b4892dd7c91eea126200e84ed8b9f3
+finalReleaseReceipt=.webby/FINAL_RELEASE_RECEIPT.json
+blockers=NONE
+nextGate=POST_CLOSURE_EXACT_HEAD_VERIFICATION_THEN_CLAUDE_GD9
+''')
+          p=Path('.webby/V3_1_MIGRATION_AUDIT.json')
+          a=json.loads(p.read_text())
+          a['auditStatus']='IMPLEMENTATION_READY_UI_FINAL_RELEASE_PASS'
+          a['auditedAt']='2026-08-17T11:35:00+07:00'
+          g=a['v31GateAudit']
+          g['implementationReadyUi']=True
+          g['implementationAuthorized']=True
+          g['finalReleaseHold']=False
+          g['finalReleaseValidator']='PASS'
+          g['finalReleaseRunId']=31992604636
+          g['finalReleaseHead']='17bfcae8f3b4892dd7c91eea126200e84ed8b9f3'
+          g['onlyRemainingGate']='NONE_AFTER_POST_CLOSURE_EXACT_HEAD_VERIFICATION'
+          a['finalReleaseReceipt']='.webby/FINAL_RELEASE_RECEIPT.json'
+          a['nextGateWork']=['run exact-HEAD post-closure verification','if PASS and remote HEAD unchanged, hand GĐ9 to Claude']
+          p.write_text(json.dumps(a,ensure_ascii=False,indent=2)+'\n')
+          PY
+
+      - name: Commit metadata closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'webbyLucifer-v3.1-bot'
+          git config user.email 'webby-v31-bot@users.noreply.github.com'
+          git add .webby/UI_SETUP_COMPLETE .webby/V3_1_MIGRATION_AUDIT.json
+          git commit -m 'webby(v3.1): close final release metadata'
+          git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
