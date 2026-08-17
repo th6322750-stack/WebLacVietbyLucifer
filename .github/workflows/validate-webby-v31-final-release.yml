@@ -81,7 +81,8 @@ jobs:
           project=Path('.webby/PROJECT_STATE.yaml').read_text()
           claude=Path('.webby/CLAUDE_TASK.md').read_text()
 
-          assert visual['approval']['statement']=='DUYỆT GIAO DIỆN V1'
+          assert visual['approvalStatement']=='DUYỆT GIAO DIỆN V1'
+          assert visual['status']=='USER_APPROVED_FINAL'
           assert approval['statement']=='DUYỆT ASSET V3.1'
           assert approval['status']=='USER_APPROVED_FINAL'
           assert approval['logicalAssetCount']==84
@@ -173,7 +174,6 @@ jobs:
           pdf=Path('.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf')
           assert hashlib.sha256(pdf.read_bytes()).hexdigest()=='f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f'
 
-          # Active authority contradiction search. Historical archive and workflow source are not active implementation authority.
           active_paths=[
             Path('.webby/HANDOFF.json'),Path('.webby/WEBBY_LOCK.json'),Path('.webby/PROJECT_STATE.yaml'),
             Path('.webby/UI_SETUP_COMPLETE'),Path('.webby/PROJECT_INTAKE.json'),Path('.webby/V3_1_MIGRATION_AUDIT.json'),
