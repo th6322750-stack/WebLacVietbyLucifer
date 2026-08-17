@@ -6,7 +6,7 @@
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
   "consumedUiRevision": 4,
   "implementationBranch": "claude/gd9-implementation-v1",
-  "implementationCommit": "PENDING_FILL_AFTER_FIRST_COMMIT",
+  "implementationCommit": "20618ed13518109aaf4dc337b9504ae0bf68e929",
   "framework": {
     "choice": "Next.js 15 (App Router) + TypeScript + Tailwind CSS 3",
     "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Next.js App Router matches the route/slug structure in ROUTE_IMPLEMENTATION_MAP.json (static + dynamic [slug] routes), gives SEO metadata/sitemap/robots primitives out of the box, and Tailwind's theme config maps 1:1 onto tokens.json/typography.json/responsive.json without hand-rolled CSS."
