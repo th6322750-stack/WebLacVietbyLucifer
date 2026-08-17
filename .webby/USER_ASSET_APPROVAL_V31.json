@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "projectId": "lacvietmedia-web",
+  "branch": "chatgpt/webby-v3.1-implementation-ready",
+  "approvalType": "ASSET_INTEGRATED_VISUAL_APPROVAL",
+  "status": "USER_APPROVED_FINAL",
+  "statement": "DUYỆT ASSET V3.1",
+  "approvedAt": "2026-08-17T10:43:00+07:00",
+  "source": "CHAT_CONVERSATION",
+  "logicalAssetCount": 84,
+  "assetReviewBoard": "ASSET_REVIEW_BOARD_V31.md",
+  "assetManifest": ".webby/asset-manifest.json",
+  "runtimeRoot": "public/assets",
+  "transportMode": "GIT",
+  "implementationRequiresGoogleDrive": false,
+  "scope": "Approves the integrated v3.1 asset set for implementation against the already-approved V1 layout/hierarchy. Does not authorize redesign or asset substitution.",
+  "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18"
+}
