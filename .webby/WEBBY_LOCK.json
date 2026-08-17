@@ -4,7 +4,7 @@
   "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "taskMode": "NEW_REDESIGN",
-  "status": "VISUAL_DIRECTION_APPROVED_ASSET_COMPLETE_AWAITING_USER_REVIEW",
+  "status": "ASSET_COMPLETE_AWAITING_USER_APPROVAL",
   "branch": "chatgpt/webby-v3.1-implementation-ready",
   "uiRevision": 4,
   "uiCommit": "09ad912eb5728395bafce96025734e4ac0491047",
@@ -31,12 +31,21 @@
     "runtimeRoot": "public/assets",
     "manifest": ".webby/asset-manifest.json",
     "usageMap": ".webby/ASSET_USAGE_MAP.json",
-    "reviewBoard": "ASSET_REVIEW_BOARD_V31.md"
+    "reviewBoard": "ASSET_REVIEW_BOARD_V31.md",
+    "materialized": true,
+    "mappingComplete": true,
+    "iconInventoryComplete": true,
+    "highResMastersPass": true
+  },
+  "validation": {
+    "preapproval": "PASS",
+    "finalImplementationReady": "PENDING_USER_ASSET_APPROVAL"
   },
   "transport": {
     "mode": "GIT",
     "driveSessionProofRequired": false,
-    "driveRuntimeSourceForbiddenByDefault": true
+    "driveRuntimeSourceForbiddenByDefault": true,
+    "implementationRequiresGoogleDrive": false
   },
   "authorities": {
     "finalAcceptance": "USER",
@@ -76,10 +85,10 @@
     {"path": ".webby/CLAUDE_TASK.md", "required": true}
   ],
   "mustNot": [
-    "authorize Claude before v3.1 IMPLEMENTATION_READY_UI passes",
+    "authorize Claude before v3.1 IMPLEMENTATION_READY_UI passes on the latest remote HEAD",
     "use Google Drive as implementation/runtime dependency while transportMode=GIT",
-    "merge without Lucifer approval",
-    "redesign approved V1 during readiness migration",
+    "merge without user approval",
+    "redesign approved V1 during readiness hardening",
     "let Claude search/generate/substitute assets",
     "let Claude measure raster pixels to invent geometry",
     "let Claude invent missing approved icons",
