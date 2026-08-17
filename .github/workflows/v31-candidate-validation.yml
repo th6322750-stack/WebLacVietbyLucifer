@@ -1,0 +1,116 @@
+name: Validate webbyLucifer v3.1 Implementation-Ready Candidate
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - '.github/workflows/v31-candidate-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+      - name: Confirm exact triggering HEAD
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "validated_head=$GITHUB_SHA"
+      - name: Fetch exact canonical validator b805dfd
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/th6322750-stack/webbyLucifer/b805dfdab336ff3942c68bb0e20a9edb0a047a18/scripts/webby-validate.py' -o /tmp/webby-validate.py
+          echo 'CANONICAL_VALIDATOR_SOURCE_COMMIT=b805dfdab336ff3942c68bb0e20a9edb0a047a18'
+          sha256sum /tmp/webby-validate.py
+      - name: Run canonical validator
+        run: python /tmp/webby-validate.py .
+      - name: Adversarial candidate audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, hashlib, re
+
+          h=json.loads(Path('.webby/HANDOFF.json').read_text())
+          lock=json.loads(Path('.webby/WEBBY_LOCK.json').read_text())
+          receipt=json.loads(Path('.webby/USER_ASSET_APPROVAL_V31.json').read_text())
+          manifest=json.loads(Path('.webby/asset-manifest.json').read_text())
+          marker=Path('.webby/UI_SETUP_COMPLETE').read_text()
+
+          assert receipt['statement']=='DUYỆT ASSET V3.1'
+          assert receipt['status']=='USER_APPROVED_FINAL'
+          assert receipt['logicalAssetCount']==84
+          assert receipt['transportMode']=='GIT'
+          assert receipt['implementationRequiresGoogleDrive'] is False
+
+          assert h['protocolVersion']=='3.1.0'
+          assert h['taskMode']=='NEW_REDESIGN'
+          assert h['status']=='IMPLEMENTATION_READY_UI'
+          assert h['assetReview']['status']=='USER_APPROVED_FINAL'
+          assert h['assetReview']['approvalStatement']=='DUYỆT ASSET V3.1'
+          assert h['implementationReady']['assetIntegratedVisualApproved'] is True
+          for key in ['userVisualApproved','assetCountReported','assetsComplete','highResMastersPass','deliveryComplete','transportReadyForSession','mappingComplete','iconInventoryComplete','layoutModeLocked','typographyLocked','semanticGeometryLocked','responsiveLocked','statesLockedOrNA','motionFeelLockedOrNA','noBlockingSpecOrAssetGap']:
+            assert h['implementationReady'][key] is True, key
+
+          assert lock['skillVersion']=='3.1.0'
+          assert lock['canonicalSkillCommit']=='b805dfdab336ff3942c68bb0e20a9edb0a047a18'
+          assert lock['userAssetApproval']['statement']=='DUYỆT ASSET V3.1'
+          assert lock['implementationAuthorized'] is False
+          assert lock['assetAuthority']['logicalAssetCount']==84
+          assert lock['transport']['mode']=='GIT'
+          assert lock['transport']['implementationRequiresGoogleDrive'] is False
+
+          assert 'UI_SETUP_COMPLETE=false' in marker
+          assert 'implementationAuthorized=false' in marker
+          assert 'assetIntegratedApproval=USER_APPROVED_FINAL' in marker
+          assert 'candidateReadyValidator=PENDING' in marker
+
+          assets=manifest['assets']
+          assert len(assets)==84
+          assert len(manifest['iconInventory'])==40
+          ids=set(); paths=set()
+          for asset in assets:
+            aid=asset['id']
+            assert aid not in ids
+            ids.add(aid)
+            deliveries=asset['delivery']
+            assert isinstance(deliveries,list) and len(deliveries)==1
+            d=deliveries[0]
+            p=Path(d['destinationPath'].lstrip('/'))
+            assert p.exists(), (aid,p)
+            assert str(p) not in paths
+            paths.add(str(p))
+            assert hashlib.sha256(p.read_bytes()).hexdigest()==d['sha256'], aid
+          assert len(ids)==84 and len(paths)==84
+
+          # Active-tree stale guard, excluding explicit provenance archive and validation workflow source itself.
+          archive=Path('.webby/archive/pre-v31')
+          self_paths={Path('.github/workflows/v31-candidate-validation.yml'),Path('.github/workflows/audit-v31-hardening.yml')}
+          stale=['NOT_MIGRATED','INCOMPLETE_METADATA','PARTIALLY_DECLARED_NEEDS_V31_SPLIT','NOT_PROVEN_PER_ASSET']
+          violations=[]
+          for p in Path('.').rglob('*'):
+            if not p.is_file() or '.git' in p.parts or archive in p.parents or p in self_paths:
+              continue
+            try: text=p.read_text(encoding='utf-8')
+            except UnicodeDecodeError: continue
+            for token in stale:
+              if token in text: violations.append((str(p),token))
+            if re.search(r'(?:implementationRequiresGoogleDrive|driveSessionProofRequired)[=:\"\s]+true',text,re.I):
+              violations.append((str(p),'POSITIVE_DRIVE_DEP'))
+          assert not violations, violations
+
+          print('PASS_V31_IMPLEMENTATION_READY_UI_CANDIDATE')
+          print('logical_assets=84')
+          print('runtime_sha256=PASS_84_OF_84')
+          print('asset_approval=DUYỆT ASSET V3.1')
+          print('transport=GIT')
+          print('drive_dependency=false')
+          print('authorization_marker=false_pending_release')
+          PY
