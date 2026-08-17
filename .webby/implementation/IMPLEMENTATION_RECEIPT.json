@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "status": "IMPLEMENTED_PENDING_CHATGPT_QA",
+  "protocolVersion": "3.1.0",
+  "handoffId": "lacvietmedia-webby-v3.1-migration",
+  "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
+  "consumedUiRevision": 4,
+  "implementationBranch": "claude/gd9-implementation-v1",
+  "implementationCommit": "PENDING_FILL_AFTER_FIRST_COMMIT",
+  "framework": {
+    "choice": "Next.js 15 (App Router) + TypeScript + Tailwind CSS 3",
+    "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Next.js App Router matches the route/slug structure in ROUTE_IMPLEMENTATION_MAP.json (static + dynamic [slug] routes), gives SEO metadata/sitemap/robots primitives out of the box, and Tailwind's theme config maps 1:1 onto tokens.json/typography.json/responsive.json without hand-rolled CSS."
+  },
+  "routesImplemented": [
+    "/",
+    "/website",
+    "/support-mxh",
+    "/dich-vu-so",
+    "/du-an",
+    "/du-an/[slug]",
+    "/kien-thuc",
+    "/kien-thuc/[slug]",
+    "/gioi-thieu",
+    "/lien-he",
+    "/404 (not-found.tsx, minimal header/footer)"
+  ],
+  "componentsImplemented": [
+    "Container", "Section", "Button", "IconButton", "Chip", "Icon (CSS-mask, currentColor)",
+    "BrandMark", "Breadcrumbs", "SectionEyebrow/SectionHeading/Divider",
+    "SiteHeader (desktop nav + mobile drawer, focus trap, scroll lock, escape close)",
+    "SiteFooter (desktop 4-col + mobile accordion, minimal variant for 404)",
+    "ConsultationProvider/Modal (centered desktop / bottom-sheet mobile, focus trap, escape+backdrop close, restore focus)",
+    "ContactForm (client+server validation, inline errors, success/error states)",
+    "NewsletterForm", "ContactChannelCard",
+    "ServiceCard", "ProjectCard", "ArticleCard", "PricingCard", "TestimonialCard",
+    "FAQAccordion (single-open, aria-expanded)", "ArticleTOC (IntersectionObserver active-heading, sticky desktop/collapsible mobile)",
+    "MetricStrip (demo disclaimer)", "ProcessSteps", "CategoryFilter (URL state via router.push)", "TrustLogoRow",
+    "PageHero", "FinalCta"
+  ],
+  "backend": {
+    "leadSink": "LocalFileLeadSink (data/leads.json, gitignored) behind LeadSink interface — swappable for a CRM/email adapter without changing /api/leads contract",
+    "subscriberSink": "LocalFileSubscriberSink (data/subscribers.json, gitignored) behind SubscriberSink interface, deduplicates by email",
+    "endpoints": ["/api/leads (POST, zod validation, rate-limited)", "/api/newsletter (POST, zod validation, rate-limited)"],
+    "rateLimit": "in-memory fixed window, 5 req/60s per IP — documented as single-instance only in code comment",
+    "noSecretsCommitted": true
+  },
+  "assets": {
+    "logicalAssetCount": 84,
+    "usedExactly": "All image references resolve through src/lib/assets.ts, a closed map keyed by the exact asset ids in ASSET_USAGE_MAP.json/asset-manifest.json destinationPaths already materialized under public/assets. No asset was searched, generated, substituted, or index-mapped.",
+    "iconInventory": "All 39 pinned Lucide icons rendered via CSS mask (src/components/ui/Icon.tsx) so currentColor drives color per DESIGN_SYSTEM.md 10 without redrawing the SVGs; 10 brand marks rendered at native color via next/image, never recolored.",
+    "canonicalLogo": "public/assets/brand/lac-viet-logo.webp used as-is at all four reference sizes (header desktop/mobile, footer); never redrawn/recolored."
+  },
+  "contentTruth": {
+    "demoDataTagged": "All 12 projects, 3 testimonials and metric strips render a visible 'Dự án mẫu' badge / demo-disclaimer line per CONTENT_TRUTH.json demoOnly rule; ProjectCard/testimonial data carries demoOnly:true and is never presented as verified fact.",
+    "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD' in site-settings.ts and rendered as disabled/placeholder UI (Facebook channel card disabled, office address card shows a pending notice) rather than invented.",
+    "structuredData": "Organization/BreadcrumbList/Article JSON-LD only, no Review/AggregateRating, per SEO_CONTRACT.json."
+  },
+  "motionMechanism": {
+    "implementation": "CSS transitions/transforms for hover/focus/accordion; IntersectionObserver for ArticleTOC active heading; no global wheel/touch/key interception, no custom scroll engine.",
+    "reducedMotion": "globals.css disables animation/transition duration and forces scroll-behavior:auto under prefers-reduced-motion: reduce.",
+    "globalBehaviorSurfaceReported": false,
+    "note": "Escape-to-close keydown listeners in a11y-hooks.ts are scoped to open dialogs/drawers only (attached/detached with the open state), not a persistent global capture — did not trigger the mustReportBeforeBroadApplication clause."
+  },
+  "build": {
+    "typecheck": "PASS (tsc --noEmit, 0 errors)",
+    "lint": "PASS (eslint ., 0 errors/warnings after fixes)",
+    "build": "PASS (next build — 34/34 pages generated, all 11 routes + API routes + sitemap.xml + robots.txt)"
+  },
+  "tests": {
+    "functional": "PASS — 28/28 (tests/functional.spec.ts): every route returns <400 with a visible h1 and zero console errors; 404 for unknown paths; no horizontal overflow at mobile 390 on any route; mobile drawer focus-trap+Escape+focus-restore; consultation modal open/submit/success and Escape/focus-restore; contact form inline validation errors; FAQ aria-expanded toggle; category filter updates the URL; home renders cleanly under prefers-reduced-motion.",
+    "evidence": "PASS — 29/29 screenshots captured (tests/evidence.spec.ts), see playwrightEvidence below.",
+    "bugsFoundAndFixedDuringOwnQA": [
+      "tailwind.config.ts backgroundImage 'dark-hero' mixed a solid color into a background-image gradient list (invalid CSS — background-image cannot carry a trailing color layer); every dark hero section rendered with no background at all, making white hero text/CTAs unreadable on both viewports. Fixed by moving the solid color to bg-ink-950 applied alongside bg-dark-hero everywhere it's used.",
+      "SiteHeader used bg-ink-950/92 and several text-*/76 opacity modifiers; Tailwind's default opacity scale only generates modifiers in multiples of 5, so /92 and /76 silently produced no utility (transparent bg / default text color) instead of erroring. Fixed by moving to the nearest supported values (/90, /75).",
+      "Both were caught via computed-style inspection during evidence review, not visible in isolation from the code — a general risk worth flagging for any future non-multiple-of-5 opacity value."
+    ]
+  },
+  "playwrightEvidence": {
+    "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
+    "evidenceDirNote": "QA_ACCEPTANCE.json suggests '{implementationCommit}' as the folder name; the commit hash isn't known until after this receipt's first commit, so a stable branch-scoped name was used instead to avoid a rename/re-capture cycle. Maps 1:1 to implementationCommit above.",
+    "desktop1440": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
+    "mobile390": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
+    "states": ["mobile-menu-open", "consultation-modal (desktop+mobile)", "faq-open", "form-success", "form-error", "focus-visible"],
+    "statesNotCaptured": ["loading"],
+    "note": "'loading' omitted: the contact form's submit round-trip against the local file sink resolves in well under Playwright's screenshot timing window, so no deterministic loading frame could be captured without artificially delaying the API route purely for the screenshot. Functionally the disabled/'Đang gửi...' button state exists in ContactForm.tsx and NewsletterForm.tsx."
+  },
+  "visualParity": {
+    "method": "Built from SPEC_AND_MANIFEST (tokens/typography/responsive/section-map/placement-map/component-map) per the deterministic-UI rule — no raster pixel measurement was used to derive geometry.",
+    "referenceCheck": "The only available visual reference (.webby/visual-master/gd1-v1/pages/page-0X.webp) is an explicitly-labeled low-fidelity preview render (revision gd1-preview-v1, ~10-15KB per page), not a pixel-accurate 4K master — fine print and exact copy are not legible at that resolution. Section order/structure/tone were cross-checked against each page render and match; exact marketing copy was written to match the visible structure and CONTENT_TRUTH facts rather than transcribed pixel-by-pixel.",
+    "automatedDiff": "NOT_RUN — no tooling in this environment renders the approved PDF pages at master resolution for a pixel diff. Per QA_ACCEPTANCE.json this is evidence only; final visual acceptance is a ChatGPT/user manual review against the actual master regardless.",
+    "recommendation": "ChatGPT QA should compare .webby/implementation/evidence/gd9-implementation-v1 screenshots against the full-resolution approved PDF (not the committed preview render) for exact copy/geometry sign-off."
+  },
+  "blockers": [
+    {
+      "type": "BLOCKED_SPEC",
+      "detail": "facebookUrl (CONTENT_TRUTH.json 'pending') — Facebook channel card on /lien-he renders disabled with 'Sắp cập nhật' until a real URL is supplied.",
+      "resolutionOwner": "Lucifer/ChatGPT"
+    },
+    {
+      "type": "BLOCKED_SPEC",
+      "detail": "productionEmail and streetAddress are unverified per CONTENT_TRUTH.json; office address section on /lien-he shows a pending notice instead of inventing an address.",
+      "resolutionOwner": "Lucifer/ChatGPT"
+    },
+    {
+      "type": "NEED_ASSET",
+      "detail": "None — all 84 manifest assets were already materialized under public/assets and consumed exactly as mapped; no missing asset blocked implementation.",
+      "resolutionOwner": null
+    }
+  ],
+  "mustNotViolationsChecked": {
+    "noRedesign": true,
+    "noAssetSearchGenerationSubstitution": true,
+    "noRasterMeasurementForGeometry": true,
+    "noMissingIconInvention": true,
+    "noMerge": true,
+    "criticalFindingsDuringImplementation": "NONE"
+  },
+  "nextStep": "Push claude/gd9-implementation-v1, open a Draft PR against chatgpt/webby-v3.1-implementation-ready, hand back to ChatGPT for visual/contract QA + user acceptance. Do not merge."
+}
