@@ -90,7 +90,6 @@ jobs:
             assert hashlib.sha256(p.read_bytes()).hexdigest()==d['sha256'], aid
           assert len(ids)==84 and len(paths)==84
 
-          # Active-tree stale guard, excluding explicit provenance archive and validation workflow source itself.
           archive=Path('.webby/archive/pre-v31')
           self_paths={Path('.github/workflows/v31-candidate-validation.yml'),Path('.github/workflows/audit-v31-hardening.yml')}
           stale=['NOT_MIGRATED','INCOMPLETE_METADATA','PARTIALLY_DECLARED_NEEDS_V31_SPLIT','NOT_PROVEN_PER_ASSET']
@@ -114,3 +113,5 @@ jobs:
           print('drive_dependency=false')
           print('authorization_marker=false_pending_release')
           PY
+
+# Triggered after user asset approval was recorded and stale temporary files were removed.
