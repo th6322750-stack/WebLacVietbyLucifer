@@ -7,7 +7,7 @@ canonicalSkill:
   commit: b805dfdab336ff3942c68bb0e20a9edb0a047a18
   version: 3.1.0
 updatedAt: 2026-08-17T10:43:00+07:00
-phase: V3_1_IMPLEMENTATION_READY_CANDIDATE
+phase: IMPLEMENTATION_READY_UI
 taskMode: NEW_REDESIGN
 branch: chatgpt/webby-v3.1-implementation-ready
 visualDirection: APPROVED_V1_BASELINE
@@ -56,7 +56,7 @@ motion:
   mechanismStatus: IMPLEMENTATION_OWNED
   globalBehaviorSurfaceRule: REPORT_BEFORE_BROAD_APPLICATION
 v31Readiness:
-  status: IMPLEMENTATION_READY_UI_CANDIDATE
+  status: IMPLEMENTATION_READY_UI
   intakeV31: PASS
   assetCountPlan: REPORTED
   assetManifestV31: MATERIALIZED
@@ -66,24 +66,25 @@ v31Readiness:
   iconInventory: COMPLETE
   motionFeelAuthority: LOCKED
   motionMechanismAuthority: CLAUDE
-  deterministicSpec: PASS_PREAPPROVAL_VALIDATION
+  deterministicSpec: PASS
   userVisualApproval: PASS_V1_BASELINE
   assetIntegratedUserApproval: PASS_USER_APPROVED_FINAL
   canonicalPreapprovalValidator: PASS
-  candidateReadyValidator: PENDING
-  finalReleaseValidator: PENDING
+  candidateReadyValidator: PASS
+  candidateRunId: 31992347483
+  candidateHead: c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be
+  finalReleaseValidator: PENDING_MARKER_TRUE_RELEASE
 implementation:
   authority: Claude
   phase: GĐ9_IMPLEMENTATION
-  status: BLOCKED_PENDING_FINAL_VALIDATION
-  authorized: false
-  reason: USER_ASSET_APPROVAL_RECORDED; CANDIDATE_AND_FINAL_RELEASE_VALIDATION_PENDING
+  status: AUTHORIZED_WITH_FINAL_RELEASE_HOLD
+  authorized: true
+  releaseHold: true
+  reason: CANDIDATE_VALIDATION_PASS; WAITING_FOR_FINAL_MARKER_TRUE_RELEASE_WORKFLOW_ON_EXACT_LATEST_HEAD
 nextActions:
-  - run canonical webbyLucifer v3.1 candidate validator on the exact latest remote HEAD
-  - run active-authority and runtime SHA audit on the same exact HEAD
-  - only after candidate PASS set UI_SETUP_COMPLETE=true and implementationAuthorized=true
-  - run final marker-true release validation on the new exact latest remote HEAD
-  - re-check remote HEAD and only then hand GĐ9 to Claude
+  - run final marker-true release validation on the exact latest remote HEAD
+  - re-check remote HEAD equals the validated release HEAD
+  - only then hand GĐ9 to Claude
 policies:
   userIsFinalAcceptanceAuthority: true
   chatgptOwnsDesignUiAssetStateMotionFeel: true
