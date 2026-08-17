@@ -97,7 +97,8 @@
         "brand-tiktok",
         "brand-meta",
         "brand-youtube"
-      ]
+      ],
+      "clientLogoStrip": "support-client-logo-strip"
     },
     "/dich-vu-so": {
       "hero": "digital-hero-master",
@@ -164,7 +165,12 @@
         "brand-messenger",
         "brand-telegram"
       ],
-      "contactIcon": "icon-phone"
+      "contactIcon": "icon-mail",
+      "fourthChannel": {
+        "type": "EMAIL",
+        "state": "PENDING_DISABLED",
+        "rule": "productionEmail is TBD; render Email card disabled/Sắp cập nhật; do not invent an address."
+      }
     },
     "/404": {
       "icons": [

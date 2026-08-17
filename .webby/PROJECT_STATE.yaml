@@ -6,8 +6,8 @@ canonicalSkill:
   branch: main
   commit: b805dfdab336ff3942c68bb0e20a9edb0a047a18
   version: 3.1.0
-updatedAt: 2026-08-17T11:35:00+07:00
-phase: IMPLEMENTATION_READY_UI
+updatedAt: 2026-08-17T18:51:00+07:00
+phase: GD10_TARGETED_FIX_AUTHORITY_CORRECTED
 taskMode: NEW_REDESIGN
 branch: chatgpt/webby-v3.1-implementation-ready
 visualDirection: APPROVED_V1_BASELINE
@@ -26,8 +26,8 @@ designSystem:
   revision: gd2-v1
   authority: ChatGPT
 assetAuthority:
-  logicalAssetCount: 84
-  rasterLogicalCount: 34
+  logicalAssetCount: 85
+  rasterLogicalCount: 35
   vectorCount: 50
   runtimeRoot: public/assets
   manifest: .webby/asset-manifest.json
@@ -79,14 +79,15 @@ v31Readiness:
   finalReleaseReceipt: .webby/FINAL_RELEASE_RECEIPT.json
 implementation:
   authority: Claude
-  phase: GĐ9_IMPLEMENTATION
-  status: AUTHORIZED_FINAL_RELEASE_PASS
+  phase: GD10_TARGETED_FIX
+  status: AUTHORIZED_GD10_TARGETED_FIX
   authorized: true
   releaseHold: false
   reason: USER_APPROVALS_AND_WEBBY_V31_FINAL_RELEASE_PASS
 nextActions:
-  - run one exact-HEAD post-closure verification after this metadata closure
-  - if that verification succeeds and remote HEAD is unchanged, hand GĐ9 to Claude
+  - Claude must integrate the exact latest corrected handoff HEAD into PR #5
+  - Claude performs GD10 targeted fixes only and refreshes tests/evidence
+  - ChatGPT re-QA against approved V1 PDF before user acceptance
 policies:
   userIsFinalAcceptanceAuthority: true
   chatgptOwnsDesignUiAssetStateMotionFeel: true
@@ -97,3 +98,13 @@ policies:
   rasterMustNotBeMeasuredToInventGeometry: true
   driveIsReviewArchiveOnlyNotRuntime: true
   criticalFindingMustBeReported: true
+
+gd10AuthorityCorrection:
+  status: APPLIED
+  correctedAt: 2026-08-17T18:51:00+07:00
+  receipt: .webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json
+  baselineApprovedAssetCount: 84
+  correctedAssetCount: 85
+  supportClientLogoStrip: support-client-logo-strip
+  contactFourthChannel: EMAIL_PENDING_DISABLED
+  visualRevisionChanged: false

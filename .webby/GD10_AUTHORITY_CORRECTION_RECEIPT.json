@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "status": "AUTHORITY_CORRECTED_PENDING_WORKFLOW_EXACT_HEAD_VALIDATION",
+  "correctedAt": "2026-08-17T18:51:00+07:00",
+  "reason": "GD10 re-QA found two ChatGPT-owned authority gaps: Support client-logo row absent from the approved asset package and contact map used phone where V1 shows Email.",
+  "userInstruction": {
+    "source": "CHAT_CONVERSATION_AFTER_GD10_REQA_ROUND_2",
+    "newVisualRevisionRequested": false
+  },
+  "baseline": {
+    "handoffHeadBeforeCorrection": "4f5c9d2077cacf0ab4daf7caf2682d63e4704f2b",
+    "userVisualApproval": "DUYỆT GIAO DIỆN V1",
+    "userAssetApproval": "DUYỆT ASSET V3.1",
+    "baselineApprovedLogicalAssetCount": 84,
+    "historicalFinalReleaseReceipt": ".webby/FINAL_RELEASE_RECEIPT.json",
+    "historicalFinalReleaseMustRemainUnmodified": true
+  },
+  "correction": {
+    "correctedLogicalAssetCount": 85,
+    "rasterLogicalCount": 35,
+    "vectorCount": 50,
+    "supportClientLogoStrip": {
+      "id": "support-client-logo-strip",
+      "source": "exact approved V1 PDF page 5 extract",
+      "sha256": "a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691",
+      "width": 1685,
+      "height": 70,
+      "runtimePath": "public/assets/client-logos/support-client-logo-strip.png",
+      "classification": "DEMO",
+      "mustNotClaimVerifiedClients": true
+    },
+    "contactChannel": {
+      "approvedOrder": [
+        "Zalo",
+        "Messenger",
+        "Telegram",
+        "Email"
+      ],
+      "emailState": "PENDING_DISABLED",
+      "icon": "icon-mail",
+      "productionEmailStillTBD": true,
+      "mustNotInventEmail": true
+    },
+    "visualRevisionChanged": false
+  },
+  "validationContract": {
+    "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
+    "workflow": ".github/workflows/gd10-authority-correction.yml",
+    "workflowRunId": 32028478355,
+    "required": "Canonical validator plus 85 runtime SHA checks must pass after the correction package commit and after the validation-receipt closure commit."
+  }
+}

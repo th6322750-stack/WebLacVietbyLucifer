@@ -13,8 +13,8 @@
     "index": ".webby/MASTER_INDEX.json"
   },
   "assetAuthority": {
-    "logicalAssetCount": 84,
-    "rasterLogicalCount": 34,
+    "logicalAssetCount": 85,
+    "rasterLogicalCount": 35,
     "vectorCount": 50,
     "runtimeRoot": "public/assets",
     "manifest": ".webby/asset-manifest.json",
@@ -22,7 +22,8 @@
     "assetCountPlan": ".webby/ASSET_COUNT_PLAN.json",
     "rasterMetadata": ".webby/RASTER_ASSET_METADATA.json",
     "vectorSourceLock": ".webby/VECTOR_SOURCE_LOCK.json",
-    "iconInventory": ".webby/ICON_INVENTORY_PLAN.json"
+    "iconInventory": ".webby/ICON_INVENTORY_PLAN.json",
+    "gd10RasterAmendment": ".webby/GD10_RASTER_ASSET_AMENDMENT.json"
   },
   "canonicalLogo": {
     "source": "assets/production/brand/lac-viet-logo-source.png",
@@ -38,5 +39,6 @@
   "transportMode": "GIT",
   "implementationRequiresGoogleDrive": false,
   "driveRole": "REVIEW_BACKUP_ONLY",
-  "implementationRule": "Claude must implement from Git-resident approved visual masters, v3.1 asset-manifest destinationPath values and active contracts. External Drive retrieval is neither required nor permitted as an implementation dependency."
+  "implementationRule": "Claude must implement from Git-resident approved visual masters, v3.1 asset-manifest destinationPath values and active contracts. External Drive retrieval is neither required nor permitted as an implementation dependency.",
+  "gd10AuthorityCorrectionReceipt": ".webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json"
 }
