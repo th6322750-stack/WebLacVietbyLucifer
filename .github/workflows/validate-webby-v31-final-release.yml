@@ -1,0 +1,207 @@
+name: Validate webbyLucifer v3.1 Final Release
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - '.github/workflows/validate-webby-v31-final-release.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  final-release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+
+      - name: Confirm exact triggering remote HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          echo "trigger_sha=${GITHUB_SHA}"
+          echo "checkout_sha=${actual}"
+          test "$actual" = "$GITHUB_SHA"
+
+      - name: Verify Git object database
+        run: git fsck --full
+
+      - name: Fetch exact canonical validator b805dfd
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/th6322750-stack/webbyLucifer/b805dfdab336ff3942c68bb0e20a9edb0a047a18/scripts/webby-validate.py' -o /tmp/webby-validate.py
+          echo 'CANONICAL_VALIDATOR_SOURCE_COMMIT=b805dfdab336ff3942c68bb0e20a9edb0a047a18'
+          sha256sum /tmp/webby-validate.py
+
+      - name: Run canonical webbyLucifer v3.1 validator
+        run: python /tmp/webby-validate.py .
+
+      - name: Final adversarial authority and runtime audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, hashlib, re
+
+          CANONICAL='b805dfdab336ff3942c68bb0e20a9edb0a047a18'
+          BRANCH='chatgpt/webby-v3.1-implementation-ready'
+
+          required=[
+            '.webby/HANDOFF.json','.webby/WEBBY_LOCK.json','.webby/PROJECT_STATE.yaml',
+            '.webby/UI_SETUP_COMPLETE','.webby/USER_VISUAL_APPROVAL.json',
+            '.webby/USER_ASSET_APPROVAL_V31.json','.webby/asset-manifest.json',
+            '.webby/ASSET_USAGE_MAP.json','.webby/ICON_INVENTORY_PLAN.json',
+            '.webby/MOTION_FEEL_CONTRACT.json','.webby/MASTER_BINARY_AUTHORITY.json',
+            '.webby/ASSET_DRIVE_AUTHORITY.json','.webby/CLAUDE_TASK.md',
+            '.webby/qa/V31_CANDIDATE_VALIDATION.json',
+            '.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf'
+          ]
+          for raw in required:
+            assert Path(raw).exists(), ('MISSING_REQUIRED_AUTHORITY',raw)
+
+          assert not Path('.webby/NOOP').exists()
+          assert not Path('.webby/APPROVAL_PROCESS_NOTE.md').exists()
+          assert not Path('.github/workflows/v31-promote-user-asset-approval.yml').exists()
+
+          h=json.loads(Path('.webby/HANDOFF.json').read_text())
+          lock=json.loads(Path('.webby/WEBBY_LOCK.json').read_text())
+          approval=json.loads(Path('.webby/USER_ASSET_APPROVAL_V31.json').read_text())
+          visual=json.loads(Path('.webby/USER_VISUAL_APPROVAL.json').read_text())
+          manifest=json.loads(Path('.webby/asset-manifest.json').read_text())
+          authority=json.loads(Path('.webby/MASTER_BINARY_AUTHORITY.json').read_text())
+          drive=json.loads(Path('.webby/ASSET_DRIVE_AUTHORITY.json').read_text())
+          candidate=json.loads(Path('.webby/qa/V31_CANDIDATE_VALIDATION.json').read_text())
+          marker=Path('.webby/UI_SETUP_COMPLETE').read_text()
+          project=Path('.webby/PROJECT_STATE.yaml').read_text()
+          claude=Path('.webby/CLAUDE_TASK.md').read_text()
+
+          assert visual['approval']['statement']=='DUYỆT GIAO DIỆN V1'
+          assert approval['statement']=='DUYỆT ASSET V3.1'
+          assert approval['status']=='USER_APPROVED_FINAL'
+          assert approval['logicalAssetCount']==84
+          assert approval['transportMode']=='GIT'
+          assert approval['implementationRequiresGoogleDrive'] is False
+
+          assert candidate['result']=='PASS_IMPLEMENTATION_READY_UI_CANDIDATE'
+          assert candidate['runId']==31992347483
+          assert candidate['validatedHead']=='c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be'
+
+          assert h['protocolVersion']=='3.1.0'
+          assert h['taskMode']=='NEW_REDESIGN'
+          assert h['status']=='IMPLEMENTATION_READY_UI'
+          assert h['assetReview']['status']=='USER_APPROVED_FINAL'
+          assert h['assetReview']['approvalStatement']=='DUYỆT ASSET V3.1'
+          assert h['validation']['candidateReadyValidator']=='PASS'
+          assert h['validation']['candidateReadyRunId']==31992347483
+          assert h['implementationAuthorization']['authorized'] is True
+          assert h['implementationAuthorization']['releaseHold'] is True
+          r=h['implementationReady']
+          for key in ['userVisualApproved','assetIntegratedVisualApproved','assetCountReported','assetsComplete','highResMastersPass','deliveryComplete','transportReadyForSession','mappingComplete','iconInventoryComplete','layoutModeLocked','typographyLocked','semanticGeometryLocked','responsiveLocked','statesLockedOrNA','motionFeelLockedOrNA','noBlockingSpecOrAssetGap']:
+            assert r[key] is True, (key,r[key])
+
+          assert lock['skillVersion']=='3.1.0'
+          assert lock['canonicalSkillCommit']==CANONICAL
+          assert lock['status']=='LOCKED_IMPLEMENTATION_READY_UI'
+          assert lock['implementationAuthorized'] is True
+          assert lock['releaseHold'] is True
+          assert lock['userAssetApproval']['statement']=='DUYỆT ASSET V3.1'
+          assert lock['assetAuthority']['logicalAssetCount']==84
+          assert lock['assetAuthority']['rasterLogicalCount']==34
+          assert lock['assetAuthority']['vectorCount']==50
+          assert lock['transport']['mode']=='GIT'
+          assert lock['transport']['implementationRequiresGoogleDrive'] is False
+          assert lock['transport']['driveSessionProofRequired'] is False
+
+          assert 'UI_SETUP_COMPLETE=true' in marker
+          assert 'implementationAuthorized=true' in marker
+          assert 'releaseHold=true' in marker
+          assert 'assetIntegratedApproval=USER_APPROVED_FINAL' in marker
+          assert 'assetIntegratedApprovalStatement=DUYỆT ASSET V3.1' in marker
+          assert 'logicalAssetCount=84' in marker
+          assert 'transportMode=GIT' in marker
+          assert 'implementationRequiresGoogleDrive=false' in marker
+          assert 'candidateReadyValidator=PASS' in marker
+
+          assert 'status: IMPLEMENTATION_READY_UI' in project
+          assert 'assetIntegratedUserApproval: PASS_USER_APPROVED_FINAL' in project
+          assert 'authorized: true' in project
+          assert 'releaseHold: true' in project
+          assert 'candidateReadyValidator: PASS' in project
+
+          assert f'Handoff branch: `{BRANCH}`' in claude
+          assert '84 assets' in claude
+          assert 'GĐ9 — Implementation' in claude
+          assert 'DUYỆT ASSET V3.1' in claude
+          assert 'Google Drive is review/archive only' in claude
+
+          assert authority['assetAuthority']['logicalAssetCount']==84
+          assert authority['transportMode']=='GIT'
+          assert authority['implementationRequiresGoogleDrive'] is False
+          assert drive['status']=='DEPRECATED_FOR_IMPLEMENTATION'
+          assert drive['transportMode']=='GIT'
+          assert drive['implementationRequiresGoogleDrive'] is False
+          assert drive['driveSessionProofRequired'] is False
+
+          assert manifest['protocolVersion']=='3.1.0'
+          assert manifest['assetStore']['transportMode']=='GIT'
+          assert manifest['assetStore']['folderRef'] is None
+          assets=manifest['assets']
+          assert len(assets)==84
+          assert len(manifest['iconInventory'])==40
+          ids=set(); runtime_paths=set()
+          for asset in assets:
+            aid=asset['id']
+            assert aid not in ids, ('DUPLICATE_ASSET_ID',aid)
+            ids.add(aid)
+            deliveries=asset['delivery']
+            assert isinstance(deliveries,list) and len(deliveries)==1, ('DELIVERY_COUNT',aid)
+            d=deliveries[0]
+            p=Path(d['destinationPath'].lstrip('/'))
+            assert p.exists(), ('MISSING_RUNTIME',aid,str(p))
+            assert str(p) not in runtime_paths, ('DUPLICATE_RUNTIME_PATH',str(p))
+            runtime_paths.add(str(p))
+            actual=hashlib.sha256(p.read_bytes()).hexdigest()
+            assert actual==d['sha256'], ('RUNTIME_SHA_MISMATCH',aid)
+          assert len(ids)==84 and len(runtime_paths)==84
+
+          pdf=Path('.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf')
+          assert hashlib.sha256(pdf.read_bytes()).hexdigest()=='f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f'
+
+          # Active authority contradiction search. Historical archive and workflow source are not active implementation authority.
+          active_paths=[
+            Path('.webby/HANDOFF.json'),Path('.webby/WEBBY_LOCK.json'),Path('.webby/PROJECT_STATE.yaml'),
+            Path('.webby/UI_SETUP_COMPLETE'),Path('.webby/PROJECT_INTAKE.json'),Path('.webby/V3_1_MIGRATION_AUDIT.json'),
+            Path('.webby/MASTER_BINARY_AUTHORITY.json'),Path('.webby/ASSET_DRIVE_AUTHORITY.json'),Path('.webby/IMPLEMENTATION_ARTIFACT_PROTOCOL.md'),
+            Path('.webby/CLAUDE_TASK.md')
+          ]
+          forbidden=['NOT_MIGRATED','INCOMPLETE_METADATA','PARTIALLY_DECLARED_NEEDS_V31_SPLIT','NOT_PROVEN_PER_ASSET']
+          bad=[]
+          for p in active_paths:
+            text=p.read_text(encoding='utf-8')
+            for token in forbidden:
+              if token in text: bad.append((str(p),token))
+            if re.search(r'(?:implementationRequiresGoogleDrive|driveSessionProofRequired)[=:\"\s]+true',text,re.I):
+              bad.append((str(p),'POSITIVE_DRIVE_DEP'))
+          assert not bad, bad
+
+          print('PASS_V31_FINAL_RELEASE')
+          print('canonical_commit='+CANONICAL)
+          print('user_visual_approval=DUYỆT GIAO DIỆN V1')
+          print('user_asset_approval=DUYỆT ASSET V3.1')
+          print('logical_assets=84')
+          print('raster_assets=34')
+          print('vector_assets=50')
+          print('runtime_sha256=PASS_84_OF_84')
+          print('approved_pdf_sha256=PASS')
+          print('transport=GIT')
+          print('drive_implementation_dependency=false')
+          print('UI_SETUP_COMPLETE=true')
+          print('implementationAuthorized=true')
+          print('GĐ9_RELEASE_READY=true')
+          PY
