@@ -1,8 +1,12 @@
-# CLAUDE TASK — WEBBY v3.1 IMPLEMENTATION HANDOFF
+# CLAUDE TASK — WEBBY v3.1 GĐ9 IMPLEMENTATION HANDOFF
 
-> Current gate: **BLOCKED until `.webby/UI_SETUP_COMPLETE` says `UI_SETUP_COMPLETE=true` and `implementationAuthorized=true`.**
+> Current gate: **implementation marker is open, but a final release hold remains until ChatGPT supplies a SUCCESS marker-true release workflow for the exact latest remote HEAD.**
 
 This repository is prepared under canonical `webbyLucifer` **v3.1.0**, pinned to commit `b805dfdab336ff3942c68bb0e20a9edb0a047a18`.
+
+User approvals recorded in Git:
+- Visual V1: `DUYỆT GIAO DIỆN V1` → `.webby/USER_VISUAL_APPROVAL.json`
+- Integrated asset set: `DUYỆT ASSET V3.1` → `.webby/USER_ASSET_APPROVAL_V31.json`
 
 ## Mandatory repository / branch
 
@@ -15,14 +19,16 @@ Do **not** switch to an older handoff branch. Do **not** retrieve implementation
 
 ## Release gate before coding
 
-From a fresh checkout of the handoff branch:
+Before touching implementation code:
 
-1. Read `.webby/UI_SETUP_COMPLETE`.
-2. Read `.webby/HANDOFF.json` and `.webby/WEBBY_LOCK.json`.
-3. Run the repository validation command documented by the final v3.1 release receipt / validator workflow.
-4. Continue only when the marker and validator both report implementation readiness.
+1. `git fetch origin`
+2. Checkout/reset exactly to the final HEAD supplied by ChatGPT for `origin/chatgpt/webby-v3.1-implementation-ready`.
+3. Read `.webby/UI_SETUP_COMPLETE`; it must say `UI_SETUP_COMPLETE=true` and `implementationAuthorized=true`.
+4. Read `.webby/HANDOFF.json`, `.webby/WEBBY_LOCK.json`, `.webby/PROJECT_STATE.yaml`, and both user approval receipts.
+5. Confirm ChatGPT supplied a final release workflow run with `conclusion=success` whose `head_sha` equals the exact checked-out HEAD.
+6. If any SHA/state differs, **STOP and report the exact finding**. Do not infer readiness from an older run.
 
-If the marker is false, the validator fails, an asset path/hash is missing, or active authority files conflict, **STOP and report the exact finding**. Do not substitute or infer missing inputs.
+Candidate validation already passed on `c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be` (run `31992347483`), but that is not the final implementation HEAD; the final marker-true release run is authoritative for handoff.
 
 ## Active authority order
 
@@ -52,7 +58,7 @@ The approved PDF SHA-256 is `f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd7
 
 ## GĐ9 — Implementation
 
-When and only when the release gate is open, implement the approved website as one v3.1 implementation phase. The work includes these implementation workstreams, not separate legacy phases:
+When and only when the final release gate is proven on the exact HEAD, implement the approved website as one v3.1 implementation phase. The work includes:
 
 - visual/frontend reconstruction of all approved routes and responsive states;
 - UX, navigation, modal, forms, FAQ, TOC, filters, keyboard/focus and accessibility behavior;
