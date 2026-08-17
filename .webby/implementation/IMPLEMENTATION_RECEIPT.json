@@ -6,7 +6,7 @@
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
   "consumedUiRevision": 4,
   "implementationBranch": "claude/gd9-implementation-v1",
-  "implementationCommit": "PENDING_FILL_AFTER_FIX_COMMIT",
+  "implementationCommit": "73ffe4fdd93fb720b3d3a1a7c80eed2d9a43d3fb",
   "revisionHistory": [
     {
       "round": "GD9 initial implementation",
