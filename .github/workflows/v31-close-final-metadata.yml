@@ -55,37 +55,39 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import json
-          Path('.webby/UI_SETUP_COMPLETE').write_text('''UI_SETUP_COMPLETE=true
-implementationAuthorized=true
-releaseHold=false
-branch=chatgpt/webby-v3.1-implementation-ready
-handoffId=lacvietmedia-webby-v3.1-migration
-protocolVersion=3.1.0
-taskMode=NEW_REDESIGN
-migrationStatus=IMPLEMENTATION_READY_UI
-userApprovalStatus=USER_APPROVED_FINAL_V1_BASELINE
-userApprovalStatement=DUYỆT GIAO DIỆN V1
-assetIntegratedApproval=USER_APPROVED_FINAL
-assetIntegratedApprovalStatement=DUYỆT ASSET V3.1
-assetIntegratedApprovalReceipt=.webby/USER_ASSET_APPROVAL_V31.json
-approvedPdf=.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf
-approvedPdfSha256=f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f
-logicalAssetCount=84
-assetManifest=.webby/asset-manifest.json
-runtimeAssetRoot=public/assets
-transportMode=GIT
-implementationRequiresGoogleDrive=false
-canonicalPreapprovalValidator=PASS
-candidateReadyValidator=PASS
-candidateReadyRunId=31992347483
-candidateReadyHead=c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be
-finalReleaseValidator=PASS
-finalReleaseRunId=31992604636
-finalReleaseHead=17bfcae8f3b4892dd7c91eea126200e84ed8b9f3
-finalReleaseReceipt=.webby/FINAL_RELEASE_RECEIPT.json
-blockers=NONE
-nextGate=POST_CLOSURE_EXACT_HEAD_VERIFICATION_THEN_CLAUDE_GD9
-''')
+          lines=[
+            'UI_SETUP_COMPLETE=true',
+            'implementationAuthorized=true',
+            'releaseHold=false',
+            'branch=chatgpt/webby-v3.1-implementation-ready',
+            'handoffId=lacvietmedia-webby-v3.1-migration',
+            'protocolVersion=3.1.0',
+            'taskMode=NEW_REDESIGN',
+            'migrationStatus=IMPLEMENTATION_READY_UI',
+            'userApprovalStatus=USER_APPROVED_FINAL_V1_BASELINE',
+            'userApprovalStatement=DUYỆT GIAO DIỆN V1',
+            'assetIntegratedApproval=USER_APPROVED_FINAL',
+            'assetIntegratedApprovalStatement=DUYỆT ASSET V3.1',
+            'assetIntegratedApprovalReceipt=.webby/USER_ASSET_APPROVAL_V31.json',
+            'approvedPdf=.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf',
+            'approvedPdfSha256=f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f',
+            'logicalAssetCount=84',
+            'assetManifest=.webby/asset-manifest.json',
+            'runtimeAssetRoot=public/assets',
+            'transportMode=GIT',
+            'implementationRequiresGoogleDrive=false',
+            'canonicalPreapprovalValidator=PASS',
+            'candidateReadyValidator=PASS',
+            'candidateReadyRunId=31992347483',
+            'candidateReadyHead=c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be',
+            'finalReleaseValidator=PASS',
+            'finalReleaseRunId=31992604636',
+            'finalReleaseHead=17bfcae8f3b4892dd7c91eea126200e84ed8b9f3',
+            'finalReleaseReceipt=.webby/FINAL_RELEASE_RECEIPT.json',
+            'blockers=NONE',
+            'nextGate=POST_CLOSURE_EXACT_HEAD_VERIFICATION_THEN_CLAUDE_GD9'
+          ]
+          Path('.webby/UI_SETUP_COMPLETE').write_text('\n'.join(lines)+'\n')
           p=Path('.webby/V3_1_MIGRATION_AUDIT.json')
           a=json.loads(p.read_text())
           a['auditStatus']='IMPLEMENTATION_READY_UI_FINAL_RELEASE_PASS'
