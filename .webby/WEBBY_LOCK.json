@@ -4,7 +4,7 @@
   "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "taskMode": "NEW_REDESIGN",
-  "status": "ASSET_COMPLETE_AWAITING_USER_APPROVAL",
+  "status": "IMPLEMENTATION_READY_UI_CANDIDATE",
   "branch": "chatgpt/webby-v3.1-implementation-ready",
   "uiRevision": 4,
   "uiCommit": "09ad912eb5728395bafce96025734e4ac0491047",
@@ -14,7 +14,13 @@
     "status": "USER_APPROVED_FINAL_V1_BASELINE",
     "statement": "DUYỆT GIAO DIỆN V1",
     "approvedAt": "2026-08-14T21:49:00+07:00",
-    "assetIntegratedV31Review": "PENDING"
+    "assetIntegratedV31Review": "USER_APPROVED_FINAL"
+  },
+  "userAssetApproval": {
+    "receipt": ".webby/USER_ASSET_APPROVAL_V31.json",
+    "status": "USER_APPROVED_FINAL",
+    "statement": "DUYỆT ASSET V3.1",
+    "approvedAt": "2026-08-17T10:43:00+07:00"
   },
   "visualAuthority": {
     "pdfPath": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
@@ -39,8 +45,10 @@
   },
   "validation": {
     "preapproval": "PASS",
-    "finalImplementationReady": "PENDING_USER_ASSET_APPROVAL"
+    "candidateImplementationReady": "PENDING",
+    "finalImplementationReady": "PENDING"
   },
+  "implementationAuthorized": false,
   "transport": {
     "mode": "GIT",
     "driveSessionProofRequired": false,
@@ -64,6 +72,7 @@
     {"path": ".webby/RASTER_SHA256SUMS.txt", "required": true},
     {"path": "ASSET_REVIEW_BOARD_V31.md", "required": true},
     {"path": ".webby/USER_VISUAL_APPROVAL.json", "required": true},
+    {"path": ".webby/USER_ASSET_APPROVAL_V31.json", "required": true},
     {"path": ".webby/MASTER_INDEX.json", "required": true},
     {"path": ".webby/ROUTE_IMPLEMENTATION_MAP.json", "required": true},
     {"path": ".webby/section-map.json", "required": true},
