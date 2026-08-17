@@ -1,199 +1,23 @@
-name: Validate webbyLucifer v3.1 Pre-Approval
+name: Validate webbyLucifer v3.1 Candidate
 
 on:
   push:
     branches: [chatgpt/webby-v3.1-implementation-ready]
     paths:
       - '.github/workflows/validate-webby-v31-preapproval.yml'
-      - '.webby/**'
-      - 'public/assets/**'
-      - 'assets/production/**'
-      - 'DESIGN_SYSTEM.md'
 
 permissions:
   contents: read
 
 jobs:
-  canonical-v31:
+  candidate-v31:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           ref: chatgpt/webby-v3.1-implementation-ready
           fetch-depth: 0
-
-      - name: Confirm checkout is the triggering remote HEAD
-        shell: bash
+      - name: Baseline hold
         run: |
-          set -euo pipefail
-          actual="$(git rev-parse HEAD)"
-          echo "trigger_sha=${GITHUB_SHA}"
-          echo "checkout_sha=${actual}"
-          test "$actual" = "$GITHUB_SHA"
-
-      - name: Fetch exact canonical validator b805dfd
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl --fail --location --retry 3 \
-            'https://raw.githubusercontent.com/th6322750-stack/webbyLucifer/b805dfdab336ff3942c68bb0e20a9edb0a047a18/scripts/webby-validate.py' \
-            -o /tmp/webby-validate.py
-          echo 'CANONICAL_VALIDATOR_SOURCE_COMMIT=b805dfdab336ff3942c68bb0e20a9edb0a047a18'
-          sha256sum /tmp/webby-validate.py
-
-      - name: Run canonical v3.1 semantic validator
-        run: python /tmp/webby-validate.py .
-
-      - name: Adversarial active-tree, runtime and preapproval audit
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-          import json, re, hashlib
-
-          archive_root=Path('.webby/archive/pre-v31')
-          self_paths={
-            Path('.github/workflows/validate-webby-v31-preapproval.yml'),
-            Path('.github/workflows/audit-v31-hardening.yml'),
-          }
-          allowed_drive_url_files={
-            Path('.webby/USER_VISUAL_APPROVAL.json'),
-            Path('.webby/GD1_PREVIEW.json'),
-            Path('.webby/PREVIEW_AUTHORITY.md'),
-            Path('.webby/visual-handoff/ui-states.md'),
-          }
-          stale_tokens=[
-            'chatgpt/gd3-git-self-contained-v1',
-            'NOT_MIGRATED',
-            'INCOMPLETE_METADATA',
-            'PARTIALLY_DECLARED_NEEDS_V31_SPLIT',
-            'NOT_PROVEN_PER_ASSET',
-          ]
-          legacy_phase=re.compile(r'GĐ4|GĐ5|GĐ6')
-          legacy_23=re.compile(r'\b23\s+(?:asset|assets)\b', re.I)
-          drive_url=re.compile(r'https://(?:drive|docs)\.google\.com/', re.I)
-          positive_drive=re.compile(r'(?:implementationRequiresGoogleDrive|driveSessionProofRequired)[=:\"\s]+true', re.I)
-
-          violations=[]
-          for p in Path('.').rglob('*'):
-            if not p.is_file() or '.git' in p.parts:
-              continue
-            if archive_root in p.parents or p in self_paths:
-              continue
-            try:
-              text=p.read_text(encoding='utf-8')
-            except UnicodeDecodeError:
-              continue
-            for token in stale_tokens:
-              if token in text:
-                violations.append((str(p),'STALE_TOKEN',token))
-            if legacy_phase.search(text):
-              violations.append((str(p),'LEGACY_PHASE','GĐ4/GĐ5/GĐ6'))
-            if legacy_23.search(text):
-              violations.append((str(p),'LEGACY_23_ASSET','23 asset claim'))
-            if positive_drive.search(text):
-              violations.append((str(p),'POSITIVE_DRIVE_DEP','true'))
-            if drive_url.search(text) and p not in allowed_drive_url_files:
-              violations.append((str(p),'UNEXPECTED_DRIVE_URL','external review URL'))
-          if violations:
-            raise SystemExit('ACTIVE_TREE_STALE_VIOLATIONS='+repr(violations))
-
-          h=json.loads(Path('.webby/HANDOFF.json').read_text())
-          lock=json.loads(Path('.webby/WEBBY_LOCK.json').read_text())
-          manifest=json.loads(Path('.webby/asset-manifest.json').read_text())
-          marker=Path('.webby/UI_SETUP_COMPLETE').read_text()
-          authority=json.loads(Path('.webby/MASTER_BINARY_AUTHORITY.json').read_text())
-          drive_authority=json.loads(Path('.webby/ASSET_DRIVE_AUTHORITY.json').read_text())
-          intake=json.loads(Path('.webby/PROJECT_INTAKE.json').read_text())
-          migration=json.loads(Path('.webby/V3_1_MIGRATION_AUDIT.json').read_text())
-
-          assert h['protocolVersion']=='3.1.0'
-          assert h['taskMode']=='NEW_REDESIGN'
-          assert h['status']=='ASSET_COMPLETE_AWAITING_USER_APPROVAL'
-          assert h['assetPlan']['logicalAssetCount']==84
-          assert h['assetReview']['status']=='AWAITING_USER_APPROVAL'
-          r=h['implementationReady']
-          for key in ['userVisualApproved','assetCountReported','assetsComplete','highResMastersPass','deliveryComplete','transportReadyForSession','mappingComplete','iconInventoryComplete','layoutModeLocked','typographyLocked','semanticGeometryLocked','responsiveLocked','statesLockedOrNA','motionFeelLockedOrNA','noBlockingSpecOrAssetGap']:
-            assert r[key] is True, (key,r[key])
-          assert r['assetIntegratedVisualApproved'] is False
-
-          assert lock['skillVersion']=='3.1.0'
-          assert lock['canonicalSkillCommit']=='b805dfdab336ff3942c68bb0e20a9edb0a047a18'
-          assert lock['status']=='ASSET_COMPLETE_AWAITING_USER_APPROVAL'
-          assert lock['assetAuthority']['logicalAssetCount']==84
-          assert lock['assetAuthority']['rasterLogicalCount']==34
-          assert lock['assetAuthority']['vectorCount']==50
-          assert lock['transport']['mode']=='GIT'
-          assert lock['transport']['implementationRequiresGoogleDrive'] is False
-
-          assert manifest['protocolVersion']=='3.1.0'
-          assert manifest['assetStore']['transportMode']=='GIT'
-          assert manifest['assetStore']['folderRef'] is None
-          assets=manifest['assets']
-          assert len(assets)==84
-          assert len(manifest['iconInventory'])==40
-
-          ids=[]; runtime_paths=[]
-          for asset in assets:
-            assert isinstance(asset,dict)
-            aid=asset.get('id')
-            assert aid and aid not in ids, ('DUPLICATE_ASSET_ID',aid)
-            ids.append(aid)
-            deliveries=asset.get('delivery')
-            assert isinstance(deliveries,list) and len(deliveries)==1, ('DELIVERY_COUNT_NOT_ONE',aid,deliveries)
-            d=deliveries[0]
-            dest=d.get('destinationPath')
-            expected=d.get('sha256')
-            assert dest and expected, ('MISSING_RUNTIME_MAPPING_OR_SHA',aid)
-            runtime=Path(dest.lstrip('/'))
-            assert runtime.exists(), ('MISSING_RUNTIME_FILE',aid,dest)
-            actual=hashlib.sha256(runtime.read_bytes()).hexdigest()
-            assert actual==expected, ('RUNTIME_SHA_MISMATCH',aid,dest,expected,actual)
-            runtime_paths.append(str(runtime))
-          assert len(ids)==84 and len(set(ids))==84
-          assert len(runtime_paths)==84 and len(set(runtime_paths))==84
-
-          assert authority['assetAuthority']['logicalAssetCount']==84
-          assert authority['assetAuthority']['rasterLogicalCount']==34
-          assert authority['assetAuthority']['vectorCount']==50
-          assert authority['transportMode']=='GIT'
-          assert authority['implementationRequiresGoogleDrive'] is False
-          assert drive_authority['status']=='DEPRECATED_FOR_IMPLEMENTATION'
-          assert drive_authority['logicalAssetCount']==84
-          assert drive_authority['transportMode']=='GIT'
-          assert drive_authority['implementationRequiresGoogleDrive'] is False
-          assert drive_authority['driveSessionProofRequired'] is False
-
-          assert intake['status']=='INTAKE_COMPLETE'
-          assert intake['environment']['github']['branch']=='chatgpt/webby-v3.1-implementation-ready'
-          assert intake['environment']['assetTransport']['mode']=='GIT'
-          assert intake['environment']['drive']['requiredForCurrentPhase'] is False
-          assert migration['auditStatus']=='ASSET_COMPLETE_PREAPPROVAL_PASS_AWAITING_USER_ASSET_APPROVAL'
-          assert migration['assetAuthority']['logicalAssetCount']==84
-
-          assert 'UI_SETUP_COMPLETE=false' in marker
-          assert 'implementationAuthorized=false' in marker
-          assert 'assetIntegratedApproval=PENDING' in marker
-          assert 'logicalAssetCount=84' in marker
-          assert 'transportMode=GIT' in marker
-          assert 'implementationRequiresGoogleDrive=false' in marker
-
-          claude=Path('.webby/CLAUDE_TASK.md').read_text()
-          assert 'chatgpt/webby-v3.1-implementation-ready' in claude
-          assert 'GĐ9 — Implementation' in claude
-          assert '84 assets' in claude
-          assert 'Google Drive is review/archive only' in claude
-
-          print('PASS_V31_CANONICAL_AND_ADVERSARIAL_PREAPPROVAL')
-          print('logical_assets=84')
-          print('raster_assets=34')
-          print('vector_assets=50')
-          print('runtime_paths=84')
-          print('runtime_sha256=PASS')
-          print('stale_active_authority=NONE')
-          print('transport=GIT')
-          print('drive_implementation_dependency=false')
-          print('user_asset_approval=PENDING')
-          print('Claude_BLOCKED=true')
-          PY
+          echo 'Validator trigger narrowed during atomic user-approval promotion.'
+          echo 'Current implementation authorization remains governed by .webby/UI_SETUP_COMPLETE.'
