@@ -31,7 +31,7 @@ jobs:
           grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'NOT_MIGRATED|INCOMPLETE_METADATA|PARTIALLY_DECLARED_NEEDS_V31_SPLIT|NOT_PROVEN_PER_ASSET' . || true
           grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'drive\.google\.com|docs\.google\.com' . || true
           grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'implementationRequiresGoogleDrive[=:][[:space:]]*true|driveSessionProofRequired[=:][[:space:]]*true' . || true
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E '23[[:space:]-]+(asset|assets)|"logicalAssetCount"[[:space:]]*:[[:space:]]*23|"productionAssets"[^\n]*23' . || true
+          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E '(^|[^[:alnum:]_])23[[:space:]-]+(asset|assets)|"logicalAssetCount"[[:space:]]*:[[:space:]]*23|"productionAssets"[^\n]*23' . || true
 
       - name: Strict active-tree and authority invariants
         shell: bash
@@ -39,7 +39,7 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import json, re, hashlib
+          import json, re
 
           archive_root=Path('.webby/archive/pre-v31')
           audit_path=Path('.github/workflows/audit-v31-hardening.yml')
@@ -57,7 +57,7 @@ jobs:
             'NOT_PROVEN_PER_ASSET',
           ]
           legacy_phase=re.compile(r'GĐ4|GĐ5|GĐ6')
-          legacy_23=re.compile(r'23\s+(?:asset|assets)', re.I)
+          legacy_23=re.compile(r'\b23\s+(?:asset|assets)\b', re.I)
           drive_url=re.compile(r'https://(?:drive|docs)\.google\.com/', re.I)
           positive_drive=re.compile(r'(?:implementationRequiresGoogleDrive|driveSessionProofRequired)[=:\"\s]+true', re.I)
 
