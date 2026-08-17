@@ -6,18 +6,15 @@ canonicalSkill:
   branch: main
   commit: b805dfdab336ff3942c68bb0e20a9edb0a047a18
   version: 3.1.0
-updatedAt: 2026-08-17T03:31:00+07:00
-phase: V3_1_IMPLEMENTATION_READY_MIGRATION
+updatedAt: 2026-08-17T07:57:00+07:00
+phase: V3_1_IMPLEMENTATION_READY_HARDENING
 taskMode: NEW_REDESIGN
-parentValidatedHandoff:
-  branch: chatgpt/gd3-git-self-contained-v1
-  head: 09ad912eb5728395bafce96025734e4ac0491047
-  status: VALIDATED_UNDER_PRE_V3_1_HANDOFF
-visualDirection: APPROVED
+branch: chatgpt/webby-v3.1-implementation-ready
+visualDirection: APPROVED_V1_BASELINE
 visualAuthority:
-  type: GIT_RESIDENT_APPROVED_PDF
+  type: GIT_RESIDENT_APPROVED_PDF_PLUS_PAGE_MASTERS
   revision: gd1-v1
-  status: USER_APPROVED_FINAL
+  status: USER_APPROVED_FINAL_V1_BASELINE
   approvalReceipt: .webby/USER_VISUAL_APPROVAL.json
   approvedAt: 2026-08-14T21:49:00+07:00
   approvedPdfPath: .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf
@@ -28,37 +25,60 @@ designSystem:
   status: LOCKED
   revision: gd2-v1
   authority: ChatGPT
+assetAuthority:
+  logicalAssetCount: 84
+  rasterLogicalCount: 34
+  vectorCount: 50
+  runtimeRoot: public/assets
+  manifest: .webby/asset-manifest.json
+  usageMap: .webby/ASSET_USAGE_MAP.json
+  reviewBoard: ASSET_REVIEW_BOARD_V31.md
+  materializationStatus: PASS
+  highResMasters: PASS
+  delivery: PASS
+  mapping: PASS
+  iconInventory: COMPLETE
 transport:
   mode: GIT
   driveSessionProofRequired: false
   implementationRequiresGoogleDrive: false
   runtimeRule: PROJECT_DESTINATION_PATHS_ARE_AUTHORITATIVE
+motion:
+  feelAuthority: ChatGPT
+  feelContract: .webby/MOTION_FEEL_CONTRACT.json
+  feelStatus: LOCKED
+  mechanismAuthority: Claude
+  mechanismStatus: IMPLEMENTATION_OWNED
+  globalBehaviorSurfaceRule: REPORT_BEFORE_BROAD_APPLICATION
 v31Readiness:
-  status: NOT_READY
-  intakeV31: INCOMPLETE_METADATA
-  assetCountPlan: MISSING
-  assetManifestV31: NOT_MIGRATED
-  highResMasters: NOT_PROVEN_PER_ASSET
-  iconInventory: MISSING
-  motionFeelAuthority: PARTIALLY_DECLARED_NEEDS_V31_SPLIT
-  motionMechanismAuthority: CLAUDE_PENDING_CONTRACT_UPDATE
-  deterministicSpec: CARRY_FORWARD_PENDING_VALIDATOR
-  userVisualApproval: PASS
+  status: AWAITING_USER_ASSET_INTEGRATED_APPROVAL
+  intakeV31: PASS
+  assetCountPlan: REPORTED
+  assetManifestV31: MATERIALIZED
+  highResMasters: PASS
+  deliveryComplete: PASS
+  mappingComplete: PASS
+  iconInventory: COMPLETE
+  motionFeelAuthority: LOCKED
+  motionMechanismAuthority: CLAUDE
+  deterministicSpec: PASS_PREAPPROVAL_VALIDATION
+  userVisualApproval: PASS_V1_BASELINE
+  assetIntegratedUserApproval: PENDING
+  canonicalPreapprovalValidator: PASS
 implementation:
   authority: Claude
+  phase: GĐ9_IMPLEMENTATION
   status: BLOCKED
   authorized: false
-  reason: CANONICAL_V3_1_IMPLEMENTATION_READY_UI_GATE_NOT_YET_PASSED
+  reason: USER_ASSET_V3_1_APPROVAL_AND_FINAL_IMPLEMENTATION_READY_VALIDATION_PENDING
 nextActions:
-  - upgrade PROJECT_INTAKE with layout and environment readiness
-  - create and report ASSET_COUNT_PLAN
-  - migrate asset-manifest to v3.1 GIT transport model with destinationPath/runtime source
-  - build explicit icon inventory and real mappings
-  - prove authoritative high-resolution master source per required raster asset or produce missing masters
-  - split motion FEEL authority from Claude-owned MECHANISM and declare global-behavior-surface rule
-  - migrate HANDOFF and WEBBY_LOCK to protocol 3.1.0
-  - run canonical webbyLucifer v3.1 validator plus project hash checks
-  - only then set IMPLEMENTATION_READY_UI and authorize Claude
+  - user reviews ASSET_REVIEW_BOARD_V31.md and approves the integrated v3.1 asset set
+  - record the user asset approval receipt
+  - set handoff status to IMPLEMENTATION_READY_UI only after approval
+  - run canonical webbyLucifer v3.1 validator on the new remote HEAD
+  - run active-authority stale-state audit on the same remote HEAD
+  - only after both pass set UI_SETUP_COMPLETE=true and implementationAuthorized=true
+  - re-check remote HEAD and final release gate before handing GĐ9 to Claude
 policies:
   userIsFinalAcceptanceAuthority: true
   chatgptOwnsDesignUiAssetStateMotionFeel: true
@@ -67,5 +87,5 @@ policies:
   noVisualInventionByClaude: true
   noAssetSearchGenerationSubstitutionByClaude: true
   rasterMustNotBeMeasuredToInventGeometry: true
-  driveIsStorageDeliveryNotRuntime: true
+  driveIsReviewArchiveOnlyNotRuntime: true
   criticalFindingMustBeReported: true
