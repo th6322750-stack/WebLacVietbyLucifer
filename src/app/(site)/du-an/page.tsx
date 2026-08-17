@@ -8,7 +8,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { ProjectCard } from "@/components/content/ProjectCard";
 import { CategoryFilter } from "@/components/content/CategoryFilter";
 import { FinalCta } from "@/components/layout/FinalCta";
-import { projects } from "@/content/projects";
+import { getVisibleProjects } from "@/content/projects";
 import { assetPath } from "@/lib/assets";
 import { pageMetadata } from "@/lib/seo";
 
@@ -21,7 +21,8 @@ export const metadata = pageMetadata({
 // Fixed taxonomy per approved master (page-07) — not derived only from current demo data,
 // so Landing Page/UI-UX chips exist even before a demo project is tagged with them.
 const categories = ["Website", "Social", "Digital Services", "Landing Page", "UI/UX"];
-const featuredCaseStudy = projects[0]!;
+const visibleProjects = getVisibleProjects();
+const featuredCaseStudy = visibleProjects[0]!;
 
 export default async function ProjectsPage({
   searchParams,
@@ -30,7 +31,7 @@ export default async function ProjectsPage({
 }) {
   const { category } = await searchParams;
   const active = category && categories.includes(category) ? category : "all";
-  const filtered = active === "all" ? projects : projects.filter((p) => p.category === active);
+  const filtered = active === "all" ? visibleProjects : visibleProjects.filter((p) => p.category === active);
 
   return (
     <>

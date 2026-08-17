@@ -8,12 +8,25 @@
   "consumedUiRevision": 4,
   "implementationBranch": "claude/gd9-implementation-v1",
   "implementationCommit": "337035f51418b744573837d95580524bef085786",
+  "implementationCommitNote": "Legacy field, kept for continuity with round-2 history only. It is NOT the current PR HEAD — see round3Commits below for the authoritative, explicitly-labeled commit hashes as requested in re-QA round 3 item 9.",
+  "round3Commits": {
+    "codeEvidenceCommit": "PENDING_FILL_AFTER_COMMIT_1",
+    "codeEvidenceCommitNote": "The commit containing all round-3 code, content, and re-captured evidence changes (see fixLogRound3). This value is filled into the receipt by a small follow-up commit, since a commit cannot contain its own hash.",
+    "finalPrHead": "PENDING_FILL_AFTER_COMMIT_2",
+    "finalPrHeadNote": "The commit that fills in codeEvidenceCommit above IS this finalPrHead commit itself — again, unknowable from inside its own content. The exact, authoritative SHA for both values is stated in the PR #5 comment posted immediately after push and can be verified independently with `git log --oneline -3` on claude/gd9-implementation-v1. There are no commits after finalPrHead for this round."
+  },
   "revisionHistory": [
     { "round": "GD9 initial implementation", "commit": "56884cc", "status": "SUPERSEDED" },
     { "round": "GD10 fix round 1", "commit": "50421fd", "status": "SUPERSEDED_BY_ROUND_2", "note": "Fixed the original 15 blocking defect groups." },
     {
       "round": "GD10 fix round 2 (authority correction integration)",
-      "note": "Merged chatgpt/webby-v3.1-implementation-ready@476c38f (85-asset authority correction) via `git merge --no-ff`, then executed .webby/CLAUDE_TASK.md's 9 targeted fixes plus the 10-item re-QA round 2 comment. See fixLogRound2 below."
+      "commit": "adb6bff",
+      "status": "SUPERSEDED_BY_ROUND_3",
+      "note": "Merged chatgpt/webby-v3.1-implementation-ready@476c38f (85-asset authority correction) via `git merge --no-ff`, then executed .webby/CLAUDE_TASK.md's 9 targeted fixes plus the 10-item re-QA round 2 comment. See fixLogRound2 below. Its confidenceNotes.knownIdentityUnification tradeoff was REJECTED by ChatGPT re-QA round 3 and reversed — see fixLogRound3."
+    },
+    {
+      "round": "GD10 fix round 3 (identity de-unification + route-fixtures)",
+      "note": "Reversed round 2's grid/detail identity unification per ChatGPT's explicit correction (dedicated detail-only master assets already exist and were simply mis-mapped in round 2), fixed 2 PDF transcription errors, and fixed 5 additional asset/dataset mapping defects. See fixLogRound3 below. See round3Commits above for exact hashes."
     }
   ],
   "authorityCorrectionIntegrated": {
@@ -40,7 +53,7 @@
   "pdfMasterRendered": {
     "tool": "PyMuPDF (fitz), 3x zoom full pages + 8x-10x zoom crops for card-level transcription, all 14 pages of .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
     "shaVerified": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f — matches WEBBY_LOCK.json pinned hash",
-    "usage": "Round 2 re-rendered and re-cropped page-05/06/07/08/09/11/12 specifically to transcribe exact demo dataset identities the round-1 fix had invented instead of transcribed."
+    "usage": "Round 2 re-rendered and re-cropped page-05/06/07/08/09/11/12 specifically to transcribe exact demo dataset identities the round-1 fix had invented instead of transcribed. Round 3 re-cropped page-07 at 12x zoom to fix 2 transcription errors and confirmed page-10/page-11's detail visuals are visually distinct compositions from the page-07/page-08 grid thumbnails, which is what motivated reversing round 2's identity unification."
   },
   "fixLogRound2": [
     { "item": "CLAUDE_TASK.md #1 / re-QA #1", "scope": "/du-an dataset", "fix": "Replaced the entirely invented 12-project dataset with titles/categories transcribed from page-07 at 8x zoom (e.g. 'Chiến dịch Social Media Chuỗi Cafe LUMI', 'SEO Tổng Thể Evie Smart', 'Quảng cáo Google Ads Ecom - Shinlala'). Body-copy paragraphs beyond title/category remain demo reconstructions — see confidenceNotes below." },
@@ -53,14 +66,27 @@
     { "item": "CLAUDE_TASK.md #8 / re-QA #9", "scope": "CSS regression", "fix": "Found and fixed a *new* text-white/76 (Tailwind's opacity scale only covers multiples of 5 — same bug class documented from round 1) introduced in round 1's own /kien-thuc dark-newsletter-card fix. Fixed to /75. Re-audited every bg-/text-/border-/ring-*/[0-9]+ opacity modifier in src/ this round (grep across the full tree) — all other values are multiples of 5; no further instances found." },
     { "item": "CLAUDE_TASK.md #9 / re-QA #10", "scope": "Re-verification", "fix": "typecheck/lint/build clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-run against the new dataset/copy; receipt updated (this file); commit pushed; PR kept Draft, not merged. Re-QA #10's point about no independent CI status check on the HEAD is accurate and unaddressed — this repo has no CI workflow wired to run these checks on push; only local execution + committed evidence + this receipt attest to the results." }
   ],
+  "fixLogRound3": [
+    { "item": "re-QA round 3, comment 5316582319, item 1", "scope": "/du-an dataset", "fix": "Reversed the round-2 'The Maison'/'An Phát' unification. `src/content/projects.ts` visible list restored to page-07's exact 12 entries (The Maison back as entry #1 with its own +165%/+70%/+30%/35% banner stats); 'An Phát' re-added as a 13th `hidden: true` entry (own durationLabel/completedLabel/resultMetrics, resolvable only via `/du-an/website-bat-dong-san-an-phat`). Added `getVisibleProjects()` helper; `/du-an` grid/featured-banner now source from it instead of the raw array." },
+    { "item": "re-QA round 3, item 1 (cont.)", "scope": "/kien-thuc dataset", "fix": "Same reversal for the SEO article slot: grid entry restored to page-08's 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu' (article-cover-05); '10 yếu tố SEO quan trọng giúp website lên top Google' re-added as a `hidden: true` entry with its full 10-section body, resolvable only via direct slug. Added `getVisibleArticles()` helper; `/kien-thuc` featured/grid now source from it." },
+    { "item": "re-QA round 3, item 2", "scope": "PDF transcription accuracy", "fix": "Re-cropped page-07 at 12x zoom and corrected two transcription errors carried since round 2: 'Au Phú House' → 'Website Nội Thất An Phú Home' (project #5), and 'Chiến dịch Tết Trang Canfia' → 'Chiến dịch Tết 2024 Thời Trang Canifa' (project #8)." },
+    { "item": "re-QA round 3, item 3", "scope": "/website project showcase", "fix": "Was filtering the global (now 12-entry) projects array by category=Website, which regressed to only 3 cards after the round-3 dataset restoration (Maison/An Phú Home/Lakeside Retreat) instead of page-03's own distinct 4-card set with page-specific captions. Fixed with a new `websiteProjectShowcase` fixture in `src/content/route-fixtures.ts` (An Phát Real Estate / GreenMart Vietnam / Isuu Education / Dr. Wellness Clinic, reusing project-cover-01..04) rendered via the new `ProjectPreviewCard` component, which links to `/du-an` generally rather than a specific — potentially mismatched — detail slug." },
+    { "item": "re-QA round 3, item 4", "scope": "Home project cards", "fix": "Was rendering `projects.slice(0, 4)` (real /du-an identities) instead of page-03's own distinct shorter card labels. Fixed with a new `homeProjectShowcase` fixture (Website Bất Động Sản / Website Nội Thất / Website Giáo Dục / Landing Page Dịch Vụ) rendered via `ProjectPreviewCard`." },
+    { "item": "re-QA round 3, item 5", "scope": "/kien-thuc category filter order", "fix": "Category chips were derived from article insertion order instead of the master's fixed page-08 order. Hardcoded `categories = [\"Website\",\"TikTok\",\"Facebook\",\"AI\",\"SEO\",\"Marketing\"]`." },
+    { "item": "re-QA round 3, item 6", "scope": "/kien-thuc/[slug] asset mapping", "fix": "The hidden SEO detail article's header was rendering `article.coverAssetId` (resolves to article-cover-05, the magnifying-glass grid thumbnail) instead of ASSET_USAGE_MAP.json's authority-mapped `article-seo-hero-master`. Related-articles aside used a same-category filter, which returned empty (the hidden article has no visible same-category siblings) instead of the 3 fixed authority-mapped preview titles. Fixed: `headerImageId = article.hidden ? \"article-seo-hero-master\" : article.coverAssetId`; new `seoArticleRelatedPreview` fixture (3 fixed titles/dates, article-cover-01..03) rendered via new `ArticlePreviewCard` component when `article.hidden`, falling back to the original same-category `Link` rendering otherwise." },
+    { "item": "re-QA round 3, item 7", "scope": "/du-an/[slug] related projects", "fix": "Used a same-category filter instead of ASSET_USAGE_MAP.json's deterministic project-cover-01..04 preview set. Fixed with `relatedProjectPreview` fixture (The Maison / LUMI / Nha Khoa Việt Smile / Master UX captions) rendered via `ProjectPreviewCard`, filtered only to exclude the current project by title." },
+    { "item": "re-QA round 3, item 8", "scope": "Regression re-audit", "fix": "Re-ran the Tailwind opacity-modifier grep audit (`-{color}/{number}` patterns) across all of `src/` after the round-3 edits — no new non-multiple-of-5 values introduced." },
+    { "item": "re-QA round 3, item 9", "scope": "Commit-hash ambiguity", "fix": "Round 2's `implementationCommit` field pointed at 337035f, but a small follow-up commit (adb6bff) landed after it and became the actual PR HEAD — an unlabeled mismatch ChatGPT flagged. This round adds an explicit `round3Commits` block (see top of file) with separately labeled `codeEvidenceCommit` and `finalPrHead` fields, both filled in via a second commit immediately after the first (the same hash-cannot-contain-itself constraint applies), with the exact values additionally restated verbatim in the PR #5 comment posted after push so there is no ambiguity between what the receipt file can self-reference and what the actual HEAD is." },
+    { "item": "re-QA round 3, item 10", "scope": "Re-verification", "fix": "tsc --noEmit / eslint . / next build (36/36 pages — up from 34, +2 for the two new hidden detail-only routes) all clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-captured against the restored dataset and route-fixtures; every changed page visually spot-checked against the rendered PDF master before commit." }
+  ],
   "confidenceNotes": {
     "highConfidence": "Route hero headlines (item quoted verbatim from re-QA comments and independently re-verified by cropping the exact PDF region at 8x zoom), section/card counts, project/article TITLES and CATEGORY tags, the SEO article's 10-item TOC, and case-study meta/stats (+68%/+45%/-40%, +165%/+70%/+30%/35%) — all read clearly at 3x-8x zoom.",
     "lowerConfidence": "Project/article body-copy PARAGRAPHS beyond title/category/excerpt-length text remain demo reconstructions consistent with each identity's category, not verbatim transcriptions — the source card body text on this GD1 preview render is below reliable legibility even at 8x zoom (small sans-serif text inside a screenshot-of-a-screenshot). If ChatGPT has access to the original higher-resolution design file, exact body copy would need a second pass against that source rather than this PDF.",
-    "knownIdentityUnification": [
-      "/du-an project #1: page-07's grid literally reads 'Website Bất Động Sản The Maison'; page-10's detail-page-template mockup for the same real-estate case study reads 'Website Bất Động Sản An Phát' with its own distinct meta/stats. Only 12 unique project-cover assets exist (identity-bound, cannot be reused across a 13th distinct project without violating the asset cross-context-reuse rule), so these could not both get their own dedicated entry. Unified to 'An Phát' for the grid+detail slot (using page-10's meta since detail-page fidelity was the more specific, repeated ask) while keeping page-07's own banner stats (+165%/+70%/+30%/35%) for the separate featured-case-study spotlight banner, since the master itself presents different numbers in those two contexts.",
-      "/kien-thuc article 'SEO' slot: page-08's grid reads 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu'; page-11's article-detail-template mockup reads '10 yếu tố SEO quan trọng giúp website lên top Google' with its own 10-item TOC. Only 7 unique article-cover assets exist, same constraint as above. Unified to the page-11 identity for that slot for the same reason."
-    ],
-    "recommendation": "If ChatGPT/Lucifer want the grid literally showing 'The Maison'/'SEO Onpage là gì?' AND the detail pages showing 'An Phát'/'10 yếu tố SEO...' as fully distinct entries, two additional identity-bound cover assets (project-cover-13, article-cover-08) would need to be produced/approved — Claude cannot generate or substitute them per the asset rules."
+    "identityUnificationReversedInRound3": [
+      "Round 2 unified '/du-an' project #1 (page-07 grid: 'Website Bất Động Sản The Maison') with the page-10 detail-template mockup ('Website Bất Động Sản An Phát') into one entry, reasoning it avoided needing a 13th project-cover asset. ChatGPT re-QA round 3 explicitly rejected this: '/du-an/[slug]' already has its OWN dedicated detail visual (project-detail-device-master, distinct from the project-cover-NN grid thumbnails), so grid and detail were never the same asset slot and never needed unifying. Reversed: page-07's original 12-entry grid (The Maison restored as entry #1) is now `src/content/projects.ts`'s visible list via `getVisibleProjects()`; page-10's 'An Phát' identity now lives as its own `hidden: true` entry (resolvable only by direct slug for the detail-page evidence route, excluded from all grids/filters).",
+      "Round 2 unified the '/kien-thuc' SEO slot (page-08 grid: 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu') with the page-11 detail-template mockup ('10 yếu tố SEO quan trọng giúp website lên top Google') for the same stated reason. Same rejection applies: '/kien-thuc/[slug]' has its own dedicated detail visual (article-seo-hero-master, distinct from article-cover-NN). Reversed the same way via a `hidden: true` entry in `src/content/articles.ts` plus `getVisibleArticles()`.",
+      "No new identity-bound assets (project-cover-13, article-cover-08) were created or needed to achieve this — confirmed by the user's explicit round-3 instruction forbidding them. The fix was purely a data-modeling correction (the 'hidden' field + getVisibleProjects/getVisibleArticles) plus a new `route-fixtures.ts` module for the several OTHER places (home, /website, related-projects, related-articles) where the master reuses the 4 grid cover assets across pages with page-specific captions as lightweight decorative previews, not full content entities — see fixLogRound3."
+    ]
   },
   "componentsImplemented": [
     "Container", "Section", "Button", "IconButton", "Chip", "Icon (CSS-mask, currentColor)",
@@ -73,7 +99,8 @@
     "ServiceCard (icon or brand mark)", "ProjectCard", "ArticleCard", "PricingCard (price prop)", "TestimonialCard (demoOnly badge)",
     "FAQAccordion (single-open, aria-expanded)", "ArticleTOC (IntersectionObserver active-heading, sticky desktop/collapsible mobile)",
     "MetricStrip (per-metric demoOnly)", "ProcessSteps", "CategoryFilter (URL state via router.push)", "TrustLogoRow",
-    "PageHero (optional inline metrics)", "FinalCta"
+    "PageHero (optional inline metrics)", "FinalCta",
+    "ProjectPreviewCard, ArticlePreviewCard (round 3 — decorative route-fixture cards, link to general listing not a specific slug)"
   ],
   "backend": {
     "leadSink": "LocalFileLeadSink (data/leads.json, gitignored) behind LeadSink interface — swappable for a CRM/email adapter without changing /api/leads contract",
@@ -94,7 +121,7 @@
     "canonicalLogo": "public/assets/brand/lac-viet-logo.webp used as-is at all reference sizes; never redrawn/recolored."
   },
   "contentTruth": {
-    "demoDataTagged": "12 projects (demoOnly:true), 7 articles (implicitly demo per CONTENT_TRUTH — no fabricated verified-fact framing), 3 home testimonials (demoOnly prop → 'Minh hoạ' badge), the support client-logo strip (visible demo disclosure caption), and every MetricStrip metric (demoOnly:true, required field) are tagged as demo/illustrative, never presented as verified fact.",
+    "demoDataTagged": "12 visible projects + 1 hidden detail-only project (demoOnly:true), 7 visible articles + 1 hidden detail-only article (implicitly demo per CONTENT_TRUTH — no fabricated verified-fact framing), 3 home testimonials (demoOnly prop → 'Minh hoạ' badge), the support client-logo strip (visible demo disclosure caption), and every MetricStrip metric (demoOnly:true, required field) are tagged as demo/illustrative, never presented as verified fact.",
     "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD'. Facebook Messenger and Email channel cards on /lien-he both render disabled ('Sắp cập nhật') rather than link to/display fabricated data.",
     "structuredData": "Organization/BreadcrumbList/Article JSON-LD only, no Review/AggregateRating, per SEO_CONTRACT.json."
   },
@@ -106,12 +133,12 @@
   "build": {
     "typecheck": "PASS (tsc --noEmit, 0 errors)",
     "lint": "PASS (eslint ., 0 errors/warnings)",
-    "build": "PASS (next build — 34/34 pages generated, all 11 routes + API routes + sitemap.xml + robots.txt)"
+    "build": "PASS (next build — 36/36 pages generated, up from 34; +2 pages are the two hidden detail-only routes (/du-an/website-bat-dong-san-an-phat, /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google) restored as distinct entries in round 3)"
   },
   "tests": {
-    "functional": "PASS — 28/28 (tests/functional.spec.ts), re-run clean after round-2 fixes (evidence route slugs updated to website-bat-dong-san-an-phat / 10-yeu-to-seo-quan-trong-giup-website-len-top-google).",
-    "evidence": "PASS — 30/30 screenshots re-captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the deterministic 'loading' state.",
-    "noIndependentCi": "Confirmed accurate per re-QA #10: this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These results are local-execution + committed-evidence + this receipt only, not a remote status check attached to the HEAD commit."
+    "functional": "PASS — 28/28 (tests/functional.spec.ts), re-run clean after round-3 fixes.",
+    "evidence": "PASS — 30/30 screenshots re-captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the deterministic 'loading' state, against the restored dataset and route-fixtures.",
+    "noIndependentCi": "Confirmed accurate per re-QA #10 (round 2, still true in round 3): this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These results are local-execution + committed-evidence + this receipt only, not a remote status check attached to the HEAD commit."
   },
   "playwrightEvidence": {
     "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
@@ -119,17 +146,17 @@
     "desktop1440": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
     "mobile390": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
     "states": ["mobile-menu-open", "consultation-modal (desktop+mobile)", "faq-open", "form-success", "form-error", "focus-visible", "loading"],
-    "note": "du-an-slug now captures /du-an/website-bat-dong-san-an-phat; kien-thuc-slug now captures /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google."
+    "note": "du-an-slug now captures /du-an/website-bat-dong-san-an-phat; kien-thuc-slug now captures /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google. Round 3: same two slugs, but underlying identity/related-content mapping corrected — re-captured in full."
   },
   "visualParity": {
     "method": "Built from SPEC_AND_MANIFEST per the deterministic-UI rule — no raster pixel measurement was used to derive geometry.",
     "referenceCheck": "Round 2 re-rendered and re-cropped the pinned PDF (PyMuPDF, 3x full-page + 8-10x targeted crops) specifically for card-level dataset transcription on pages 05, 06, 07, 08, 09, 11, 12 — resolving re-QA's core complaint that round 1 had structure/counts right but identities/copy invented.",
     "knownDeviations": [
       "Home process steps: 6 (not 5) — re-QA round 2 explicitly confirmed this was correct and superseded its own round-1 comment; no longer open.",
-      "See confidenceNotes.knownIdentityUnification above for the /du-an and /kien-thuc detail-vs-grid identity unification tradeoff — flagged for explicit ChatGPT confirmation, not silently resolved."
+      "The round-2 /du-an and /kien-thuc identity-unification tradeoff was reversed in round 3 per ChatGPT's explicit correction — see confidenceNotes.identityUnificationReversedInRound3. No longer open."
     ],
     "automatedDiff": "NOT_RUN — no pixel-diff tooling in this environment; manual page-by-page/crop-level comparison against the rendered PDF was used instead.",
-    "recommendation": "ChatGPT QA should confirm the identity-unification tradeoff in confidenceNotes, and re-compare body-copy paragraphs against a higher-resolution source if pixel-exact card text (not just title/category) is required for final sign-off."
+    "recommendation": "Body-copy paragraphs beyond title/category/excerpt length remain demo reconstructions (see confidenceNotes.lowerConfidence); re-compare against a higher-resolution source if pixel-exact card text is required for final sign-off."
   },
   "blockers": [
     {
@@ -141,11 +168,13 @@
       "type": "BLOCKED_SPEC",
       "detail": "streetAddress remains unverified; no address is displayed anywhere rather than inventing one.",
       "resolutionOwner": "Lucifer/ChatGPT"
-    },
+    }
+  ],
+  "blockersResolvedInRound3": [
     {
       "type": "NEED_ASSET",
-      "detail": "Two identity-bound cover assets (a 13th project cover, an 8th article cover) would be needed to give the /du-an 'The Maison' vs 'An Phát' and /kien-thuc 'SEO Onpage là gì?' vs '10 yếu tố SEO...' identities fully separate grid+detail entries instead of the unified tradeoff described in confidenceNotes.",
-      "resolutionOwner": "ChatGPT (asset authority)"
+      "detail": "Round 2 believed a 13th project cover and 8th article cover would be needed to give grid and detail identities fully separate entries. Round 3 determined this was never actually needed — /du-an/[slug] and /kien-thuc/[slug] already use their own dedicated detail-only master assets (project-detail-device-master, article-seo-hero-master), fully independent of the grid project-cover-NN/article-cover-NN thumbnails. Resolved via a data-modeling fix (hidden field + route-fixtures.ts), zero new assets, per the user's explicit round-3 instruction forbidding project-cover-13/article-cover-08.",
+      "resolutionOwner": "Claude (self-resolved, no ChatGPT asset needed)"
     }
   ],
   "mustNotViolationsChecked": {
@@ -156,5 +185,5 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "Push claude/gd9-implementation-v1 (round-2 fix + authority-correction merge commits), keep PR #5 Draft, hand back to ChatGPT for re-QA. Do not merge."
+  "nextStep": "Push claude/gd9-implementation-v1 (round-3 fix commits — see round3Commits for exact hashes), keep PR #5 Draft, hand back to ChatGPT for re-QA round 4. Do not merge."
 }

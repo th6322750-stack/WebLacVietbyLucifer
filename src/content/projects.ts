@@ -1,36 +1,29 @@
 import type { Project } from "@/lib/types";
 
-// Titles/categories transcribed from .webby/visual-master/gd1-v1/pages/page-07.webp (grid) and
-// page-10.webp (detail template) at 3x-8x zoom — GD10 re-QA round 2 required exact identities,
-// not invented ones. Body-copy paragraphs beyond title/category/meta are demo reconstructions
-// consistent with each category (source card body text is below reliable legibility even at
-// 8x zoom on this GD1 preview render); see IMPLEMENTATION_RECEIPT.json for the explicit
-// confidence note. All entries are demoOnly per CONTENT_TRUTH.json — never render as fact.
-//
-// Known deviation: page-07's grid card #1 literally reads "The Maison"; page-10's detail-page
-// template mockup for the same real-estate case study reads "An Phát" with its own meta/stats.
-// Unified to "An Phát" for slot 1 (grid + detail) so list→detail navigation is internally
-// consistent, keeping page-07's own banner stats (+165%/+70%/+30%/35%) for the separate
-// featured-case-study spotlight banner and page-10's stats (+68%/+45%/-40%) for the detail
-// page's own Results tab, since the master shows different numbers in those two contexts.
+// Titles/categories transcribed from .webby/visual-master/gd1-v1/pages/page-07.webp (grid) at
+// 8x-12x zoom. GD10 re-QA round 3 corrected two transcription errors from round 2 ("Au Phú
+// House" -> "An Phú Home", "Trang Canfia" -> "2024 Thời Trang Canifa") and confirmed the grid
+// card #1 and the page-07 featured-case-study banner are both "The Maison" — do not unify it
+// with the page-10 detail-template project below. Body-copy paragraphs beyond
+// title/category/meta remain demo reconstructions (source card body text is below reliable
+// legibility even at high zoom); see IMPLEMENTATION_RECEIPT.json confidenceNotes. All entries
+// are demoOnly per CONTENT_TRUTH.json — never render as fact.
 export const projects: Project[] = [
   {
-    slug: "website-bat-dong-san-an-phat",
-    title: "Website Bất Động Sản An Phát",
+    slug: "website-bat-dong-san-the-maison",
+    title: "Website Bất Động Sản The Maison",
     category: "Website",
-    summary: "An Phát là sàn giao dịch bất động sản với hàng trăm dự án và sản phẩm, phục vụ nhu cầu tìm kiếm nhà ở đa dạng của khách hàng.",
+    summary: "Website bất động sản chuẩn trải nghiệm cao cấp, giúp khách hàng tìm kiếm và khám phá dự án dễ dàng hơn.",
     demoOnly: true,
     heroAssetId: "project-cover-01",
-    durationLabel: "20 ngày",
-    completedLabel: "05/2024",
-    challenge: "Website cũ tải chậm, giao diện cũ, khó quản lý và không tối ưu trên di động, khiến khách hàng khó tìm kiếm sản phẩm phù hợp.",
-    solution: "Thiết kế lại giao diện hiện đại, sang trọng; xây dựng tìm kiếm nâng cao với bộ lọc thông minh; tối ưu tốc độ tải và chuẩn SEO; quản trị nội dung dễ dàng và linh hoạt hơn.",
+    solution: "Thiết kế trải nghiệm cao cấp từ UX chiến lược, thiết kế UI/UX đến vận hành trưng bày dự án trực tuyến.",
     resultMetrics: [
-      { value: "+68%", label: "Tăng lượng truy cập" },
-      { value: "+45%", label: "Tăng tỷ lệ chuyển đổi" },
-      { value: "-40%", label: "Giảm tỷ lệ thoát trang" },
+      { value: "+165%", label: "Khách hàng truy cập" },
+      { value: "+70%", label: "Thời gian trên trang" },
+      { value: "+30%", label: "Tương tác" },
+      { value: "35%", label: "Chi phí quảng cáo" },
     ],
-    technology: ["Next.js", "Bộ lọc tìm kiếm nâng cao", "SEO on-page"],
+    technology: ["Next.js", "Trải nghiệm cao cấp"],
   },
   {
     slug: "chien-dich-social-media-chuoi-cafe-lumi",
@@ -66,10 +59,10 @@ export const projects: Project[] = [
     technology: ["Next.js", "Form tối ưu chuyển đổi"],
   },
   {
-    slug: "website-noi-that-au-phu-house",
-    title: "Website Nội Thất Au Phú House",
+    slug: "website-noi-that-an-phu-home",
+    title: "Website Nội Thất An Phú Home",
     category: "Website",
-    summary: "Website showroom nội thất Au Phú House, tối ưu trải nghiệm duyệt sản phẩm và tra cứu mẫu.",
+    summary: "Website showroom nội thất An Phú Home, tối ưu trải nghiệm duyệt sản phẩm và tra cứu mẫu.",
     demoOnly: true,
     heroAssetId: "project-cover-05",
     solution: "Tối ưu trải nghiệm người dùng với bộ lọc sản phẩm trực quan và gallery tải nhanh.",
@@ -99,10 +92,10 @@ export const projects: Project[] = [
     technology: ["SEO kỹ thuật", "Tối ưu nội dung"],
   },
   {
-    slug: "chien-dich-tet-trang-canfia",
-    title: "Chiến dịch Tết Trang Canfia",
+    slug: "chien-dich-tet-2024-thoi-trang-canifa",
+    title: "Chiến dịch Tết 2024 Thời Trang Canifa",
     category: "Social",
-    summary: "Chiến dịch nội dung mùa Tết cho thương hiệu thời trang Canfia trên mạng xã hội.",
+    summary: "Chiến dịch nội dung mùa Tết 2024 cho thương hiệu thời trang Canifa trên mạng xã hội.",
     demoOnly: true,
     heroAssetId: "project-cover-08",
     solution: "Xây dựng bộ nội dung chủ đề Tết đồng bộ trên các kênh, kết hợp ưu đãi giới hạn thời gian.",
@@ -153,8 +146,37 @@ export const projects: Project[] = [
     results: ["Giảm chi phí quảng cáo trên mỗi đơn hàng", "Tăng doanh thu từ kênh quảng cáo"],
     technology: ["Google Ads", "Theo dõi chuyển đổi"],
   },
+  // Detail-template fixture only (page-10) — resolvable by slug for /du-an/[slug] evidence,
+  // deliberately `hidden` from the /du-an grid/filters per GD10 re-QA round 3 item 2: the
+  // approved master keeps this as a distinct detail-page identity from "The Maison" above,
+  // both legitimately using project-cover-01 in different mockup contexts (grid vs. detail
+  // template) rather than needing a 13th identity-bound asset.
+  {
+    slug: "website-bat-dong-san-an-phat",
+    title: "Website Bất Động Sản An Phát",
+    category: "Website",
+    summary: "An Phát là sàn giao dịch bất động sản với hàng trăm dự án và sản phẩm, phục vụ nhu cầu tìm kiếm nhà ở đa dạng của khách hàng.",
+    demoOnly: true,
+    hidden: true,
+    heroAssetId: "project-cover-01",
+    durationLabel: "20 ngày",
+    completedLabel: "05/2024",
+    challenge: "Website cũ tải chậm, giao diện cũ, khó quản lý và không tối ưu trên di động, khiến khách hàng khó tìm kiếm sản phẩm phù hợp.",
+    solution: "Thiết kế lại giao diện hiện đại, sang trọng; xây dựng tìm kiếm nâng cao với bộ lọc thông minh; tối ưu tốc độ tải và chuẩn SEO; quản trị nội dung dễ dàng và linh hoạt hơn.",
+    resultMetrics: [
+      { value: "+68%", label: "Tăng lượng truy cập" },
+      { value: "+45%", label: "Tăng tỷ lệ chuyển đổi" },
+      { value: "-40%", label: "Giảm tỷ lệ thoát trang" },
+    ],
+    technology: ["Next.js", "Bộ lọc tìm kiếm nâng cao", "SEO on-page"],
+  },
 ];
 
 export function getProjectBySlug(slug: string) {
   return projects.find((p) => p.slug === slug);
+}
+
+/** Grid/filter-visible projects only — excludes detail-template-only fixtures. */
+export function getVisibleProjects() {
+  return projects.filter((p) => !p.hidden);
 }

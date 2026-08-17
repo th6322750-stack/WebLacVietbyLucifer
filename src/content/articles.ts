@@ -6,11 +6,12 @@ import type { Article } from "@/lib/types";
 // reconstructions (source card/body copy is below reliable legibility on this GD1 preview
 // render at any zoom tried); see IMPLEMENTATION_RECEIPT.json for the confidence note.
 //
-// Known deviation: page-08's grid shows "SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu" as
-// its SEO card; page-11's detail-page template mockup for the SEO article reads "10 yếu tố SEO
-// quan trọng giúp website lên top Google" with its own exact 10-item TOC/meta. Unified to the
-// page-11 identity for that slot (grid card + detail) for internally consistent navigation,
-// same tradeoff as the /du-an project dataset — flagged for ChatGPT to confirm.
+// GD10 re-QA round 3: page-08's grid SEO card ("SEO Onpage là gì? 15 yếu tố quan trọng cần tối
+// ưu") and page-11's detail-template article ("10 yếu tố SEO quan trọng giúp website lên top
+// Google") are DISTINCT approved fixtures — do not unify them (round 2 had incorrectly merged
+// these). The grid card keeps article-cover-05; the detail article is `hidden` (excluded from
+// the grid/filters, resolvable by slug) and its own page overrides the header image to the
+// dedicated article-seo-hero-master asset per ASSET_USAGE_MAP.json, not this entry's cover.
 export const articles: Article[] = [
   {
     slug: "ai-trong-marketing-2024-xu-huong-ung-dung-va-co-hoi-cho-doanh-nghiep",
@@ -101,13 +102,38 @@ export const articles: Article[] = [
     ],
   },
   {
+    slug: "seo-onpage-la-gi-15-yeu-to-quan-trong-can-toi-uu",
+    title: "SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu",
+    category: "SEO",
+    excerpt: "SEO Onpage giúp website thân thiện hơn với công cụ tìm kiếm. Tổng hợp 15 yếu tố quan trọng bạn cần lưu ý.",
+    publishedAt: "2024-06-20",
+    author: "Lạc Việt Media Agency",
+    coverAssetId: "article-cover-05",
+    readMinutes: 6,
+    content: [
+      {
+        id: "yeu-to-noi-dung-onpage",
+        heading: "Yếu tố nội dung",
+        body: ["Tiêu đề, mô tả và heading cần phản ánh đúng nội dung và chứa từ khoá mục tiêu một cách tự nhiên."],
+      },
+      {
+        id: "yeu-to-ky-thuat-onpage",
+        heading: "Yếu tố kỹ thuật",
+        body: ["Cấu trúc URL, tốc độ tải trang và khả năng hiển thị trên di động ảnh hưởng trực tiếp đến thứ hạng."],
+      },
+    ],
+  },
+  // Detail-template fixture only (page-11) — resolvable by slug for /kien-thuc/[slug] evidence,
+  // deliberately `hidden` per GD10 re-QA round 3 item 5: distinct approved fixture from the
+  // grid's "SEO Onpage là gì?" card above, not a unification of the two.
+  {
     slug: "10-yeu-to-seo-quan-trong-giup-website-len-top-google",
     title: "10 yếu tố SEO quan trọng giúp website lên top Google",
     category: "SEO",
     excerpt: "Để website lên top Google không chỉ cần nội dung hay mà còn phải tối ưu nhiều yếu tố kỹ thuật và trải nghiệm người dùng. Dưới đây là 10 yếu tố quan trọng nhất bạn cần tập trung.",
     publishedAt: "2024-05-15",
     author: "Lạc Việt Media Agency",
-    coverAssetId: "article-cover-05",
+    hidden: true,
     readMinutes: 8,
     content: [
       { id: "nghien-cuu-tu-khoa", heading: "1. Nghiên cứu từ khóa", body: ["Xác định đúng bộ từ khoá mục tiêu là bước nền tảng trước khi tối ưu bất kỳ nội dung nào."] },
@@ -170,4 +196,9 @@ export const articles: Article[] = [
 
 export function getArticleBySlug(slug: string) {
   return articles.find((a) => a.slug === slug);
+}
+
+/** Grid/filter-visible articles only — excludes detail-template-only fixtures. */
+export function getVisibleArticles() {
+  return articles.filter((a) => !a.hidden);
 }

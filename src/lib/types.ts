@@ -32,6 +32,10 @@ export type Project = {
   durationLabel?: string;
   completedLabel?: string;
   resultMetrics?: { value: string; label: string }[];
+  /** Resolvable by slug (detail page) but excluded from grid/filter listings — used when the
+   * approved master shows a distinct listing identity vs. detail-template identity for what
+   * would otherwise collide on the same asset. */
+  hidden?: boolean;
 };
 
 export type ArticleSection = {
@@ -52,6 +56,8 @@ export type Article = {
   readMinutes?: number;
   seoTitle?: string;
   seoDescription?: string;
+  /** See Project["hidden"] — same rationale, same pattern. */
+  hidden?: boolean;
 };
 
 export type FAQ = {

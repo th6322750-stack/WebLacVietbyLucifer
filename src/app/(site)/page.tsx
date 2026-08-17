@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { ServiceCard } from "@/components/content/ServiceCard";
-import { ProjectCard } from "@/components/content/ProjectCard";
+import { ProjectPreviewCard } from "@/components/content/ProjectPreviewCard";
 import { ArticleCard } from "@/components/content/ArticleCard";
 import { MetricStrip } from "@/components/content/MetricStrip";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
@@ -13,7 +13,7 @@ import { TestimonialCard } from "@/components/content/TestimonialCard";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { HomeHeroCta } from "./HomeHeroCta";
 import { services } from "@/content/services";
-import { projects } from "@/content/projects";
+import { homeProjectShowcase } from "@/content/route-fixtures";
 import { articles } from "@/content/articles";
 import { assetPath } from "@/lib/assets";
 import { siteSettings } from "@/lib/site-settings";
@@ -26,8 +26,7 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const featuredProjects = projects.slice(0, 4);
-const latestArticles = articles.slice(0, 4);
+const latestArticles = articles.filter((a) => !a.hidden).slice(0, 4);
 
 // Demo testimonials — demoOnly:true per CONTENT_TRUTH.json, never a verified claim.
 const testimonials = [
@@ -168,8 +167,8 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featuredProjects.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
+            {homeProjectShowcase.map((p) => (
+              <ProjectPreviewCard key={p.title} preview={p} />
             ))}
           </div>
         </Container>

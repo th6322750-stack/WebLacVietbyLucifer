@@ -5,9 +5,11 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ArticleTOC } from "@/components/content/ArticleTOC";
+import { ArticlePreviewCard } from "@/components/content/ArticlePreviewCard";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { ArticleConsultCard } from "./ArticleConsultCard";
 import { articles, getArticleBySlug } from "@/content/articles";
+import { seoArticleRelatedPreview } from "@/content/route-fixtures";
 import { assetPath } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
 import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
@@ -32,7 +34,14 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  const related = articles.filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3);
+  // ASSET_USAGE_MAP.json "/kien-thuc/[slug]" maps the detail header to article-seo-hero-master
+  // and relatedArticles to fixed article-cover-01..03 preview fixtures — only for the approved
+  // page-11 detail fixture (article.hidden). Other articles fall back to their own cover and a
+  // same-category derivation (GD10 re-QA round 3 items 5-6).
+  const headerImageId = article.hidden ? "article-seo-hero-master" : article.coverAssetId;
+  const related = article.hidden
+    ? null
+    : articles.filter((a) => a.slug !== article.slug && a.category === article.category && !a.hidden).slice(0, 3);
 
   return (
     <>
@@ -83,10 +92,10 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             ) : null}
           </div>
         </Container>
-        {article.coverAssetId ? (
+        {headerImageId ? (
           <Container className="mt-8">
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-              <Image src={assetPath(article.coverAssetId)} alt={article.title} fill priority className="object-cover" />
+              <Image src={assetPath(headerImageId)} alt={article.title} fill priority className="object-cover" />
             </div>
           </Container>
         ) : null}
@@ -113,7 +122,18 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
               ))}
             </div>
             <aside id="related-articles" className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-              {related.length > 0 ? (
+              {article.hidden ? (
+                <div>
+                  <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
+                  <ul className="mt-3 flex flex-col gap-4">
+                    {seoArticleRelatedPreview.map((p) => (
+                      <li key={p.title}>
+                        <ArticlePreviewCard preview={p} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : related && related.length > 0 ? (
                 <div>
                   <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
                   <ul className="mt-3 flex flex-col gap-4">

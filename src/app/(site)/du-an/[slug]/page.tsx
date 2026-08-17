@@ -5,9 +5,10 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Icon } from "@/components/ui/Icon";
-import { ProjectCard } from "@/components/content/ProjectCard";
+import { ProjectPreviewCard } from "@/components/content/ProjectPreviewCard";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { projects, getProjectBySlug } from "@/content/projects";
+import { relatedProjectPreview } from "@/content/route-fixtures";
 import { assetPath } from "@/lib/assets";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -49,7 +50,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  const related = projects.filter((p) => p.slug !== project.slug && p.category === project.category).slice(0, 4);
+  // ASSET_USAGE_MAP.json "/du-an/[slug]".relatedProjects = project-cover-01..04, deterministic
+  // — not a same-category derivation (GD10 re-QA round 3 item 7).
+  const related = relatedProjectPreview.filter((p) => p.title !== project.title);
 
   return (
     <>
@@ -229,7 +232,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <SectionHeading eyebrow="Dự án liên quan" title="Xem thêm dự án cùng nhóm dịch vụ" />
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((p) => (
-                <ProjectCard key={p.slug} project={p} />
+                <ProjectPreviewCard key={p.title} preview={p} />
               ))}
             </div>
           </Container>

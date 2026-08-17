@@ -9,7 +9,7 @@ import { CategoryFilter } from "@/components/content/CategoryFilter";
 import { NewsletterForm } from "@/components/conversion/NewsletterForm";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { ArticleGrid } from "./ArticleGrid";
-import { articles } from "@/content/articles";
+import { getVisibleArticles } from "@/content/articles";
 import { assetPath } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
@@ -20,7 +20,9 @@ export const metadata = pageMetadata({
   path: "/kien-thuc",
 });
 
-const categories = Array.from(new Set(articles.map((a) => a.category)));
+// Fixed order per approved master (page-08) — not derived from article insertion order.
+const categories = ["Website", "TikTok", "Facebook", "AI", "SEO", "Marketing"];
+const visibleArticles = getVisibleArticles();
 
 export default async function KnowledgePage({
   searchParams,
@@ -29,8 +31,8 @@ export default async function KnowledgePage({
 }) {
   const { category } = await searchParams;
   const active = category && categories.includes(category) ? category : "all";
-  const featured = articles[0]!;
-  const rest = articles.slice(1).filter((a) => active === "all" || a.category === active);
+  const featured = visibleArticles[0]!;
+  const rest = visibleArticles.slice(1).filter((a) => active === "all" || a.category === active);
 
   return (
     <>

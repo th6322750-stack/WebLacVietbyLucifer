@@ -3,12 +3,12 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { PageHero } from "@/components/layout/PageHero";
-import { ProjectCard } from "@/components/content/ProjectCard";
+import { ProjectPreviewCard } from "@/components/content/ProjectPreviewCard";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { WebsiteHeroCta, WebsitePackages } from "./WebsiteInteractive";
-import { projects } from "@/content/projects";
+import { websiteProjectShowcase } from "@/content/route-fixtures";
 import { getFaqsByScope } from "@/content/faqs";
 import { pageMetadata } from "@/lib/seo";
 
@@ -37,8 +37,6 @@ const benefits: { icon: IconName; label: string }[] = [
   { icon: "shield-check", label: "Bảo mật & ổn định" },
   { icon: "headset", label: "Bàn giao – đào tạo" },
 ];
-
-const websiteProjects = projects.filter((p) => p.category === "Website").slice(0, 4);
 
 // 6-step process per approved master — not 4.
 const processSteps = [
@@ -133,8 +131,8 @@ export default function WebsitePage() {
         <Container>
           <SectionHeading eyebrow="Dự án" title="Website đã triển khai" align="center" />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {websiteProjects.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
+            {websiteProjectShowcase.map((p) => (
+              <ProjectPreviewCard key={p.title} preview={p} />
             ))}
           </div>
         </Container>
