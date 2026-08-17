@@ -16,8 +16,8 @@
     "finalPrHeadNote": "Round-3 final PR HEAD, confirmed after the fact against `GET /git/refs/heads/claude/gd9-implementation-v1` and ChatGPT's own round-4 QA target. Superseded by round4Commits below."
   },
   "round4Commits": {
-    "codeEvidenceCommit": "PENDING_FILL_AFTER_COMMIT_1",
-    "codeEvidenceCommitNote": "The commit containing all round-4 code, test, and re-captured evidence changes (see fixLogRound4). Filled in by the follow-up commit below, since a commit cannot contain its own hash.",
+    "codeEvidenceCommit": "eec68dde53ea2d659922758a917f7a7ad73920e9",
+    "codeEvidenceCommitNote": "Contains all round-4 code, test, and re-captured evidence changes (see fixLogRound4). Verified via `git rev-parse HEAD` immediately after creating it, before this receipt-fill commit existed.",
     "finalPrHead": "PENDING_FILL_AFTER_COMMIT_2",
     "finalPrHeadNote": "The receipt-only follow-up commit that fills in codeEvidenceCommit IS finalPrHead. Its exact SHA is restated verbatim in the PR #5 comment posted immediately after push and is independently verifiable with `git log --oneline -2` on claude/gd9-implementation-v1. No commits follow finalPrHead for round 4."
   },
