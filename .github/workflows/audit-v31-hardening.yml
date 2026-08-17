@@ -1,0 +1,107 @@
+name: Audit webby v3.1 Hardening
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - '.github/workflows/audit-v31-hardening.yml'
+      - '.webby/**'
+      - 'scripts/audit-v31-active-authority.py'
+
+permissions:
+  contents: read
+
+jobs:
+  stale-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+
+      - name: Whole-tree diagnostic search
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== OLD BRANCH REFERENCES ==='
+          grep -RInI --exclude-dir=.git 'chatgpt/gd3-git-self-contained-v1' . || true
+          echo '=== LEGACY PHASE LABELS ==='
+          grep -RInI --exclude-dir=.git -E 'GĐ4|GĐ5|GĐ6' . || true
+          echo '=== STALE READINESS WORDS ==='
+          grep -RInI --exclude-dir=.git -E 'NOT_MIGRATED|INCOMPLETE_METADATA|PARTIALLY_DECLARED_NEEDS_V31_SPLIT|NOT_PROVEN_PER_ASSET' . || true
+          echo '=== EXTERNAL DRIVE URL REFERENCES ==='
+          grep -RInI --exclude-dir=.git -E 'drive\.google\.com|docs\.google\.com' . || true
+          echo '=== POSITIVE DRIVE DEPENDENCY FLAGS ==='
+          grep -RInI --exclude-dir=.git -E 'implementationRequiresGoogleDrive[=:][[:space:]]*true|driveSessionProofRequired[=:][[:space:]]*true' . || true
+          echo '=== LEGACY 23-ASSET CLAIMS ==='
+          grep -RInI --exclude-dir=.git -E '23[[:space:]-]*(asset|assets)|"count"[[:space:]]*:[[:space:]]*23' . || true
+
+      - name: Strict active-authority invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          active = [
+            Path('.webby/CLAUDE_TASK.md'),
+            Path('.webby/PROJECT_STATE.yaml'),
+            Path('.webby/HANDOFF.json'),
+            Path('.webby/WEBBY_LOCK.json'),
+            Path('.webby/UI_SETUP_COMPLETE'),
+            Path('.webby/MASTER_BINARY_AUTHORITY.json'),
+            Path('.webby/ASSET_DRIVE_AUTHORITY.json'),
+            Path('.webby/asset-manifest.json'),
+            Path('.webby/ASSET_USAGE_MAP.json'),
+            Path('.webby/ICON_INVENTORY_PLAN.json'),
+            Path('.webby/MOTION_FEEL_CONTRACT.json'),
+          ]
+          forbidden = [
+            'chatgpt/gd3-git-self-contained-v1',
+            'NOT_MIGRATED',
+            'INCOMPLETE_METADATA',
+            'PARTIALLY_DECLARED_NEEDS_V31_SPLIT',
+            'NOT_PROVEN_PER_ASSET',
+          ]
+          bad=[]
+          for p in active:
+            assert p.exists(), f'MISSING_ACTIVE_AUTHORITY {p}'
+            text=p.read_text(encoding='utf-8')
+            for token in forbidden:
+              if token in text:
+                bad.append((str(p), token))
+          if bad:
+            raise SystemExit('STALE_ACTIVE_AUTHORITY '+repr(bad))
+
+          marker=Path('.webby/UI_SETUP_COMPLETE').read_text()
+          assert 'UI_SETUP_COMPLETE=false' in marker
+          assert 'implementationAuthorized=false' in marker
+          assert 'logicalAssetCount=84' in marker
+          assert 'transportMode=GIT' in marker
+          assert 'implementationRequiresGoogleDrive=false' in marker
+
+          handoff=json.loads(Path('.webby/HANDOFF.json').read_text())
+          assert handoff['protocolVersion']=='3.1.0'
+          assert handoff['status']=='ASSET_COMPLETE_AWAITING_USER_APPROVAL'
+          assert handoff['assetPlan']['logicalAssetCount']==84
+          assert handoff['implementationReady']['assetsComplete'] is True
+          assert handoff['implementationReady']['highResMastersPass'] is True
+          assert handoff['implementationReady']['mappingComplete'] is True
+          assert handoff['implementationReady']['iconInventoryComplete'] is True
+          assert handoff['implementationReady']['assetIntegratedVisualApproved'] is False
+
+          lock=json.loads(Path('.webby/WEBBY_LOCK.json').read_text())
+          assert lock['skillVersion']=='3.1.0'
+          assert lock['canonicalSkillCommit']=='b805dfdab336ff3942c68bb0e20a9edb0a047a18'
+          assert lock['assetAuthority']['logicalAssetCount']==84
+          assert lock['transport']['mode']=='GIT'
+          assert lock['transport']['implementationRequiresGoogleDrive'] is False
+
+          manifest=json.loads(Path('.webby/asset-manifest.json').read_text())
+          assert manifest['protocolVersion']=='3.1.0'
+          assert manifest['assetStore']['transportMode']=='GIT'
+          assert manifest['assetStore']['folderRef'] is None
+          print('PASS_ACTIVE_AUTHORITY_V31')
+          print('Claude remains BLOCKED pending user asset approval and final ready validation.')
+          PY
