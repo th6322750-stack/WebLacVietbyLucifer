@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.1.0",
+  "status": "ACTIVE_GD10_AUTHORITY_CORRECTION",
+  "source": {
+    "approvedPdf": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "approvedPdfSha256": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f",
+    "pageNumber1Based": 5,
+    "clipRectPoints": [
+      264.6,
+      255.96,
+      405.0,
+      261.72
+    ],
+    "renderMatrix": [
+      12,
+      12
+    ],
+    "rule": "Exact source extraction from the already user-approved V1 PDF; no redraw, no logo substitution, no identity reconstruction."
+  },
+  "coreRasterMetadata": ".webby/RASTER_ASSET_METADATA.json",
+  "coreRasterLogicalCount": 34,
+  "amendmentRasterLogicalCount": 1,
+  "correctedRasterLogicalCount": 35,
+  "entry": {
+    "id": "support-client-logo-strip",
+    "classification": "DEMO",
+    "role": "CLIENT_LOGO_STRIP",
+    "item": "approved-v1-demo-client-logo-row",
+    "identityRequired": true,
+    "authoritative": true,
+    "master": {
+      "qualityClass": "FHD_CLASS",
+      "fileName": "assets/production/masters/raster/client-logos/support-client-logo-strip.png",
+      "format": "png",
+      "width": 1685,
+      "height": 70,
+      "sha256": "a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691",
+      "nativeOrAuthoritativeHighRes": true,
+      "derivedFromLowRes": false,
+      "qualityException": "Exact source extract from the user-approved V1 PDF page 5; semantic strip dimensions are intentional. Never upscale/redraw/recompose individual marks as a new authority."
+    },
+    "delivery": [
+      {
+        "usage": "default",
+        "fileName": "support-client-logo-strip.png",
+        "destinationPath": "public/assets/client-logos/support-client-logo-strip.png",
+        "runtimeSourceType": "PROJECT_PATH",
+        "runtimeSource": null,
+        "width": 1685,
+        "height": 70,
+        "format": "png",
+        "byteSize": 134396,
+        "maxWeight": 500000,
+        "transparent": false,
+        "sha256": "a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691"
+      }
+    ],
+    "allowedUsage": [
+      "default"
+    ],
+    "presentationByUsage": {
+      "default": {
+        "objectFit": "contain",
+        "objectPosition": "center",
+        "preserveAspectRatio": true,
+        "crop": "none",
+        "source": "approved V1 PDF page 5 exact extract"
+      }
+    },
+    "priority": "lazy",
+    "livePolicy": "DEMO_ONLY",
+    "mustNot": [
+      "present logos as a verified client list",
+      "substitute with platform/social logos",
+      "split, redraw or recompose individual marks as a new identity authority"
+    ]
+  }
+}

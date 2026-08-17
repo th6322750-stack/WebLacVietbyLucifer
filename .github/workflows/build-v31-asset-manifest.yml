@@ -5,6 +5,7 @@ on:
     branches: [chatgpt/webby-v3.1-implementation-ready]
     paths:
       - 'scripts/build-v31-asset-manifest.py'
+      - 'scripts/build-v31-asset-manifest-legacy84.py'
       - '.github/workflows/build-v31-asset-manifest.yml'
 
 permissions:
@@ -18,9 +19,15 @@ jobs:
         with:
           ref: chatgpt/webby-v3.1-implementation-ready
           fetch-depth: 0
-      - name: Build runtime copies + manifest
+      - name: Confirm exact triggering remote HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git ls-remote origin refs/heads/chatgpt/webby-v3.1-implementation-ready | awk '{print $1}')" = "$GITHUB_SHA"
+      - name: Rebuild runtime copies + corrected manifest
         run: python scripts/build-v31-asset-manifest.py
-      - name: Verify exact counts and runtime paths
+      - name: Verify corrected counts and runtime SHA
         shell: bash
         run: |
           set -euo pipefail
@@ -29,32 +36,43 @@ jobs:
           from pathlib import Path
           root=Path('.')
           m=json.loads(Path('.webby/asset-manifest.json').read_text())
+          u=json.loads(Path('.webby/ASSET_USAGE_MAP.json').read_text())
           assert m['version']==3 and m['protocolVersion']=='3.1.0'
           assert m['assetStore']['transportMode']=='GIT'
           assert m['assetStore']['accessProofStatus']=='NOT_REQUIRED'
-          assert len(m['assets'])==84
+          assert len(m['assets'])==85
           assert len(m['iconInventory'])==40
           assert all(x['required'] is True for x in m['iconInventory'])
-          role_counts={}
+          role_counts={}; paths=set()
           for a in m['assets']:
               role_counts[a['role']]=role_counts.get(a['role'],0)+1
-              for d in a['delivery']:
-                  p=root/d['destinationPath']
-                  assert p.exists(), p
-                  h=hashlib.sha256(p.read_bytes()).hexdigest()
-                  assert h==d['sha256'], (p,h,d['sha256'])
+              assert len(a['delivery'])==1
+              d=a['delivery'][0]; p=root/d['destinationPath']
+              assert p.exists(), p
+              h=hashlib.sha256(p.read_bytes()).hexdigest(); assert h==d['sha256'], (p,h,d['sha256'])
+              assert str(p) not in paths; paths.add(str(p))
+          assert len(paths)==85
           assert role_counts['ICON']==40
+          assert role_counts['CLIENT_LOGO_STRIP']==1
           assert sum(1 for a in m['assets'] if a['classification']=='AUTHENTIC' and a['role']=='LOGO')==10
           assert sum(1 for a in m['assets'] if a['role']=='HERO')==7
           assert sum(1 for a in m['assets'] if a['role']=='PROJECT_COVER')==12
           assert sum(1 for a in m['assets'] if a['role']=='NEWS_COVER')==7
           assert sum(1 for a in m['assets'] if a['role']=='AVATAR')==4
-          print('PASS_MANIFEST_REMOTE_RUNTIME_COUNTS',role_counts)
+          assert u['routes']['/support-mxh']['clientLogoStrip']=='support-client-logo-strip'
+          assert u['routes']['/lien-he']['contactIcon']=='icon-mail'
+          print('PASS_MANIFEST_85_RUNTIME_COUNTS',role_counts)
           PY
           test "$(find public/assets/icons -type f -name '*.svg' | wc -l)" -eq 40
           test "$(find public/assets/brands -type f -name '*.svg' | wc -l)" -eq 10
-          test "$(find public/assets -type f | wc -l)" -eq 84
-      - name: Commit runtime asset tree and v3.1 manifest
+          test "$(find public/assets -type f | wc -l)" -eq 85
+      - name: Run exact canonical webbyLucifer v3.1 validator
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/th6322750-stack/webbyLucifer/b805dfdab336ff3942c68bb0e20a9edb0a047a18/scripts/webby-validate.py' -o /tmp/webby-validate.py
+          python /tmp/webby-validate.py .
+      - name: Commit only if deterministic rebuild changed authority files
         shell: bash
         run: |
           set -euo pipefail
@@ -62,8 +80,12 @@ jobs:
           git config user.email 'webby-v31-bot@users.noreply.github.com'
           git add public/assets .webby/asset-manifest.json .webby/ASSET_USAGE_MAP.json
           if git diff --cached --quiet; then
-            echo NO_MANIFEST_CHANGES
-            exit 0
+            echo DETERMINISTIC_REBUILD_NO_CHANGES
+          else
+            git commit -m 'webby(v3.1): deterministically rebuild corrected 85-asset manifest'
+            git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
           fi
-          git commit -m 'webby(v3.1): materialize 84 runtime assets and canonical manifest'
-          git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
+          FINAL="$(git rev-parse HEAD)"
+          test "$(git ls-remote origin refs/heads/chatgpt/webby-v3.1-implementation-ready | awk '{print $1}')" = "$FINAL"
+          python /tmp/webby-validate.py .
+          echo "PASS_MANIFEST_REBUILD_EXACT_REMOTE_HEAD=$FINAL"

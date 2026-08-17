@@ -3,8 +3,8 @@
   "protocolVersion": "3.1.0",
   "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
   "taskMode": "NEW_REDESIGN",
-  "auditStatus": "IMPLEMENTATION_READY_UI_FINAL_RELEASE_PASS",
-  "auditedAt": "2026-08-17T11:35:00+07:00",
+  "auditStatus": "IMPLEMENTATION_READY_UI_GD10_AUTHORITY_CORRECTED",
+  "auditedAt": "2026-08-17T18:51:00+07:00",
   "baseline": {
     "migrationProvenanceCommit": "09ad912eb5728395bafce96025734e4ac0491047",
     "approvedPdfSha256": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f",
@@ -19,13 +19,13 @@
   "v31GateAudit": {
     "taskRouter": "PASS_NEW_REDESIGN",
     "projectIntake": "PASS",
-    "assetCountPlan": "PASS_REPORTED_84",
+    "assetCountPlan": "PASS_REPORTED_85_AFTER_GD10_AUTHORITY_CORRECTION",
     "assetManifest": "PASS_MATERIALIZED_GIT",
     "assetTransport": "PASS_GIT_NO_DRIVE_SESSION_PROOF_REQUIRED",
     "iconInventory": "PASS_40_UI_ICONS_PLUS_10_BRAND_MARKS",
     "motionAuthoritySplit": "PASS_FEEL_CHATGPT_MECHANISM_CLAUDE",
-    "highResMasters": "PASS_7_4K_PLUS_26_NEW_FHD_AND_CANONICAL_LOGO_EXCEPTION",
-    "mapping": "PASS",
+    "highResMasters": "PASS_CORE_34_RASTER_PLUS_1_EXACT_APPROVED_PDF_SOURCE_EXTRACT",
+    "mapping": "PASS_85_WITH_SUPPORT_CLIENT_LOGO_STRIP_AND_CONTACT_EMAIL_CORRECTION",
     "canonicalPreapprovalValidator": "PASS",
     "candidateImplementationReady": "PASS",
     "candidateRunId": 31992347483,
@@ -33,14 +33,14 @@
     "implementationReadyUi": true,
     "implementationAuthorized": true,
     "finalReleaseHold": false,
-    "onlyRemainingGate": "NONE_AFTER_POST_CLOSURE_EXACT_HEAD_VERIFICATION",
+    "onlyRemainingGate": "CLAUDE_GD10_TARGETED_FIX_THEN_CHATGPT_REQA",
     "finalReleaseValidator": "PASS",
     "finalReleaseRunId": 31992604636,
     "finalReleaseHead": "17bfcae8f3b4892dd7c91eea126200e84ed8b9f3"
   },
   "assetAuthority": {
-    "logicalAssetCount": 84,
-    "rasterLogicalCount": 34,
+    "logicalAssetCount": 85,
+    "rasterLogicalCount": 35,
     "vectorCount": 50,
     "runtimeRoot": "public/assets",
     "manifest": ".webby/asset-manifest.json"
@@ -50,8 +50,18 @@
     "note": "The earlier small delivery/reference pack is retained only in Git history/provenance. It is not current v3.1 asset authority."
   },
   "nextGateWork": [
-    "run exact-HEAD post-closure verification",
-    "if PASS and remote HEAD unchanged, hand GĐ9 to Claude"
+    "Claude integrates exact latest corrected handoff HEAD into PR #5",
+    "Claude performs targeted GD10 fixes only and refreshes evidence/receipt",
+    "ChatGPT re-QA against approved V1 PDF before user acceptance"
   ],
-  "finalReleaseReceipt": ".webby/FINAL_RELEASE_RECEIPT.json"
+  "finalReleaseReceipt": ".webby/FINAL_RELEASE_RECEIPT.json",
+  "gd10AuthorityCorrection": {
+    "status": "APPLIED",
+    "receipt": ".webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json",
+    "baselineApprovedAssetCount": 84,
+    "correctedAssetCount": 85,
+    "supportClientLogoStripSha256": "a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691",
+    "contactIcon": "icon-mail",
+    "visualRevisionChanged": false
+  }
 }

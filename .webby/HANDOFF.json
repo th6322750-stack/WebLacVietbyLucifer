@@ -10,8 +10,15 @@
   "uiRevision": 4,
   "uiCommit": "09ad912eb5728395bafce96025734e4ac0491047",
   "createdAt": "2026-08-17T03:31:00+07:00",
-  "intake": {"status": "INTAKE_COMPLETE", "file": ".webby/PROJECT_INTAKE.json"},
-  "assetPlan": {"status": "REPORTED", "file": ".webby/ASSET_COUNT_PLAN.json", "logicalAssetCount": 84},
+  "intake": {
+    "status": "INTAKE_COMPLETE",
+    "file": ".webby/PROJECT_INTAKE.json"
+  },
+  "assetPlan": {
+    "status": "REPORTED",
+    "file": ".webby/ASSET_COUNT_PLAN.json",
+    "logicalAssetCount": 85
+  },
   "assetManifest": {
     "status": "MATERIALIZED",
     "file": ".webby/asset-manifest.json",
@@ -19,17 +26,20 @@
     "runtimeRoot": "public/assets",
     "driveFolderRef": null,
     "verifiedForSessionId": null,
-    "sessionVerifiedAt": null
+    "sessionVerifiedAt": null,
+    "logicalAssetCount": 85
   },
   "assetReview": {
-    "status": "USER_APPROVED_FINAL",
+    "status": "USER_APPROVED_FINAL_PLUS_APPROVED_PDF_AUTHORITY_CORRECTION",
     "board": "ASSET_REVIEW_BOARD_V31.md",
-    "producedLogicalAssetCount": 84,
+    "producedLogicalAssetCount": 85,
     "runtimeRoot": "public/assets",
     "layoutAuthorityUnchanged": true,
     "approvalStatement": "DUYỆT ASSET V3.1",
     "approvalReceipt": ".webby/USER_ASSET_APPROVAL_V31.json",
-    "approvedAt": "2026-08-17T10:43:00+07:00"
+    "approvedAt": "2026-08-17T10:43:00+07:00",
+    "baselineApprovedLogicalAssetCount": 84,
+    "authorityCorrectionAssetCount": 1
   },
   "validation": {
     "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
@@ -61,11 +71,11 @@
     "noBlockingSpecOrAssetGap": true
   },
   "implementationAuthorization": {
-    "status": "AUTHORIZED_FINAL_RELEASE_PASS",
+    "status": "AUTHORIZED_GD10_TARGETED_FIX",
     "authorized": true,
     "releaseHold": false,
     "releaseReceipt": ".webby/FINAL_RELEASE_RECEIPT.json",
-    "rule": "Claude may start GĐ9 only from the exact latest remote HEAD that also passes the post-closure exact-HEAD verification supplied by ChatGPT."
+    "rule": "Claude must first integrate the exact latest remote handoff HEAD containing this GD10 authority correction, then perform only the targeted fixes in .webby/CLAUDE_TASK.md."
   },
   "requiredInputs": [
     ".webby/PROJECT_INTAKE.json",
@@ -97,7 +107,11 @@
     ".webby/ACCESSIBILITY_CONTRACT.json",
     ".webby/QA_ACCEPTANCE.json",
     ".webby/WEBBY_LOCK.json",
-    ".webby/CLAUDE_TASK.md"
+    ".webby/CLAUDE_TASK.md",
+    ".webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json",
+    ".webby/GD10_RASTER_ASSET_AMENDMENT.json",
+    ".webby/GD10_RASTER_SHA256SUMS.txt",
+    ".webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json"
   ],
   "lockFile": ".webby/WEBBY_LOCK.json",
   "visualHandoff": {
@@ -107,7 +121,12 @@
     "implementationNumbersFrom": "SPEC_AND_MANIFEST",
     "implementationTarget": "MATCH_APPROVED_V1_WITHOUT_PIXEL_MEASUREMENT_OR_VISUAL_INVENTION"
   },
-  "contextPolicy": {"routeScoped": true, "componentScoped": true, "onDemandContracts": true, "defaultImplementationFileBudget": "1-3"},
+  "contextPolicy": {
+    "routeScoped": true,
+    "componentScoped": true,
+    "onDemandContracts": true,
+    "defaultImplementationFileBudget": "1-3"
+  },
   "hardRules": [
     "Do not redesign approved V1 during implementation",
     "Do not search/generate/substitute visual assets in Claude",
@@ -118,11 +137,25 @@
     "Drive is review/archive only and is not runtime serving architecture",
     "Use exact destinationPath values from .webby/asset-manifest.json; do not invent runtime asset sources",
     "Report CRITICAL_FINDING immediately without turning it into an unauthorized broad audit",
-    "Do not merge without user approval"
+    "Do not merge without user approval",
+    "Support client-logo evidence must use support-client-logo-strip exactly; platform logos are not a substitute for that row",
+    "Contact V1 fourth channel is Email; while productionEmail is pending, preserve the Email card as disabled/Sắp cập nhật using icon-mail"
   ],
   "visualAuthority": "CHATGPT",
   "motionFeelAuthority": "CHATGPT",
   "motionMechanismAuthority": "CLAUDE",
   "finalAcceptanceAuthority": "USER",
-  "implementationAuthority": "CLAUDE"
+  "implementationAuthority": "CLAUDE",
+  "gd10AuthorityCorrection": {
+    "status": "APPLIED",
+    "correctedAt": "2026-08-17T18:51:00+07:00",
+    "receipt": ".webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json",
+    "baselineApprovedAssetCount": 84,
+    "correctedAssetCount": 85,
+    "supportClientLogoStrip": "support-client-logo-strip",
+    "supportClientLogoStripSource": "exact extract from approved V1 PDF page 5",
+    "contactChannelCorrection": "Zalo/Messenger/Telegram/Email; Email pending-disabled because productionEmail is TBD",
+    "visualRevisionChanged": false,
+    "validationReceipt": ".webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json"
+  }
 }

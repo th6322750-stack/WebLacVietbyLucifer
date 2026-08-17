@@ -1,4 +1,4 @@
-name: Audit webby v3.1 Hardening
+name: Audit webby v3.1 Active Authority
 
 on:
   push:
@@ -6,13 +6,18 @@ on:
     paths:
       - '.github/workflows/audit-v31-hardening.yml'
       - '.webby/**'
-      - 'DESIGN_SYSTEM.md'
+      - 'scripts/build-v31-asset-manifest.py'
+      - 'scripts/build-v31-asset-manifest-legacy84.py'
+      - 'scripts/extract-gd10-approved-pdf-assets.py'
+      - 'assets/production/masters/raster/client-logos/**'
+      - 'assets/production/delivery/raster/client-logos/**'
+      - 'public/assets/client-logos/**'
 
 permissions:
   contents: read
 
 jobs:
-  stale-audit:
+  active-authority-audit:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -20,152 +25,94 @@ jobs:
           ref: chatgpt/webby-v3.1-implementation-ready
           fetch-depth: 0
 
-      - name: Whole-tree diagnostic search
+      - name: Confirm exact triggering HEAD
         shell: bash
         run: |
           set -euo pipefail
-          echo 'Historical pre-v3.1 evidence under .webby/archive/pre-v31 is intentionally excluded from active-authority diagnostics.'
-          for label in OLD_BRANCH LEGACY_PHASE STALE_READINESS DRIVE_URL POSITIVE_DRIVE_DEP LEGACY_23_ASSET; do echo "=== $label ==="; done
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' 'chatgpt/gd3-git-self-contained-v1' . || true
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'GĐ4|GĐ5|GĐ6' . || true
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'NOT_MIGRATED|INCOMPLETE_METADATA|PARTIALLY_DECLARED_NEEDS_V31_SPLIT|NOT_PROVEN_PER_ASSET' . || true
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'drive\.google\.com|docs\.google\.com' . || true
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E 'implementationRequiresGoogleDrive[=:][[:space:]]*true|driveSessionProofRequired[=:][[:space:]]*true' . || true
-          grep -RInI --exclude-dir=.git --exclude-dir=archive --exclude='audit-v31-hardening.yml' -E '(^|[^[:alnum:]_])23[[:space:]-]+(asset|assets)|"logicalAssetCount"[[:space:]]*:[[:space:]]*23|"productionAssets"[^\n]*23' . || true
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
 
-      - name: Strict active-tree and authority invariants
+      - name: Fetch exact canonical validator
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            'https://raw.githubusercontent.com/th6322750-stack/webbyLucifer/b805dfdab336ff3942c68bb0e20a9edb0a047a18/scripts/webby-validate.py' \
+            -o /tmp/webby-validate.py
+          python /tmp/webby-validate.py .
+
+      - name: Audit active authority invariants
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import json, re, hashlib
+          import hashlib, json
 
-          archive_root=Path('.webby/archive/pre-v31')
-          audit_path=Path('.github/workflows/audit-v31-hardening.yml')
-          allowed_drive_url_files={
-            Path('.webby/USER_VISUAL_APPROVAL.json'),
-            Path('.webby/GD1_PREVIEW.json'),
-            Path('.webby/PREVIEW_AUTHORITY.md'),
-            Path('.webby/visual-handoff/ui-states.md'),
-          }
-          stale_tokens=[
-            'chatgpt/gd3-git-self-contained-v1',
-            'NOT_MIGRATED',
-            'INCOMPLETE_METADATA',
-            'PARTIALLY_DECLARED_NEEDS_V31_SPLIT',
-            'NOT_PROVEN_PER_ASSET',
-          ]
-          legacy_phase=re.compile(r'GĐ4|GĐ5|GĐ6')
-          legacy_23=re.compile(r'\b23\s+(?:asset|assets)\b', re.I)
-          drive_url=re.compile(r'https://(?:drive|docs)\.google\.com/', re.I)
-          positive_drive=re.compile(r'(?:implementationRequiresGoogleDrive|driveSessionProofRequired)[=:\"\s]+true', re.I)
+          ROOT=Path('.')
+          PDF_SHA='f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f'
+          STRIP_SHA='a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691'
+          receipt=ROOT/'.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json'
+          corrected=receipt.exists()
+          expected=85 if corrected else 84
 
-          violations=[]
-          for p in Path('.').rglob('*'):
-            if not p.is_file() or '.git' in p.parts:
-              continue
-            if archive_root in p.parents or p==audit_path:
-              continue
-            try:
-              text=p.read_text(encoding='utf-8')
-            except UnicodeDecodeError:
-              continue
-            for token in stale_tokens:
-              if token in text:
-                violations.append((str(p),'STALE_TOKEN',token))
-            if legacy_phase.search(text):
-              violations.append((str(p),'LEGACY_PHASE','GĐ4/GĐ5/GĐ6'))
-            if legacy_23.search(text):
-              violations.append((str(p),'LEGACY_23_ASSET','23 asset claim'))
-            if positive_drive.search(text):
-              violations.append((str(p),'POSITIVE_DRIVE_DEP','true'))
-            if drive_url.search(text) and p not in allowed_drive_url_files:
-              violations.append((str(p),'UNEXPECTED_DRIVE_URL','external review URL'))
-          if violations:
-            raise SystemExit('ACTIVE_TREE_STALE_VIOLATIONS='+repr(violations))
-
-          active = [
-            Path('.webby/CLAUDE_TASK.md'), Path('.webby/PROJECT_STATE.yaml'),
-            Path('.webby/HANDOFF.json'), Path('.webby/WEBBY_LOCK.json'),
-            Path('.webby/UI_SETUP_COMPLETE'), Path('.webby/MASTER_BINARY_AUTHORITY.json'),
-            Path('.webby/ASSET_DRIVE_AUTHORITY.json'), Path('.webby/asset-manifest.json'),
-            Path('.webby/ASSET_USAGE_MAP.json'), Path('.webby/ICON_INVENTORY_PLAN.json'),
-            Path('.webby/MOTION_FEEL_CONTRACT.json'), Path('.webby/PROJECT_INTAKE.json'),
-            Path('.webby/V3_1_MIGRATION_AUDIT.json'), Path('.webby/IMPLEMENTATION_ARTIFACT_PROTOCOL.md')
-          ]
-          for p in active:
-            assert p.exists(), f'MISSING_ACTIVE_AUTHORITY {p}'
-
-          marker=Path('.webby/UI_SETUP_COMPLETE').read_text()
-          assert 'UI_SETUP_COMPLETE=false' in marker
-          assert 'implementationAuthorized=false' in marker
-          assert 'logicalAssetCount=84' in marker
+          marker=(ROOT/'.webby/UI_SETUP_COMPLETE').read_text(encoding='utf-8')
+          assert 'UI_SETUP_COMPLETE=true' in marker
+          assert 'implementationAuthorized=true' in marker
+          assert 'releaseHold=false' in marker
+          assert f'logicalAssetCount={expected}' in marker
           assert 'transportMode=GIT' in marker
           assert 'implementationRequiresGoogleDrive=false' in marker
 
-          handoff=json.loads(Path('.webby/HANDOFF.json').read_text())
-          assert handoff['protocolVersion']=='3.1.0'
-          assert handoff['status']=='ASSET_COMPLETE_AWAITING_USER_APPROVAL'
-          assert handoff['assetPlan']['logicalAssetCount']==84
-          ready=handoff['implementationReady']
-          for key in ['assetsComplete','highResMastersPass','deliveryComplete','transportReadyForSession','mappingComplete','iconInventoryComplete','layoutModeLocked','typographyLocked','semanticGeometryLocked','responsiveLocked','statesLockedOrNA','motionFeelLockedOrNA','noBlockingSpecOrAssetGap']:
-            assert ready[key] is True, (key, ready[key])
-          assert ready['assetIntegratedVisualApproved'] is False
+          handoff=json.loads((ROOT/'.webby/HANDOFF.json').read_text())
+          lock=json.loads((ROOT/'.webby/WEBBY_LOCK.json').read_text())
+          manifest=json.loads((ROOT/'.webby/asset-manifest.json').read_text())
+          usage=json.loads((ROOT/'.webby/ASSET_USAGE_MAP.json').read_text())
+          authority=json.loads((ROOT/'.webby/MASTER_BINARY_AUTHORITY.json').read_text())
 
-          lock=json.loads(Path('.webby/WEBBY_LOCK.json').read_text())
-          assert lock['skillVersion']=='3.1.0'
-          assert lock['canonicalSkillCommit']=='b805dfdab336ff3942c68bb0e20a9edb0a047a18'
-          assert lock['assetAuthority']['logicalAssetCount']==84
-          assert lock['transport']['mode']=='GIT'
-          assert lock['transport']['implementationRequiresGoogleDrive'] is False
-
-          manifest=json.loads(Path('.webby/asset-manifest.json').read_text())
-          assert manifest['protocolVersion']=='3.1.0'
+          assert handoff['status']=='IMPLEMENTATION_READY_UI'
+          assert handoff['implementationAuthorization']['authorized'] is True
+          assert handoff['implementationAuthorization']['releaseHold'] is False
+          assert handoff['assetPlan']['logicalAssetCount']==expected
+          assert lock['assetAuthority']['logicalAssetCount']==expected
+          assert authority['assetAuthority']['logicalAssetCount']==expected
           assert manifest['assetStore']['transportMode']=='GIT'
-          assert manifest['assetStore']['folderRef'] is None
-          entries=manifest['assets']
-          assert isinstance(entries,list), 'MANIFEST_ASSETS_NOT_LIST'
-          assert len(entries)==84, len(entries)
-          assert len(manifest.get('iconInventory',[]))==40
+          assert len(manifest['iconInventory'])==40
+          assert len(manifest['assets'])==expected
 
-          runtime_paths=[]
-          for e in entries:
-            assert isinstance(e,dict), ('ASSET_ENTRY_NOT_OBJECT',type(e).__name__)
-            aid=e.get('id')
-            deliveries=e.get('delivery')
-            assert isinstance(deliveries,list) and deliveries, ('DELIVERY_NOT_NONEMPTY_LIST',aid)
-            for delivery in deliveries:
-              assert isinstance(delivery,dict), ('DELIVERY_ENTRY_NOT_OBJECT',aid)
-              dest=delivery.get('destinationPath')
-              assert dest, ('MISSING_DESTINATION_PATH',aid)
-              p=Path(dest.lstrip('/'))
-              assert p.exists(), ('MISSING_RUNTIME_ASSET',aid,dest)
-              expected=delivery.get('sha256')
-              if expected:
-                actual=hashlib.sha256(p.read_bytes()).hexdigest()
-                assert actual==expected, ('RUNTIME_SHA_MISMATCH',aid,dest,expected,actual)
-              runtime_paths.append(str(p))
-          assert len(runtime_paths)==84, ('DELIVERY_PATH_COUNT_NOT_84',len(runtime_paths))
-          assert len(set(runtime_paths))==84, 'RUNTIME_PATHS_NOT_UNIQUE_84'
+          paths=set(); ids=set()
+          for asset in manifest['assets']:
+            aid=asset['id']; assert aid not in ids; ids.add(aid)
+            delivery=asset['delivery']; assert isinstance(delivery,list) and len(delivery)==1
+            d=delivery[0]; p=ROOT/d['destinationPath']
+            assert p.exists(), (aid,p)
+            assert hashlib.sha256(p.read_bytes()).hexdigest()==d['sha256'], aid
+            assert str(p) not in paths; paths.add(str(p))
+          assert len(paths)==expected
 
-          authority=json.loads(Path('.webby/MASTER_BINARY_AUTHORITY.json').read_text())
-          assert authority['assetAuthority']['logicalAssetCount']==84
-          assert authority['transportMode']=='GIT'
-          assert authority['implementationRequiresGoogleDrive'] is False
+          pdf=ROOT/'.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf'
+          assert hashlib.sha256(pdf.read_bytes()).hexdigest()==PDF_SHA
 
-          claude=Path('.webby/CLAUDE_TASK.md').read_text()
-          assert 'chatgpt/webby-v3.1-implementation-ready' in claude
-          assert 'GĐ9 — Implementation' in claude
-          assert '84 assets' in claude
-          assert 'UI_SETUP_COMPLETE=true' in claude
-
-          print('PASS_V31_ACTIVE_TREE_STALE_AUDIT')
-          print('manifest_assets=84')
-          print('runtime_delivery_paths=84')
-          print('runtime_sha256=PASS')
-          print('icon_inventory=40')
-          print('transport=GIT')
-          print('drive_implementation_dependency=false')
-          print('Claude_BLOCKED=true')
+          if corrected:
+            assert lock['assetAuthority']['rasterLogicalCount']==35
+            assert lock['assetAuthority']['vectorCount']==50
+            assert authority['assetAuthority']['rasterLogicalCount']==35
+            assert usage['routes']['/support-mxh']['clientLogoStrip']=='support-client-logo-strip'
+            assert usage['routes']['/lien-he']['contactIcon']=='icon-mail'
+            strip=ROOT/'public/assets/client-logos/support-client-logo-strip.png'
+            assert hashlib.sha256(strip.read_bytes()).hexdigest()==STRIP_SHA
+            asset=next(x for x in manifest['assets'] if x['id']=='support-client-logo-strip')
+            assert asset['classification']=='DEMO'
+            assert asset['livePolicy']=='DEMO_ONLY'
+            claude=(ROOT/'.webby/CLAUDE_TASK.md').read_text(encoding='utf-8')
+            assert '85 assets' in claude
+            assert 'GD10 TARGETED FIX' in claude
+            assert 'final release hold remains' not in claude
+            print('PASS_V31_ACTIVE_AUTHORITY_GD10_CORRECTED')
+            print('logical_assets=85 raster=35 vector=50')
+            print('support_client_logo_strip_sha='+STRIP_SHA)
+            print('contact_channel_fourth=EMAIL_PENDING_DISABLED')
+          else:
+            assert lock['assetAuthority']['rasterLogicalCount']==34
+            assert lock['assetAuthority']['vectorCount']==50
+            print('PASS_V31_ACTIVE_AUTHORITY_BASELINE_84')
           PY

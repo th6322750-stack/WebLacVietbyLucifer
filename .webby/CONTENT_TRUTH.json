@@ -7,7 +7,11 @@
     "zalo": "0355636882",
     "telegram": "@lucifer_dvmxh",
     "domain": "lacvietmedia.com",
-    "servicePriority": ["Website doanh nghiệp","Support mạng xã hội","Dịch vụ số / tài khoản"]
+    "servicePriority": [
+      "Website doanh nghiệp",
+      "Support mạng xã hội",
+      "Dịch vụ số / tài khoản"
+    ]
   },
   "pending": {
     "facebookUrl": "TBD - user will provide later",
@@ -19,7 +23,8 @@
   "demoOnly": [
     "all project/company names and results shown in GĐ1 project mockups unless later verified",
     "all customer counts, experience-year counts, satisfaction percentages and testimonials shown in GĐ1 renders unless later verified",
-    "digital service prices/products shown in mockups unless later confirmed as current production offer"
+    "digital service prices/products shown in mockups unless later confirmed as current production offer",
+    "support client-logo strip shown in approved V1 is demo-only visual evidence and must not be represented as a verified client list"
   ],
-  "implementationRule": "Preserve demo content for visual parity in non-production preview, tag it in data as demoOnly=true, and block PRODUCTION_READY until required factual replacements are verified. Never inject fake structured Review/AggregateRating schema."
+  "implementationRule": "Preserve demo content for visual parity in non-production preview, tag it in data as demoOnly=true, and block PRODUCTION_READY until required factual replacements are verified. Pending contact fields may preserve approved card geometry only as disabled/Sắp cập nhật; never invent the factual value. Never inject fake structured Review/AggregateRating schema."
 }

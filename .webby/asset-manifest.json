@@ -16,7 +16,8 @@
     "allowLowResPatchwork": false,
     "logoIdentityException": "Exact approved 480x480 canonical logo is allowed as identity authority and must not be fake-upscaled/redrawn.",
     "vectorSourcesLock": ".webby/VECTOR_SOURCE_LOCK.json",
-    "rasterMetadata": ".webby/RASTER_ASSET_METADATA.json"
+    "rasterMetadata": ".webby/RASTER_ASSET_METADATA.json",
+    "gd10RasterAmendment": ".webby/GD10_RASTER_ASSET_AMENDMENT.json"
   },
   "iconInventory": [
     {
@@ -4344,6 +4345,60 @@
       "mustNot": [
         "do not distort",
         "do not substitute with a visually similar mark"
+      ]
+    },
+    {
+      "id": "support-client-logo-strip",
+      "classification": "DEMO",
+      "role": "CLIENT_LOGO_STRIP",
+      "item": "approved-v1-demo-client-logo-row",
+      "identityRequired": true,
+      "authoritative": true,
+      "master": {
+        "qualityClass": "FHD_CLASS",
+        "fileName": "assets/production/masters/raster/client-logos/support-client-logo-strip.png",
+        "format": "png",
+        "width": 1685,
+        "height": 70,
+        "sha256": "a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691",
+        "nativeOrAuthoritativeHighRes": true,
+        "derivedFromLowRes": false,
+        "qualityException": "Exact source extract from the user-approved V1 PDF page 5; semantic strip dimensions are intentional. Never upscale/redraw/recompose individual marks as a new authority."
+      },
+      "delivery": [
+        {
+          "usage": "default",
+          "fileName": "support-client-logo-strip.png",
+          "destinationPath": "public/assets/client-logos/support-client-logo-strip.png",
+          "runtimeSourceType": "PROJECT_PATH",
+          "runtimeSource": null,
+          "width": 1685,
+          "height": 70,
+          "format": "png",
+          "byteSize": 134396,
+          "maxWeight": 500000,
+          "transparent": false,
+          "sha256": "a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691"
+        }
+      ],
+      "allowedUsage": [
+        "default"
+      ],
+      "presentationByUsage": {
+        "default": {
+          "objectFit": "contain",
+          "objectPosition": "center",
+          "preserveAspectRatio": true,
+          "crop": "none",
+          "source": "approved V1 PDF page 5 exact extract"
+        }
+      },
+      "priority": "lazy",
+      "livePolicy": "DEMO_ONLY",
+      "mustNot": [
+        "present logos as a verified client list",
+        "substitute with platform/social logos",
+        "split, redraw or recompose individual marks as a new identity authority"
       ]
     }
   ]
