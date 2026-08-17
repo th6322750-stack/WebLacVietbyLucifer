@@ -1,45 +1,79 @@
-# CLAUDE TASK — GĐ4/GĐ5/GĐ6 AUTHORIZED AFTER PREFLIGHT PASS
+# CLAUDE TASK — WEBBY v3.1 IMPLEMENTATION HANDOFF
 
-Lucifer approved GĐ1 V1 with the exact statement **`DUYỆT GIAO DIỆN V1`**. This branch is the Git-self-contained implementation handoff.
+> Current gate: **BLOCKED until `.webby/UI_SETUP_COMPLETE` says `UI_SETUP_COMPLETE=true` and `implementationAuthorized=true`.**
 
-## Mandatory checkout and preflight
+This repository is prepared under canonical `webbyLucifer` **v3.1.0**, pinned to commit `b805dfdab336ff3942c68bb0e20a9edb0a047a18`.
 
-Use repository `th6322750-stack/WebLacVietbyLucifer`, branch `chatgpt/gd3-git-self-contained-v1`.
+## Mandatory repository / branch
 
-Before changing implementation code, run from a fresh checkout:
+- Repository: `th6322750-stack/WebLacVietbyLucifer`
+- Handoff branch: `chatgpt/webby-v3.1-implementation-ready`
+- Task mode: `NEW_REDESIGN`
+- Transport mode: `GIT`
 
-```bash
-python scripts/reconstruct-git-self-contained.py
-python scripts/validate-gd3-git-self-contained.py --require-ready
-```
+Do **not** switch to an older handoff branch. Do **not** retrieve implementation assets from Google Drive or any other external source.
 
-Both commands must PASS. If either fails, STOP and report the exact path/hash. Do not fetch substitutes from Google Drive or elsewhere.
+## Release gate before coding
 
-## Authority order
+From a fresh checkout of the handoff branch:
 
-1. Exact approved PDF: `.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf`
-2. Route/page masters: `.webby/visual-master/gd1-v1/pages/`
-3. `.webby/MASTER_INDEX.json` and `.webby/ROUTE_IMPLEMENTATION_MAP.json`
-4. GĐ2 design-system files: tokens, typography, responsive, interactions, component map
-5. Content/implementation/backend/SEO/analytics/accessibility/QA contracts
+1. Read `.webby/UI_SETUP_COMPLETE`.
+2. Read `.webby/HANDOFF.json` and `.webby/WEBBY_LOCK.json`.
+3. Run the repository validation command documented by the final v3.1 release receipt / validator workflow.
+4. Continue only when the marker and validator both report implementation readiness.
 
-The PDF SHA-256 is `f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f`.
+If the marker is false, the validator fails, an asset path/hash is missing, or active authority files conflict, **STOP and report the exact finding**. Do not substitute or infer missing inputs.
 
-Canonical original logo: `assets/production/brand/lac-viet-logo-source.png`. Never redraw, vectorize, recolor, restyle, or replace it unless Lucifer explicitly approves a new revision.
+## Active authority order
 
-## Execution
+1. `.webby/HANDOFF.json`
+2. `.webby/WEBBY_LOCK.json`
+3. `.webby/asset-manifest.json` and `.webby/ASSET_USAGE_MAP.json`
+4. `.webby/PROJECT_STATE.yaml`
+5. Approved visual authority:
+   - `.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf`
+   - `.webby/visual-master/gd1-v1/pages/`
+   - `.webby/MASTER_INDEX.json`
+   - `.webby/ROUTE_IMPLEMENTATION_MAP.json`
+6. Design/spec contracts: tokens, typography, responsive, interactions, component map, section/placement maps, motion FEEL contract
+7. Content/data/backend/SEO/analytics/accessibility/QA contracts
 
-### GĐ4 — Static frontend / visual reconstruction
-Reconstruct all approved routes and sections. Match V1 structure, hierarchy, typography, spacing, imagery, color, component composition and responsive intent. Do not redesign to make implementation easier.
+The approved PDF SHA-256 is `f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f`.
 
-### GĐ5 — UX / interactions / accessibility
-Implement mobile navigation, consultation modal, forms and validation states, FAQ, article TOC, filters/load-more where specified, focus handling, keyboard behavior, reduced motion and accessibility contracts. Preserve approved visual treatment.
+## Asset rules
 
-### GĐ6 — Backend / data / SEO / analytics
-Implement the contracts in `.webby/DATA_BACKEND_CONTRACT.json`, `.webby/CONTENT_TRUTH.json`, `.webby/SEO_CONTRACT.json` and `.webby/ANALYTICS_CONTRACT.json`. Do not publish demo project names, metrics, testimonials or pricing as verified production facts.
+- The v3.1 logical asset set contains **84 assets**.
+- Runtime assets are already materialized under `public/assets` and are mapped by `.webby/asset-manifest.json`.
+- Use the exact `destinationPath` for every asset. Do not search, generate, redraw, replace, or substitute assets.
+- Generic visible icons must use the pinned icon inventory.
+- Identity-bearing brand marks must use the exact mapped brand assets.
+- Canonical Lạc Việt logo source: `assets/production/brand/lac-viet-logo-source.png`. Never redraw, vectorize, recolor, restyle, or replace it unless the user explicitly approves a new revision.
+- Google Drive is review/archive only and is not an implementation dependency.
 
-## Required handback evidence
+## GĐ9 — Implementation
 
-Run the project/build/test suite and capture Playwright evidence according to `.webby/qa/PLAYWRIGHT_CAPTURE_PLAN.json`, including desktop 1440 and mobile 390 plus required UI states. Create `.webby/implementation/IMPLEMENTATION_RECEIPT.json` documenting commands, results, routes, screenshots and known gaps.
+When and only when the release gate is open, implement the approved website as one v3.1 implementation phase. The work includes these implementation workstreams, not separate legacy phases:
 
-Commit implementation to an implementation branch and open a **Draft PR**. Do not merge. Stop and return the branch/PR/evidence to ChatGPT for GĐ7 visual QA against the approved V1 master.
+- visual/frontend reconstruction of all approved routes and responsive states;
+- UX, navigation, modal, forms, FAQ, TOC, filters, keyboard/focus and accessibility behavior;
+- data/backend adapters and content truth rules;
+- SEO and analytics contracts;
+- tests, build and Playwright evidence.
+
+Do not redesign approved V1 to make implementation easier. Do not measure raster screenshots to invent geometry; use deterministic spec/manifest values.
+
+## Motion ownership
+
+- ChatGPT owns **Motion FEEL** in `.webby/MOTION_FEEL_CONTRACT.json`.
+- Claude owns **Motion MECHANISM**.
+- If a mechanism would create a material global behavior surface (for example global wheel/touch/key interception, browser-scroll replacement, global smooth-scroll engine or similar), report it before applying it broadly.
+
+## Critical finding rule
+
+If implementation exposes a security, data-integrity, architecture, impossible-spec, missing-authority or other critical blocking issue, report the narrow finding immediately. Do not silently expand scope into an unauthorized broad audit or redesign.
+
+## Required handback
+
+Run the project build/test suite and capture Playwright evidence according to `.webby/qa/PLAYWRIGHT_CAPTURE_PLAN.json`, including desktop 1440 and mobile 390 plus required UI states. Create `.webby/implementation/IMPLEMENTATION_RECEIPT.json` with commands, results, routes, screenshots and known gaps.
+
+Commit implementation on a dedicated implementation branch and open a **Draft PR**. **Do not merge.** Return the branch, PR and evidence to ChatGPT for final visual/contract QA and user acceptance.
