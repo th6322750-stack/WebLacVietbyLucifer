@@ -10,6 +10,10 @@ export function ProjectPreviewCard({ preview }: { preview: ProjectPreview }) {
   return (
     <Link
       href="/du-an"
+      // Demo state is carried in data/markup, not as a badge: the approved page-03/page-04
+      // preview cards show no badge, and re-QA round 4 (R4-02) required tagging without
+      // redesigning the card.
+      data-demo-only={preview.demoOnly}
       className="group flex flex-col overflow-hidden rounded-md border border-border bg-white shadow-sm transition-[transform,box-shadow,border-color] duration-fast ease-standard hover:-translate-y-[3px] hover:border-gold-300 hover:shadow-md"
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-ivory-100">

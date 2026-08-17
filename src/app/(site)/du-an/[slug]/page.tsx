@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: project.title,
     description: project.summary,
     path: `/du-an/${slug}`,
+    noindex: project.hidden,
   });
 }
 
@@ -53,6 +54,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   // ASSET_USAGE_MAP.json "/du-an/[slug]".relatedProjects = project-cover-01..04, deterministic
   // — not a same-category derivation (GD10 re-QA round 3 item 7).
   const related = relatedProjectPreview.filter((p) => p.title !== project.title);
+
+  // A project's own identity-bound cover is legitimate here; a detail-only fixture supplies its
+  // own mapped DETAIL_VISUAL instead of borrowing one (GD10 re-QA round 4, R4-01). The device
+  // master is presented `contain` per asset-manifest.json presentationByUsage, not `cover`.
+  const showcaseAssetId = project.detailVisualAssetId ?? project.heroAssetId;
+  const showcaseFit = showcaseAssetId === "project-detail-device-master" ? "object-contain" : "object-cover";
 
   return (
     <>
@@ -219,8 +226,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <Container>
           <SectionHeading onDark eyebrow="Giao diện" title="Giao diện website" align="center" />
           <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-lg">
-            {project.heroAssetId ? (
-              <Image src={assetPath(project.heroAssetId)} alt={`Minh hoạ giao diện ${project.title}`} fill className="object-cover" />
+            {showcaseAssetId ? (
+              <Image src={assetPath(showcaseAssetId)} alt={`Minh hoạ giao diện ${project.title}`} fill className={showcaseFit} />
             ) : null}
           </div>
         </Container>

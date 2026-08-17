@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: article.seoTitle ?? article.title,
     description: article.seoDescription ?? article.excerpt,
     path: `/kien-thuc/${slug}`,
+    noindex: article.hidden,
   });
 }
 

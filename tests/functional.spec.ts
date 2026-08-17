@@ -127,6 +127,101 @@ test.describe("project/article filters", () => {
     await page.getByRole("button", { name: "Website", exact: true }).click();
     await expect(page).toHaveURL(/category=Website/);
   });
+
+  // GD10 re-QA round 4, R4-04: the featured article is index 0 of the visible set, and the
+  // featured section is hidden while a filter is active — so filtering must run over the FULL
+  // visible set, not visibleArticles.slice(1), or the featured article vanishes from its own
+  // category. Two AI articles exist; both must be present under ?category=AI.
+  test("AI category filter keeps the featured AI article in the results", async ({ page }) => {
+    await page.goto("/kien-thuc?category=AI");
+    const grid = page.locator("#article-grid");
+    await expect(grid.getByRole("heading", { name: /AI trong Marketing 2024/i })).toBeVisible();
+    await expect(grid.getByRole("heading", { name: /công cụ AI hỗ trợ marketing/i })).toBeVisible();
+    await expect(page.locator("#featured-article")).toHaveCount(0);
+  });
+
+  test("category filter excludes other categories", async ({ page }) => {
+    await page.goto("/kien-thuc?category=TikTok");
+    const grid = page.locator("#article-grid");
+    await expect(grid.getByRole("heading", { name: /follow TikTok/i })).toBeVisible();
+    await expect(grid.getByRole("heading", { name: /AI trong Marketing 2024/i })).toHaveCount(0);
+  });
+
+  // GD10 re-QA round 4, R4-03/R4-04: hidden detail-only fixtures stay directly routable but must
+  // never appear in a listing or filter result.
+  test("hidden detail-only article never appears in listings or filters", async ({ page }) => {
+    for (const url of ["/kien-thuc", "/kien-thuc?category=SEO"]) {
+      await page.goto(url);
+      await expect(page.getByRole("heading", { name: /10 yếu tố SEO quan trọng/i })).toHaveCount(0);
+    }
+    await page.goto("/kien-thuc?category=SEO");
+    await expect(page.locator("#article-grid").getByRole("heading", { name: /SEO Onpage là gì/i })).toBeVisible();
+  });
+
+  test("hidden detail-only project never appears in listings or filters", async ({ page }) => {
+    for (const url of ["/du-an", "/du-an?category=Website"]) {
+      await page.goto(url);
+      await expect(page.getByRole("heading", { name: "Website Bất Động Sản An Phát", exact: true })).toHaveCount(0);
+    }
+  });
+});
+
+test.describe("hidden fixtures stay direct-review only", () => {
+  const HIDDEN_ROUTES = [
+    "/du-an/website-bat-dong-san-an-phat",
+    "/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google",
+  ];
+
+  // R4-03: routable for QA review, but noindex so unverified demo content never becomes an
+  // indexed claim (SEO_CONTRACT.json).
+  for (const route of HIDDEN_ROUTES) {
+    test(`${route} is routable and marked noindex`, async ({ page }) => {
+      const response = await page.goto(route);
+      expect(response?.status()).toBeLessThan(400);
+      await expect(page.locator("h1")).toBeVisible();
+      await expect(page.locator('head meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    });
+  }
+
+  test("sitemap.xml excludes hidden fixtures but lists visible detail routes", async ({ page }) => {
+    const response = await page.goto("/sitemap.xml");
+    expect(response?.status()).toBeLessThan(400);
+    const xml = (await response?.text()) ?? "";
+    expect(xml).not.toContain("/du-an/website-bat-dong-san-an-phat");
+    expect(xml).not.toContain("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
+    expect(xml).toContain("/du-an/website-bat-dong-san-the-maison");
+    expect(xml).toContain("/kien-thuc/seo-onpage-la-gi-15-yeu-to-quan-trong-can-toi-uu");
+  });
+});
+
+test.describe("content-truth tagging", () => {
+  // R4-02: every project/company preview mockup must carry demoOnly in data per
+  // CONTENT_TRUTH.json. The approved cards show no badge, so the tag is asserted in markup.
+  for (const route of ["/", "/website", "/du-an/website-bat-dong-san-an-phat"]) {
+    test(`${route} project preview cards are tagged demoOnly`, async ({ page }) => {
+      await page.goto(route);
+      const cards = page.locator('a[data-demo-only]');
+      expect(await cards.count()).toBeGreaterThan(0);
+      for (const card of await cards.all()) {
+        await expect(card).toHaveAttribute("data-demo-only", "true");
+      }
+    });
+  }
+});
+
+test.describe("detail-route asset identity", () => {
+  // R4-01: project-cover-01 is identity-bound to demo-project-01 (The Maison). The An Phát
+  // detail-only fixture must not render it anywhere on its route.
+  test("An Phát detail route does not consume The Maison's identity-bound cover", async ({ page }) => {
+    await page.goto("/du-an/website-bat-dong-san-an-phat");
+    const showcase = page.locator("#visual-showcase img");
+    await expect(showcase).toHaveCount(1);
+    await expect(showcase).toHaveAttribute("src", /project-detail-device-master/);
+    // The related-projects rail legitimately uses covers 01..04 per ASSET_USAGE_MAP; the
+    // showcase and hero must not.
+    const heroImg = page.locator("#case-study-hero img");
+    await expect(heroImg).toHaveAttribute("src", /project-detail-device-master/);
+  });
 });
 
 test.describe("reduced motion", () => {

@@ -158,7 +158,12 @@ export const projects: Project[] = [
     summary: "An Phát là sàn giao dịch bất động sản với hàng trăm dự án và sản phẩm, phục vụ nhu cầu tìm kiếm nhà ở đa dạng của khách hàng.",
     demoOnly: true,
     hidden: true,
-    heroAssetId: "project-cover-01",
+    // No heroAssetId: this fixture never appears in a grid, and project-cover-01 is
+    // identity-bound to demo-project-01 (The Maison) — borrowing it leaked that identity into
+    // this route's visual-showcase (GD10 re-QA round 4, R4-01). ASSET_USAGE_MAP.json maps this
+    // route's detail visual to project-detail-device-master, the only non-identity-bound
+    // DETAIL_VISUAL available for /du-an/[slug].
+    detailVisualAssetId: "project-detail-device-master",
     durationLabel: "20 ngày",
     completedLabel: "05/2024",
     challenge: "Website cũ tải chậm, giao diện cũ, khó quản lý và không tối ưu trên di động, khiến khách hàng khó tìm kiếm sản phẩm phù hợp.",

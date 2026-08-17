@@ -24,6 +24,11 @@ export type Project = {
   summary: string;
   demoOnly: boolean;
   heroAssetId?: string;
+  /** Large detail-route visual, separate from the grid cover. `heroAssetId` is an
+   * identity-bound PROJECT_COVER belonging to exactly one project, so a detail-only fixture
+   * must never borrow another project's cover here — it carries its own ASSET_USAGE_MAP-mapped
+   * DETAIL_VISUAL instead (GD10 re-QA round 4, R4-01). */
+  detailVisualAssetId?: string;
   challenge?: string;
   solution?: string;
   results?: string[];

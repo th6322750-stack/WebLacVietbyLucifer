@@ -6,17 +6,22 @@ export function pageMetadata({
   description,
   path,
   ogImagePath,
+  noindex,
 }: {
   title: string;
   description: string;
   path: string;
   ogImagePath?: string;
+  /** Direct-review-only routes (hidden demo detail fixtures) — keeps them routable for QA while
+   * preventing unverified demo content from becoming an indexed claim per SEO_CONTRACT.json. */
+  noindex?: boolean;
 }): Metadata {
   const url = `${siteSettings.canonicalOrigin}${path}`;
   return {
     title,
     description,
     alternates: { canonical: url },
+    robots: noindex ? { index: false, follow: false } : undefined,
     openGraph: {
       title,
       description,

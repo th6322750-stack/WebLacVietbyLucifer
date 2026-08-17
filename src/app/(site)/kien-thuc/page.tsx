@@ -32,7 +32,12 @@ export default async function KnowledgePage({
   const { category } = await searchParams;
   const active = category && categories.includes(category) ? category : "all";
   const featured = visibleArticles[0]!;
-  const rest = visibleArticles.slice(1).filter((a) => active === "all" || a.category === active);
+  // The featured card is part of the unfiltered "all" composition only. Under a category filter
+  // the FULL visible set must be filtered — slicing index 0 off first dropped the featured
+  // article from its own category's results (e.g. ?category=AI lost the AI featured article),
+  // since the featured section is also hidden while filtering (GD10 re-QA round 4, R4-04).
+  // getVisibleArticles() already excludes hidden fixtures, so they never surface in filters.
+  const grid = active === "all" ? visibleArticles.slice(1) : visibleArticles.filter((a) => a.category === active);
 
   return (
     <>
@@ -89,7 +94,7 @@ export default async function KnowledgePage({
         <Container>
           <SectionHeading eyebrow="Bài viết mới nhất" title="Kiến thức mới cập nhật" />
           <div className="mt-8">
-            <ArticleGrid articles={rest} />
+            <ArticleGrid articles={grid} />
           </div>
         </Container>
       </Section>

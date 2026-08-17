@@ -12,8 +12,14 @@
   "round3Commits": {
     "codeEvidenceCommit": "3e1a4c2efabcafb88d749e165c691c71d62e9cc3",
     "codeEvidenceCommitNote": "Contains all round-3 code, content, and re-captured evidence changes (see fixLogRound3). Verified via `git rev-parse HEAD` immediately after creating it, before this receipt-fill commit existed.",
+    "finalPrHead": "fcf4fb7626f98656545fdf47544e245c465a507b",
+    "finalPrHeadNote": "Round-3 final PR HEAD, confirmed after the fact against `GET /git/refs/heads/claude/gd9-implementation-v1` and ChatGPT's own round-4 QA target. Superseded by round4Commits below."
+  },
+  "round4Commits": {
+    "codeEvidenceCommit": "PENDING_FILL_AFTER_COMMIT_1",
+    "codeEvidenceCommitNote": "The commit containing all round-4 code, test, and re-captured evidence changes (see fixLogRound4). Filled in by the follow-up commit below, since a commit cannot contain its own hash.",
     "finalPrHead": "PENDING_FILL_AFTER_COMMIT_2",
-    "finalPrHeadNote": "This receipt-only follow-up commit IS finalPrHead — its own hash is unknowable from inside its own content (a commit cannot contain its own hash). The exact, authoritative SHA is restated verbatim in the PR #5 comment posted immediately after push, and independently verifiable with `git log --oneline -2` on claude/gd9-implementation-v1. No commits follow finalPrHead for round 3."
+    "finalPrHeadNote": "The receipt-only follow-up commit that fills in codeEvidenceCommit IS finalPrHead. Its exact SHA is restated verbatim in the PR #5 comment posted immediately after push and is independently verifiable with `git log --oneline -2` on claude/gd9-implementation-v1. No commits follow finalPrHead for round 4."
   },
   "revisionHistory": [
     { "round": "GD9 initial implementation", "commit": "56884cc", "status": "SUPERSEDED" },
@@ -26,7 +32,13 @@
     },
     {
       "round": "GD10 fix round 3 (identity de-unification + route-fixtures)",
+      "commit": "fcf4fb7",
+      "status": "SUPERSEDED_BY_ROUND_4",
       "note": "Reversed round 2's grid/detail identity unification per ChatGPT's explicit correction (dedicated detail-only master assets already exist and were simply mis-mapped in round 2), fixed 2 PDF transcription errors, and fixed 5 additional asset/dataset mapping defects. See fixLogRound3 below. See round3Commits above for exact hashes."
+    },
+    {
+      "round": "GD10 fix round 4 (targeted 4-defect fix)",
+      "note": "Fixed the 4 objective contract/functional defects ChatGPT re-QA round 4 found in fcf4fb7 (comment 5317441681): a residual identity-bound asset leak on the An Phát detail route, missing CONTENT_TRUTH demoOnly tagging on the new round-3 preview fixtures, hidden fixtures still advertised in sitemap.xml, and a /kien-thuc category filter that dropped the featured AI article. See fixLogRound4 below and round4Commits above for exact hashes. No redesign, no new assets."
     }
   ],
   "authorityCorrectionIntegrated": {
@@ -78,6 +90,42 @@
     { "item": "re-QA round 3, item 8", "scope": "Regression re-audit", "fix": "Re-ran the Tailwind opacity-modifier grep audit (`-{color}/{number}` patterns) across all of `src/` after the round-3 edits — no new non-multiple-of-5 values introduced." },
     { "item": "re-QA round 3, item 9", "scope": "Commit-hash ambiguity", "fix": "Round 2's `implementationCommit` field pointed at 337035f, but a small follow-up commit (adb6bff) landed after it and became the actual PR HEAD — an unlabeled mismatch ChatGPT flagged. This round adds an explicit `round3Commits` block (see top of file) with separately labeled `codeEvidenceCommit` and `finalPrHead` fields, both filled in via a second commit immediately after the first (the same hash-cannot-contain-itself constraint applies), with the exact values additionally restated verbatim in the PR #5 comment posted after push so there is no ambiguity between what the receipt file can self-reference and what the actual HEAD is." },
     { "item": "re-QA round 3, item 10", "scope": "Re-verification", "fix": "tsc --noEmit / eslint . / next build (36/36 pages — up from 34, +2 for the two new hidden detail-only routes) all clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-captured against the restored dataset and route-fixtures; every changed page visually spot-checked against the rendered PDF master before commit." }
+  ],
+  "fixLogRound4": [
+    {
+      "item": "GD10-R4-01",
+      "scope": "/du-an/[slug] visual-showcase asset identity",
+      "verifiedIndependently": "Confirmed against asset-manifest.json: project-cover-01 is role=PROJECT_COVER, identityRequired=true, item=demo-project-01 (The Maison). Confirmed against ASSET_USAGE_MAP.json: '/du-an/[slug]'.detail = project-detail-device-master, with project-cover-01..04 mapped only to relatedProjects. Confirmed the full 85-asset inventory contains exactly three DETAIL_VISUAL assets (about-bird-master, project-detail-device-master, article-seo-hero-master), of which only project-detail-device-master belongs to this route.",
+      "fix": "Round 3 fixed the hero but the visual-showcase still rendered `project.heroAssetId`, which for the An Phát hidden fixture was project-cover-01 — leaking The Maison's identity-bound cover onto a different project's route. Rather than re-unify identities, split the data model per ChatGPT's instruction: added `detailVisualAssetId?: string` to the Project type, removed `heroAssetId` from the An Phát fixture entirely (it is hidden and never appears in a grid, so it needs no cover), and set `detailVisualAssetId: \"project-detail-device-master\"`. The showcase now renders `project.detailVisualAssetId ?? project.heroAssetId`, so visible projects still legitimately use their OWN identity-bound cover while detail-only fixtures use their mapped DETAIL_VISUAL. Presentation follows asset-manifest.json presentationByUsage (objectFit: contain for the device master, not cover). No new asset, no substitution.",
+      "honestDeviationFlaggedForRound5": "The An Phát route now renders project-detail-device-master in BOTH the hero and the visual-showcase, which is visually redundant. This is the direct consequence of the instruction to use only the route's mapped detail asset: page-10's 'GIAO DIỆN WEBSITE' section is cut off at the bottom edge of the approved mockup frame (verified by rendering page-10 at 2x full and 10x cropped — only a thin sliver of a dark full-width website screenshot with the Lạc Việt nav is visible), and no full-width website-screenshot asset exists anywhere in the 85-asset inventory. Claude did not invent, generate, or substitute one. If ChatGPT wants the showcase to differ from the hero on detail-only fixtures, that requires either a new authorized DETAIL_VISUAL asset or an explicit instruction to omit the section on hidden fixtures — flagged rather than silently resolved."
+    },
+    {
+      "item": "GD10-R4-02",
+      "scope": "route-fixtures.ts content-truth tagging",
+      "verifiedIndependently": "CONTENT_TRUTH.json demoOnly[0] = 'all project/company names and results shown in GĐ1 project mockups unless later verified'; implementationRule = 'tag it in data as demoOnly=true'. Also verified against the approved master at 14x zoom (page-04 showcase row) that the preview cards carry NO demo badge — image + title + subtitle only.",
+      "fix": "Made `demoOnly` required on `ProjectPreview` and pinned it to the literal type `true` (not `boolean`), so it is impossible to add a preview fixture that silently claims to be a verified client without a deliberate type change. Set `demoOnly: true` on all 12 project preview fixtures across homeProjectShowcase, websiteProjectShowcase, and relatedProjectPreview. Per both CONTENT_TRUTH's 'tag it in data' wording and ChatGPT's explicit 'do not redesign the approved card just to add a badge', the tag is carried in data and surfaced in markup as `data-demo-only=\"true\"` on ProjectPreviewCard — machine-readable and assertable, zero visual change.",
+      "scopeNote": "ArticlePreview was deliberately left untagged: CONTENT_TRUTH's demoOnly clause scopes to project/company names and results, ChatGPT's finding scoped to ProjectPreview, and the existing `articles` dataset carries no demoOnly field either — adding one only to the article previews would make the codebase less consistent, not more truthful. Raised here for round 5 rather than changed unilaterally."
+    },
+    {
+      "item": "GD10-R4-03",
+      "scope": "sitemap.xml + hidden fixture indexability",
+      "fix": "src/app/sitemap.ts mapped the raw `projects`/`articles` arrays, advertising both hidden slug-only fixtures for indexing and contradicting the round-3 hidden model plus SEO_CONTRACT.json's rule against unverified demo previews becoming indexed claims. Switched to `getVisibleProjects()`/`getVisibleArticles()`. Additionally added an optional `noindex` flag to `pageMetadata()` (emitting `robots: { index: false, follow: false }`) and wired it to `project.hidden`/`article.hidden` in both [slug] routes, so the fixtures remain fully routable for direct QA review but are explicitly non-indexable. Verified: next build still generates 13 project paths and 8 article paths (hidden routes intact), while sitemap.xml no longer lists them."
+    },
+    {
+      "item": "GD10-R4-04",
+      "scope": "/kien-thuc category filter",
+      "fix": "The page computed `featured = visibleArticles[0]` then `rest = visibleArticles.slice(1).filter(...)`, while also hiding the featured section whenever a filter was active — so the featured article was unreachable under its own category. With two AI articles in the dataset, ?category=AI showed only the second and silently dropped 'AI trong Marketing 2024...'. Fixed: the featured/slice(1) split now applies only to the unfiltered 'all' view; under any category filter the FULL visible set is filtered (`active === \"all\" ? visibleArticles.slice(1) : visibleArticles.filter((a) => a.category === active)`). Hidden fixtures remain excluded because the source is already getVisibleArticles()."
+    },
+    {
+      "item": "GD10-R4 test coverage",
+      "scope": "tests/functional.spec.ts",
+      "fix": "ChatGPT correctly noted 28/28 passed while R4-04 was live because the only filter assertion covered the PROJECT filter URL. Added 11 targeted regression tests (28 → 39): AI category filter keeps the featured AI article; category filter excludes other categories; hidden article and hidden project never appear in any listing or filter; both hidden routes are routable AND carry a noindex robots meta; sitemap.xml excludes both hidden slugs while still listing the visible detail routes; project preview cards on /, /website and the detail route all carry data-demo-only=true; and the An Phát route's showcase + hero both resolve to project-detail-device-master rather than any project-cover. Each new assertion was chosen to fail against the pre-fix code, not merely to pass against the new code."
+    },
+    {
+      "item": "GD10-R4 re-verification",
+      "scope": "Full suite",
+      "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages (hidden detail routes still generated); functional 39/39 including all 11 new regression tests; evidence 30/30 re-captured in full at 1440 desktop / 390 mobile including the deterministic loading state, since R4-01 changed a visible detail route; An Phát detail evidence visually re-inspected to confirm the showcase no longer shows The Maison's cover; Tailwind opacity-modifier audit across src/ re-run clean (all multiples of 5). Still no independent CI status check on the HEAD — this repo has no CI workflow wired to push, so these remain local-execution + committed-evidence results, unchanged from rounds 2-3."
+    }
   ],
   "confidenceNotes": {
     "highConfidence": "Route hero headlines (item quoted verbatim from re-QA comments and independently re-verified by cropping the exact PDF region at 8x zoom), section/card counts, project/article TITLES and CATEGORY tags, the SEO article's 10-item TOC, and case-study meta/stats (+68%/+45%/-40%, +165%/+70%/+30%/35%) — all read clearly at 3x-8x zoom.",
@@ -133,12 +181,12 @@
   "build": {
     "typecheck": "PASS (tsc --noEmit, 0 errors)",
     "lint": "PASS (eslint ., 0 errors/warnings)",
-    "build": "PASS (next build — 36/36 pages generated, up from 34; +2 pages are the two hidden detail-only routes (/du-an/website-bat-dong-san-an-phat, /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google) restored as distinct entries in round 3)"
+    "build": "PASS (next build — 36/36 pages generated; includes 13 /du-an/[slug] paths and 8 /kien-thuc/[slug] paths, i.e. the two hidden detail-only fixtures remain routable while being excluded from sitemap.xml and marked noindex per round 4)"
   },
   "tests": {
-    "functional": "PASS — 28/28 (tests/functional.spec.ts), re-run clean after round-3 fixes.",
-    "evidence": "PASS — 30/30 screenshots re-captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the deterministic 'loading' state, against the restored dataset and route-fixtures.",
-    "noIndependentCi": "Confirmed accurate per re-QA #10 (round 2, still true in round 3): this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These results are local-execution + committed-evidence + this receipt only, not a remote status check attached to the HEAD commit."
+    "functional": "PASS — 39/39 (tests/functional.spec.ts), up from 28: round 4 added 11 targeted regression tests covering the knowledge category filter, hidden-fixture listing/filter exclusion, noindex + sitemap exclusion, demoOnly markup tagging, and detail-route asset identity. See fixLogRound4 'GD10-R4 test coverage'.",
+    "evidence": "PASS — 30/30 screenshots re-captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the deterministic 'loading' state. Full re-capture was required because R4-01 changed a visible detail route.",
+    "noIndependentCi": "Confirmed accurate per re-QA #10 (round 2, still true in rounds 3-4): this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These results are local-execution + committed-evidence + this receipt only, not a remote status check attached to the HEAD commit."
   },
   "playwrightEvidence": {
     "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
@@ -168,6 +216,18 @@
       "type": "BLOCKED_SPEC",
       "detail": "streetAddress remains unverified; no address is displayed anywhere rather than inventing one.",
       "resolutionOwner": "Lucifer/ChatGPT"
+    }
+  ],
+  "openQuestionsForRound5": [
+    {
+      "type": "FLAGGED_DEVIATION",
+      "detail": "The An Phát hidden detail fixture now renders project-detail-device-master in both the hero and the visual-showcase (visually redundant). Page-10's 'GIAO DIỆN WEBSITE' section is cut off in the approved mockup and no full-width website-screenshot asset exists in the 85-asset inventory. Options require ChatGPT's decision: (a) accept the redundancy, (b) authorize a new DETAIL_VISUAL asset, or (c) instruct omitting the section on hidden detail-only fixtures. Claude did not invent or substitute an asset. See fixLogRound4 GD10-R4-01 honestDeviationFlaggedForRound5.",
+      "resolutionOwner": "ChatGPT (design/asset authority)"
+    },
+    {
+      "type": "SCOPE_QUESTION",
+      "detail": "ArticlePreview fixtures were left without a demoOnly field, matching the existing untagged `articles` dataset and the CONTENT_TRUTH clause's project/company scope. If ChatGPT wants article demo content tagged too, it should be applied consistently to both the article previews AND the main articles dataset in one pass. See fixLogRound4 GD10-R4-02 scopeNote.",
+      "resolutionOwner": "ChatGPT (content-truth authority)"
     }
   ],
   "blockersResolvedInRound3": [
