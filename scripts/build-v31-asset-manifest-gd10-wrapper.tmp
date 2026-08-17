@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import hashlib, json, subprocess, sys
+ROOT=Path(__file__).resolve().parents[1]
+LEGACY=ROOT/'scripts/build-v31-asset-manifest-legacy84.py'
+SHA='a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691'
+def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+def dump(p,d): p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+subprocess.run([sys.executable,str(LEGACY)],check=True,cwd=ROOT)
+master=ROOT/'assets/production/masters/raster/client-logos/support-client-logo-strip.png'
+runtime=ROOT/'public/assets/client-logos/support-client-logo-strip.png'
+if not master.exists() or sha(master)!=SHA:
+    raise SystemExit('GD10 approved-PDF strip missing or wrong SHA; regenerate it from the pinned PDF first.')
+runtime.parent.mkdir(parents=True,exist_ok=True); runtime.write_bytes(master.read_bytes())
+manifest=json.loads((ROOT/'.webby/asset-manifest.json').read_text())
+manifest['assets']=[a for a in manifest['assets'] if a.get('id')!='support-client-logo-strip']
+manifest['assets'].append({
+'id':'support-client-logo-strip','classification':'DEMO','role':'CLIENT_LOGO_STRIP','item':'approved-v1-demo-client-logo-row','identityRequired':True,'authoritative':True,
+'master':{'qualityClass':'FHD_CLASS','fileName':'assets/production/masters/raster/client-logos/support-client-logo-strip.png','format':'png','width':1685,'height':70,'sha256':SHA,'nativeOrAuthoritativeHighRes':True,'derivedFromLowRes':False,'qualityException':'Exact source extract from approved V1 PDF page 5; semantic strip dimensions are intentional.'},
+'delivery':[{'usage':'default','fileName':'support-client-logo-strip.png','destinationPath':'public/assets/client-logos/support-client-logo-strip.png','runtimeSourceType':'PROJECT_PATH','runtimeSource':None,'width':1685,'height':70,'format':'png','byteSize':runtime.stat().st_size,'maxWeight':500000,'transparent':False,'sha256':SHA}],
+'allowedUsage':['default'],'presentationByUsage':{'default':{'objectFit':'contain','objectPosition':'center','preserveAspectRatio':True,'crop':'none','source':'approved V1 PDF page 5 exact extract'}},'priority':'lazy','livePolicy':'DEMO_ONLY','mustNot':['present logos as a verified client list','substitute with platform/social logos','split, redraw or recompose individual marks as a new identity authority']})
+manifest.setdefault('qualityPolicy',{})['gd10RasterAmendment']='.webby/GD10_RASTER_ASSET_AMENDMENT.json'
+assert len(manifest['assets'])==85
+dump(ROOT/'.webby/asset-manifest.json',manifest)
+usage=json.loads((ROOT/'.webby/ASSET_USAGE_MAP.json').read_text())
+usage['routes']['/support-mxh']['clientLogoStrip']='support-client-logo-strip'
+usage['routes']['/lien-he']['contactIcon']='icon-mail'
+usage['routes']['/lien-he']['fourthChannel']={'type':'EMAIL','state':'PENDING_DISABLED','rule':'productionEmail is TBD; render Email card disabled/Sắp cập nhật; do not invent an address.'}
+dump(ROOT/'.webby/ASSET_USAGE_MAP.json',usage)
+print('PASS_V31_ASSET_MANIFEST_GD10_CORRECTED assets=85 raster=35 vector=50')
