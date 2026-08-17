@@ -10,10 +10,10 @@
   "implementationCommit": "337035f51418b744573837d95580524bef085786",
   "implementationCommitNote": "Legacy field, kept for continuity with round-2 history only. It is NOT the current PR HEAD — see round3Commits below for the authoritative, explicitly-labeled commit hashes as requested in re-QA round 3 item 9.",
   "round3Commits": {
-    "codeEvidenceCommit": "PENDING_FILL_AFTER_COMMIT_1",
-    "codeEvidenceCommitNote": "The commit containing all round-3 code, content, and re-captured evidence changes (see fixLogRound3). This value is filled into the receipt by a small follow-up commit, since a commit cannot contain its own hash.",
+    "codeEvidenceCommit": "3e1a4c2efabcafb88d749e165c691c71d62e9cc3",
+    "codeEvidenceCommitNote": "Contains all round-3 code, content, and re-captured evidence changes (see fixLogRound3). Verified via `git rev-parse HEAD` immediately after creating it, before this receipt-fill commit existed.",
     "finalPrHead": "PENDING_FILL_AFTER_COMMIT_2",
-    "finalPrHeadNote": "The commit that fills in codeEvidenceCommit above IS this finalPrHead commit itself — again, unknowable from inside its own content. The exact, authoritative SHA for both values is stated in the PR #5 comment posted immediately after push and can be verified independently with `git log --oneline -3` on claude/gd9-implementation-v1. There are no commits after finalPrHead for this round."
+    "finalPrHeadNote": "This receipt-only follow-up commit IS finalPrHead — its own hash is unknowable from inside its own content (a commit cannot contain its own hash). The exact, authoritative SHA is restated verbatim in the PR #5 comment posted immediately after push, and independently verifiable with `git log --oneline -2` on claude/gd9-implementation-v1. No commits follow finalPrHead for round 3."
   },
   "revisionHistory": [
     { "round": "GD9 initial implementation", "commit": "56884cc", "status": "SUPERSEDED" },
