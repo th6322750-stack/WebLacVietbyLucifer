@@ -8,7 +8,12 @@ import { formatDate } from "@/lib/format";
  * listing rather than a specific article page (no full article record backs these captions). */
 export function ArticlePreviewCard({ preview }: { preview: ArticlePreview }) {
   return (
-    <Link href="/kien-thuc" className="flex items-center gap-3 group">
+    <Link
+      href="/kien-thuc"
+      // See ArticleCard — demo state in markup, no visual badge (R5-01 point 3).
+      data-demo-only={preview.demoOnly}
+      className="flex items-center gap-3 group"
+    >
       <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm">
         <Image src={assetPath(preview.coverAssetId)} alt={preview.title} fill className="object-cover" />
       </div>

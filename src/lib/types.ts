@@ -57,6 +57,12 @@ export type Article = {
   content: ArticleSection[];
   publishedAt: string;
   author: string;
+  /** Required, mirroring Project["demoOnly"]. Every current fixture's body is a demo
+   * reconstruction rather than verified editorial content, so it must not become factual
+   * structured data or an indexed claim (SEO_CONTRACT.json contentIntegrity + "Article on
+   * factual knowledge articles" only). Gates Article JSON-LD, noindex, and sitemap inclusion
+   * (GD10 re-QA round 5, R5-01). Set to false only once the body is verified. */
+  demoOnly: boolean;
   coverAssetId?: string;
   readMinutes?: number;
   seoTitle?: string;

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteSettings } from "@/lib/site-settings";
 import { getVisibleProjects } from "@/content/projects";
-import { getVisibleArticles } from "@/content/articles";
+import { getIndexableArticles } from "@/content/articles";
 
 const STATIC_ROUTES = [
   "/",
@@ -27,7 +27,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${origin}/du-an/${p.slug}`,
     lastModified: new Date(),
   }));
-  const articleEntries = getVisibleArticles().map((a) => ({
+  // Articles additionally require verified content before being advertised for indexing — their
+  // bodies are currently demo reconstructions, so this list is empty by design until content is
+  // verified (GD10 re-QA round 5, R5-01). The /kien-thuc listing route itself stays in the
+  // sitemap; only the unverified article detail URLs are withheld.
+  const articleEntries = getIndexableArticles().map((a) => ({
     url: `${origin}/kien-thuc/${a.slug}`,
     lastModified: new Date(a.publishedAt),
   }));

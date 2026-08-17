@@ -42,10 +42,13 @@ export const relatedProjectPreview: ProjectPreview[] = [
 // ASSET_USAGE_MAP.json "/kien-thuc/[slug]".relatedArticles — approved page-11 visible labels,
 // rendered as static preview cards (GD10 re-QA round 3 item 6): "do not require three
 // additional full article records."
-export type ArticlePreview = { title: string; publishedAt: string; coverAssetId: string };
+// `demoOnly` is required and pinned to literal `true` for the same reason as ProjectPreview
+// above. Round 4 left these untagged pending a scope decision; ChatGPT re-QA round 5 (R5-01)
+// resolved it: tag the article previews AND the main Article dataset in one consistent pass.
+export type ArticlePreview = { title: string; publishedAt: string; coverAssetId: string; demoOnly: true };
 
 export const seoArticleRelatedPreview: ArticlePreview[] = [
-  { title: "Cách tối ưu tốc độ website đúng cách", publishedAt: "2024-06-10", coverAssetId: "article-cover-01" },
-  { title: "Checklist SEO Onpage cho người mới bắt đầu", publishedAt: "2024-06-06", coverAssetId: "article-cover-02" },
-  { title: "Google Core Update là gì và ảnh hưởng thế nào?", publishedAt: "2024-06-01", coverAssetId: "article-cover-03" },
+  { title: "Cách tối ưu tốc độ website đúng cách", publishedAt: "2024-06-10", coverAssetId: "article-cover-01", demoOnly: true },
+  { title: "Checklist SEO Onpage cho người mới bắt đầu", publishedAt: "2024-06-06", coverAssetId: "article-cover-02", demoOnly: true },
+  { title: "Google Core Update là gì và ảnh hưởng thế nào?", publishedAt: "2024-06-01", coverAssetId: "article-cover-03", demoOnly: true },
 ];

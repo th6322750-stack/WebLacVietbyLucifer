@@ -148,9 +148,8 @@ export const projects: Project[] = [
   },
   // Detail-template fixture only (page-10) — resolvable by slug for /du-an/[slug] evidence,
   // deliberately `hidden` from the /du-an grid/filters per GD10 re-QA round 3 item 2: the
-  // approved master keeps this as a distinct detail-page identity from "The Maison" above,
-  // both legitimately using project-cover-01 in different mockup contexts (grid vs. detail
-  // template) rather than needing a 13th identity-bound asset.
+  // approved master keeps this as a distinct detail-page identity from "The Maison" above.
+  // It carries no project cover of its own — see the detailVisualAssetId note below.
   {
     slug: "website-bat-dong-san-an-phat",
     title: "Website Bất Động Sản An Phát",

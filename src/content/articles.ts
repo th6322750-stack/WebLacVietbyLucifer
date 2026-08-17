@@ -20,6 +20,7 @@ export const articles: Article[] = [
     excerpt: "AI đang thay đổi cách doanh nghiệp tiếp cận khách hàng, tối ưu chiến dịch và tăng hiệu suất vận hành.",
     publishedAt: "2024-09-10",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-01",
     readMinutes: 6,
     content: [
@@ -42,6 +43,7 @@ export const articles: Article[] = [
     excerpt: "Một website hiệu quả cần đảm bảo nhiều yếu tố từ chuẩn SEO, tốc độ đến trải nghiệm người dùng.",
     publishedAt: "2024-08-20",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-02",
     readMinutes: 5,
     content: [
@@ -64,6 +66,7 @@ export const articles: Article[] = [
     excerpt: "Tăng follow bền vững đến từ nội dung nhất quán và đúng insight khán giả, không chỉ từ mẹo tăng ảo.",
     publishedAt: "2024-08-05",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-03",
     readMinutes: 4,
     content: [
@@ -86,6 +89,7 @@ export const articles: Article[] = [
     excerpt: "Nắm vững các bước cơ bản giúp chiến dịch quảng cáo Facebook đầu tiên tránh những sai lầm phổ biến.",
     publishedAt: "2024-07-22",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-04",
     readMinutes: 5,
     content: [
@@ -108,6 +112,7 @@ export const articles: Article[] = [
     excerpt: "SEO Onpage giúp website thân thiện hơn với công cụ tìm kiếm. Tổng hợp 15 yếu tố quan trọng bạn cần lưu ý.",
     publishedAt: "2024-06-20",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-05",
     readMinutes: 6,
     content: [
@@ -133,6 +138,7 @@ export const articles: Article[] = [
     excerpt: "Để website lên top Google không chỉ cần nội dung hay mà còn phải tối ưu nhiều yếu tố kỹ thuật và trải nghiệm người dùng. Dưới đây là 10 yếu tố quan trọng nhất bạn cần tập trung.",
     publishedAt: "2024-05-15",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     hidden: true,
     readMinutes: 8,
     content: [
@@ -155,6 +161,7 @@ export const articles: Article[] = [
     excerpt: "Giúp bạn tiết kiệm thời gian và tối ưu hiệu suất, đây là những công cụ AI được nhiều marketer tin dùng.",
     publishedAt: "2024-07-01",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-06",
     readMinutes: 6,
     content: [
@@ -177,6 +184,7 @@ export const articles: Article[] = [
     excerpt: "Một chiến lược marketing hiệu quả cần đi từ mục tiêu rõ ràng đến đo lường kết quả cụ thể.",
     publishedAt: "2024-06-12",
     author: "Lạc Việt Media Agency",
+    demoOnly: true,
     coverAssetId: "article-cover-07",
     readMinutes: 6,
     content: [
@@ -198,7 +206,17 @@ export function getArticleBySlug(slug: string) {
   return articles.find((a) => a.slug === slug);
 }
 
-/** Grid/filter-visible articles only — excludes detail-template-only fixtures. */
+/** Grid/filter-visible articles only — excludes detail-template-only fixtures. Deliberately
+ * does NOT filter demoOnly: demo articles are still shown in the UI for visual parity, they are
+ * only barred from structured data and indexing. Use getIndexableArticles() for SEO surfaces. */
 export function getVisibleArticles() {
   return articles.filter((a) => !a.hidden);
+}
+
+/** Articles eligible for sitemap/indexing: neither a direct-review-only fixture nor unverified
+ * demo content (SEO_CONTRACT.json contentIntegrity; GD10 re-QA round 5, R5-01). Currently this
+ * returns an empty list by design — every fixture body is a demo reconstruction. It will start
+ * returning rows as soon as any article is verified and flipped to demoOnly: false. */
+export function getIndexableArticles() {
+  return articles.filter((a) => !a.hidden && !a.demoOnly);
 }

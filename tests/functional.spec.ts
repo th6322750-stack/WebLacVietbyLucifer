@@ -190,7 +190,59 @@ test.describe("hidden fixtures stay direct-review only", () => {
     expect(xml).not.toContain("/du-an/website-bat-dong-san-an-phat");
     expect(xml).not.toContain("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
     expect(xml).toContain("/du-an/website-bat-dong-san-the-maison");
-    expect(xml).toContain("/kien-thuc/seo-onpage-la-gi-15-yeu-to-quan-trong-can-toi-uu");
+    // The /kien-thuc listing route stays indexable; only unverified article DETAIL urls are
+    // withheld (R5-01) — asserted in the SEO content-integrity block below.
+    expect(xml).toContain("/kien-thuc");
+  });
+});
+
+test.describe("SEO content integrity (demo articles)", () => {
+  const DEMO_ARTICLE_ROUTES = [
+    "/kien-thuc/ai-trong-marketing-2024-xu-huong-ung-dung-va-co-hoi-cho-doanh-nghiep",
+    "/kien-thuc/seo-onpage-la-gi-15-yeu-to-quan-trong-can-toi-uu",
+    "/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google",
+  ];
+
+  // R5-01: SEO_CONTRACT.json allows Article structured data only on factual knowledge articles
+  // and forbids demo preview data becoming factual structured data. Every current article body
+  // is a demo reconstruction, so no route may emit Article JSON-LD.
+  for (const route of DEMO_ARTICLE_ROUTES) {
+    test(`${route} emits no Article JSON-LD and is noindex`, async ({ page }) => {
+      const response = await page.goto(route);
+      expect(response?.status()).toBeLessThan(400);
+
+      const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+      const types = blocks.map((b) => JSON.parse(b)["@type"]);
+      expect(types).not.toContain("Article");
+      // BreadcrumbList describes navigation, not article facts — it must still be present.
+      expect(types).toContain("BreadcrumbList");
+
+      await expect(page.locator('head meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    });
+  }
+
+  test("no demo article detail URL appears in sitemap.xml", async ({ page }) => {
+    const response = await page.goto("/sitemap.xml");
+    const xml = (await response?.text()) ?? "";
+    for (const route of DEMO_ARTICLE_ROUTES) {
+      expect(xml).not.toContain(route);
+    }
+  });
+
+  test("article cards and related-article previews carry demo truth in markup", async ({ page }) => {
+    await page.goto("/kien-thuc");
+    const cards = page.locator('#article-grid a[data-demo-only]');
+    expect(await cards.count()).toBeGreaterThan(0);
+    for (const card of await cards.all()) {
+      await expect(card).toHaveAttribute("data-demo-only", "true");
+    }
+
+    await page.goto("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
+    const previews = page.locator('#related-articles a[data-demo-only]');
+    expect(await previews.count()).toBeGreaterThan(0);
+    for (const preview of await previews.all()) {
+      await expect(preview).toHaveAttribute("data-demo-only", "true");
+    }
   });
 });
 

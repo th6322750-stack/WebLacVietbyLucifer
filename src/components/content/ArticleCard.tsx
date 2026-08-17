@@ -12,6 +12,9 @@ export function ArticleCard({ article }: { article: Article }) {
     <Link
       href={`/kien-thuc/${article.slug}`}
       onClick={() => track({ name: "article_open", props: { articleSlug: article.slug, category: article.category } })}
+      // Demo state carried in markup only — the approved master's article cards have no badge
+      // (GD10 re-QA round 5, R5-01 point 3).
+      data-demo-only={article.demoOnly}
       className="group flex flex-col overflow-hidden rounded-md border border-border bg-white shadow-sm transition-[transform,box-shadow,border-color] duration-fast ease-standard hover:-translate-y-[3px] hover:border-gold-300 hover:shadow-md"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-ivory-100">

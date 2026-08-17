@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: article.seoTitle ?? article.title,
     description: article.seoDescription ?? article.excerpt,
     path: `/kien-thuc/${slug}`,
-    noindex: article.hidden,
+    // Demo reconstructions must not become indexed claims until their bodies are verified
+    // (SEO_CONTRACT.json contentIntegrity; GD10 re-QA round 5, R5-01). Hidden fixtures stay
+    // noindex for the round-4 reason as well.
+    noindex: article.demoOnly || article.hidden,
   });
 }
 
@@ -46,20 +49,27 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            articleJsonLd({
-              title: article.title,
-              excerpt: article.excerpt,
-              publishedAt: article.publishedAt,
-              author: article.author,
-              path: `/kien-thuc/${article.slug}`,
-            }),
-          ),
-        }}
-      />
+      {/* SEO_CONTRACT.json allows Article structured data only "on factual knowledge articles",
+          and forbids demo preview data becoming factual structured data without verification.
+          Every current fixture's body is a demo reconstruction, so no Article JSON-LD is emitted
+          for them; the helper is retained for future verified editorial content. BreadcrumbList
+          below stays — it describes navigation, not article facts (GD10 re-QA round 5, R5-01). */}
+      {article.demoOnly ? null : (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              articleJsonLd({
+                title: article.title,
+                excerpt: article.excerpt,
+                publishedAt: article.publishedAt,
+                author: article.author,
+                path: `/kien-thuc/${article.slug}`,
+              }),
+            ),
+          }}
+        />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

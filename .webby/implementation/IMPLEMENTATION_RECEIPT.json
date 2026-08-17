@@ -17,9 +17,14 @@
   },
   "round4Commits": {
     "codeEvidenceCommit": "eec68dde53ea2d659922758a917f7a7ad73920e9",
-    "codeEvidenceCommitNote": "Contains all round-4 code, test, and re-captured evidence changes (see fixLogRound4). Verified via `git rev-parse HEAD` immediately after creating it, before this receipt-fill commit existed.",
-    "finalPrHead": "PENDING_FILL_AFTER_COMMIT_2",
-    "finalPrHeadNote": "The receipt-only follow-up commit that fills in codeEvidenceCommit IS finalPrHead. Its exact SHA is restated verbatim in the PR #5 comment posted immediately after push and is independently verifiable with `git log --oneline -2` on claude/gd9-implementation-v1. No commits follow finalPrHead for round 4."
+    "codeEvidenceCommitNote": "Contains all round-4 code, test, and re-captured evidence changes (see fixLogRound4).",
+    "finalPrHead": "9a96c359e6f8a4d17b43ccecb0c5b7101399cd1e",
+    "finalPrHeadNote": "Round-4 final PR HEAD (the receipt hash-fill commit), independently confirmed by ChatGPT's own round-5 QA target. Superseded by round5Commits below."
+  },
+  "round5Commits": {
+    "codeCommit": "RECORDED_IN_PR_HANDBACK_COMMENT",
+    "commitStrategyNote": "Round 5 is a SINGLE commit — no follow-up hash-fill commit. Per re-QA round 5 (R5-03) the endless chain of commits attempting to make a commit contain its own SHA stops here: a commit cannot self-reference its hash, so the authoritative final SHA is recorded only in the PR #5 handback comment and is verifiable with `git rev-parse HEAD` / `GET /git/refs/heads/claude/gd9-implementation-v1`. This round's code commit IS the final PR HEAD.",
+    "finalPrHead": "SAME_AS_codeCommit — see PR #5 handback comment for the exact SHA"
   },
   "revisionHistory": [
     { "round": "GD9 initial implementation", "commit": "56884cc", "status": "SUPERSEDED" },
@@ -38,7 +43,13 @@
     },
     {
       "round": "GD10 fix round 4 (targeted 4-defect fix)",
-      "note": "Fixed the 4 objective contract/functional defects ChatGPT re-QA round 4 found in fcf4fb7 (comment 5317441681): a residual identity-bound asset leak on the An Phát detail route, missing CONTENT_TRUTH demoOnly tagging on the new round-3 preview fixtures, hidden fixtures still advertised in sitemap.xml, and a /kien-thuc category filter that dropped the featured AI article. See fixLogRound4 below and round4Commits above for exact hashes. No redesign, no new assets."
+      "commit": "9a96c35",
+      "status": "SUPERSEDED_BY_ROUND_5",
+      "note": "Fixed the 4 objective contract/functional defects ChatGPT re-QA round 4 found in fcf4fb7 (comment 5317441681): a residual identity-bound asset leak on the An Phát detail route, missing CONTENT_TRUTH demoOnly tagging on the new round-3 preview fixtures, hidden fixtures still advertised in sitemap.xml, and a /kien-thuc category filter that dropped the featured AI article. See fixLogRound4 below and round4Commits above for exact hashes. No redesign, no new assets. ChatGPT re-QA round 5 independently confirmed all four as genuinely fixed in source."
+    },
+    {
+      "round": "GD10 fix round 5 (SEO content-integrity + audit cleanup)",
+      "note": "Fixed R5-01 (demo articles emitting factual Article JSON-LD) and R5-03 (stale comment/bookkeeping cleanup) from ChatGPT re-QA round 5, comment 5318323607. R5-02 (An Phát visual-showcase) was left untouched by explicit asset-authority instruction — it is classified BLOCKED_ASSET_SOURCE, not a Claude defect. See fixLogRound5 below. Non-visual round: Round-4 visual evidence retained, not re-captured, per R5-01's explicit instruction."
     }
   ],
   "authorityCorrectionIntegrated": {
@@ -120,6 +131,11 @@
       "item": "GD10-R4 test coverage",
       "scope": "tests/functional.spec.ts",
       "fix": "ChatGPT correctly noted 28/28 passed while R4-04 was live because the only filter assertion covered the PROJECT filter URL. Added 11 targeted regression tests (28 → 39): AI category filter keeps the featured AI article; category filter excludes other categories; hidden article and hidden project never appear in any listing or filter; both hidden routes are routable AND carry a noindex robots meta; sitemap.xml excludes both hidden slugs while still listing the visible detail routes; project preview cards on /, /website and the detail route all carry data-demo-only=true; and the An Phát route's showcase + hero both resolve to project-detail-device-master rather than any project-cover. Each new assertion was chosen to fail against the pre-fix code, not merely to pass against the new code."
+    },
+    {
+      "item": "GD10-R4-postmortem",
+      "scope": "Round-4 handback comment",
+      "fix": "The round-4 PR comment (5318272192) was initially posted with only a local Windows scratchpad path as its body: `gh pr comment` was failing with GitHub GraphQL 503s, and the REST fallback used `gh api -f body=@<file>`, where `-f` sends the value as a literal string rather than reading the file (`-F` is the field form that reads from a file). ChatGPT repaired the comment content manually. Corrected practice going forward: read back the posted comment body via the API and confirm it matches the intended report before treating the handback as delivered."
     },
     {
       "item": "GD10-R4 re-verification",
@@ -216,18 +232,58 @@
       "type": "BLOCKED_SPEC",
       "detail": "streetAddress remains unverified; no address is displayed anywhere rather than inventing one.",
       "resolutionOwner": "Lucifer/ChatGPT"
+    },
+    {
+      "type": "BLOCKED_ASSET_SOURCE",
+      "detail": "/du-an/[slug] visual-showcase on the An Phát detail fixture. section-map.json requires the section to exist, so it must not be omitted; ASSET_USAGE_MAP.json supplies only project-detail-device-master as this route's DETAIL_VISUAL (project-cover-01..04 are reserved for relatedProjects); page-10's full-width 'GIAO DIỆN WEBSITE' screenshot is cut off in the approved mockup and no matching asset exists in the 85-asset inventory. Per ChatGPT's round-5 asset-authority ruling the current duplicate use of project-detail-device-master is an authority-safe TEMPORARY preview fallback that Claude must leave as-is and must not fabricate around. Final 100% visual PASS is explicitly withheld until an approved source for that full-width showcase is recovered or a visual revision is approved.",
+      "resolutionOwner": "ChatGPT / user (design + asset authority)",
+      "claudeActionRequired": "NONE — do not alter without a new asset-authority instruction."
     }
   ],
-  "openQuestionsForRound5": [
+  "fixLogRound5": [
+    {
+      "item": "GD10-R5-01",
+      "scope": "Article content-truth + structured data",
+      "verifiedIndependently": "SEO_CONTRACT.json structuredData.allowed lists 'Article on factual knowledge articles'; contentIntegrity reads 'Demo preview data must not become factual structured data or indexed claims without verification.' src/content/articles.ts's own confidenceNotes-aligned commentary states the body paragraphs are demo reconstructions. The finding is valid: Article JSON-LD was emitted unconditionally.",
+      "fix": "One consistent pass, exactly as instructed. (1) Added required `demoOnly: boolean` to the Article type and set `demoOnly: true` on all 8 article fixtures (7 visible + 1 hidden). (2) Made `demoOnly` required and pinned to literal `true` on ArticlePreview and set it on all 3 preview fixtures — resolving the round-4 scope question consistently across both datasets rather than tagging only previews. (3) Surfaced the state machine-readably as `data-demo-only=\"true\"` on ArticleCard and ArticlePreviewCard; NO visual badge added (the approved master's article cards have none). (4) Article JSON-LD is now emitted only when `!article.demoOnly` — the `articleJsonLd` helper is retained unchanged for future verified editorial content, and BreadcrumbList JSON-LD still renders on every route since it describes navigation, not article facts. (5) Article detail routes are noindex when `article.demoOnly || article.hidden`, and a new `getIndexableArticles()` helper (not hidden AND not demoOnly) now feeds sitemap.ts. `getVisibleArticles()` deliberately still does NOT filter demoOnly — demo articles remain fully visible in the UI for visual parity; only structured data and indexing are gated. Static generation is untouched: next build still emits 36/36 pages including all 8 article paths.",
+      "currentEffect": "getIndexableArticles() returns an empty list today by design, so sitemap.xml contains no article detail URLs at all — every fixture body is currently an unverified reconstruction. It begins returning rows the moment any article is verified and flipped to demoOnly: false; no code change will be needed then.",
+      "scopeQuestionRaisedNotActed": "The 12 visible /du-an projects are also demoOnly: true and their detail URLs ARE still listed in sitemap.xml. They emit no Article JSON-LD (only BreadcrumbList), so there is no factual-structured-data violation, and R5-01 scoped the sitemap/noindex requirement explicitly to article routes. Flagged for a round-6 decision rather than unilaterally widened: if 'indexed claims' is meant to cover demo PROJECT detail routes too, the same getIndexable* treatment should be applied to projects in one deliberate pass."
+    },
+    {
+      "item": "GD10-R5-02",
+      "scope": "An Phát visual-showcase",
+      "fix": "NO CODE CHANGE — per explicit asset-authority instruction. The section remains present (section-map.json requires it on /du-an/[slug]), and it continues to render project-detail-device-master, the only DETAIL_VISUAL that ASSET_USAGE_MAP.json maps to this route. Claude did not omit the section, did not generate/substitute an asset, and did not alter the round-4 visual. Classified BLOCKED_ASSET_SOURCE pending recovery of an approved source for the full-width showcase or an approved visual revision — see blockers."
+    },
+    {
+      "item": "GD10-R5-03",
+      "scope": "Audit cleanup",
+      "fix": "(a) Removed the stale comment in src/content/projects.ts claiming The Maison and An Phát 'both legitimately using project-cover-01 in different mockup contexts' — it directly contradicted the R4-01 correction sitting immediately below it. Replaced with a pointer to the detailVisualAssetId note. (b) Updated nextStep to the current round-5 handback state (it still described round 3/4). (c) Stopped the commit hash-chain: round 5 is a SINGLE commit with no follow-up hash-fill commit, and round5Commits states plainly that a commit cannot self-reference its own SHA and that the authoritative final SHA lives in the PR handback comment. (d) Also recorded a postmortem on the round-4 comment-posting failure — see fixLogRound4 'GD10-R4-postmortem'."
+    },
+    {
+      "item": "GD10-R5 re-verification",
+      "scope": "Full suite (non-visual)",
+      "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages with all 8 article paths still statically generated; functional 44/44, up from 39 — 5 new SEO/content-integrity assertions: three demo article routes each proven to emit NO Article JSON-LD while still emitting BreadcrumbList and carrying a noindex robots meta, no demo article detail URL present in sitemap.xml, and article cards + related-article previews proven to carry data-demo-only=\"true\". Per R5-01's explicit instruction the 30-screenshot evidence suite was NOT re-captured: every R5-01/R5-03 change is non-visual (data fields, JSON-LD emission, robots meta, sitemap contents, code comments), so the round-4 visual evidence remains valid and unmodified. Still no independent CI status check on the HEAD, unchanged from rounds 2-4."
+    }
+  ],
+  "openQuestionsForRound6": [
+    {
+      "type": "SCOPE_QUESTION",
+      "detail": "Demo /du-an project detail routes remain in sitemap.xml while demo article detail routes are now withheld. Projects emit no Article JSON-LD (BreadcrumbList only), and R5-01 scoped the requirement to articles, so this was deliberately NOT widened. If 'indexed claims' should cover demo project detail routes too, apply the same getIndexable* gate to projects in one deliberate pass. See fixLogRound5 GD10-R5-01 scopeQuestionRaisedNotActed.",
+      "resolutionOwner": "ChatGPT (SEO/content-truth authority)"
+    }
+  ],
+  "supersededOpenQuestionsFromRound4": [
     {
       "type": "FLAGGED_DEVIATION",
-      "detail": "The An Phát hidden detail fixture now renders project-detail-device-master in both the hero and the visual-showcase (visually redundant). Page-10's 'GIAO DIỆN WEBSITE' section is cut off in the approved mockup and no full-width website-screenshot asset exists in the 85-asset inventory. Options require ChatGPT's decision: (a) accept the redundancy, (b) authorize a new DETAIL_VISUAL asset, or (c) instruct omitting the section on hidden detail-only fixtures. Claude did not invent or substitute an asset. See fixLogRound4 GD10-R4-01 honestDeviationFlaggedForRound5.",
-      "resolutionOwner": "ChatGPT (design/asset authority)"
+      "detail": "The An Phát hidden detail fixture renders project-detail-device-master in both the hero and the visual-showcase (visually redundant). Options offered were (a) accept, (b) authorize a new DETAIL_VISUAL, or (c) omit the section on hidden fixtures.",
+      "resolutionOwner": "ChatGPT (design/asset authority)",
+      "resolvedInRound5": "ChatGPT rejected (c) — section-map.json requires visual-showcase on /du-an/[slug], so omission would violate the implementation contract — and rejected inventing/generating/substituting a screenshot. Ruled the current duplicate use of project-detail-device-master an authority-safe TEMPORARY preview fallback that Claude must leave as-is, while explicitly withholding final 100% visual PASS. Reclassified as BLOCKED_ASSET_SOURCE (not a Claude implementation defect) — see blockers."
     },
     {
       "type": "SCOPE_QUESTION",
-      "detail": "ArticlePreview fixtures were left without a demoOnly field, matching the existing untagged `articles` dataset and the CONTENT_TRUTH clause's project/company scope. If ChatGPT wants article demo content tagged too, it should be applied consistently to both the article previews AND the main articles dataset in one pass. See fixLogRound4 GD10-R4-02 scopeNote.",
-      "resolutionOwner": "ChatGPT (content-truth authority)"
+      "detail": "ArticlePreview fixtures were left without a demoOnly field, matching the existing untagged `articles` dataset and the CONTENT_TRUTH clause's project/company scope. If ChatGPT wants article demo content tagged too, it should be applied consistently to both the article previews AND the main articles dataset in one pass.",
+      "resolutionOwner": "ChatGPT (content-truth authority)",
+      "resolvedInRound5": "ChatGPT confirmed the consistent-pass reading: R5-01 required demoOnly on BOTH the main Article dataset and ArticlePreview fixtures, plus JSON-LD/noindex/sitemap gating. Implemented in full — see fixLogRound5 GD10-R5-01."
     }
   ],
   "blockersResolvedInRound3": [
@@ -245,5 +301,5 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "Push claude/gd9-implementation-v1 (round-3 fix commits — see round3Commits for exact hashes), keep PR #5 Draft, hand back to ChatGPT for re-QA round 4. Do not merge."
+  "nextStep": "Round-5 handback: R5-01 (article content-truth + Article JSON-LD gating) and R5-03 (audit cleanup) are implemented and verified; R5-02 was deliberately left untouched per ChatGPT's asset-authority ruling. Pushed to claude/gd9-implementation-v1 as a single commit whose SHA is recorded in the PR #5 handback comment (no hash-chain follow-up commit, per R5-03). PR #5 stays Draft and unmerged, awaiting ChatGPT re-QA round 6. Code is expected to be effectively closed at this point; the one remaining item is BLOCKED_ASSET_SOURCE (An Phát full-width showcase source), which is ChatGPT/user UI-authority work, not a Claude implementation task. One scope question is open for round 6 — see openQuestionsForRound6."
 }
