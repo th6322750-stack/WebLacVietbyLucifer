@@ -34,8 +34,10 @@
   "validation": {
     "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
     "canonicalPreapprovalValidator": "PASS",
-    "candidateReadyValidator": "PENDING",
-    "finalReadyValidator": "PENDING"
+    "candidateReadyValidator": "PASS",
+    "candidateReadyRunId": 31992347483,
+    "candidateReadyHead": "c5ed5bb8e0f6b92b08061e53464a8b0a9a2603be",
+    "finalReadyValidator": "PENDING_MARKER_TRUE_RELEASE"
   },
   "implementationReady": {
     "userVisualApproved": true,
@@ -56,9 +58,10 @@
     "noBlockingSpecOrAssetGap": true
   },
   "implementationAuthorization": {
-    "status": "BLOCKED_PENDING_CANDIDATE_AND_FINAL_RELEASE_VALIDATION",
-    "authorized": false,
-    "rule": "Do not start GĐ9 until UI_SETUP_COMPLETE=true, implementationAuthorized=true, and the final release workflow succeeds on the exact latest remote HEAD."
+    "status": "AUTHORIZED_WITH_FINAL_RELEASE_HOLD",
+    "authorized": true,
+    "releaseHold": true,
+    "rule": "Claude may start GĐ9 only after ChatGPT supplies the exact latest remote HEAD and a SUCCESS final marker-true release workflow for that same HEAD."
   },
   "requiredInputs": [
     ".webby/PROJECT_INTAKE.json",
@@ -101,8 +104,7 @@
   },
   "contextPolicy": {"routeScoped": true, "componentScoped": true, "onDemandContracts": true, "defaultImplementationFileBudget": "1-3"},
   "hardRules": [
-    "Do not authorize Claude before v3.1 IMPLEMENTATION_READY_UI passes on the latest remote HEAD",
-    "Do not redesign approved V1 while completing readiness metadata/assets",
+    "Do not redesign approved V1 during implementation",
     "Do not search/generate/substitute visual assets in Claude",
     "Do not measure raster screenshots to invent implementation geometry",
     "Motion FEEL is ChatGPT-owned; technical MECHANISM is Claude-owned",
