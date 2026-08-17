@@ -110,7 +110,8 @@
     ".webby/CLAUDE_TASK.md",
     ".webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json",
     ".webby/GD10_RASTER_ASSET_AMENDMENT.json",
-    ".webby/GD10_RASTER_SHA256SUMS.txt"
+    ".webby/GD10_RASTER_SHA256SUMS.txt",
+    ".webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json"
   ],
   "lockFile": ".webby/WEBBY_LOCK.json",
   "visualHandoff": {
@@ -154,6 +155,7 @@
     "supportClientLogoStrip": "support-client-logo-strip",
     "supportClientLogoStripSource": "exact extract from approved V1 PDF page 5",
     "contactChannelCorrection": "Zalo/Messenger/Telegram/Email; Email pending-disabled because productionEmail is TBD",
-    "visualRevisionChanged": false
+    "visualRevisionChanged": false,
+    "validationReceipt": ".webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json"
   }
 }

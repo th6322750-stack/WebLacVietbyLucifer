@@ -207,6 +207,10 @@
     {
       "path": ".webby/GD10_RASTER_SHA256SUMS.txt",
       "required": true
+    },
+    {
+      "path": ".webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json",
+      "required": true
     }
   ],
   "mustNot": [
@@ -225,6 +229,7 @@
     "correctedAssetCount": 85,
     "visualRevisionChanged": false,
     "sourceAuthority": "approved V1 PDF",
-    "correctedAt": "2026-08-17T18:51:00+07:00"
+    "correctedAt": "2026-08-17T18:51:00+07:00",
+    "validationReceipt": ".webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json"
   }
 }
