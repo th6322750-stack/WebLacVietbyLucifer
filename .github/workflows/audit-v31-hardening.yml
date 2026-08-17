@@ -39,7 +39,7 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import json, re
+          import json, re, hashlib
 
           archive_root=Path('.webby/archive/pre-v31')
           audit_path=Path('.github/workflows/audit-v31-hardening.yml')
@@ -124,17 +124,29 @@ jobs:
           assert manifest['protocolVersion']=='3.1.0'
           assert manifest['assetStore']['transportMode']=='GIT'
           assert manifest['assetStore']['folderRef'] is None
-          entries=manifest.get('assets') or manifest.get('entries') or manifest.get('items')
-          assert isinstance(entries,list), 'MANIFEST_ASSET_LIST_NOT_FOUND'
+          entries=manifest['assets']
+          assert isinstance(entries,list), 'MANIFEST_ASSETS_NOT_LIST'
           assert len(entries)==84, len(entries)
           assert len(manifest.get('iconInventory',[]))==40
+
           runtime_paths=[]
           for e in entries:
-            dest=e.get('destinationPath') or (e.get('delivery') or {}).get('destinationPath')
-            assert dest, ('MISSING_DESTINATION_PATH', e.get('id'))
-            p=Path(dest.lstrip('/'))
-            assert p.exists(), ('MISSING_RUNTIME_ASSET',dest)
-            runtime_paths.append(str(p))
+            assert isinstance(e,dict), ('ASSET_ENTRY_NOT_OBJECT',type(e).__name__)
+            aid=e.get('id')
+            deliveries=e.get('delivery')
+            assert isinstance(deliveries,list) and deliveries, ('DELIVERY_NOT_NONEMPTY_LIST',aid)
+            for delivery in deliveries:
+              assert isinstance(delivery,dict), ('DELIVERY_ENTRY_NOT_OBJECT',aid)
+              dest=delivery.get('destinationPath')
+              assert dest, ('MISSING_DESTINATION_PATH',aid)
+              p=Path(dest.lstrip('/'))
+              assert p.exists(), ('MISSING_RUNTIME_ASSET',aid,dest)
+              expected=delivery.get('sha256')
+              if expected:
+                actual=hashlib.sha256(p.read_bytes()).hexdigest()
+                assert actual==expected, ('RUNTIME_SHA_MISMATCH',aid,dest,expected,actual)
+              runtime_paths.append(str(p))
+          assert len(runtime_paths)==84, ('DELIVERY_PATH_COUNT_NOT_84',len(runtime_paths))
           assert len(set(runtime_paths))==84, 'RUNTIME_PATHS_NOT_UNIQUE_84'
 
           authority=json.loads(Path('.webby/MASTER_BINARY_AUTHORITY.json').read_text())
@@ -150,7 +162,8 @@ jobs:
 
           print('PASS_V31_ACTIVE_TREE_STALE_AUDIT')
           print('manifest_assets=84')
-          print('runtime_unique_paths=84')
+          print('runtime_delivery_paths=84')
+          print('runtime_sha256=PASS')
           print('icon_inventory=40')
           print('transport=GIT')
           print('drive_implementation_dependency=false')
