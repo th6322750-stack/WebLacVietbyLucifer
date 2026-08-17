@@ -6,7 +6,6 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { FinalCta } from "@/components/layout/FinalCta";
-import { services } from "@/content/services";
 import { assetPath } from "@/lib/assets";
 import { siteSettings } from "@/lib/site-settings";
 import { pageMetadata, organizationJsonLd } from "@/lib/seo";
@@ -23,18 +22,21 @@ const brandValues: { icon: IconName; label: string; description: string }[] = [
   { icon: "target", label: "Hiệu quả", description: "Giải pháp tập trung vào mục tiêu kinh doanh thực tế." },
 ];
 
-const principles = [
-  { word: "Cần", meaning: "Siêng năng, chủ động trong công việc." },
-  { word: "Kiệm", meaning: "Tối ưu nguồn lực, tránh lãng phí cho khách hàng." },
-  { word: "Liêm", meaning: "Minh bạch trong tư vấn và báo giá." },
-  { word: "Chính", meaning: "Chính trực, giữ đúng cam kết đã đưa ra." },
+// 3 principles per approved master (page-09): Liêm + Chính are one combined item, not two.
+const principles: { word: string; meaning: string; icon: IconName }[] = [
+  { word: "Cần", meaning: "Làm việc tận tâm, chăm chỉ, luôn nỗ lực hơn mỗi ngày.", icon: "clock" },
+  { word: "Kiệm", meaning: "Tối ưu chi phí, tối ưu thời gian, mang lại giá trị xứng đáng.", icon: "package" },
+  { word: "Liêm Chính", meaning: "Minh bạch, trung thực, đặt lợi ích khách hàng lên hàng đầu.", icon: "shield-check" },
 ];
 
-const routeBySlug: Record<string, string> = {
-  "website-doanh-nghiep": "/website",
-  "support-mang-xa-hoi": "/support-mxh",
-  "dich-vu-so": "/dich-vu-so",
-};
+// 4-card ecosystem per approved master — not 3; adds a consulting/strategy card with its
+// own icon so no card reuses another's icon.
+const ecosystem: { title: string; description: string; icon: IconName; href: string }[] = [
+  { title: "Thiết kế Website", description: "Web doanh nghiệp, landing page, booking, web app...", icon: "monitor-smartphone", href: "/website" },
+  { title: "Support Mạng Xã Hội", description: "Hỗ trợ khôi phục, bảo mật, phát triển kênh Facebook, TikTok...", icon: "messages-square", href: "/support-mxh" },
+  { title: "Dịch vụ số", description: "Cung cấp tài khoản, phần mềm và dịch vụ số uy tín, giá tốt.", icon: "package", href: "/dich-vu-so" },
+  { title: "Tư vấn & Chiến lược", description: "Tư vấn giải pháp số, marketing, xây dựng thương hiệu online.", icon: "lightbulb", href: "/lien-he" },
+];
 
 export default function AboutPage() {
   return (
@@ -79,17 +81,10 @@ export default function AboutPage() {
 
       <Section id="service-ecosystem">
         <Container>
-          <SectionHeading eyebrow="Hệ sinh thái dịch vụ" title="Những gì chúng tôi cung cấp" align="center" />
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {services.map((s) => (
-              <ServiceCard
-                key={s.slug}
-                icon="monitor-smartphone"
-                title={s.title}
-                description={s.summary}
-                ctaLabel={s.ctaLabel}
-                href={routeBySlug[s.slug] ?? "/"}
-              />
+          <SectionHeading eyebrow="Hệ sinh thái dịch vụ" title="Chúng tôi cung cấp giải pháp toàn diện cho cá nhân & doanh nghiệp" align="center" />
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {ecosystem.map((s) => (
+              <ServiceCard key={s.title} icon={s.icon} title={s.title} description={s.description} ctaLabel="Xem chi tiết" href={s.href} />
             ))}
           </div>
         </Container>
@@ -112,12 +107,15 @@ export default function AboutPage() {
 
       <Section id="principles">
         <Container>
-          <SectionHeading eyebrow={siteSettings.slogan} title="Bốn nguyên tắc làm việc" align="center" />
-          <div className="mt-10 grid gap-6 md:grid-cols-4">
+          <SectionHeading eyebrow={siteSettings.slogan} title="Ba nguyên tắc làm việc" align="center" />
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {principles.map((p) => (
-              <div key={p.word} className="rounded-md border border-border bg-white p-6 text-center shadow-sm">
-                <p className="text-h2-mobile font-heading text-gold-700">{p.word}</p>
-                <p className="mt-2 text-small text-text-secondary">{p.meaning}</p>
+              <div key={p.word} className="flex items-start gap-4 rounded-md border border-border bg-white p-6 shadow-sm">
+                <Icon name={p.icon} size="feature" className="mt-1 shrink-0 text-gold-600" />
+                <div>
+                  <p className="text-h4-mobile font-heading text-ink-950">{p.word}</p>
+                  <p className="mt-1 text-small text-text-secondary">{p.meaning}</p>
+                </div>
               </div>
             ))}
           </div>

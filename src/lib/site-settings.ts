@@ -19,13 +19,21 @@ export const siteSettings = {
   ],
 } as const;
 
-export const navLinks = [
-  { href: "/website", label: "Website" },
-  { href: "/support-mxh", label: "Support MXH" },
+// Matches approved V1 header: Trang chủ, Dịch vụ (dropdown), Dự án, Kiến thức,
+// Giới thiệu, Liên hệ — see .webby/visual-master/gd1-v1/pages/page-03..13.
+export const serviceMenu = [
+  { href: "/website", label: "Website doanh nghiệp" },
+  { href: "/support-mxh", label: "Support mạng xã hội" },
   { href: "/dich-vu-so", label: "Dịch vụ số" },
+] as const;
+
+export const navLinks = [
+  { href: "/", label: "Trang chủ" },
+  { href: null, label: "Dịch vụ", children: serviceMenu },
   { href: "/du-an", label: "Dự án" },
   { href: "/kien-thuc", label: "Kiến thức" },
   { href: "/gioi-thieu", label: "Giới thiệu" },
+  { href: "/lien-he", label: "Liên hệ" },
 ] as const;
 
 export const footerLinks = {
@@ -34,10 +42,6 @@ export const footerLinks = {
     { href: "/du-an", label: "Dự án" },
     { href: "/kien-thuc", label: "Kiến thức" },
   ],
-  services: [
-    { href: "/website", label: "Website doanh nghiệp" },
-    { href: "/support-mxh", label: "Support mạng xã hội" },
-    { href: "/dich-vu-so", label: "Dịch vụ số" },
-  ],
+  services: serviceMenu,
   contact: [{ href: "/lien-he", label: "Liên hệ tư vấn" }],
 } as const;

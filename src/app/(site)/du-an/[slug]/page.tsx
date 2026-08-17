@@ -60,46 +60,64 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <Breadcrumbs items={[{ label: "Trang chủ", href: "/" }, { label: "Dự án", href: "/du-an" }, { label: project.title }]} />
       </Container>
 
-      <section id="case-study-hero" className="bg-ink-950 bg-dark-hero">
+      <section id="case-study-hero">
         <Container className="grid items-center gap-10 py-10 md:py-14 lg:grid-cols-2 lg:gap-16">
-          <div className="text-white">
+          <div>
             {project.demoOnly ? (
-              <span className="inline-flex items-center rounded-pill bg-white/10 px-3 py-1 text-caption uppercase text-gold-300">
+              <span className="inline-flex items-center rounded-pill border border-gold-300 bg-ivory-100 px-3 py-1 text-caption uppercase text-gold-700">
                 Dự án mẫu — minh hoạ
               </span>
             ) : null}
-            <span className="mt-3 block text-eyebrow uppercase text-gold-300">{project.category}</span>
-            <h1 className="mt-2 text-h1-mobile lg:text-h1-desktop font-heading text-white">{project.title}</h1>
-            <p className="mt-4 max-w-editorial text-body-lg text-white/80">{project.summary}</p>
+            <span className="mt-3 block text-eyebrow uppercase text-gold-700">{project.category}</span>
+            <h1 className="mt-2 text-h1-mobile lg:text-h1-desktop font-heading text-ink-950">{project.title}</h1>
+            <p className="mt-4 max-w-editorial text-body-lg text-text-secondary">{project.summary}</p>
+
+            <dl id="project-meta" className="mt-8 grid grid-cols-2 gap-6">
+              <div className="flex items-start gap-3">
+                <Icon name="map-pin" size="default" className="mt-0.5 text-gold-600" />
+                <div>
+                  <dt className="text-caption text-text-muted">Lĩnh vực</dt>
+                  <dd className="text-body font-medium text-ink-950">{project.category}</dd>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Icon name="briefcase" size="default" className="mt-0.5 text-gold-600" />
+                <div>
+                  <dt className="text-caption text-text-muted">Dịch vụ</dt>
+                  <dd className="text-body font-medium text-ink-950">{project.demoOnly ? "Dự án mẫu" : "Đã triển khai"}</dd>
+                </div>
+              </div>
+              {project.durationLabel ? (
+                <div className="flex items-start gap-3">
+                  <Icon name="clock" size="default" className="mt-0.5 text-gold-600" />
+                  <div>
+                    <dt className="text-caption text-text-muted">Thời gian</dt>
+                    <dd className="text-body font-medium text-ink-950">{project.durationLabel}</dd>
+                  </div>
+                </div>
+              ) : null}
+              {project.completedLabel ? (
+                <div className="flex items-start gap-3">
+                  <Icon name="calendar" size="default" className="mt-0.5 text-gold-600" />
+                  <div>
+                    <dt className="text-caption text-text-muted">Năm hoàn thành</dt>
+                    <dd className="text-body font-medium text-ink-950">{project.completedLabel}</dd>
+                  </div>
+                </div>
+              ) : null}
+            </dl>
           </div>
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
-            {project.heroAssetId ? (
-              <Image src={assetPath(project.heroAssetId)} alt={project.title} fill priority className="object-cover" />
-            ) : null}
+          <div className="relative aspect-[4/3] w-full">
+            <Image
+              src={assetPath("project-detail-device-master")}
+              alt={`Minh hoạ giao diện ${project.title}`}
+              fill
+              priority
+              className="object-contain"
+            />
           </div>
         </Container>
       </section>
-
-      <Section id="project-meta" compact>
-        <Container>
-          <dl className="grid grid-cols-2 gap-6 border-y border-border py-6 md:grid-cols-4">
-            <div>
-              <dt className="text-caption uppercase text-text-muted">Danh mục</dt>
-              <dd className="mt-1 text-body font-medium text-ink-950">{project.category}</dd>
-            </div>
-            <div>
-              <dt className="text-caption uppercase text-text-muted">Loại</dt>
-              <dd className="mt-1 text-body font-medium text-ink-950">{project.demoOnly ? "Dự án mẫu" : "Đã triển khai"}</dd>
-            </div>
-            {project.technology ? (
-              <div className="col-span-2">
-                <dt className="text-caption uppercase text-text-muted">Công nghệ</dt>
-                <dd className="mt-1 text-body font-medium text-ink-950">{project.technology.join(", ")}</dd>
-              </div>
-            ) : null}
-          </dl>
-        </Container>
-      </Section>
 
       <nav id="case-tabs" aria-label="Điều hướng nội dung dự án" className="sticky top-16 z-10 border-b border-border bg-ivory-50/95 backdrop-blur lg:top-[76px]">
         <Container>
@@ -172,10 +190,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </Section>
       ) : null}
 
-      <Section id="visual-showcase" tone="ivory">
+      <Section id="visual-showcase" tone="dark">
         <Container>
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-            <Image src={assetPath("project-detail-device-master")} alt={`Minh hoạ giao diện ${project.title}`} fill className="object-contain" />
+          <SectionHeading onDark eyebrow="Giao diện" title="Giao diện website" align="center" />
+          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-lg">
+            {project.heroAssetId ? (
+              <Image src={assetPath(project.heroAssetId)} alt={`Minh hoạ giao diện ${project.title}`} fill className="object-cover" />
+            ) : null}
           </div>
         </Container>
       </Section>

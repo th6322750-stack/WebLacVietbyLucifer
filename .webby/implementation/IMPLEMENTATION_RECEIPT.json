@@ -6,7 +6,18 @@
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
   "consumedUiRevision": 4,
   "implementationBranch": "claude/gd9-implementation-v1",
-  "implementationCommit": "20618ed13518109aaf4dc337b9504ae0bf68e929",
+  "implementationCommit": "PENDING_FILL_AFTER_FIX_COMMIT",
+  "revisionHistory": [
+    {
+      "round": "GD9 initial implementation",
+      "commit": "56884cc",
+      "status": "SUPERSEDED_BY_GD10_FIX_ROUND"
+    },
+    {
+      "round": "GD10 QA fix round",
+      "note": "Fixes all 15 blocking defect groups from ChatGPT's GD10 QA comment on PR #5 (2026-08-17T05:51:02Z). See fixLog below."
+    }
+  ],
   "framework": {
     "choice": "Next.js 15 (App Router) + TypeScript + Tailwind CSS 3",
     "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Next.js App Router matches the route/slug structure in ROUTE_IMPLEMENTATION_MAP.json (static + dynamic [slug] routes), gives SEO metadata/sitemap/robots primitives out of the box, and Tailwind's theme config maps 1:1 onto tokens.json/typography.json/responsive.json without hand-rolled CSS."
@@ -24,18 +35,40 @@
     "/lien-he",
     "/404 (not-found.tsx, minimal header/footer)"
   ],
+  "pdfMasterRendered": {
+    "tool": "PyMuPDF (fitz), 3x zoom, all 14 pages of .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "shaVerified": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f — matches WEBBY_LOCK.json/HANDOFF.json pinned hash",
+    "usage": "Every fix below was checked against the rendered page for its route (page-03..13), not the low-fidelity committed preview webp, resolving the concern in ChatGPT's item 14."
+  },
+  "fixLog": [
+    { "defect": 1, "scope": "Global header/nav", "fix": "Rebuilt nav to Trang chủ / Dịch vụ (dropdown: Website/Support MXH/Dịch vụ số) / Dự án / Kiến thức / Giới thiệu / Liên hệ + CTA, desktop dropdown (click-toggle, aria-haspopup/expanded, outside-click+Escape close) and mobile expandable submenu." },
+    { "defect": 2, "scope": "Home /", "fix": "Hero copy reverted to brand-first (eyebrow slogan, H1 = brand name, 3 feature bullets, 2 CTAs, trust row '200+ khách hàng...' + rating); service cards now use per-service icons (monitor-smartphone/messages-square/package) instead of one icon for all three; metrics corrected to 200+/350+/4+/99%; process expanded to the 6 steps actually present on the rendered master (Tiếp nhận/Đề xuất/Thực hiện/Kiểm tra & QA/Bàn giao/Hỗ trợ) — the QA comment said 5, the rendered master shows 6; went with the rendered master per its own supreme-authority rule." },
+    { "defect": 3, "scope": "/website", "fix": "Hero copy matched; industries grid 4→6 icons; packages 3→4 with real demo prices (8.9M/4.9M/13.9M/liên hệ) + 'Phổ biến nhất' badge on Website Bán hàng (PricingCard now takes a price prop instead of a hardcoded string); benefit-strip 4→5 icons on a dark section; process 4→6 steps; FAQ 3→6 items." },
+    { "defect": 4, "scope": "/support-mxh", "fix": "Service grid 3→4 cards (Facebook/TikTok/Meta Business real brand marks + a 4th consulting card; ServiceCard gained a `brand` prop); common-issues 4→6; why-lac-viet 3→5 on a dark section; process 3→5 steps; trust-client-row now shows the '200+ khách hàng đã được hỗ trợ thành công' headline (no fabricated client logos — none exist in asset-manifest for this role, so it reuses the 4 sanctioned platform marks); metrics corrected to 200+/98%/24-7/100%; FAQ 2→6 items." },
+    { "defect": 5, "scope": "/dich-vu-so", "fix": "ASSET_USAGE_MAP violation fixed: product grid now includes YouTube Premium (3→4 cards: ChatGPT Plus/YouTube Premium/Microsoft 365/Canva Pro) with real demo prices+feature bullets+'Đăng ký ngay'; category strip 3→4 icons; why-us 3→5 on a dark section; process 3→4 steps; FAQ moved into a 2-col layout with a 'Bạn cần hỗ trợ thêm?' support card beside it instead of a separate full-width block below." },
+    { "defect": 6, "scope": "/du-an", "fix": "Grid lg:grid-cols-3→lg:grid-cols-4; filter taxonomy replaced with the fixed 5-category set from the master (Website/Social/Digital Services/Landing Page/UI-UX) — 6 of 12 demo projects re-tagged from 'Support MXH'/'Dịch vụ số' to 'Social'/'Digital Services' to match; hero gained inline proof metrics (200+/20+/99%, via a new PageHero `metrics` prop); featured-case-study flipped to a dark section with a 4-stat banner (+165%/+70%/+30%/35%)." },
+    { "defect": 7, "scope": "/kien-thuc", "fix": "load-more was never rendering because PAGE_SIZE(6) equaled the total remaining demo articles(6) — not a deleted section, a pagination-size bug. Fixed by lowering PAGE_SIZE to 3 (kept the same 7 real demo articles rather than fabricating extras that would reuse an identity-bound cover asset across a different article). Featured-article rebuilt as a large two-column card with a 'Nổi bật' badge instead of a narrow reused ArticleCard. Newsletter section restyled as a dark card (NewsletterForm gained an `onDark` prop) matching the master; final CTA copy aligned to the master's Digital Marketing service-cta tone." },
+    { "defect": 8, "scope": "/gioi-thieu", "fix": "Principles 4→3 (Liêm+Chính merged into one 'Liêm Chính' item, matching the master exactly) with icons added; service-ecosystem 3→4 cards, adding 'Tư vấn & Chiến lược' with its own icon (lightbulb) so no card reuses another's icon." },
+    { "defect": 9, "scope": "/du-an/[slug]", "fix": "Hero flipped from dark to light tone; now shows the device-mockup asset (project-detail-device-master) instead of the project photo directly, plus a 4-item icon meta grid (Lĩnh vực/Dịch vụ/Thời gian/Năm hoàn thành — added durationLabel/completedLabel fields to the Project type/content). visual-showcase section now shows the project's own cover photo on a dark 'Giao diện website' band instead of duplicating the hero's device mockup." },
+    { "defect": 10, "scope": "/kien-thuc/[slug]", "fix": "Layout rebuilt from 2 columns (TOC+body) to 3 (TOC / body / sticky right rail with related-article mini-cards + a 'Cần tư vấn thêm?' consultation card), matching the master. related-articles is now that rail rather than a separate full-width section below the article." },
+    { "defect": 11, "scope": "/lien-he", "fix": "ASSET_USAGE_MAP violation fixed: channel row is now Zalo/Facebook Messenger/Telegram/Phone (was Zalo/Telegram/Phone/disabled-Facebook — Messenger was missing entirely). Messenger renders disabled ('Sắp cập nhật') rather than link to a fabricated m.me URL, since facebookUrl is still unconfirmed per CONTENT_TRUTH.json. Process 3→5 steps. secondary-contact-card replaced the invented 'office address' placeholder with the master's actual 'Bạn còn câu hỏi khác?' card, placed beside the FAQ list." },
+    { "defect": 12, "scope": "Data-model tagging", "fix": "MetricStrip's Metric type gained a required `demoOnly: boolean` field (all 10 metric entries across home/support-mxh/dich-vu-so now set it explicitly; the disclaimer line only renders when at least one metric is flagged, replacing the old always-on hardcoded string). TestimonialCard gained a required `demoOnly` prop wired from the home page's testimonial data, rendering a 'Minh hoạ' badge. The receipt's earlier claim that this was already true was inaccurate for testimonials/metrics — corrected here." },
+    { "defect": 13, "scope": "Loading state evidence", "fix": "tests/evidence.spec.ts now has a dedicated 'loading' test that holds the /api/leads response open via page.route() for 2s inside the test only (no delay added to the real route), then screenshots the disabled 'Đang gửi...' button — deterministic, no production behavior change." },
+    { "defect": 14, "scope": "Visual reference tooling", "fix": "Rendered the actual pinned PDF (not the low-res preview) at 3x zoom with PyMuPDF this round; used those renders as ground truth for every fix above and to resolve one direct conflict between the QA comment's text (5 process steps on home) and the master's actual content (6) — went with the master." },
+    { "defect": 15, "scope": "Re-verification", "fix": "typecheck/lint/build clean; functional suite 28/28; evidence suite 30/30 (29 + new loading state) at 1440/390; receipt updated (this file); commit pushed; PR kept Draft, not merged." }
+  ],
   "componentsImplemented": [
     "Container", "Section", "Button", "IconButton", "Chip", "Icon (CSS-mask, currentColor)",
     "BrandMark", "Breadcrumbs", "SectionEyebrow/SectionHeading/Divider",
-    "SiteHeader (desktop nav + mobile drawer, focus trap, scroll lock, escape close)",
+    "SiteHeader (desktop nav w/ Dịch vụ dropdown + mobile drawer w/ expandable submenu, focus trap, scroll lock, escape close)",
     "SiteFooter (desktop 4-col + mobile accordion, minimal variant for 404)",
     "ConsultationProvider/Modal (centered desktop / bottom-sheet mobile, focus trap, escape+backdrop close, restore focus)",
-    "ContactForm (client+server validation, inline errors, success/error states)",
-    "NewsletterForm", "ContactChannelCard",
-    "ServiceCard", "ProjectCard", "ArticleCard", "PricingCard", "TestimonialCard",
+    "ContactForm (client+server validation, inline errors, success/error/loading states)",
+    "NewsletterForm (onDark variant)", "ContactChannelCard",
+    "ServiceCard (icon or brand mark)", "ProjectCard", "ArticleCard", "PricingCard (price prop)", "TestimonialCard (demoOnly badge)",
     "FAQAccordion (single-open, aria-expanded)", "ArticleTOC (IntersectionObserver active-heading, sticky desktop/collapsible mobile)",
-    "MetricStrip (demo disclaimer)", "ProcessSteps", "CategoryFilter (URL state via router.push)", "TrustLogoRow",
-    "PageHero", "FinalCta"
+    "MetricStrip (per-metric demoOnly)", "ProcessSteps", "CategoryFilter (URL state via router.push)", "TrustLogoRow",
+    "PageHero (optional inline metrics)", "FinalCta"
   ],
   "backend": {
     "leadSink": "LocalFileLeadSink (data/leads.json, gitignored) behind LeadSink interface — swappable for a CRM/email adapter without changing /api/leads contract",
@@ -47,12 +80,16 @@
   "assets": {
     "logicalAssetCount": 84,
     "usedExactly": "All image references resolve through src/lib/assets.ts, a closed map keyed by the exact asset ids in ASSET_USAGE_MAP.json/asset-manifest.json destinationPaths already materialized under public/assets. No asset was searched, generated, substituted, or index-mapped.",
-    "iconInventory": "All 39 pinned Lucide icons rendered via CSS mask (src/components/ui/Icon.tsx) so currentColor drives color per DESIGN_SYSTEM.md 10 without redrawing the SVGs; 10 brand marks rendered at native color via next/image, never recolored.",
-    "canonicalLogo": "public/assets/brand/lac-viet-logo.webp used as-is at all four reference sizes (header desktop/mobile, footer); never redrawn/recolored."
+    "assetUsageMapViolationsFixed": [
+      "/dich-vu-so was missing brand-youtube from its required brandMarks — fixed (defect 5).",
+      "/lien-he was missing brand-messenger from its required brandMarks — fixed (defect 11)."
+    ],
+    "iconInventory": "All pinned Lucide icons rendered via CSS mask (src/components/ui/Icon.tsx) so currentColor drives color per DESIGN_SYSTEM.md 10 without redrawing the SVGs; brand marks rendered at native color via next/image, never recolored.",
+    "canonicalLogo": "public/assets/brand/lac-viet-logo.webp used as-is at all reference sizes; never redrawn/recolored."
   },
   "contentTruth": {
-    "demoDataTagged": "All 12 projects, 3 testimonials and metric strips render a visible 'Dự án mẫu' badge / demo-disclaimer line per CONTENT_TRUTH.json demoOnly rule; ProjectCard/testimonial data carries demoOnly:true and is never presented as verified fact.",
-    "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD' in site-settings.ts and rendered as disabled/placeholder UI (Facebook channel card disabled, office address card shows a pending notice) rather than invented.",
+    "demoDataTagged": "12 projects (demoOnly:true), 3 home testimonials (demoOnly prop → 'Minh hoạ' badge), and every MetricStrip metric (demoOnly:true, required field) are tagged in the data model, not just via a hardcoded disclaimer string.",
+    "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD' in site-settings.ts. Facebook Messenger channel card on /lien-he renders disabled ('Sắp cập nhật') rather than link to a fabricated destination; no office-address placeholder is shown (dropped in favor of the master's actual 'Bạn còn câu hỏi khác?' secondary-contact-card, which needed no fabricated data).",
     "structuredData": "Organization/BreadcrumbList/Article JSON-LD only, no Review/AggregateRating, per SEO_CONTRACT.json."
   },
   "motionMechanism": {
@@ -63,42 +100,42 @@
   },
   "build": {
     "typecheck": "PASS (tsc --noEmit, 0 errors)",
-    "lint": "PASS (eslint ., 0 errors/warnings after fixes)",
+    "lint": "PASS (eslint ., 0 errors/warnings)",
     "build": "PASS (next build — 34/34 pages generated, all 11 routes + API routes + sitemap.xml + robots.txt)"
   },
   "tests": {
-    "functional": "PASS — 28/28 (tests/functional.spec.ts): every route returns <400 with a visible h1 and zero console errors; 404 for unknown paths; no horizontal overflow at mobile 390 on any route; mobile drawer focus-trap+Escape+focus-restore; consultation modal open/submit/success and Escape/focus-restore; contact form inline validation errors; FAQ aria-expanded toggle; category filter updates the URL; home renders cleanly under prefers-reduced-motion.",
-    "evidence": "PASS — 29/29 screenshots captured (tests/evidence.spec.ts), see playwrightEvidence below.",
-    "bugsFoundAndFixedDuringOwnQA": [
-      "tailwind.config.ts backgroundImage 'dark-hero' mixed a solid color into a background-image gradient list (invalid CSS — background-image cannot carry a trailing color layer); every dark hero section rendered with no background at all, making white hero text/CTAs unreadable on both viewports. Fixed by moving the solid color to bg-ink-950 applied alongside bg-dark-hero everywhere it's used.",
-      "SiteHeader used bg-ink-950/92 and several text-*/76 opacity modifiers; Tailwind's default opacity scale only generates modifiers in multiples of 5, so /92 and /76 silently produced no utility (transparent bg / default text color) instead of erroring. Fixed by moving to the nearest supported values (/90, /75).",
-      "Both were caught via computed-style inspection during evidence review, not visible in isolation from the code — a general risk worth flagging for any future non-multiple-of-5 opacity value."
+    "functional": "PASS — 28/28 (tests/functional.spec.ts), re-run clean after all fixes.",
+    "evidence": "PASS — 30/30 screenshots captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the new deterministic 'loading' state. See playwrightEvidence below.",
+    "bugsFoundAndFixedDuringOwnQA_previousRound": [
+      "tailwind.config.ts 'dark-hero' background-image mixed in a trailing solid color (invalid CSS); every dark hero rendered with no background. Fixed by splitting into bg-ink-950 + bg-dark-hero.",
+      "bg-ink-950/92 and text-*/76 opacity modifiers silently produced no utility (Tailwind's default opacity scale only covers multiples of 5). Fixed by moving to /90 and /75."
     ]
   },
   "playwrightEvidence": {
     "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
-    "evidenceDirNote": "QA_ACCEPTANCE.json suggests '{implementationCommit}' as the folder name; the commit hash isn't known until after this receipt's first commit, so a stable branch-scoped name was used instead to avoid a rename/re-capture cycle. Maps 1:1 to implementationCommit above.",
+    "evidenceDirNote": "Stable branch-scoped name, not the raw commit hash — see prior round's note. Re-captured in full this round; previous screenshots were overwritten, not appended.",
     "desktop1440": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
     "mobile390": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
-    "states": ["mobile-menu-open", "consultation-modal (desktop+mobile)", "faq-open", "form-success", "form-error", "focus-visible"],
-    "statesNotCaptured": ["loading"],
-    "note": "'loading' omitted: the contact form's submit round-trip against the local file sink resolves in well under Playwright's screenshot timing window, so no deterministic loading frame could be captured without artificially delaying the API route purely for the screenshot. Functionally the disabled/'Đang gửi...' button state exists in ContactForm.tsx and NewsletterForm.tsx."
+    "states": ["mobile-menu-open", "consultation-modal (desktop+mobile)", "faq-open", "form-success", "form-error", "focus-visible", "loading"],
+    "statesNotCaptured": [],
+    "note": "'loading' is now captured deterministically (defect 13) — no longer an open gap."
   },
   "visualParity": {
     "method": "Built from SPEC_AND_MANIFEST (tokens/typography/responsive/section-map/placement-map/component-map) per the deterministic-UI rule — no raster pixel measurement was used to derive geometry.",
-    "referenceCheck": "The only available visual reference (.webby/visual-master/gd1-v1/pages/page-0X.webp) is an explicitly-labeled low-fidelity preview render (revision gd1-preview-v1, ~10-15KB per page), not a pixel-accurate 4K master — fine print and exact copy are not legible at that resolution. Section order/structure/tone were cross-checked against each page render and match; exact marketing copy was written to match the visible structure and CONTENT_TRUTH facts rather than transcribed pixel-by-pixel.",
-    "automatedDiff": "NOT_RUN — no tooling in this environment renders the approved PDF pages at master resolution for a pixel diff. Per QA_ACCEPTANCE.json this is evidence only; final visual acceptance is a ChatGPT/user manual review against the actual master regardless.",
-    "recommendation": "ChatGPT QA should compare .webby/implementation/evidence/gd9-implementation-v1 screenshots against the full-resolution approved PDF (not the committed preview render) for exact copy/geometry sign-off."
+    "referenceCheck": "This round rendered the actual pinned PDF (PyMuPDF, 3x zoom, sha256-verified against WEBBY_LOCK.json) rather than relying on the low-fidelity committed preview webp. Every fix in fixLog above was checked against that render, page by page, including cropped close-reads where element counts were ambiguous at normal zoom (e.g. home's process-step row).",
+    "knownDeviation": "Home's process section has 6 steps in this implementation; ChatGPT's QA comment stated the master shows 5. A 10x-zoom crop of the rendered PDF page-03 process row shows 6 numbered circles (Tiếp nhận/Đề xuất/Thực hiện/Kiểm tra & QA/Bàn giao/Hỗ trợ). Implemented 6 to match the rendered master itself, per the protocol's own rule that the approved PDF is the supreme visual authority — flagging this explicitly in case ChatGPT's source differs from what's committed at .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf (sha256 f015b20d...b60c4f).",
+    "automatedDiff": "NOT_RUN — still no pixel-diff tooling in this environment; manual page-by-page comparison against the rendered PDF was used instead this round.",
+    "recommendation": "ChatGPT QA should re-compare the evidence screenshots against the same rendered PDF pages; flag if the knownDeviation above reflects a source mismatch rather than a miscount."
   },
   "blockers": [
     {
       "type": "BLOCKED_SPEC",
-      "detail": "facebookUrl (CONTENT_TRUTH.json 'pending') — Facebook channel card on /lien-he renders disabled with 'Sắp cập nhật' until a real URL is supplied.",
+      "detail": "facebookUrl (CONTENT_TRUTH.json 'pending') — Facebook Messenger channel card on /lien-he renders disabled with 'Sắp cập nhật' until a real URL is supplied.",
       "resolutionOwner": "Lucifer/ChatGPT"
     },
     {
       "type": "BLOCKED_SPEC",
-      "detail": "productionEmail and streetAddress are unverified per CONTENT_TRUTH.json; office address section on /lien-he shows a pending notice instead of inventing an address.",
+      "detail": "productionEmail and streetAddress remain unverified per CONTENT_TRUTH.json; no address is displayed anywhere rather than inventing one.",
       "resolutionOwner": "Lucifer/ChatGPT"
     },
     {
@@ -115,5 +152,5 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "Push claude/gd9-implementation-v1, open a Draft PR against chatgpt/webby-v3.1-implementation-ready, hand back to ChatGPT for visual/contract QA + user acceptance. Do not merge."
+  "nextStep": "Push claude/gd9-implementation-v1 (fix commit), keep PR #5 Draft, hand back to ChatGPT for GD10 re-QA against the rendered PDF master. Do not merge."
 }

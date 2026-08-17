@@ -19,44 +19,63 @@ export const metadata = pageMetadata({
   path: "/website",
 });
 
+// 6 industries per approved master (page-04) — not 4.
 const industries: { icon: IconName; label: string }[] = [
-  { icon: "building", label: "Doanh nghiệp dịch vụ" },
-  { icon: "shopping-bag", label: "Bán lẻ & thương mại" },
-  { icon: "briefcase", label: "Tư vấn chuyên môn" },
-  { icon: "package", label: "Sản xuất & phân phối" },
+  { icon: "building", label: "Doanh nghiệp nhỏ & vừa" },
+  { icon: "shopping-bag", label: "Cửa hàng, bán lẻ" },
+  { icon: "map-pin", label: "Bất động sản" },
+  { icon: "calendar", label: "Dịch vụ, sự kiện" },
+  { icon: "lightbulb", label: "Giáo dục, đào tạo" },
+  { icon: "users", label: "Doanh nghiệp, phi lợi nhuận" },
 ];
 
+// 5 benefits per approved master — not 4.
 const benefits: { icon: IconName; label: string }[] = [
+  { icon: "badge-check", label: "Tăng uy tín thương hiệu" },
+  { icon: "target", label: "Tối ưu chuyển đổi" },
+  { icon: "percent", label: "Chuẩn SEO – bứt phá top tìm kiếm" },
   { icon: "shield-check", label: "Bảo mật & ổn định" },
-  { icon: "monitor-smartphone", label: "Tối ưu mọi thiết bị" },
-  { icon: "percent", label: "Chuẩn SEO on-page" },
-  { icon: "headset", label: "Hỗ trợ sau bàn giao" },
+  { icon: "headset", label: "Bàn giao – đào tạo" },
 ];
 
 const websiteProjects = projects.filter((p) => p.category === "Website").slice(0, 4);
 
+// 6-step process per approved master — not 4.
 const processSteps = [
-  { title: "Khảo sát nhu cầu", description: "Tìm hiểu mục tiêu kinh doanh và đối tượng khách hàng." },
+  { title: "Tư vấn & khảo sát", description: "Tìm hiểu mục tiêu kinh doanh và đối tượng khách hàng." },
+  { title: "Đề xuất giải pháp", description: "Xây dựng phương án phù hợp ngân sách và thời gian." },
   { title: "Thiết kế giao diện", description: "Xây dựng giao diện riêng theo nhận diện thương hiệu." },
-  { title: "Phát triển & kiểm thử", description: "Lập trình và kiểm thử kỹ trước khi bàn giao." },
-  { title: "Bàn giao & hỗ trợ", description: "Hướng dẫn quản trị và hỗ trợ kỹ thuật sau bàn giao." },
+  { title: "Lập trình & tối ưu", description: "Phát triển và tối ưu hiệu năng, chuẩn SEO." },
+  { title: "Kiểm thử và bàn giao", description: "Kiểm thử kỹ trước khi bàn giao chính thức." },
+  { title: "Hỗ trợ & bảo trì", description: "Đồng hành hỗ trợ kỹ thuật sau bàn giao." },
 ];
 
+// 4 packages with demo pricing per approved master (demoOnly — .webby/CONTENT_TRUTH.json;
+// real production prices require Lucifer verification before PRODUCTION_READY).
 const packages = [
   {
-    plan: "Cơ bản",
-    description: "Phù hợp doanh nghiệp mới cần hiện diện website chuyên nghiệp.",
+    plan: "Website Doanh nghiệp",
+    description: "Phù hợp doanh nghiệp cần hiện diện website chuyên nghiệp.",
+    price: "Từ 8.900.000đ",
     features: ["Thiết kế theo mẫu tối ưu", "Tối đa 5 trang nội dung", "Chuẩn SEO cơ bản"],
   },
   {
-    plan: "Chuyên nghiệp",
-    description: "Phù hợp doanh nghiệp cần website riêng và nhiều tính năng hơn.",
-    features: ["Thiết kế riêng theo thương hiệu", "Không giới hạn trang nội dung", "Tối ưu SEO nâng cao", "Hỗ trợ ưu tiên"],
+    plan: "Landing Page",
+    description: "Phù hợp chiến dịch quảng cáo, giới thiệu sản phẩm/dịch vụ.",
+    price: "Từ 4.900.000đ",
+    features: ["1 trang chuyển đổi cao", "Tối ưu tốc độ tải", "Tích hợp form thu lead"],
+  },
+  {
+    plan: "Website Bán hàng",
+    description: "Phù hợp doanh nghiệp cần bán hàng trực tuyến đầy đủ tính năng.",
+    price: "Từ 13.900.000đ",
+    features: ["Giỏ hàng & thanh toán", "Quản trị sản phẩm", "Tối ưu SEO nâng cao", "Hỗ trợ ưu tiên"],
     featured: true,
   },
   {
-    plan: "Doanh nghiệp",
-    description: "Phù hợp doanh nghiệp cần hệ thống phức tạp, tích hợp nhiều dịch vụ.",
+    plan: "Website Theo Yêu Cầu",
+    description: "Phù hợp hệ thống phức tạp, tích hợp nhiều dịch vụ riêng.",
+    price: "Liên hệ báo giá",
     features: ["Kiến trúc tuỳ chỉnh", "Tích hợp hệ thống/API riêng", "Đội ngũ đồng hành dài hạn"],
   },
 ];
@@ -67,9 +86,9 @@ export default function WebsitePage() {
   return (
     <>
       <PageHero
-        eyebrow="Website"
-        title="Website doanh nghiệp chuyên nghiệp, chuẩn SEO"
-        description="Thiết kế và phát triển website giúp doanh nghiệp xây dựng hình ảnh chuyên nghiệp và tăng chuyển đổi từ khách truy cập."
+        eyebrow="Dịch vụ Website"
+        title="Thiết kế Website chuẩn đẹp – hiệu quả cho doanh nghiệp"
+        description="Lạc Việt tạo ra những website chuyên nghiệp, chuẩn SEO, tối ưu trải nghiệm người dùng và chuyển đổi — giúp doanh nghiệp bứt phá xây dựng thương hiệu vững chắc trên môi trường số."
         imageAssetId="website-hero-master"
         imageAlt="Website doanh nghiệp Lạc Việt Media"
         cta={<WebsiteHeroCta />}
@@ -77,8 +96,8 @@ export default function WebsitePage() {
 
       <Section id="industry-fit-grid">
         <Container>
-          <SectionHeading eyebrow="Phù hợp với" title="Website phù hợp với nhiều lĩnh vực" align="center" />
-          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
+          <SectionHeading eyebrow="Doanh nghiệp ở mọi quy mô" title="Doanh nghiệp ở mọi quy mô, mọi lĩnh vực" align="center" />
+          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
             {industries.map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
                 <Icon name={item.icon} size="feature" className="text-gold-600" />
@@ -98,7 +117,8 @@ export default function WebsitePage() {
 
       <Section id="benefit-strip" tone="dark">
         <Container>
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <SectionHeading onDark eyebrow="Lợi ích khi tạo website cùng Lạc Việt" title="Tạo nền tảng số vững chắc – bứt phá tăng trưởng" align="center" />
+          <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
             {benefits.map((b) => (
               <div key={b.label} className="flex flex-col items-center gap-3 text-center">
                 <Icon name={b.icon} size="feature" className="text-gold-300" />

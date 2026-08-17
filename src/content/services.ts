@@ -10,6 +10,8 @@ export const services: Service[] = [
     summary:
       "Thiết kế và phát triển website chuyên nghiệp, chuẩn SEO, tối ưu tốc độ và chuyển đổi cho doanh nghiệp Việt.",
     ctaLabel: "Xem gói Website",
+    href: "/website",
+    icon: "monitor-smartphone",
     features: [
       "Thiết kế riêng theo nhận diện thương hiệu",
       "Chuẩn SEO on-page & tốc độ tải trang",
@@ -25,6 +27,8 @@ export const services: Service[] = [
     summary:
       "Hỗ trợ vận hành, khắc phục sự cố và phát triển các kênh mạng xã hội Facebook, TikTok, YouTube cho doanh nghiệp.",
     ctaLabel: "Xem dịch vụ Support MXH",
+    href: "/support-mxh",
+    icon: "messages-square",
     features: [
       "Xử lý sự cố tài khoản, trang, nhóm",
       "Tối ưu nội dung và tương tác",
@@ -40,6 +44,8 @@ export const services: Service[] = [
     summary:
       "Cung cấp và hỗ trợ các tài khoản, công cụ số phổ biến: ChatGPT, Microsoft 365, Canva Pro và nhiều nền tảng khác.",
     ctaLabel: "Xem dịch vụ số",
+    href: "/dich-vu-so",
+    icon: "package",
     features: ["Tài khoản chính hãng/ủy quyền", "Hướng dẫn sử dụng", "Hỗ trợ trong thời gian sử dụng"],
     priceMode: "contact",
   },

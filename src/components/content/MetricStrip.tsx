@@ -1,8 +1,10 @@
-export type Metric = { value: string; label: string };
+export type Metric = { value: string; label: string; demoOnly: boolean };
 
-/** .webby/component-map.json: "demo metrics must not ship as factual claims" — always
- * paired with a visible demo disclaimer per CONTENT_TRUTH.json until verified. */
+/** .webby/component-map.json: "demo metrics must not ship as factual claims". Each metric
+ * carries its own demoOnly flag in the data model (not just a UI-level disclaimer string)
+ * so a future production data source can flip it to false once numbers are verified. */
 export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; onDark?: boolean }) {
+  const hasDemoMetric = metrics.some((m) => m.demoOnly);
   return (
     <div>
       <dl className="grid grid-cols-2 gap-6 md:grid-cols-4">
@@ -16,9 +18,11 @@ export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; on
           </div>
         ))}
       </dl>
-      <p className={`mt-4 text-center text-caption ${onDark ? "text-white/50" : "text-text-muted"}`}>
-        Số liệu minh hoạ, chưa phải dữ liệu thực tế được xác nhận.
-      </p>
+      {hasDemoMetric ? (
+        <p className={`mt-4 text-center text-caption ${onDark ? "text-white/50" : "text-text-muted"}`}>
+          Số liệu minh hoạ, chưa phải dữ liệu thực tế được xác nhận.
+        </p>
+      ) : null}
     </div>
   );
 }

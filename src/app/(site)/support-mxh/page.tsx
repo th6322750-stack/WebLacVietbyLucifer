@@ -20,41 +20,56 @@ export const metadata = pageMetadata({
   path: "/support-mxh",
 });
 
-const supportServices = [
+// 4 service cards per approved master (page-05) — one per platform + strategy consulting.
+const supportServices: { brand?: "facebook" | "tiktok" | "meta"; icon?: IconName; title: string; description: string }[] = [
   {
-    icon: "shield-check" as IconName,
-    title: "Xử lý sự cố tài khoản",
-    description: "Khắc phục lỗi trang, nhóm, tài khoản quảng cáo bị hạn chế hoặc khoá.",
+    brand: "facebook",
+    title: "Facebook Support",
+    description: "Khắc phục lỗi trang, tài khoản quảng cáo bị hạn chế hoặc khoá.",
   },
   {
-    icon: "sparkles" as IconName,
-    title: "Tối ưu nội dung",
-    description: "Tư vấn nội dung và tần suất đăng bài để tăng tương tác tự nhiên.",
+    brand: "tiktok",
+    title: "TikTok Support",
+    description: "Xử lý sự cố tài khoản, video bị hạn chế hiển thị.",
   },
   {
-    icon: "target" as IconName,
-    title: "Chiến lược kênh",
-    description: "Xây dựng định hướng nội dung phù hợp mục tiêu kinh doanh.",
+    brand: "meta",
+    title: "Meta Business / Ads Support",
+    description: "Quản lý và khắc phục sự cố Meta Business Suite, tài khoản quảng cáo.",
+  },
+  {
+    icon: "lightbulb",
+    title: "Tư vấn chiến lược & Khắc phục sự cố",
+    description: "Tư vấn định hướng nội dung và xử lý các sự cố kỹ thuật phát sinh.",
   },
 ];
 
+// 6 issues per approved master — not 4.
 const commonIssues: { icon: IconName; label: string }[] = [
-  { icon: "lock-keyhole", label: "Tài khoản bị khoá/hạn chế" },
-  { icon: "circle-alert", label: "Quảng cáo bị từ chối duyệt" },
-  { icon: "messages-square", label: "Tương tác sụt giảm bất thường" },
-  { icon: "shield-check", label: "Nghi ngờ vi phạm chính sách" },
+  { icon: "lock-keyhole", label: "Tài khoản/Trang bị hạn chế" },
+  { icon: "circle-alert", label: "Mất quyền truy cập" },
+  { icon: "shield-check", label: "Pháp lý / vi phạm chính sách" },
+  { icon: "users", label: "BM / tài khoản chủ thể" },
+  { icon: "target", label: "Quảng cáo không hiệu quả" },
+  { icon: "messages-square", label: "Vấn đề khác" },
 ];
 
+// 5 icons per approved master — not 3.
 const whyUs: { icon: IconName; label: string }[] = [
   { icon: "clock", label: "Phản hồi trong ngày làm việc" },
   { icon: "badge-check", label: "Đúng chính sách nền tảng" },
+  { icon: "shield-check", label: "An toàn – bảo mật" },
+  { icon: "headset", label: "Hỗ trợ tận tâm" },
   { icon: "users", label: "Đội ngũ nhiều kinh nghiệm thực tế" },
 ];
 
+// 5-step process per approved master — not 3.
 const processSteps = [
-  { title: "Tiếp nhận sự cố", description: "Ghi nhận chi tiết tình trạng và thời điểm phát sinh." },
-  { title: "Phân tích nguyên nhân", description: "Rà soát chính sách và lịch sử hoạt động liên quan." },
-  { title: "Xử lý & theo dõi", description: "Thực hiện khắc phục và theo dõi đến khi ổn định." },
+  { title: "Tiếp nhận yêu cầu", description: "Ghi nhận chi tiết tình trạng và thời điểm phát sinh." },
+  { title: "Phân tích & tư vấn", description: "Rà soát chính sách và lịch sử hoạt động liên quan." },
+  { title: "Triển khai hỗ trợ", description: "Thực hiện khắc phục theo đúng quy trình nền tảng." },
+  { title: "Cập nhật tiến độ", description: "Thông báo tiến độ xử lý rõ ràng, minh bạch." },
+  { title: "Bàn giao & hướng dẫn", description: "Bàn giao kết quả và hướng dẫn phòng tránh tái diễn." },
 ];
 
 export default function SupportMxhPage() {
@@ -73,10 +88,18 @@ export default function SupportMxhPage() {
 
       <Section id="support-service-grid">
         <Container>
-          <SectionHeading eyebrow="Dịch vụ" title="Chúng tôi hỗ trợ những gì" align="center" />
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <SectionHeading eyebrow="Dịch vụ" title="Chúng tôi hỗ trợ toàn diện các nền tảng mạng xã hội phổ biến" align="center" />
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {supportServices.map((s) => (
-              <ServiceCard key={s.title} icon={s.icon} title={s.title} description={s.description} ctaLabel="Nhận tư vấn" href="/lien-he" />
+              <ServiceCard
+                key={s.title}
+                brand={s.brand}
+                icon={s.icon}
+                title={s.title}
+                description={s.description}
+                ctaLabel="Nhận tư vấn"
+                href="/lien-he"
+              />
             ))}
           </div>
         </Container>
@@ -84,8 +107,8 @@ export default function SupportMxhPage() {
 
       <Section id="common-issues-grid" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Sự cố thường gặp" title="Những vấn đề chúng tôi thường xử lý" align="center" />
-          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
+          <SectionHeading eyebrow="Sự cố thường gặp" title="Bạn đang gặp phải vấn đề nào?" align="center" />
+          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
             {commonIssues.map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
                 <Icon name={item.icon} size="feature" className="text-gold-600" />
@@ -96,14 +119,14 @@ export default function SupportMxhPage() {
         </Container>
       </Section>
 
-      <Section id="why-lac-viet">
+      <Section id="why-lac-viet" tone="dark">
         <Container>
-          <SectionHeading eyebrow="Vì sao chọn chúng tôi" title="Lý do doanh nghiệp tin tưởng Lạc Việt Media" align="center" />
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
+          <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt Media Agency" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
             {whyUs.map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3 text-center">
-                <Icon name={item.icon} size="feature" className="text-gold-600" />
-                <p className="text-body text-text-secondary">{item.label}</p>
+                <Icon name={item.icon} size="feature" className="text-gold-300" />
+                <p className="text-body text-white/85">{item.label}</p>
               </div>
             ))}
           </div>
@@ -112,7 +135,7 @@ export default function SupportMxhPage() {
 
       <Section id="support-process" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Quy trình" title="Quy trình xử lý sự cố" align="center" />
+          <SectionHeading eyebrow="Quy trình" title="5 bước hỗ trợ chuyên nghiệp" align="center" />
           <div className="mt-10">
             <ProcessSteps steps={processSteps} />
           </div>
@@ -121,7 +144,9 @@ export default function SupportMxhPage() {
 
       <Section id="trust-client-row">
         <Container>
-          <p className="text-center text-eyebrow uppercase text-text-muted">Nền tảng chúng tôi hỗ trợ</p>
+          <p className="text-center text-h4-mobile lg:text-h4-desktop text-ink-950">
+            200+ khách hàng đã được hỗ trợ thành công
+          </p>
           <div className="mt-6">
             <TrustLogoRow brands={["facebook", "tiktok", "meta", "youtube"]} />
           </div>
@@ -133,9 +158,10 @@ export default function SupportMxhPage() {
           <MetricStrip
             onDark
             metrics={[
-              { value: "24h", label: "Thời gian phản hồi trung bình" },
-              { value: "100+", label: "Sự cố đã xử lý" },
-              { value: "4", label: "Nền tảng hỗ trợ chính" },
+              { value: "200+", label: "Khách hàng đã hỗ trợ", demoOnly: true },
+              { value: "98%", label: "Tỷ lệ khôi phục thành công", demoOnly: true },
+              { value: "24/7", label: "Hỗ trợ liên tục", demoOnly: true },
+              { value: "100%", label: "Bảo mật thông tin", demoOnly: true },
             ]}
           />
         </Container>

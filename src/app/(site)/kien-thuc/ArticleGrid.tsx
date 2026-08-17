@@ -5,7 +5,10 @@ import type { Article } from "@/lib/types";
 import { ArticleCard } from "@/components/content/ArticleCard";
 import { Button } from "@/components/ui/Button";
 
-const PAGE_SIZE = 6;
+// Kept below the current demo article count so "load-more" always has something to reveal
+// per section-map.json (silent section deletion is not allowed) without reusing an
+// identity-bound cover asset across a fabricated extra article.
+const PAGE_SIZE = 3;
 
 export function ArticleGrid({ articles }: { articles: Article[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);

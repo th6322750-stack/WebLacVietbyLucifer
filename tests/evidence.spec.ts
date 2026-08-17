@@ -117,4 +117,31 @@ test.describe("interactive states", () => {
     await disableAnimationsAndWait(page);
     await page.screenshot({ path: `${EVIDENCE_DIR}/desktop/states--focus-visible.png` });
   });
+
+  test("loading @ desktop", async ({ page }) => {
+    await page.setViewportSize(VIEWPORTS.desktop);
+    // Deterministic loading frame: hold the /api/leads response open in this test only —
+    // no artificial delay is added to the production route itself.
+    await page.route("**/api/leads", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await route.continue();
+    });
+
+    await page.goto("/lien-he");
+    const form = page.locator("#contact-form");
+    await form.getByLabel("Họ tên").fill("Nguyễn Văn A");
+    await form.getByLabel("Số điện thoại").fill("0912345678");
+    await form.getByLabel(/Nhu cầu/).selectOption({ index: 1 });
+    await form.getByLabel(/Dịch vụ quan tâm/).selectOption({ index: 1 });
+    await form.getByLabel(/Tôi đồng ý/).check();
+
+    const submitButton = form.getByRole("button", { name: /Gửi yêu cầu tư vấn|Đang gửi/ });
+    await submitButton.click();
+    await form.getByRole("button", { name: "Đang gửi..." }).waitFor();
+
+    await page.addStyleTag({
+      content: `*, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }`,
+    });
+    await page.screenshot({ path: `${EVIDENCE_DIR}/desktop/states--loading.png` });
+  });
 });

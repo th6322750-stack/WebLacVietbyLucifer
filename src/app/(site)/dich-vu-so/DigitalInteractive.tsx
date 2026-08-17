@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { useConsultation } from "@/components/conversion/ConsultationProvider";
 
 export function DigitalHeroCta() {
@@ -22,5 +23,19 @@ export function DigitalProductCta({ label }: { label: string }) {
     >
       {label}
     </button>
+  );
+}
+
+export function DigitalSupportCard() {
+  const { open } = useConsultation();
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-3 rounded-lg border border-gold-300/60 bg-white p-8 text-center shadow-sm">
+      <Icon name="headset" size="feature" className="text-gold-600" />
+      <h3 className="text-h4-mobile text-ink-950">Bạn cần hỗ trợ thêm?</h3>
+      <p className="text-small text-text-secondary">
+        Đội ngũ Lạc Việt Media sẵn sàng tư vấn công cụ số phù hợp với quy mô và ngân sách của bạn.
+      </p>
+      <Button onClick={() => open("digital-support-card", "Dịch vụ số / tài khoản")}>Liên hệ ngay</Button>
+    </div>
   );
 }

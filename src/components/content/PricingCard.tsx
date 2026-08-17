@@ -4,13 +4,19 @@ import { Button } from "@/components/ui/Button";
 export function PricingCard({
   plan,
   description,
+  price,
+  priceSuffix,
   features,
   featured = false,
-  ctaLabel = "Liên hệ báo giá",
+  ctaLabel = "Chọn gói này",
   onSelect,
 }: {
   plan: string;
   description: string;
+  /** Exact display string, e.g. "Từ 8.900.000đ" or "Liên hệ báo giá" — demo pricing per
+   * CONTENT_TRUTH.json, tagged demoOnly in the package data, not a verified production price. */
+  price: string;
+  priceSuffix?: string;
   features: string[];
   featured?: boolean;
   ctaLabel?: string;
@@ -30,7 +36,8 @@ export function PricingCard({
       <h3 className={`text-h4-desktop font-heading ${featured ? "text-white" : "text-ink-950"}`}>{plan}</h3>
       <p className={`mt-2 text-small ${featured ? "text-white/75" : "text-text-secondary"}`}>{description}</p>
       <p className={`mt-6 text-h3-mobile font-heading ${featured ? "text-gold-300" : "text-gold-700"}`}>
-        Liên hệ báo giá
+        {price}
+        {priceSuffix ? <span className="text-small font-body text-white/60"> {priceSuffix}</span> : null}
       </p>
 
       <ul className="mt-6 flex flex-1 flex-col gap-3">

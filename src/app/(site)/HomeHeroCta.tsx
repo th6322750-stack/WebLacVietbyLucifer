@@ -8,10 +8,10 @@ export function HomeHeroCta() {
   return (
     <div className="mt-8 flex flex-wrap gap-3">
       <Button size="lg" onClick={() => open("home-hero")}>
-        Nhận tư vấn miễn phí
+        Nhận tư vấn ngay
       </Button>
       <Button href="/du-an" size="lg" variant="outline" onDark>
-        Xem dự án
+        Xem dự án tiêu biểu
       </Button>
     </div>
   );

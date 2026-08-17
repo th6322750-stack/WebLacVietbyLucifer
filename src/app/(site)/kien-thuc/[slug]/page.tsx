@@ -1,12 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ArticleTOC } from "@/components/content/ArticleTOC";
-import { ArticleCard } from "@/components/content/ArticleCard";
 import { FinalCta } from "@/components/layout/FinalCta";
+import { ArticleConsultCard } from "./ArticleConsultCard";
 import { articles, getArticleBySlug } from "@/content/articles";
 import { assetPath } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
@@ -94,7 +94,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
       <Section id="article-layout">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[220px_1fr]">
+          <div className="grid gap-10 lg:grid-cols-[220px_1fr_280px]">
             <div id="article-toc">
               <ArticleTOC sections={article.content} />
             </div>
@@ -112,22 +112,34 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                 </div>
               ))}
             </div>
+            <aside id="related-articles" className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+              {related.length > 0 ? (
+                <div>
+                  <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
+                  <ul className="mt-3 flex flex-col gap-4">
+                    {related.map((a) => (
+                      <li key={a.slug}>
+                        <Link href={`/kien-thuc/${a.slug}`} className="flex items-center gap-3 group">
+                          {a.coverAssetId ? (
+                            <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm">
+                              <Image src={assetPath(a.coverAssetId)} alt={a.title} fill className="object-cover" />
+                            </div>
+                          ) : null}
+                          <div>
+                            <p className="line-clamp-2 text-small font-medium text-ink-950 group-hover:text-gold-700">{a.title}</p>
+                            <p className="text-caption text-text-muted">{formatDate(a.publishedAt)}</p>
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              <ArticleConsultCard category={article.category} />
+            </aside>
           </div>
         </Container>
       </Section>
-
-      {related.length > 0 ? (
-        <Section id="related-articles" tone="ivory">
-          <Container>
-            <SectionHeading eyebrow="Bài viết liên quan" title="Đọc thêm cùng chủ đề" />
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((a) => (
-                <ArticleCard key={a.slug} article={a} />
-              ))}
-            </div>
-          </Container>
-        </Section>
-      ) : null}
 
       <FinalCta sourceComponent="article-service-cta" />
     </>

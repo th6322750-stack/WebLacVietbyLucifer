@@ -8,6 +8,8 @@ export type Service = {
   title: string;
   summary: string;
   ctaLabel: string;
+  href: string;
+  icon: string;
   features?: string[];
   priceMode?: PriceMode;
   priceVnd?: number;
@@ -27,6 +29,8 @@ export type Project = {
   results?: string[];
   technology?: string[];
   galleryAssetIds?: string[];
+  durationLabel?: string;
+  completedLabel?: string;
 };
 
 export type ArticleSection = {

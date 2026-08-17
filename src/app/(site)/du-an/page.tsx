@@ -18,7 +18,9 @@ export const metadata = pageMetadata({
   path: "/du-an",
 });
 
-const categories = Array.from(new Set(projects.map((p) => p.category)));
+// Fixed taxonomy per approved master (page-07) — not derived only from current demo data,
+// so Landing Page/UI-UX chips exist even before a demo project is tagged with them.
+const categories = ["Website", "Social", "Digital Services", "Landing Page", "UI/UX"];
 const featuredCaseStudy = projects[0]!;
 
 export default async function ProjectsPage({
@@ -34,10 +36,15 @@ export default async function ProjectsPage({
     <>
       <PageHero
         eyebrow="Dự án"
-        title="Dự án tiêu biểu Lạc Việt Media"
-        description="Một số dự án mẫu minh hoạ năng lực triển khai website, hỗ trợ mạng xã hội và dịch vụ số."
+        title="Dự án tiêu biểu"
+        description="Những giải pháp số đã tạo ra giá trị thật cho thương hiệu và doanh nghiệp."
         imageAssetId="projects-hero-master"
         imageAlt="Dự án Lạc Việt Media"
+        metrics={[
+          { value: "200+", label: "Dự án đã triển khai" },
+          { value: "20+", label: "Lĩnh vực đa dạng" },
+          { value: "99%", label: "Khách hàng hài lòng" },
+        ]}
       />
 
       <Section id="category-filters">
@@ -49,7 +56,7 @@ export default async function ProjectsPage({
       <Section id="projects-grid">
         <Container>
           {filtered.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {filtered.map((p) => (
                 <ProjectCard key={p.slug} project={p} />
               ))}
@@ -60,12 +67,12 @@ export default async function ProjectsPage({
         </Container>
       </Section>
 
-      <Section id="featured-case-study" tone="ivory">
+      <Section id="featured-case-study" tone="dark">
         <Container>
-          <SectionHeading eyebrow="Case study nổi bật" title="Xem chi tiết một dự án tiêu biểu" />
+          <SectionHeading onDark eyebrow="Case study nổi bật" title={`${featuredCaseStudy.title} — case study chi tiết`} />
           <Link
             href={`/du-an/${featuredCaseStudy.slug}`}
-            className="mt-8 grid gap-6 overflow-hidden rounded-lg border border-border bg-white shadow-sm lg:grid-cols-2"
+            className="mt-8 grid gap-6 overflow-hidden rounded-lg border border-white/10 bg-white/5 lg:grid-cols-2"
           >
             <div className="relative aspect-[16/10] w-full lg:aspect-auto">
               {featuredCaseStudy.heroAssetId ? (
@@ -73,11 +80,25 @@ export default async function ProjectsPage({
               ) : null}
             </div>
             <div className="flex flex-col justify-center p-6 md:p-10">
-              <span className="text-caption uppercase text-gold-700">{featuredCaseStudy.category}</span>
-              <h3 className="mt-2 text-h3-mobile lg:text-h3-desktop text-ink-950">{featuredCaseStudy.title}</h3>
-              <p className="mt-3 text-body text-text-secondary">{featuredCaseStudy.summary}</p>
-              <span className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-gold-700">
-                Xem chi tiết dự án
+              <span className="text-caption uppercase text-gold-300">{featuredCaseStudy.category}</span>
+              <h3 className="mt-2 text-h3-mobile lg:text-h3-desktop text-white">{featuredCaseStudy.title}</h3>
+              <p className="mt-3 text-body text-white/80">{featuredCaseStudy.summary}</p>
+              <dl className="mt-6 grid grid-cols-2 gap-4">
+                {[
+                  { value: "+165%", label: "Khách hàng truy cập" },
+                  { value: "+70%", label: "Thời gian trên trang" },
+                  { value: "+30%", label: "Tương tác" },
+                  { value: "35%", label: "Chi phí quảng cáo" },
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <dt className="sr-only">{stat.label}</dt>
+                    <dd className="text-h4-mobile font-heading text-gold-300">{stat.value}</dd>
+                    <p className="text-caption text-white/60">{stat.label}</p>
+                  </div>
+                ))}
+              </dl>
+              <span className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-gold-300">
+                Xem case study chi tiết
                 <Icon name="arrow-right" size="inline" />
               </span>
             </div>
