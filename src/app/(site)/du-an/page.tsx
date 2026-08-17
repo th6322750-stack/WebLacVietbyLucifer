@@ -42,9 +42,9 @@ export default async function ProjectsPage({
         imageAssetId="projects-hero-master"
         imageAlt="Dự án Lạc Việt Media"
         metrics={[
-          { value: "200+", label: "Dự án đã triển khai" },
-          { value: "20+", label: "Lĩnh vực đa dạng" },
-          { value: "99%", label: "Khách hàng hài lòng" },
+          { value: "200+", label: "Dự án đã triển khai", demoOnly: true },
+          { value: "20+", label: "Lĩnh vực đa dạng", demoOnly: true },
+          { value: "99%", label: "Khách hàng hài lòng", demoOnly: true },
         ]}
       />
 
@@ -84,7 +84,10 @@ export default async function ProjectsPage({
               <span className="text-caption uppercase text-gold-300">{featuredCaseStudy.category}</span>
               <h3 className="mt-2 text-h3-mobile lg:text-h3-desktop text-white">{featuredCaseStudy.title}</h3>
               <p className="mt-3 text-body text-white/80">{featuredCaseStudy.summary}</p>
-              <dl className="mt-6 grid grid-cols-2 gap-4">
+              {/* Demo case-study results per CONTENT_TRUTH.json — tagged in markup, not as a
+                  badge: the approved banner shows no disclaimer and adding one would be a
+                  redesign. */}
+              <dl className="mt-6 grid grid-cols-2 gap-4" data-demo-only="true">
                 {[
                   { value: "+165%", label: "Khách hàng truy cập" },
                   { value: "+70%", label: "Thời gian trên trang" },
@@ -98,7 +101,7 @@ export default async function ProjectsPage({
                   </div>
                 ))}
               </dl>
-              <span className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-gold-300">
+              <span className="mt-6 inline-flex items-center gap-1 text-small font-semibold text-gold-300">
                 Xem case study chi tiết
                 <Icon name="arrow-right" size="inline" />
               </span>

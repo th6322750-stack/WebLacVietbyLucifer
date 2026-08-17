@@ -30,7 +30,7 @@ export function ArticleCard({ article }: { article: Article }) {
       </div>
       <div className="flex flex-1 flex-col p-5">
         <span className="text-caption uppercase text-gold-700">{article.category}</span>
-        <h3 className="mt-1.5 line-clamp-3 text-h4-mobile text-ink-950">{article.title}</h3>
+        <h3 className="mt-1 line-clamp-3 text-h4-mobile text-ink-950">{article.title}</h3>
         <p className="mt-2 flex-1 text-small text-text-secondary">{article.excerpt}</p>
         <div className="mt-4 flex items-center gap-2 text-caption text-text-muted">
           <span>{article.author}</span>

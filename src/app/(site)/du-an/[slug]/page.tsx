@@ -42,7 +42,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: project.title,
     description: project.summary,
     path: `/du-an/${slug}`,
-    noindex: project.hidden,
+    // Demo project identities/results must not become indexed claims until verified
+    // (CONTENT_TRUTH.json demoOnly + SEO_CONTRACT.json contentIntegrity). Hidden fixtures stay
+    // noindex as direct-review-only routes. Both stay routable and visible in the UI.
+    noindex: project.demoOnly || project.hidden,
   });
 }
 
@@ -81,7 +84,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       </Container>
 
       <section id="case-study-hero">
-        <Container className="grid items-center gap-10 py-10 md:py-14 lg:grid-cols-2 lg:gap-16">
+        <Container className="grid items-center gap-10 py-10 md:py-12 lg:grid-cols-2 lg:gap-16">
           <div>
             {project.demoOnly ? (
               <span className="inline-flex items-center rounded-pill border border-gold-300 bg-ivory-100 px-3 py-1 text-caption uppercase text-gold-700">
@@ -94,14 +97,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
             <dl id="project-meta" className="mt-8 grid grid-cols-2 gap-6">
               <div className="flex items-start gap-3">
-                <Icon name="map-pin" size="default" className="mt-0.5 text-gold-600" />
+                <Icon name="map-pin" size="default" className="mt-px text-gold-600" />
                 <div>
                   <dt className="text-caption text-text-muted">Lĩnh vực</dt>
                   <dd className="text-body font-medium text-ink-950">{project.category}</dd>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Icon name="briefcase" size="default" className="mt-0.5 text-gold-600" />
+                <Icon name="briefcase" size="default" className="mt-px text-gold-600" />
                 <div>
                   <dt className="text-caption text-text-muted">Dịch vụ</dt>
                   <dd className="text-body font-medium text-ink-950">{SERVICE_LABEL_BY_CATEGORY[project.category] ?? project.category}</dd>
@@ -109,7 +112,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </div>
               {project.durationLabel ? (
                 <div className="flex items-start gap-3">
-                  <Icon name="clock" size="default" className="mt-0.5 text-gold-600" />
+                  <Icon name="clock" size="default" className="mt-px text-gold-600" />
                   <div>
                     <dt className="text-caption text-text-muted">Thời gian</dt>
                     <dd className="text-body font-medium text-ink-950">{project.durationLabel}</dd>
@@ -118,7 +121,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               ) : null}
               {project.completedLabel ? (
                 <div className="flex items-start gap-3">
-                  <Icon name="calendar" size="default" className="mt-0.5 text-gold-600" />
+                  <Icon name="calendar" size="default" className="mt-px text-gold-600" />
                   <div>
                     <dt className="text-caption text-text-muted">Năm hoàn thành</dt>
                     <dd className="text-body font-medium text-ink-950">{project.completedLabel}</dd>
@@ -196,7 +199,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               <ul className="mt-4 flex flex-col gap-3">
                 {project.results?.map((r) => (
                   <li key={r} className="flex items-start gap-2 text-body-lg text-text-secondary">
-                    <Icon name="circle-check" size="default" className="mt-0.5 shrink-0 text-state-success" />
+                    <Icon name="circle-check" size="default" className="mt-px shrink-0 text-state-success" />
                     {r}
                   </li>
                 ))}
@@ -213,7 +216,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <SectionHeading eyebrow="Công nghệ" title="Công nghệ sử dụng" />
             <div className="mt-4 flex flex-wrap gap-2">
               {project.technology.map((t) => (
-                <span key={t} className="rounded-pill border border-border px-3 py-1.5 text-small text-text-secondary">
+                <span key={t} className="rounded-pill border border-border px-3 py-1 text-small text-text-secondary">
                   {t}
                 </span>
               ))}

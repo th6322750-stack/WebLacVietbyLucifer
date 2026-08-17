@@ -39,7 +39,10 @@ const supportServices: { brand?: "facebook" | "tiktok" | "meta"; icon?: IconName
     description: "Quản lý và khắc phục sự cố Meta Business Suite, tài khoản quảng cáo.",
   },
   {
-    icon: "lightbulb",
+    // Approved master page-05 card 4 shows a gold SHIELD, not a lightbulb — verified by cropping
+    // the exact card at 34x zoom. icon-shield-check is in the pinned icon inventory; nothing was
+    // invented or substituted.
+    icon: "shield-check",
     title: "Tư vấn chiến lược & Khắc phục sự cố",
     description: "Tư vấn định hướng nội dung và xử lý các sự cố kỹ thuật phát sinh.",
   },
@@ -145,7 +148,9 @@ export default function SupportMxhPage() {
 
       <Section id="trust-client-row">
         <Container>
-          <p className="text-center text-h4-mobile lg:text-h4-desktop text-ink-950">
+          {/* Demo customer count per CONTENT_TRUTH.json demoOnly — tagged in markup; the visible
+              disclosure caption below covers the logo strip itself. */}
+          <p className="text-center text-h4-mobile lg:text-h4-desktop text-ink-950" data-demo-only="true">
             200+ khách hàng đã được hỗ trợ thành công
           </p>
           <div className="relative mx-auto mt-6 h-16 w-full max-w-2xl">

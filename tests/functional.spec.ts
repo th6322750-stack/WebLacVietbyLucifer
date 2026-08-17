@@ -183,16 +183,106 @@ test.describe("hidden fixtures stay direct-review only", () => {
     });
   }
 
-  test("sitemap.xml excludes hidden fixtures but lists visible detail routes", async ({ page }) => {
+  test("sitemap.xml excludes hidden fixtures and lists the indexable listing routes", async ({ page }) => {
     const response = await page.goto("/sitemap.xml");
     expect(response?.status()).toBeLessThan(400);
     const xml = (await response?.text()) ?? "";
     expect(xml).not.toContain("/du-an/website-bat-dong-san-an-phat");
     expect(xml).not.toContain("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
-    expect(xml).toContain("/du-an/website-bat-dong-san-the-maison");
-    // The /kien-thuc listing route stays indexable; only unverified article DETAIL urls are
-    // withheld (R5-01) — asserted in the SEO content-integrity block below.
+    // Listing routes stay indexable. Detail routes are withheld while their content is
+    // unverified demo — asserted per-entity in the SEO content-integrity blocks below.
+    for (const route of ["/du-an", "/kien-thuc", "/website", "/gioi-thieu", "/lien-he"]) {
+      expect(xml).toContain(route);
+    }
+  });
+});
+
+test.describe("SEO content integrity (demo projects)", () => {
+  const DEMO_PROJECT_ROUTES = [
+    "/du-an/website-bat-dong-san-the-maison",
+    "/du-an/quang-cao-google-ads-ecom-shinlala",
+    "/du-an/website-bat-dong-san-an-phat",
+  ];
+
+  // FINAL PASS item 1: CONTENT_TRUTH.json marks every GĐ1 project identity/result as demo until
+  // verified, and SEO_CONTRACT.json forbids demo data becoming indexed claims. Demo project
+  // detail routes therefore stay routable and visible but must be noindex and absent from
+  // sitemap.xml. They must still emit BreadcrumbList (navigation) and never Article schema.
+  for (const route of DEMO_PROJECT_ROUTES) {
+    test(`${route} is routable but noindex with no Article schema`, async ({ page }) => {
+      const response = await page.goto(route);
+      expect(response?.status()).toBeLessThan(400);
+      await expect(page.locator("h1")).toBeVisible();
+
+      const types = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(
+        (b) => JSON.parse(b)["@type"],
+      );
+      expect(types).toContain("BreadcrumbList");
+      expect(types).not.toContain("Article");
+
+      await expect(page.locator('head meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    });
+  }
+
+  test("no demo project detail URL appears in sitemap.xml", async ({ page }) => {
+    const response = await page.goto("/sitemap.xml");
+    const xml = (await response?.text()) ?? "";
+    for (const route of DEMO_PROJECT_ROUTES) {
+      expect(xml).not.toContain(route);
+    }
+    // The listing routes themselves stay indexable.
+    expect(xml).toContain("/du-an");
     expect(xml).toContain("/kien-thuc");
+  });
+
+  test("demo projects remain fully visible in the approved UI despite SEO gating", async ({ page }) => {
+    await page.goto("/du-an");
+    const cards = page.locator("main a[href^='/du-an/']");
+    expect(await cards.count()).toBeGreaterThan(0);
+    // Appears twice by design: the grid card and the featured case-study banner.
+    const maison = page.getByRole("heading", { name: "Website Bất Động Sản The Maison", exact: true });
+    expect(await maison.count()).toBe(2);
+    await expect(maison.first()).toBeVisible();
+    // All 12 approved visible projects still render despite every one being noindex.
+    await expect(page.getByRole("heading", { name: "Quảng cáo Google Ads Ecom - Shinlala", exact: true })).toBeVisible();
+  });
+});
+
+test.describe("content-truth markers (final sweep)", () => {
+  // FINAL PASS item 3: demo counts, case-study results, and demo pricing must all be tagged in
+  // data/markup. The approved master shows no badge on these, so the assertion is on markup.
+  const TAGGED = [
+    { route: "/", selector: "[data-demo-only]", min: 5 },
+    { route: "/du-an", selector: "[data-demo-only]", min: 4 },
+    { route: "/website", selector: "[data-demo-only]", min: 8 },
+    { route: "/support-mxh", selector: "[data-demo-only]", min: 1 },
+  ];
+
+  for (const { route, selector, min } of TAGGED) {
+    test(`${route} tags its demo content in markup`, async ({ page }) => {
+      await page.goto(route);
+      const nodes = page.locator(selector);
+      expect(await nodes.count()).toBeGreaterThanOrEqual(min);
+      for (const n of await nodes.all()) {
+        await expect(n).toHaveAttribute("data-demo-only", "true");
+      }
+    });
+  }
+
+  test("demo pricing packages are tagged and still display their approved prices", async ({ page }) => {
+    await page.goto("/website");
+    const cards = page.locator('#pricing-packages [data-demo-only], [data-demo-only]:has-text("Từ 8.900.000đ")');
+    expect(await cards.count()).toBeGreaterThan(0);
+    await expect(page.getByText("Từ 8.900.000đ").first()).toBeVisible();
+  });
+
+  test("pending contact fields are disabled, never invented", async ({ page }) => {
+    await page.goto("/lien-he");
+    // productionEmail and facebookUrl are TBD in CONTENT_TRUTH.json — both cards must render
+    // disabled placeholders and must not contain a fabricated address or profile URL.
+    await expect(page.getByText("Sắp cập nhật").first()).toBeVisible();
+    const html = await page.content();
+    expect(html).not.toMatch(/mailto:[^"'\s]+@/);
   });
 });
 
@@ -273,6 +363,71 @@ test.describe("detail-route asset identity", () => {
     // showcase and hero must not.
     const heroImg = page.locator("#case-study-hero img");
     await expect(heroImg).toHaveAttribute("src", /project-detail-device-master/);
+  });
+});
+
+test.describe("design-token integrity", () => {
+  // FINAL PASS: tailwind.config.ts overrides theme.spacing with tokens.json's exact spacingPx
+  // scale (gridBasePx 4). Off-scale values like h-9/py-14/mt-0.5 therefore emit NO CSS at all —
+  // silently, with no build error — which is how a 256px header logo shipped through five QA
+  // rounds. These assertions pin the computed result rather than the class name, so any future
+  // off-token utility in a critical layout slot fails loudly.
+  test("header logo is constrained, not rendered at intrinsic size", async ({ page }) => {
+    await page.goto("/");
+    const box = await page.locator("header img").first().boundingBox();
+    expect(box).not.toBeNull();
+    // Natural asset is 256x256; the header is 64px (mobile) / 76px (desktop) tall.
+    expect(box!.height).toBeLessThanOrEqual(48);
+    const headerBox = await page.locator("header").first().boundingBox();
+    expect(box!.height).toBeLessThan(headerBox!.height);
+  });
+
+  test("404 header logo is constrained too", async ({ page }) => {
+    await page.goto("/this-route-does-not-exist");
+    const box = await page.locator("header img").first().boundingBox();
+    expect(box!.height).toBeLessThanOrEqual(48);
+  });
+
+  test("sections have real vertical padding at mobile width", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/du-an");
+    const pad = await page.locator("#projects-grid").first().evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { top: parseFloat(cs.paddingTop), bottom: parseFloat(cs.paddingBottom) };
+    });
+    expect(pad.top).toBeGreaterThan(0);
+    expect(pad.bottom).toBeGreaterThan(0);
+  });
+
+  // Assert on REAL elements rather than synthetic probe divs: Tailwind only emits classes it
+  // finds in source, so a bare `py-30` probe would fail even though `md:py-30` compiles fine.
+  const PADDING_SLOTS = [
+    { viewport: { width: 390, height: 844 }, label: "mobile 390" },
+    { viewport: { width: 1440, height: 900 }, label: "desktop 1440" },
+  ];
+
+  for (const { viewport, label } of PADDING_SLOTS) {
+    test(`hero and CTA keep real vertical padding @ ${label}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto("/du-an");
+      const pads = await page.evaluate(() => {
+        const read = (sel: string) => {
+          const el = document.querySelector(sel);
+          if (!el) return null;
+          const cs = getComputedStyle(el);
+          return parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+        };
+        return { hero: read("section .max-w-container, header + section > div"), cta: read("#projects-grid") };
+      });
+      expect(pads.cta, "section vertical padding must not collapse to 0").toBeGreaterThan(0);
+    });
+  }
+
+  test("header nav gap resolves at desktop", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const gap = await page.locator("header nav ul").first().evaluate((el) => getComputedStyle(el).columnGap);
+    expect(parseFloat(gap), "nav gap must be a real length, not 'normal'").toBeGreaterThan(0);
   });
 });
 

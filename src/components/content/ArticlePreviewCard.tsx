@@ -14,7 +14,7 @@ export function ArticlePreviewCard({ preview }: { preview: ArticlePreview }) {
       data-demo-only={preview.demoOnly}
       className="flex items-center gap-3 group"
     >
-      <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm">
+      <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-sm">
         <Image src={assetPath(preview.coverAssetId)} alt={preview.title} fill className="object-cover" />
       </div>
       <div>

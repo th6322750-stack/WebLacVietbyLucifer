@@ -131,7 +131,7 @@ export function ContactForm({
       </fieldset>
 
       <label className="flex items-start gap-3 text-small text-text-secondary">
-        <input type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 accent-gold-600" />
+        <input type="checkbox" name="consent" required className="mt-px h-4 w-4 accent-gold-600" />
         <span>
           Tôi đồng ý để Lạc Việt Media liên hệ tư vấn theo thông tin đã cung cấp.{" "}
           <span className="text-state-error">*</span>
@@ -179,7 +179,7 @@ function Field({
         name={name}
         aria-invalid={errors ? true : undefined}
         aria-describedby={errors ? errorId : undefined}
-        className="mt-1.5 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body placeholder:text-placeholder focus-visible:border-gold-600"
+        className="mt-1 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body placeholder:text-placeholder focus-visible:border-gold-600"
         {...inputProps}
       />
       {errors ? (
@@ -218,7 +218,7 @@ function SelectField({
         defaultValue={defaultValue ?? ""}
         aria-invalid={errors ? true : undefined}
         aria-describedby={errors ? errorId : undefined}
-        className="mt-1.5 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body focus-visible:border-gold-600"
+        className="mt-1 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body focus-visible:border-gold-600"
       >
         <option value="" disabled>
           Chọn {label.toLowerCase()}

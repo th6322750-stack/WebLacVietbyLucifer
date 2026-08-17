@@ -28,6 +28,32 @@ async function disableAnimationsAndWait(page: Page) {
   });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForLoadState("networkidle");
+
+  // `networkidle` alone is NOT sufficient for a fullPage screenshot: next/image lazy-loads
+  // below-the-fold images, so they have not even begun fetching when the network goes idle, and
+  // `fullPage: true` then races their decode. That produced non-deterministic evidence — captures
+  // of /du-an and /kien-thuc at mobile width intermittently showed a blank hero. Scroll the whole
+  // page to trigger every lazy load, wait for all images to finish decoding, then return to top.
+  await page.evaluate(async () => {
+    const step = window.innerHeight;
+    for (let y = 0; y < document.body.scrollHeight; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+    }
+    window.scrollTo(0, 0);
+  });
+  await page.waitForLoadState("networkidle");
+  await page.waitForFunction(() =>
+    Array.from(document.images).every((img) => img.complete && img.naturalWidth > 0),
+  );
+  // `complete` only means "fetched" — the bitmap may still be undecoded when the screenshot is
+  // taken, which left the logo and hero regions intermittently unpainted. decode() resolves only
+  // once the image is ready to paint.
+  await page.evaluate(() =>
+    Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => undefined))),
+  );
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null)))));
 }
 
 for (const [viewportName, viewport] of Object.entries(VIEWPORTS)) {

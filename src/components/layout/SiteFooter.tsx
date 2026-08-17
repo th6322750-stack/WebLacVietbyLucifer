@@ -30,7 +30,7 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
   }
 
   return (
-    <footer className="bg-ink-950 pb-8 pt-14 text-white md:pt-18">
+    <footer className="bg-ink-950 pb-8 pt-12 text-white md:pt-16">
       <Container>
         <div className="hidden gap-10 md:grid md:grid-cols-4">
           <BrandColumn />

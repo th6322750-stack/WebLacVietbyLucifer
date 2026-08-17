@@ -78,7 +78,7 @@ export default function HomePage() {
       />
 
       <section className="relative overflow-hidden bg-ink-950 bg-dark-hero">
-        <Container className="grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+        <Container className="grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-16 lg:py-24">
           <div className="text-white">
             <p className="text-eyebrow uppercase text-gold-300">{siteSettings.slogan}</p>
             <h1 className="mt-3 text-display-mobile lg:text-display-desktop font-heading text-white">
@@ -90,7 +90,7 @@ export default function HomePage() {
             <div className="mt-6 flex flex-wrap gap-6">
               {heroFeatures.map((f) => (
                 <div key={f.title} className="flex items-start gap-2">
-                  <Icon name={f.icon} size="default" className="mt-0.5 shrink-0 text-gold-300" />
+                  <Icon name={f.icon} size="default" className="mt-px shrink-0 text-gold-300" />
                   <div>
                     <p className="text-small font-semibold text-white">{f.title}</p>
                     <p className="text-caption text-white/70">{f.description}</p>
@@ -112,7 +112,9 @@ export default function HomePage() {
                   />
                 ))}
               </div>
-              <div className="text-small text-white/80">
+              {/* Demo customer count per CONTENT_TRUTH.json demoOnly — tagged in markup. The
+                  4.9/5 rating below already carries the master's own "(minh hoạ)" disclosure. */}
+              <div className="text-small text-white/80" data-demo-only="true">
                 <p>200+ khách hàng đã tin tưởng Lạc Việt</p>
                 <p className="flex items-center gap-1 text-gold-300">
                   <Icon name="star" size="inline" />

@@ -27,7 +27,7 @@ export function ProjectPreviewCard({ preview }: { preview: ProjectPreview }) {
       </div>
       <div className="flex flex-1 flex-col p-5">
         <span className="text-caption uppercase text-gold-700">{preview.category}</span>
-        <h3 className="mt-1.5 text-h4-mobile text-ink-950">{preview.title}</h3>
+        <h3 className="mt-1 text-h4-mobile text-ink-950">{preview.title}</h3>
       </div>
     </Link>
   );

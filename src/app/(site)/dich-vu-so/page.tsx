@@ -111,10 +111,10 @@ export default function DigitalServicesPage() {
               <div key={p.name} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
                 <BrandMark name={p.brand} size={40} />
                 <h3 className="text-h4-mobile text-ink-950">{p.name}</h3>
-                <ul className="flex flex-col gap-1.5 self-start text-left">
+                <ul className="flex flex-col gap-1 self-start text-left">
                   {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-1.5 text-small text-text-secondary">
-                      <Icon name="check" size="inline" className="mt-0.5 shrink-0 text-gold-600" />
+                    <li key={f} className="flex items-start gap-1 text-small text-text-secondary">
+                      <Icon name="check" size="inline" className="mt-px shrink-0 text-gold-600" />
                       {f}
                     </li>
                   ))}

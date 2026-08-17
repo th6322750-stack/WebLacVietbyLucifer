@@ -38,12 +38,12 @@ export function SiteHeader() {
             width={180}
             height={44}
             priority
-            className="h-9 w-auto lg:h-11"
+            className="h-8 w-auto lg:h-10"
           />
         </Link>
 
         <nav aria-label="Chính" className="hidden lg:block">
-          <ul className="flex items-center gap-7 xl:gap-8">
+          <ul className="flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => {
               if (link.href === null) {
                 return (
@@ -59,7 +59,7 @@ export function SiteHeader() {
                     href={link.href}
                     aria-current={active ? "page" : undefined}
                     className={`relative py-2 text-small font-medium text-white/90 hover:text-white ${
-                      active ? "text-white after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:bg-gold-500" : ""
+                      active ? "text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
                     }`}
                   >
                     {link.label}
@@ -200,7 +200,7 @@ function ServiceDropdown({ active }: { active: boolean }) {
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         className={`relative flex items-center gap-1 py-2 text-small font-medium text-white/90 hover:text-white ${
-          active ? "text-white after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:bg-gold-500" : ""
+          active ? "text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
         }`}
       >
         Dịch vụ

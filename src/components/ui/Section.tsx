@@ -20,7 +20,7 @@ export function Section({
       : tone === "ivory"
         ? "bg-ivory-100"
         : "bg-ivory-50";
-  const spacingClass = compact ? "py-6 md:py-8" : "py-14 md:py-18 xl:py-24";
+  const spacingClass = compact ? "py-6 md:py-8" : "py-12 md:py-16 xl:py-24";
   return (
     <section id={id} className={`${spacingClass} ${toneClass} ${className}`}>
       {children}

@@ -32,7 +32,7 @@ export function ServiceCard({
         <ul className="mt-4 flex flex-col gap-2">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-2 text-small text-text-secondary">
-              <Icon name="check" size="inline" className="mt-0.5 shrink-0 text-gold-600" />
+              <Icon name="check" size="inline" className="mt-px shrink-0 text-gold-600" />
               {b}
             </li>
           ))}
@@ -40,10 +40,10 @@ export function ServiceCard({
       ) : null}
       <Link
         href={href}
-        className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-gold-700 hover:text-gold-600"
+        className="mt-6 inline-flex items-center gap-1 text-small font-semibold text-gold-700 hover:text-gold-600"
       >
         {ctaLabel}
-        <Icon name="arrow-right" size="inline" className="transition-transform duration-fast ease-standard group-hover:translate-x-0.5" />
+        <Icon name="arrow-right" size="inline" className="transition-transform duration-fast ease-standard group-hover:translate-x-px" />
       </Link>
     </div>
   );

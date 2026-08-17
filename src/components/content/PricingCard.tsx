@@ -10,20 +10,25 @@ export function PricingCard({
   featured = false,
   ctaLabel = "Chọn gói này",
   onSelect,
+  demoOnly,
 }: {
   plan: string;
   description: string;
   /** Exact display string, e.g. "Từ 8.900.000đ" or "Liên hệ báo giá" — demo pricing per
-   * CONTENT_TRUTH.json, tagged demoOnly in the package data, not a verified production price. */
+   * CONTENT_TRUTH.json, not a verified production price. */
   price: string;
   priceSuffix?: string;
   features: string[];
   featured?: boolean;
   ctaLabel?: string;
   onSelect?: () => void;
+  /** Required: CONTENT_TRUTH.json demoOnly covers prices/products shown in mockups. Surfaced in
+   * markup only — the approved pricing cards carry no demo badge. */
+  demoOnly: boolean;
 }) {
   return (
     <div
+      data-demo-only={demoOnly}
       className={`flex flex-col rounded-lg p-6 md:p-8 ${
         featured ? "bg-ink-950 text-white shadow-lg ring-1 ring-gold-500/40" : "border border-border bg-white shadow-sm"
       }`}
@@ -43,7 +48,7 @@ export function PricingCard({
       <ul className="mt-6 flex flex-1 flex-col gap-3">
         {features.map((f) => (
           <li key={f} className={`flex items-start gap-2 text-small ${featured ? "text-white/90" : "text-text-secondary"}`}>
-            <Icon name="check" size="inline" className={`mt-0.5 shrink-0 ${featured ? "text-gold-300" : "text-gold-600"}`} />
+            <Icon name="check" size="inline" className={`mt-px shrink-0 ${featured ? "text-gold-300" : "text-gold-600"}`} />
             {f}
           </li>
         ))}

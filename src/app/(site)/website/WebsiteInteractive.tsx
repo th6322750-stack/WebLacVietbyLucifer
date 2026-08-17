@@ -21,7 +21,15 @@ export function WebsiteHeroCta() {
 export function WebsitePackages({
   packages,
 }: {
-  packages: { plan: string; description: string; price: string; features: string[]; featured?: boolean }[];
+  packages: {
+    plan: string;
+    description: string;
+    price: string;
+    features: string[];
+    featured?: boolean;
+    /** Required so demo pricing can never reach PricingCard untagged — CONTENT_TRUTH.json. */
+    demoOnly: boolean;
+  }[];
 }) {
   const { open } = useConsultation();
   return (

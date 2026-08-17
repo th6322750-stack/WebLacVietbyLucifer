@@ -17,7 +17,7 @@ export function FinalCta({
 }) {
   const { open } = useConsultation();
   return (
-    <section className="bg-ink-950 py-14 md:py-18 xl:py-24">
+    <section className="bg-ink-950 py-12 md:py-16 xl:py-24">
       <Container className="flex flex-col items-center gap-6 text-center">
         <h2 className="max-w-editorial text-h2-mobile lg:text-h2-desktop text-white">{title}</h2>
         <p className="max-w-editorial text-body-lg text-white/75">{description}</p>

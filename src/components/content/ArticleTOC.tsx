@@ -84,7 +84,7 @@ function TocList({
               type="button"
               onClick={() => onSelect(s.id)}
               aria-current={isActive ? "location" : undefined}
-              className={`block w-full border-l-2 py-1.5 pl-4 text-left text-small transition-colors duration-fast ease-standard ${
+              className={`block w-full border-l-2 py-1 pl-4 text-left text-small transition-colors duration-fast ease-standard ${
                 isActive ? "border-gold-500 font-semibold text-ink-950" : "border-transparent text-text-secondary hover:text-ink-900"
               }`}
               style={{ marginLeft: "-1px" }}

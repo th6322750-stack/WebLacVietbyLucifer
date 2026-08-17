@@ -80,7 +80,7 @@ export default async function KnowledgePage({
                   <span aria-hidden="true">·</span>
                   <time dateTime={featured.publishedAt}>{formatDate(featured.publishedAt)}</time>
                 </div>
-                <span className="mt-6 inline-flex items-center gap-1.5 text-small font-semibold text-gold-700">
+                <span className="mt-6 inline-flex items-center gap-1 text-small font-semibold text-gold-700">
                   Đọc tiếp
                   <Icon name="arrow-right" size="inline" />
                 </span>

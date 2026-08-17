@@ -53,18 +53,21 @@ const processSteps = [
 const packages = [
   {
     plan: "Website Doanh nghiệp",
+    demoOnly: true as const,
     description: "Phù hợp doanh nghiệp cần hiện diện website chuyên nghiệp.",
     price: "Từ 8.900.000đ",
     features: ["Thiết kế theo mẫu tối ưu", "Tối đa 5 trang nội dung", "Chuẩn SEO cơ bản"],
   },
   {
     plan: "Landing Page",
+    demoOnly: true as const,
     description: "Phù hợp chiến dịch quảng cáo, giới thiệu sản phẩm/dịch vụ.",
     price: "Từ 4.900.000đ",
     features: ["1 trang chuyển đổi cao", "Tối ưu tốc độ tải", "Tích hợp form thu lead"],
   },
   {
     plan: "Website Bán hàng",
+    demoOnly: true as const,
     description: "Phù hợp doanh nghiệp cần bán hàng trực tuyến đầy đủ tính năng.",
     price: "Từ 13.900.000đ",
     features: ["Giỏ hàng & thanh toán", "Quản trị sản phẩm", "Tối ưu SEO nâng cao", "Hỗ trợ ưu tiên"],
@@ -72,6 +75,7 @@ const packages = [
   },
   {
     plan: "Website Theo Yêu Cầu",
+    demoOnly: true as const,
     description: "Phù hợp hệ thống phức tạp, tích hợp nhiều dịch vụ riêng.",
     price: "Liên hệ báo giá",
     features: ["Kiến trúc tuỳ chỉnh", "Tích hợp hệ thống/API riêng", "Đội ngũ đồng hành dài hạn"],

@@ -24,14 +24,14 @@ export function ProjectCard({ project }: { project: Project }) {
           />
         ) : null}
         {project.demoOnly ? (
-          <span className="absolute left-3 top-3 rounded-pill bg-ink-950/80 px-2.5 py-1 text-caption uppercase text-white">
+          <span className="absolute left-3 top-3 rounded-pill bg-ink-950/80 px-2 py-1 text-caption uppercase text-white">
             Dự án mẫu
           </span>
         ) : null}
       </div>
       <div className="flex flex-1 flex-col p-5">
         <span className="text-caption uppercase text-gold-700">{project.category}</span>
-        <h3 className="mt-1.5 text-h4-mobile text-ink-950">{project.title}</h3>
+        <h3 className="mt-1 text-h4-mobile text-ink-950">{project.title}</h3>
         <p className="mt-2 flex-1 text-small text-text-secondary">{project.summary}</p>
       </div>
     </Link>

@@ -65,7 +65,7 @@ export function NewsletterForm({ onDark = false }: { onDark?: boolean }) {
           className="h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body placeholder:text-placeholder focus-visible:border-gold-600"
         />
         <label className={`mt-2 flex items-start gap-2 text-caption ${onDark ? "text-white/70" : "text-text-secondary"}`}>
-          <input type="checkbox" name="consent" required className="mt-0.5 h-3.5 w-3.5 accent-gold-600" />
+          <input type="checkbox" name="consent" required className="mt-px h-4 w-4 accent-gold-600" />
           Tôi đồng ý nhận bản tin qua email.
         </label>
         {status === "error" && error ? (

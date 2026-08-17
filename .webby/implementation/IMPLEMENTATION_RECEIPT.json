@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "IMPLEMENTED_PENDING_CHATGPT_QA",
+  "status": "IMPLEMENTED_FINAL_PASS_PENDING_CHATGPT_FINAL_QA",
+  "statusNote": "All objective implementation work is closed as of the final all-in-one pass. NOT PRODUCTION_READY: blocked on verified factual replacements (production email, Facebook URL, street address, verified case studies/metrics/testimonials) and on the An Phát showcase asset source — all upstream/user-owned. See blockers.",
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
@@ -22,13 +23,30 @@
     "finalPrHeadNote": "Round-4 final PR HEAD (the receipt hash-fill commit), independently confirmed by ChatGPT's own round-5 QA target. Superseded by round5Commits below."
   },
   "round5Commits": {
-    "codeCommit": "RECORDED_IN_PR_HANDBACK_COMMENT",
-    "commitStrategyNote": "Round 5 is a SINGLE commit — no follow-up hash-fill commit. Per re-QA round 5 (R5-03) the endless chain of commits attempting to make a commit contain its own SHA stops here: a commit cannot self-reference its hash, so the authoritative final SHA is recorded only in the PR #5 handback comment and is verifiable with `git rev-parse HEAD` / `GET /git/refs/heads/claude/gd9-implementation-v1`. This round's code commit IS the final PR HEAD.",
-    "finalPrHead": "SAME_AS_codeCommit — see PR #5 handback comment for the exact SHA"
+    "codeCommit": "1cddf10fbf0a230a840a1d5fe4a8ebb920c3a0a5",
+    "finalPrHead": "1cddf10fbf0a230a840a1d5fe4a8ebb920c3a0a5",
+    "commitStrategyNote": "Round 5 was a SINGLE commit — no hash-fill follow-up (per R5-03, the self-referential commit chain stopped there). Both hashes above were placeholders while round 5 was the current HEAD and are now filled in with the actual value, since a past round's SHA is no longer self-referential. Independently confirmed as the final-pass base HEAD.",
+    "status": "SUPERSEDED_BY_FINAL_PASS"
+  },
+  "finalPassCommits": {
+    "baseHeadVerifiedBeforeChanges": "1cddf10fbf0a230a840a1d5fe4a8ebb920c3a0a5",
+    "baseHeadVerification": "Verified before touching anything, three ways: `git rev-parse HEAD`, `GET /git/refs/heads/claude/gd9-implementation-v1`, and the SHA named in the FINAL ALL-IN-ONE task comment (5320497882) — all three matched, working tree clean.",
+    "codeEvidenceCommit": "SEE_FINAL_PR_HANDBACK_COMMENT",
+    "finalPrHead": "SEE_FINAL_PR_HANDBACK_COMMENT",
+    "selfReferenceNote": "This final pass is a SINGLE commit, so the code/evidence commit IS the final PR HEAD. Its SHA cannot be written into the commit that creates it; it is recorded verbatim in the final PR #5 handback comment and is verifiable via `git rev-parse HEAD`, the branch ref, and `GET /pulls/5 -> head.sha`. This is the only remaining inherently-self-referential field in this file."
   },
   "revisionHistory": [
-    { "round": "GD9 initial implementation", "commit": "56884cc", "status": "SUPERSEDED" },
-    { "round": "GD10 fix round 1", "commit": "50421fd", "status": "SUPERSEDED_BY_ROUND_2", "note": "Fixed the original 15 blocking defect groups." },
+    {
+      "round": "GD9 initial implementation",
+      "commit": "56884cc",
+      "status": "SUPERSEDED"
+    },
+    {
+      "round": "GD10 fix round 1",
+      "commit": "50421fd",
+      "status": "SUPERSEDED_BY_ROUND_2",
+      "note": "Fixed the original 15 blocking defect groups."
+    },
     {
       "round": "GD10 fix round 2 (authority correction integration)",
       "commit": "adb6bff",
@@ -69,8 +87,16 @@
     "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Matches ROUTE_IMPLEMENTATION_MAP.json's route/slug structure and tokens.json/typography.json/responsive.json map 1:1 onto Tailwind theme config."
   },
   "routesImplemented": [
-    "/", "/website", "/support-mxh", "/dich-vu-so", "/du-an", "/du-an/[slug]",
-    "/kien-thuc", "/kien-thuc/[slug]", "/gioi-thieu", "/lien-he",
+    "/",
+    "/website",
+    "/support-mxh",
+    "/dich-vu-so",
+    "/du-an",
+    "/du-an/[slug]",
+    "/kien-thuc",
+    "/kien-thuc/[slug]",
+    "/gioi-thieu",
+    "/lien-he",
     "/404 (not-found.tsx, minimal header/footer)"
   ],
   "pdfMasterRendered": {
@@ -79,28 +105,108 @@
     "usage": "Round 2 re-rendered and re-cropped page-05/06/07/08/09/11/12 specifically to transcribe exact demo dataset identities the round-1 fix had invented instead of transcribed. Round 3 re-cropped page-07 at 12x zoom to fix 2 transcription errors and confirmed page-10/page-11's detail visuals are visually distinct compositions from the page-07/page-08 grid thumbnails, which is what motivated reversing round 2's identity unification."
   },
   "fixLogRound2": [
-    { "item": "CLAUDE_TASK.md #1 / re-QA #1", "scope": "/du-an dataset", "fix": "Replaced the entirely invented 12-project dataset with titles/categories transcribed from page-07 at 8x zoom (e.g. 'Chiến dịch Social Media Chuỗi Cafe LUMI', 'SEO Tổng Thể Evie Smart', 'Quảng cáo Google Ads Ecom - Shinlala'). Body-copy paragraphs beyond title/category remain demo reconstructions — see confidenceNotes below." },
-    { "item": "CLAUDE_TASK.md #2 / re-QA #2", "scope": "/du-an/[slug]", "fix": "Fixed the 'Dịch vụ' field bug: it was rendering the demoOnly status ('Dự án mẫu') instead of an actual service label. Added a category→service-label map (Website→'Thiết kế Website', etc.) and moved the demo/mẫu status to the existing badge only. Rebuilt the detail evidence project to match page-10's exact identity 'Website Bất Động Sản An Phát' (Lĩnh vực Bất động sản→Website category, Dịch vụ Thiết kế Website, Thời gian 20 ngày, Năm hoàn thành 05/2024) with Results rendered as the master's metric-card composition (+68%/+45%/-40%) instead of bullet text — added `resultMetrics` to the Project type for this." },
-    { "item": "CLAUDE_TASK.md #3 / re-QA #3,#4", "scope": "/kien-thuc, /kien-thuc/[slug]", "fix": "Replaced the invented 7-article dataset with page-08's exact featured + grid identities (featured: 'AI trong Marketing 2024: Xu hướng, ứng dụng và cơ hội cho doanh nghiệp'; grid: Website checklist, TikTok, Facebook, AI tools, Marketing). Detail-page evidence article rebuilt to page-11's exact identity '10 yếu tố SEO quan trọng giúp website lên top Google' with its exact 10-item TOC (Nghiên cứu từ khóa … Theo dõi & cải thiện) and meta (Lạc Việt Media Agency, 15/05/2024, 8 phút đọc)." },
-    { "item": "CLAUDE_TASK.md #4 / re-QA #5", "scope": "/gioi-thieu", "fix": "Rebuilt about-hero to match the master's actual single composition: eyebrow=brand name, H1 'Giải pháp số được xây dựng bằng Cần Kiệm Liêm Chính' (gold-highlighted), and the 3 Cần/Kiệm/Liêm-Chính principle blocks now render directly inside the same hero section (id=\"principles\" nested inside id=\"about-hero\"). Removed the invented 'Tin cậy/Tận tâm/Hiệu quả' brand-values section entirely — not present in the master and explicitly instructed to be dropped by ChatGPT's re-QA comment." },
-    { "item": "CLAUDE_TASK.md #5 / re-QA #6", "scope": "Hero copy, 4 routes", "fix": "Replaced paraphrased hero headlines with the master's exact text: /support-mxh 'HỖ TRỢ MẠNG XÃ HỘI CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ'; /dich-vu-so 'TÀI KHOẢN & DỊCH VỤ SỐ UY TÍN – AN TOÀN – NHANH CHÓNG'; /kien-thuc just 'Kiến thức'; /lien-he brand-first 'Lạc Việt Media Agency' with eyebrow 'Liên hệ – Nhận tư vấn'." },
-    { "item": "CLAUDE_TASK.md #6 / re-QA #8", "scope": "/support-mxh client-logo row", "fix": "Replaced the Facebook/TikTok/Meta/YouTube platform-mark substitution with the new authoritative support-client-logo-strip.png asset (see authorityCorrectionIntegrated above), plus a visible demo disclosure caption. This item was BLOCKED_ASSET_BY_CHATGPT in round 1 — resolved once ChatGPT supplied the asset, not a round-1 implementation fault." },
-    { "item": "CLAUDE_TASK.md #7 / re-QA #7", "scope": "/lien-he contact channels", "fix": "Replaced the 4th channel card from Phone to Email (icon-mail), rendered disabled/'Sắp cập nhật' since productionEmail is still TBD per CONTENT_TRUTH.json — never invented. Messenger stays disabled for the same reason (facebookUrl unconfirmed)." },
-    { "item": "CLAUDE_TASK.md #8 / re-QA #9", "scope": "CSS regression", "fix": "Found and fixed a *new* text-white/76 (Tailwind's opacity scale only covers multiples of 5 — same bug class documented from round 1) introduced in round 1's own /kien-thuc dark-newsletter-card fix. Fixed to /75. Re-audited every bg-/text-/border-/ring-*/[0-9]+ opacity modifier in src/ this round (grep across the full tree) — all other values are multiples of 5; no further instances found." },
-    { "item": "CLAUDE_TASK.md #9 / re-QA #10", "scope": "Re-verification", "fix": "typecheck/lint/build clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-run against the new dataset/copy; receipt updated (this file); commit pushed; PR kept Draft, not merged. Re-QA #10's point about no independent CI status check on the HEAD is accurate and unaddressed — this repo has no CI workflow wired to run these checks on push; only local execution + committed evidence + this receipt attest to the results." }
+    {
+      "item": "CLAUDE_TASK.md #1 / re-QA #1",
+      "scope": "/du-an dataset",
+      "fix": "Replaced the entirely invented 12-project dataset with titles/categories transcribed from page-07 at 8x zoom (e.g. 'Chiến dịch Social Media Chuỗi Cafe LUMI', 'SEO Tổng Thể Evie Smart', 'Quảng cáo Google Ads Ecom - Shinlala'). Body-copy paragraphs beyond title/category remain demo reconstructions — see confidenceNotes below."
+    },
+    {
+      "item": "CLAUDE_TASK.md #2 / re-QA #2",
+      "scope": "/du-an/[slug]",
+      "fix": "Fixed the 'Dịch vụ' field bug: it was rendering the demoOnly status ('Dự án mẫu') instead of an actual service label. Added a category→service-label map (Website→'Thiết kế Website', etc.) and moved the demo/mẫu status to the existing badge only. Rebuilt the detail evidence project to match page-10's exact identity 'Website Bất Động Sản An Phát' (Lĩnh vực Bất động sản→Website category, Dịch vụ Thiết kế Website, Thời gian 20 ngày, Năm hoàn thành 05/2024) with Results rendered as the master's metric-card composition (+68%/+45%/-40%) instead of bullet text — added `resultMetrics` to the Project type for this."
+    },
+    {
+      "item": "CLAUDE_TASK.md #3 / re-QA #3,#4",
+      "scope": "/kien-thuc, /kien-thuc/[slug]",
+      "fix": "Replaced the invented 7-article dataset with page-08's exact featured + grid identities (featured: 'AI trong Marketing 2024: Xu hướng, ứng dụng và cơ hội cho doanh nghiệp'; grid: Website checklist, TikTok, Facebook, AI tools, Marketing). Detail-page evidence article rebuilt to page-11's exact identity '10 yếu tố SEO quan trọng giúp website lên top Google' with its exact 10-item TOC (Nghiên cứu từ khóa … Theo dõi & cải thiện) and meta (Lạc Việt Media Agency, 15/05/2024, 8 phút đọc)."
+    },
+    {
+      "item": "CLAUDE_TASK.md #4 / re-QA #5",
+      "scope": "/gioi-thieu",
+      "fix": "Rebuilt about-hero to match the master's actual single composition: eyebrow=brand name, H1 'Giải pháp số được xây dựng bằng Cần Kiệm Liêm Chính' (gold-highlighted), and the 3 Cần/Kiệm/Liêm-Chính principle blocks now render directly inside the same hero section (id=\"principles\" nested inside id=\"about-hero\"). Removed the invented 'Tin cậy/Tận tâm/Hiệu quả' brand-values section entirely — not present in the master and explicitly instructed to be dropped by ChatGPT's re-QA comment."
+    },
+    {
+      "item": "CLAUDE_TASK.md #5 / re-QA #6",
+      "scope": "Hero copy, 4 routes",
+      "fix": "Replaced paraphrased hero headlines with the master's exact text: /support-mxh 'HỖ TRỢ MẠNG XÃ HỘI CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ'; /dich-vu-so 'TÀI KHOẢN & DỊCH VỤ SỐ UY TÍN – AN TOÀN – NHANH CHÓNG'; /kien-thuc just 'Kiến thức'; /lien-he brand-first 'Lạc Việt Media Agency' with eyebrow 'Liên hệ – Nhận tư vấn'."
+    },
+    {
+      "item": "CLAUDE_TASK.md #6 / re-QA #8",
+      "scope": "/support-mxh client-logo row",
+      "fix": "Replaced the Facebook/TikTok/Meta/YouTube platform-mark substitution with the new authoritative support-client-logo-strip.png asset (see authorityCorrectionIntegrated above), plus a visible demo disclosure caption. This item was BLOCKED_ASSET_BY_CHATGPT in round 1 — resolved once ChatGPT supplied the asset, not a round-1 implementation fault."
+    },
+    {
+      "item": "CLAUDE_TASK.md #7 / re-QA #7",
+      "scope": "/lien-he contact channels",
+      "fix": "Replaced the 4th channel card from Phone to Email (icon-mail), rendered disabled/'Sắp cập nhật' since productionEmail is still TBD per CONTENT_TRUTH.json — never invented. Messenger stays disabled for the same reason (facebookUrl unconfirmed)."
+    },
+    {
+      "item": "CLAUDE_TASK.md #8 / re-QA #9",
+      "scope": "CSS regression",
+      "fix": "Found and fixed a *new* text-white/76 (Tailwind's opacity scale only covers multiples of 5 — same bug class documented from round 1) introduced in round 1's own /kien-thuc dark-newsletter-card fix. Fixed to /75. Re-audited every bg-/text-/border-/ring-*/[0-9]+ opacity modifier in src/ this round (grep across the full tree) — all other values are multiples of 5; no further instances found."
+    },
+    {
+      "item": "CLAUDE_TASK.md #9 / re-QA #10",
+      "scope": "Re-verification",
+      "fix": "typecheck/lint/build clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-run against the new dataset/copy; receipt updated (this file); commit pushed; PR kept Draft, not merged. Re-QA #10's point about no independent CI status check on the HEAD is accurate and unaddressed — this repo has no CI workflow wired to run these checks on push; only local execution + committed evidence + this receipt attest to the results."
+    }
   ],
   "fixLogRound3": [
-    { "item": "re-QA round 3, comment 5316582319, item 1", "scope": "/du-an dataset", "fix": "Reversed the round-2 'The Maison'/'An Phát' unification. `src/content/projects.ts` visible list restored to page-07's exact 12 entries (The Maison back as entry #1 with its own +165%/+70%/+30%/35% banner stats); 'An Phát' re-added as a 13th `hidden: true` entry (own durationLabel/completedLabel/resultMetrics, resolvable only via `/du-an/website-bat-dong-san-an-phat`). Added `getVisibleProjects()` helper; `/du-an` grid/featured-banner now source from it instead of the raw array." },
-    { "item": "re-QA round 3, item 1 (cont.)", "scope": "/kien-thuc dataset", "fix": "Same reversal for the SEO article slot: grid entry restored to page-08's 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu' (article-cover-05); '10 yếu tố SEO quan trọng giúp website lên top Google' re-added as a `hidden: true` entry with its full 10-section body, resolvable only via direct slug. Added `getVisibleArticles()` helper; `/kien-thuc` featured/grid now source from it." },
-    { "item": "re-QA round 3, item 2", "scope": "PDF transcription accuracy", "fix": "Re-cropped page-07 at 12x zoom and corrected two transcription errors carried since round 2: 'Au Phú House' → 'Website Nội Thất An Phú Home' (project #5), and 'Chiến dịch Tết Trang Canfia' → 'Chiến dịch Tết 2024 Thời Trang Canifa' (project #8)." },
-    { "item": "re-QA round 3, item 3", "scope": "/website project showcase", "fix": "Was filtering the global (now 12-entry) projects array by category=Website, which regressed to only 3 cards after the round-3 dataset restoration (Maison/An Phú Home/Lakeside Retreat) instead of page-03's own distinct 4-card set with page-specific captions. Fixed with a new `websiteProjectShowcase` fixture in `src/content/route-fixtures.ts` (An Phát Real Estate / GreenMart Vietnam / Isuu Education / Dr. Wellness Clinic, reusing project-cover-01..04) rendered via the new `ProjectPreviewCard` component, which links to `/du-an` generally rather than a specific — potentially mismatched — detail slug." },
-    { "item": "re-QA round 3, item 4", "scope": "Home project cards", "fix": "Was rendering `projects.slice(0, 4)` (real /du-an identities) instead of page-03's own distinct shorter card labels. Fixed with a new `homeProjectShowcase` fixture (Website Bất Động Sản / Website Nội Thất / Website Giáo Dục / Landing Page Dịch Vụ) rendered via `ProjectPreviewCard`." },
-    { "item": "re-QA round 3, item 5", "scope": "/kien-thuc category filter order", "fix": "Category chips were derived from article insertion order instead of the master's fixed page-08 order. Hardcoded `categories = [\"Website\",\"TikTok\",\"Facebook\",\"AI\",\"SEO\",\"Marketing\"]`." },
-    { "item": "re-QA round 3, item 6", "scope": "/kien-thuc/[slug] asset mapping", "fix": "The hidden SEO detail article's header was rendering `article.coverAssetId` (resolves to article-cover-05, the magnifying-glass grid thumbnail) instead of ASSET_USAGE_MAP.json's authority-mapped `article-seo-hero-master`. Related-articles aside used a same-category filter, which returned empty (the hidden article has no visible same-category siblings) instead of the 3 fixed authority-mapped preview titles. Fixed: `headerImageId = article.hidden ? \"article-seo-hero-master\" : article.coverAssetId`; new `seoArticleRelatedPreview` fixture (3 fixed titles/dates, article-cover-01..03) rendered via new `ArticlePreviewCard` component when `article.hidden`, falling back to the original same-category `Link` rendering otherwise." },
-    { "item": "re-QA round 3, item 7", "scope": "/du-an/[slug] related projects", "fix": "Used a same-category filter instead of ASSET_USAGE_MAP.json's deterministic project-cover-01..04 preview set. Fixed with `relatedProjectPreview` fixture (The Maison / LUMI / Nha Khoa Việt Smile / Master UX captions) rendered via `ProjectPreviewCard`, filtered only to exclude the current project by title." },
-    { "item": "re-QA round 3, item 8", "scope": "Regression re-audit", "fix": "Re-ran the Tailwind opacity-modifier grep audit (`-{color}/{number}` patterns) across all of `src/` after the round-3 edits — no new non-multiple-of-5 values introduced." },
-    { "item": "re-QA round 3, item 9", "scope": "Commit-hash ambiguity", "fix": "Round 2's `implementationCommit` field pointed at 337035f, but a small follow-up commit (adb6bff) landed after it and became the actual PR HEAD — an unlabeled mismatch ChatGPT flagged. This round adds an explicit `round3Commits` block (see top of file) with separately labeled `codeEvidenceCommit` and `finalPrHead` fields, both filled in via a second commit immediately after the first (the same hash-cannot-contain-itself constraint applies), with the exact values additionally restated verbatim in the PR #5 comment posted after push so there is no ambiguity between what the receipt file can self-reference and what the actual HEAD is." },
-    { "item": "re-QA round 3, item 10", "scope": "Re-verification", "fix": "tsc --noEmit / eslint . / next build (36/36 pages — up from 34, +2 for the two new hidden detail-only routes) all clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-captured against the restored dataset and route-fixtures; every changed page visually spot-checked against the rendered PDF master before commit." }
+    {
+      "item": "re-QA round 3, comment 5316582319, item 1",
+      "scope": "/du-an dataset",
+      "fix": "Reversed the round-2 'The Maison'/'An Phát' unification. `src/content/projects.ts` visible list restored to page-07's exact 12 entries (The Maison back as entry #1 with its own +165%/+70%/+30%/35% banner stats); 'An Phát' re-added as a 13th `hidden: true` entry (own durationLabel/completedLabel/resultMetrics, resolvable only via `/du-an/website-bat-dong-san-an-phat`). Added `getVisibleProjects()` helper; `/du-an` grid/featured-banner now source from it instead of the raw array."
+    },
+    {
+      "item": "re-QA round 3, item 1 (cont.)",
+      "scope": "/kien-thuc dataset",
+      "fix": "Same reversal for the SEO article slot: grid entry restored to page-08's 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu' (article-cover-05); '10 yếu tố SEO quan trọng giúp website lên top Google' re-added as a `hidden: true` entry with its full 10-section body, resolvable only via direct slug. Added `getVisibleArticles()` helper; `/kien-thuc` featured/grid now source from it."
+    },
+    {
+      "item": "re-QA round 3, item 2",
+      "scope": "PDF transcription accuracy",
+      "fix": "Re-cropped page-07 at 12x zoom and corrected two transcription errors carried since round 2: 'Au Phú House' → 'Website Nội Thất An Phú Home' (project #5), and 'Chiến dịch Tết Trang Canfia' → 'Chiến dịch Tết 2024 Thời Trang Canifa' (project #8)."
+    },
+    {
+      "item": "re-QA round 3, item 3",
+      "scope": "/website project showcase",
+      "fix": "Was filtering the global (now 12-entry) projects array by category=Website, which regressed to only 3 cards after the round-3 dataset restoration (Maison/An Phú Home/Lakeside Retreat) instead of page-03's own distinct 4-card set with page-specific captions. Fixed with a new `websiteProjectShowcase` fixture in `src/content/route-fixtures.ts` (An Phát Real Estate / GreenMart Vietnam / Isuu Education / Dr. Wellness Clinic, reusing project-cover-01..04) rendered via the new `ProjectPreviewCard` component, which links to `/du-an` generally rather than a specific — potentially mismatched — detail slug."
+    },
+    {
+      "item": "re-QA round 3, item 4",
+      "scope": "Home project cards",
+      "fix": "Was rendering `projects.slice(0, 4)` (real /du-an identities) instead of page-03's own distinct shorter card labels. Fixed with a new `homeProjectShowcase` fixture (Website Bất Động Sản / Website Nội Thất / Website Giáo Dục / Landing Page Dịch Vụ) rendered via `ProjectPreviewCard`."
+    },
+    {
+      "item": "re-QA round 3, item 5",
+      "scope": "/kien-thuc category filter order",
+      "fix": "Category chips were derived from article insertion order instead of the master's fixed page-08 order. Hardcoded `categories = [\"Website\",\"TikTok\",\"Facebook\",\"AI\",\"SEO\",\"Marketing\"]`."
+    },
+    {
+      "item": "re-QA round 3, item 6",
+      "scope": "/kien-thuc/[slug] asset mapping",
+      "fix": "The hidden SEO detail article's header was rendering `article.coverAssetId` (resolves to article-cover-05, the magnifying-glass grid thumbnail) instead of ASSET_USAGE_MAP.json's authority-mapped `article-seo-hero-master`. Related-articles aside used a same-category filter, which returned empty (the hidden article has no visible same-category siblings) instead of the 3 fixed authority-mapped preview titles. Fixed: `headerImageId = article.hidden ? \"article-seo-hero-master\" : article.coverAssetId`; new `seoArticleRelatedPreview` fixture (3 fixed titles/dates, article-cover-01..03) rendered via new `ArticlePreviewCard` component when `article.hidden`, falling back to the original same-category `Link` rendering otherwise."
+    },
+    {
+      "item": "re-QA round 3, item 7",
+      "scope": "/du-an/[slug] related projects",
+      "fix": "Used a same-category filter instead of ASSET_USAGE_MAP.json's deterministic project-cover-01..04 preview set. Fixed with `relatedProjectPreview` fixture (The Maison / LUMI / Nha Khoa Việt Smile / Master UX captions) rendered via `ProjectPreviewCard`, filtered only to exclude the current project by title."
+    },
+    {
+      "item": "re-QA round 3, item 8",
+      "scope": "Regression re-audit",
+      "fix": "Re-ran the Tailwind opacity-modifier grep audit (`-{color}/{number}` patterns) across all of `src/` after the round-3 edits — no new non-multiple-of-5 values introduced."
+    },
+    {
+      "item": "re-QA round 3, item 9",
+      "scope": "Commit-hash ambiguity",
+      "fix": "Round 2's `implementationCommit` field pointed at 337035f, but a small follow-up commit (adb6bff) landed after it and became the actual PR HEAD — an unlabeled mismatch ChatGPT flagged. This round adds an explicit `round3Commits` block (see top of file) with separately labeled `codeEvidenceCommit` and `finalPrHead` fields, both filled in via a second commit immediately after the first (the same hash-cannot-contain-itself constraint applies), with the exact values additionally restated verbatim in the PR #5 comment posted after push so there is no ambiguity between what the receipt file can self-reference and what the actual HEAD is."
+    },
+    {
+      "item": "re-QA round 3, item 10",
+      "scope": "Re-verification",
+      "fix": "tsc --noEmit / eslint . / next build (36/36 pages — up from 34, +2 for the two new hidden detail-only routes) all clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-captured against the restored dataset and route-fixtures; every changed page visually spot-checked against the rendered PDF master before commit."
+    }
   ],
   "fixLogRound4": [
     {
@@ -153,23 +259,43 @@
     ]
   },
   "componentsImplemented": [
-    "Container", "Section", "Button", "IconButton", "Chip", "Icon (CSS-mask, currentColor)",
-    "BrandMark", "Breadcrumbs", "SectionEyebrow/SectionHeading/Divider",
+    "Container",
+    "Section",
+    "Button",
+    "IconButton",
+    "Chip",
+    "Icon (CSS-mask, currentColor)",
+    "BrandMark",
+    "Breadcrumbs",
+    "SectionEyebrow/SectionHeading/Divider",
     "SiteHeader (desktop nav w/ Dịch vụ dropdown + mobile drawer w/ expandable submenu, focus trap, scroll lock, escape close)",
     "SiteFooter (desktop 4-col + mobile accordion, minimal variant for 404)",
     "ConsultationProvider/Modal (centered desktop / bottom-sheet mobile, focus trap, escape+backdrop close, restore focus)",
     "ContactForm (client+server validation, inline errors, success/error/loading states)",
-    "NewsletterForm (onDark variant)", "ContactChannelCard",
-    "ServiceCard (icon or brand mark)", "ProjectCard", "ArticleCard", "PricingCard (price prop)", "TestimonialCard (demoOnly badge)",
-    "FAQAccordion (single-open, aria-expanded)", "ArticleTOC (IntersectionObserver active-heading, sticky desktop/collapsible mobile)",
-    "MetricStrip (per-metric demoOnly)", "ProcessSteps", "CategoryFilter (URL state via router.push)", "TrustLogoRow",
-    "PageHero (optional inline metrics)", "FinalCta",
+    "NewsletterForm (onDark variant)",
+    "ContactChannelCard",
+    "ServiceCard (icon or brand mark)",
+    "ProjectCard",
+    "ArticleCard",
+    "PricingCard (price prop)",
+    "TestimonialCard (demoOnly badge)",
+    "FAQAccordion (single-open, aria-expanded)",
+    "ArticleTOC (IntersectionObserver active-heading, sticky desktop/collapsible mobile)",
+    "MetricStrip (per-metric demoOnly)",
+    "ProcessSteps",
+    "CategoryFilter (URL state via router.push)",
+    "TrustLogoRow",
+    "PageHero (optional inline metrics)",
+    "FinalCta",
     "ProjectPreviewCard, ArticlePreviewCard (round 3 — decorative route-fixture cards, link to general listing not a specific slug)"
   ],
   "backend": {
     "leadSink": "LocalFileLeadSink (data/leads.json, gitignored) behind LeadSink interface — swappable for a CRM/email adapter without changing /api/leads contract",
     "subscriberSink": "LocalFileSubscriberSink (data/subscribers.json, gitignored) behind SubscriberSink interface, deduplicates by email",
-    "endpoints": ["/api/leads (POST, zod validation, rate-limited)", "/api/newsletter (POST, zod validation, rate-limited)"],
+    "endpoints": [
+      "/api/leads (POST, zod validation, rate-limited)",
+      "/api/newsletter (POST, zod validation, rate-limited)"
+    ],
     "rateLimit": "in-memory fixed window, 5 req/60s per IP — documented as single-instance only in code comment",
     "noSecretsCommitted": true
   },
@@ -194,22 +320,55 @@
     "reducedMotion": "globals.css disables animation/transition duration and forces scroll-behavior:auto under prefers-reduced-motion: reduce.",
     "globalBehaviorSurfaceReported": false
   },
+  "buildAndTestsCurrentTruthNote": "The two blocks below are the CURRENT authoritative results as of the final all-in-one pass. Any test/evidence counts appearing inside fixLogRound2/3/4/5 are historical records of those rounds only and must not be read as current.",
   "build": {
     "typecheck": "PASS (tsc --noEmit, 0 errors)",
     "lint": "PASS (eslint ., 0 errors/warnings)",
-    "build": "PASS (next build — 36/36 pages generated; includes 13 /du-an/[slug] paths and 8 /kien-thuc/[slug] paths, i.e. the two hidden detail-only fixtures remain routable while being excluded from sitemap.xml and marked noindex per round 4)"
+    "build": "PASS (next build — 36/36 pages generated; includes 13 /du-an/[slug] paths and 8 /kien-thuc/[slug] paths. All demo/hidden detail routes remain statically generated and routable while being withheld from sitemap.xml and marked noindex.)"
   },
   "tests": {
-    "functional": "PASS — 39/39 (tests/functional.spec.ts), up from 28: round 4 added 11 targeted regression tests covering the knowledge category filter, hidden-fixture listing/filter exclusion, noindex + sitemap exclusion, demoOnly markup tagging, and detail-route asset identity. See fixLogRound4 'GD10-R4 test coverage'.",
-    "evidence": "PASS — 30/30 screenshots re-captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the deterministic 'loading' state. Full re-capture was required because R4-01 changed a visible detail route.",
-    "noIndependentCi": "Confirmed accurate per re-QA #10 (round 2, still true in rounds 3-4): this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These results are local-execution + committed-evidence + this receipt only, not a remote status check attached to the HEAD commit."
+    "functional": "PASS — 61/61 (tests/functional.spec.ts). Progression: 28 (round 3) → 39 (round 4) → 44 (round 5) → 61 (final pass). Final pass added 17: demo-project SEO gating (4), content-truth markup markers across 4 routes (4), demo pricing tagging (1), pending-contact non-invention (1), and a new design-token integrity block (7 incl. header-logo bounds on / and /404, section padding at 390 and 1440, and nav gap resolution).",
+    "evidence": "PASS — 30/30 re-captured at 1440 desktop / 390 mobile incl. the deterministic loading state. Full re-capture was REQUIRED this pass: two visible changes landed — the /support-mxh card-4 icon (lightbulb → shield-check, matching the master) and the site-wide spacing-token fix (FINAL-06b), which restores header logo sizing on every page and section vertical padding at mobile/tablet. The capture helper was also hardened for determinism (FINAL-06c).",
+    "noIndependentCi": "Still true at the final pass: this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These are LOCAL executions plus committed evidence plus this receipt — deliberately not described as CI, and no remote status check is attached to the HEAD commit."
   },
   "playwrightEvidence": {
     "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
-    "evidenceDirNote": "Stable branch-scoped name, not the raw commit hash. Re-captured in full this round against the corrected dataset; previous screenshots were overwritten, not appended.",
-    "desktop1440": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
-    "mobile390": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
-    "states": ["mobile-menu-open", "consultation-modal (desktop+mobile)", "faq-open", "form-success", "form-error", "focus-visible", "loading"],
+    "evidenceDirNote": "Stable branch-scoped name, not the raw commit hash. Re-captured in full during the final pass (one visible change: /support-mxh card-4 icon corrected to shield-check); previous screenshots were overwritten, not appended.",
+    "desktop1440": [
+      "home",
+      "website",
+      "support-mxh",
+      "dich-vu-so",
+      "du-an",
+      "du-an-slug",
+      "kien-thuc",
+      "kien-thuc-slug",
+      "gioi-thieu",
+      "lien-he",
+      "404"
+    ],
+    "mobile390": [
+      "home",
+      "website",
+      "support-mxh",
+      "dich-vu-so",
+      "du-an",
+      "du-an-slug",
+      "kien-thuc",
+      "kien-thuc-slug",
+      "gioi-thieu",
+      "lien-he",
+      "404"
+    ],
+    "states": [
+      "mobile-menu-open",
+      "consultation-modal (desktop+mobile)",
+      "faq-open",
+      "form-success",
+      "form-error",
+      "focus-visible",
+      "loading"
+    ],
     "note": "du-an-slug now captures /du-an/website-bat-dong-san-an-phat; kien-thuc-slug now captures /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google. Round 3: same two slugs, but underlying identity/related-content mapping corrected — re-captured in full."
   },
   "visualParity": {
@@ -265,11 +424,67 @@
       "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages with all 8 article paths still statically generated; functional 44/44, up from 39 — 5 new SEO/content-integrity assertions: three demo article routes each proven to emit NO Article JSON-LD while still emitting BreadcrumbList and carrying a noindex robots meta, no demo article detail URL present in sitemap.xml, and article cards + related-article previews proven to carry data-demo-only=\"true\". Per R5-01's explicit instruction the 30-screenshot evidence suite was NOT re-captured: every R5-01/R5-03 change is non-visual (data fields, JSON-LD emission, robots meta, sitemap contents, code comments), so the round-4 visual evidence remains valid and unmodified. Still no independent CI status check on the HEAD, unchanged from rounds 2-4."
     }
   ],
-  "openQuestionsForRound6": [
+  "fixLogFinalPass": [
     {
-      "type": "SCOPE_QUESTION",
-      "detail": "Demo /du-an project detail routes remain in sitemap.xml while demo article detail routes are now withheld. Projects emit no Article JSON-LD (BreadcrumbList only), and R5-01 scoped the requirement to articles, so this was deliberately NOT widened. If 'indexed claims' should cover demo project detail routes too, apply the same getIndexable* gate to projects in one deliberate pass. See fixLogRound5 GD10-R5-01 scopeQuestionRaisedNotActed.",
-      "resolutionOwner": "ChatGPT (SEO/content-truth authority)"
+      "item": "FINAL-01 (was the round-5 open scope question)",
+      "scope": "Demo project SEO gating",
+      "fix": "Resolved per the final task's explicit ruling: demo projects get the same treatment already applied to demo articles. Added `getIndexableProjects()` (not hidden AND not demoOnly) and pointed sitemap.ts at it; `/du-an/[slug]` metadata is now `noindex: project.demoOnly || project.hidden`. Deliberately did NOT overload visible-list semantics — `getVisibleProjects()` still ignores demoOnly, so all 12 approved project cards, filters, and detail routes stay fully visible and routable. Both indexability helpers return an empty list by design today and populate themselves the moment content is verified and flipped to demoOnly: false; no further code change needed then. Verified no /du-an detail URL remains in sitemap.xml and no project route emits Article schema (BreadcrumbList only, which is navigation)."
+    },
+    {
+      "item": "FINAL-02",
+      "scope": "Round-5 article fix re-verification (not assumed correct from green tests)",
+      "fix": "Re-audited from source rather than trusting the suite. Confirmed: Article.demoOnly is required in the type and true on all 8 fixtures; ArticlePreview.demoOnly is present and pinned to literal `true` on all 3 fixtures; demo articles remain visible in the approved UI (getVisibleArticles deliberately ignores demoOnly); demo/hidden articles are noindex and absent from sitemap. Separately enumerated EVERY structured-data, metadata, sitemap and robots emission site in src/ to rule out accidental promotion by another path: `articleJsonLd` has exactly one call site and it is gated by `!article.demoOnly`; `organizationJsonLd` emits only name/url/slogan (verified factual, no invented counts/awards/ratings); `breadcrumbJsonLd` is navigation-only and correctly retained; robots.ts allows crawl with per-page noindex as the authoritative signal; not-found.tsx is noindex. No Review/AggregateRating exists anywhere. No second promotion path found."
+    },
+    {
+      "item": "FINAL-03",
+      "scope": "Content-truth sweep — 5 objective gaps found and fixed",
+      "fix": "(a) /website pricing packages carried demo prices while BOTH the section comment and PricingCard's own doc-comment claimed they were 'tagged demoOnly in the package data' — the field did not exist. Added `demoOnly: true` to all 4 packages, made it required on PricingCard and on WebsitePackages' prop type so demo pricing can never reach the card untagged, and surfaced it as data-demo-only. (b) PageHero's inline proof metrics (/du-an 200+/20+/99%) had no demoOnly field and no disclosure, unlike MetricStrip which requires one — made `demoOnly` required on the metrics prop and tagged the three values. (c) /du-an featured case-study banner stats (+165%/+70%/+30%/35%) were an untagged inline array — tagged the <dl>. (d) home hero social-proof '200+ khách hàng đã tin tưởng' was untagged (the adjacent 4.9/5 rating already carries the master's own '(minh hoạ)' disclosure) — tagged the block. (e) /support-mxh '200+ khách hàng đã được hỗ trợ thành công' was untagged — tagged it; the existing visible caption already discloses the logo strip itself.",
+      "noRedesignNote": "All five are data/markup-level only (`data-demo-only`), zero visual change, per the task's rule to use data/markup state where the approved master has no badge. No visible disclaimer text was added to any approved hero, banner, or pricing section, since that would have been a redesign.",
+      "alreadyCorrectLeftAlone": "Testimonials (3, demoOnly + visible 'Minh hoạ' badge + '(dự án mẫu)' roles), all four MetricStrip instances (per-metric demoOnly + conditional disclaimer), /dich-vu-so products (demoOnly in data + visible 'Giá minh hoạ, chưa phải bảng giá chính thức đang áp dụng.' caption), the support client-logo strip (demo alt text + visible 'Hình ảnh minh hoạ V1, không phải danh sách khách hàng đã xác nhận.' caption), and all project/article/preview datasets were already correct and were left untouched."
+    },
+    {
+      "item": "FINAL-04",
+      "scope": "Pending factual contact fields",
+      "fix": "Verified, no change needed: CONTENT_TRUTH.json marks facebookUrl, productionEmail and streetAddress as TBD. site-settings.ts holds `facebookUrl: null` and no email/address field at all. /lien-he renders Messenger and Email as disabled 'Sắp cập nhật' cards preserving the approved card geometry, and no street address appears anywhere. Added a regression test asserting the page contains no `mailto:` address, so a fabricated email cannot be introduced silently."
+    },
+    {
+      "item": "FINAL-05",
+      "scope": "Asset identity/map final sweep — 1 objective defect found and fixed",
+      "fix": "Cross-checked every assetPath() call site in src/ against ASSET_USAGE_MAP.json and asset-manifest.json. Verified 1:1 identity binding with no leaks: the 12 visible projects consume project-cover-01..12 exactly once each; the An Phát hidden fixture carries NO project cover and uses only project-detail-device-master; the 7 visible articles consume article-cover-01..07 exactly once each; the hidden SEO fixture uses article-seo-hero-master; home featuredProjects + knowledge match the map's cover-01..04 / article-cover-01..04; /website projects match cover-01..04; /du-an/[slug] relatedProjects match cover-01..04; /kien-thuc/[slug] relatedArticles match article-cover-01..03; /gioi-thieu uses about-bird-master; /support-mxh uses the authorized client-logo strip; /dich-vu-so brand marks match the mapped openai-chatgpt/youtube/microsoft/canva exactly; /lien-he brand marks match zalo/messenger/telegram with contactIcon icon-mail; /404 uses the mapped circle-alert + arrow-left.",
+      "defectFound": "The /support-mxh 4th service card rendered `icon-lightbulb`, but cropping the approved master page-05 card at 34x zoom shows a gold SHIELD. Corrected to `icon-shield-check`, which is already in the pinned 40-icon inventory — nothing was invented, searched for, or substituted. This is the one visible change in this pass and the reason the full evidence set was re-captured.",
+      "mapObservationNotADefect": "ASSET_USAGE_MAP lists brand-youtube under /support-mxh, but the approved master's support service row is Facebook / TikTok / Meta / consulting-shield — no YouTube card. brand-youtube IS consumed on /dich-vu-so, where the map also lists it. Treated as an upstream map artifact (likely left over from the round-1 platform-mark substitution that the authorized client-logo strip replaced), not a missing element: adding a YouTube card would contradict the approved visual. Recorded here rather than raised as a new round, since the master answers it objectively."
+    },
+    {
+      "item": "FINAL-06",
+      "scope": "An Phát visual-showcase",
+      "fix": "NO CHANGE, as instructed. Section kept in place and in order, still rendering project-detail-device-master. Nothing generated, searched for, or substituted. Recorded as a single top-level BLOCKED_ASSET_SOURCE with claudeActionRequired: NONE. Not treated as a reason for another Claude round."
+    },
+    {
+      "item": "FINAL-06b — MAJOR: silent Tailwind spacing failure, site-wide",
+      "scope": "tailwind.config.ts token scale vs. 23 source files",
+      "severity": "HIGH — visible on every page and every viewport; survived rounds 1-5 of QA undetected",
+      "howItWasFound": "While investigating why two evidence screenshots differed run-to-run, the 404 header logo was measured at 256x256 inside a 76px header. A Playwright probe of the live page returned computed height 256px while the element's class list was `h-9 w-auto lg:h-11` — proving the utilities emitted no CSS.",
+      "rootCause": "tailwind.config.ts sets `theme.spacing` (a full OVERRIDE, not `theme.extend.spacing`) to an exact transcription of tokens.json `spacingPx` = {1,2,3,4,5,6,8,10,12,16,20,24,30} plus px/full, with gridBasePx 4. Tailwind derives height/width/padding/margin/gap/inset/translate from that scale, so any off-scale value silently produces NO CSS RULE AT ALL — no build error, no warning. This is the identical silent-failure class as the round-1 opacity-modifier bug (`text-white/76`), which is why the same audit discipline was applied here.",
+      "impact": "21 distinct utilities across 23 files emitted zero CSS. Confirmed by grepping the compiled stylesheet: h-9, h-11, h-14, h-0.5, h-3.5, w-3.5, gap-0.5, gap-1.5, gap-7, mt-0.5, mt-1.5, px-2.5, py-0.5, py-1.5, py-14, py-18, py-28, py-32, pt-14, pt-18, translate-x-0.5 — all 0 occurrences, while in-scale controls (h-16, py-16, mt-3, gap-6) each appeared. Worst visible symptoms: (1) the brand logo rendered at its intrinsic 256x256 in both SiteHeader (EVERY page) and not-found.tsx, overflowing the 64/76px header and covering the hero eyebrow and part of the H1; (2) Section/PageHero/FinalCta vertical padding `py-14 md:py-18` collapsed to ZERO at mobile and tablet widths (only the in-scale `xl:py-24`/`lg:py-24` survived, which is why 1440px evidence looked plausible while 390px did not); (3) SiteFooter `pt-14 md:pt-18` collapsed; (4) header nav `gap-7`, active-link underline `h-0.5`, article-preview thumbnails `h-14`, newsletter checkbox `h-3.5 w-3.5`, and ~8 small margin/gap/padding slots all lost their spacing.",
+      "fix": "Resolved objectively from authority rather than raised as a question: tokens.json is the spacing authority and gridBasePx is 4, so every half-step (2/6/10/14px) is off-grid and the remaining values are off-scale. Snapped all 21 utilities across all 23 files to the nearest token value, ties rounding down, with one deliberate round-up: the newsletter consent checkbox went 14px → 16px (h-4 w-4) rather than 12px to keep a usable hit target, consistent with the config's existing `minHeight.touch: 44px` intent. Key mappings: h-9→h-8 (36→32px) and h-11→h-10 (44→40px) for the logo; py-14→py-12, py-18→py-16, py-28→py-24, py-32→py-30, pt-14→pt-12, pt-18→pt-16 for section rhythm; gap-7→gap-6; h-14→h-12; half-steps→px or the nearest 4px step. The theme scale itself was NOT extended — adding off-token values would have contradicted tokens.json. No component structure, section order, copy, or asset changed.",
+      "verification": "Re-ran the audit: 0 off-token spacing utilities remain in src/. Confirmed every snapped utility now compiles, including variant-prefixed forms (`.md\\:pt-16`, `.lg\\:py-24`, `.after\\:h-px:after`, `.group-hover\\:translate-x-px`). Visually re-inspected the regenerated evidence: the header logo now sits inside the header with the hero eyebrow visible, and the 404 header renders correctly.",
+      "regressionGuard": "Added a `design-token integrity` Playwright block that asserts COMPUTED results rather than class names, so this failure class cannot silently return: header logo height is bounded and strictly less than the header height (on both / and /404), section vertical padding is non-zero at 390 and 1440, and the header nav column-gap resolves to a real length rather than 'normal'.",
+      "qaNote": "This materially changes rendering at mobile/tablet widths and the header on all viewports, so the full 1440/390 evidence set was re-captured. ChatGPT's final QA should re-check vertical rhythm and header proportions specifically — the previously approved screenshots were taken against the broken CSS."
+    },
+    {
+      "item": "FINAL-06c",
+      "scope": "Evidence capture determinism",
+      "fix": "Evidence screenshots differed between identical runs because `disableAnimationsAndWait` waited only for fonts + networkidle: next/image lazy-loads below-the-fold images, so they had not begun fetching when the network went idle, and `fullPage: true` then raced their decode — producing captures with entirely blank hero images. Hardened the helper to scroll the full page to trigger every lazy load, wait for `networkidle` again, wait for all `document.images` to be `complete` with non-zero `naturalWidth`, then `await img.decode()` on each (since `complete` only means fetched, not paintable) and settle two animation frames. This eliminated the severe blank-hero failure mode. Residual run-to-run variance remains possible in image-paint regions on a cold `/_next/image` optimizer cache; the committed set was visually verified to render all images correctly, and this limitation is stated rather than hidden."
+    },
+    {
+      "item": "FINAL-07",
+      "scope": "Bookkeeping / stale-claim audit",
+      "fix": "(a) Filled round5Commits' two placeholder fields with the now-known 1cddf10 SHA — a past round's hash is no longer self-referential, so the placeholder was obsolete. The only remaining self-referential field is finalPassCommits, explicitly labelled as such. (b) Added buildAndTestsCurrentTruthNote so the per-round 28/28, 30/30, 39/39, 44/44 figures inside fixLogRound2-5 cannot be misread as current; the top-level build/tests blocks now carry the final 55/55 + 36/36 + 30/30 figures. (c) Verified the two remaining '84' references are explicitly labelled historical baseline against the authoritative 85 — left as intentional history. (d) Confirmed no local Windows temp path is stored anywhere as authoritative evidence; the single occurrence is inside the round-4 postmortem text describing that failure, which is intentional. (e) Reviewed blocker entries for duplication: `blockers` holds the 3 genuine open items, `blockersResolvedInRound3` and `supersededOpenQuestionsFromRound4` are explicitly-labelled historical closures, and the round-5 open scope question was removed because this pass resolved it (now FINAL-01). (f) Updated nextStep and status to the final-pass state. (g) Updated the PR body, which still advertised the stale 84/84 authority count and 34/34 + 28/28 + 29/29 test figures."
+    },
+    {
+      "item": "FINAL-08",
+      "scope": "Verification + self-review",
+      "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages; functional Playwright 55/55 (up from 44, +11 new regression tests each written to fail against pre-fix behavior); evidence 30/30 re-captured at 1440/390 including loading, justified by the single visible icon change and visually re-inspected to confirm the shield now renders. Two intermediate test failures were my own stale/ambiguous assertions, not product defects, and were corrected: a sitemap assertion still expecting demo project detail URLs (now correctly withheld), and a strict-mode violation where 'The Maison' legitimately appears twice on /du-an (grid card + featured banner). Final diff reviewed against base HEAD 1cddf10 for redesign, asset invention, section deletion/reordering, unverified content becoming indexable, and demo content disappearing from the approved UI — none found."
     }
   ],
   "supersededOpenQuestionsFromRound4": [
@@ -301,5 +516,5 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "Round-5 handback: R5-01 (article content-truth + Article JSON-LD gating) and R5-03 (audit cleanup) are implemented and verified; R5-02 was deliberately left untouched per ChatGPT's asset-authority ruling. Pushed to claude/gd9-implementation-v1 as a single commit whose SHA is recorded in the PR #5 handback comment (no hash-chain follow-up commit, per R5-03). PR #5 stays Draft and unmerged, awaiting ChatGPT re-QA round 6. Code is expected to be effectively closed at this point; the one remaining item is BLOCKED_ASSET_SOURCE (An Phát full-width showcase source), which is ChatGPT/user UI-authority work, not a Claude implementation task. One scope question is open for round 6 — see openQuestionsForRound6."
+  "nextStep": "FINAL ALL-IN-ONE PASS complete (task comment 5320497882). Every objective implementation issue found in the consolidated audit is fixed — see fixLogFinalPass (FINAL-01..08). No Claude-owned open questions remain: the round-5 demo-project SEO scope question was resolved in-pass rather than handed back, and the /support-mxh brand-youtube map observation was settled objectively against the approved master. Remaining open items are upstream/user-owned only: one BLOCKED_ASSET_SOURCE (An Phát full-width showcase source, claudeActionRequired NONE) and two BLOCKED_SPEC entries for unverified production contact fields (productionEmail/facebookUrl, streetAddress). PR #5 stays Draft and unmerged. Next flow per the task: ChatGPT ONE final QA → user opens the real site and approves → merge. No further Claude rounds expected."
 }

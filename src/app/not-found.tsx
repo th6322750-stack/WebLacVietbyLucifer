@@ -23,14 +23,14 @@ export default function NotFound() {
               width={160}
               height={40}
               priority
-              className="h-9 w-auto lg:h-11"
+              className="h-8 w-auto lg:h-10"
             />
           </Link>
         </Container>
       </header>
 
       <main id="main-content" data-state="404">
-        <Container className="flex flex-col items-center gap-6 py-20 text-center md:py-32">
+        <Container className="flex flex-col items-center gap-6 py-20 text-center md:py-30">
           <Icon name="circle-alert" size="feature" className="text-gold-600" />
           <div>
             <p className="text-eyebrow uppercase text-gold-700">404</p>

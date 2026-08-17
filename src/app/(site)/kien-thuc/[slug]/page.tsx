@@ -152,7 +152,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                       <li key={a.slug}>
                         <Link href={`/kien-thuc/${a.slug}`} className="flex items-center gap-3 group">
                           {a.coverAssetId ? (
-                            <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm">
+                            <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-sm">
                               <Image src={assetPath(a.coverAssetId)} alt={a.title} fill className="object-cover" />
                             </div>
                           ) : null}

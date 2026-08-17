@@ -19,12 +19,15 @@ export function PageHero({
   imageAssetId: string;
   imageAlt: string;
   cta?: ReactNode;
-  /** Inline proof metrics shown under the CTA row (e.g. /du-an hero: 200+/20+/99%). */
-  metrics?: { value: string; label: string }[];
+  /** Inline proof metrics shown under the CTA row (e.g. /du-an hero: 200+/20+/99%). `demoOnly`
+   * is required per CONTENT_TRUTH.json — customer/project counts and satisfaction percentages in
+   * GĐ1 renders are demo until verified. Carried in markup only (data-demo-only): the approved
+   * hero has no badge or disclaimer, so adding visible text here would be a redesign. */
+  metrics?: { value: string; label: string; demoOnly: boolean }[];
 }) {
   return (
     <section className="bg-ink-950 bg-dark-hero">
-      <Container className="grid items-center gap-10 py-14 md:py-18 lg:grid-cols-2 lg:gap-16 lg:py-24">
+      <Container className="grid items-center gap-10 py-12 md:py-16 lg:grid-cols-2 lg:gap-16 lg:py-24">
         <div className="text-white">
           <SectionEyebrow onDark>{eyebrow}</SectionEyebrow>
           <h1 className="mt-3 text-display-mobile lg:text-display-desktop font-heading text-white">{title}</h1>
@@ -33,7 +36,7 @@ export function PageHero({
           {metrics && metrics.length > 0 ? (
             <dl className="mt-8 flex flex-wrap gap-8">
               {metrics.map((m) => (
-                <div key={m.label}>
+                <div key={m.label} data-demo-only={m.demoOnly}>
                   <dt className="sr-only">{m.label}</dt>
                   <dd className="text-h4-mobile lg:text-h4-desktop font-heading text-gold-300">{m.value}</dd>
                   <p className="mt-1 text-small text-white/70">{m.label}</p>

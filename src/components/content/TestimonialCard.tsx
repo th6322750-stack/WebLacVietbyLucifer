@@ -18,13 +18,13 @@ export function TestimonialCard({
   return (
     <figure className="flex h-full flex-col rounded-md border border-border bg-white p-6 shadow-sm">
       <div className="flex items-start justify-between gap-2">
-        <div className="flex gap-0.5 text-gold-500">
+        <div className="flex gap-px text-gold-500">
           {Array.from({ length: 5 }).map((_, i) => (
             <Icon key={i} name="star" size="inline" className="text-gold-500" />
           ))}
         </div>
         {demoOnly ? (
-          <span className="rounded-pill bg-ivory-100 px-2 py-0.5 text-caption uppercase text-text-muted">
+          <span className="rounded-pill bg-ivory-100 px-2 py-px text-caption uppercase text-text-muted">
             Minh hoạ
           </span>
         ) : null}
