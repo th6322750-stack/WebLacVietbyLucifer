@@ -1,1 +1,0 @@
-Temporary control note: user approval `DUYỆT ASSET V3.1` was received on 2026-08-17T10:43:00+07:00. Final implementation authorization remains blocked until the atomic promotion, candidate validation, marker-true release validation, and exact-HEAD remote recheck all pass. This note does not itself authorize implementation.
