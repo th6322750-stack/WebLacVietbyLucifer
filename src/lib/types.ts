@@ -31,6 +31,7 @@ export type Project = {
   galleryAssetIds?: string[];
   durationLabel?: string;
   completedLabel?: string;
+  resultMetrics?: { value: string; label: string }[];
 };
 
 export type ArticleSection = {

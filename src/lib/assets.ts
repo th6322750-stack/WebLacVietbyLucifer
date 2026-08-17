@@ -34,6 +34,7 @@ const ASSET_PATHS: Record<string, string> = {
   "demo-avatar-03": "/assets/avatars/demo-avatar-03.webp",
   "demo-avatar-04": "/assets/avatars/demo-avatar-04.webp",
   "lac-viet-logo-canonical": "/assets/brand/lac-viet-logo.webp",
+  "support-client-logo-strip": "/assets/client-logos/support-client-logo-strip.png",
 };
 
 /** Resolves a pinned asset id to its runtime destinationPath. Throws on unknown ids by

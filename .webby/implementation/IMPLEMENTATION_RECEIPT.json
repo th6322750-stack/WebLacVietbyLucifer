@@ -4,59 +4,64 @@
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
+  "consumedAuthorityCorrectionCommit": "476c38f75a8668f0bfebf3fc29a3396c6d6acc9c",
   "consumedUiRevision": 4,
   "implementationBranch": "claude/gd9-implementation-v1",
-  "implementationCommit": "73ffe4fdd93fb720b3d3a1a7c80eed2d9a43d3fb",
+  "implementationCommit": "PENDING_FILL_AFTER_FIX_COMMIT",
   "revisionHistory": [
+    { "round": "GD9 initial implementation", "commit": "56884cc", "status": "SUPERSEDED" },
+    { "round": "GD10 fix round 1", "commit": "50421fd", "status": "SUPERSEDED_BY_ROUND_2", "note": "Fixed the original 15 blocking defect groups." },
     {
-      "round": "GD9 initial implementation",
-      "commit": "56884cc",
-      "status": "SUPERSEDED_BY_GD10_FIX_ROUND"
-    },
-    {
-      "round": "GD10 QA fix round",
-      "note": "Fixes all 15 blocking defect groups from ChatGPT's GD10 QA comment on PR #5 (2026-08-17T05:51:02Z). See fixLog below."
+      "round": "GD10 fix round 2 (authority correction integration)",
+      "note": "Merged chatgpt/webby-v3.1-implementation-ready@476c38f (85-asset authority correction) via `git merge --no-ff`, then executed .webby/CLAUDE_TASK.md's 9 targeted fixes plus the 10-item re-QA round 2 comment. See fixLogRound2 below."
     }
   ],
+  "authorityCorrectionIntegrated": {
+    "mergeCommit": "see git log — merge of 476c38f75a8668f0bfebf3fc29a3396c6d6acc9c into claude/gd9-implementation-v1",
+    "verifiedBeforeMerge": "commit existence, 3 cited workflow runs (32028478355/32028676151/32028792106, all conclusion=success, final audit head_sha matches 476c38f exactly), and the new asset's sha256 (a398f0f6...9d8691) all independently verified against GitHub before merging — not merged on trust alone.",
+    "assetCountNowAuthoritative": "85 = 35 raster + 50 vector. Original 84 remains the historical user-approved baseline; asset #85 (support-client-logo-strip) is an exact source extract from the already-approved V1 PDF page 5, not a new visual revision.",
+    "newAsset": {
+      "id": "support-client-logo-strip",
+      "destinationPath": "public/assets/client-logos/support-client-logo-strip.png",
+      "usage": "/support-mxh trust-client-row, replacing the previous Facebook/TikTok/Meta/YouTube platform-mark substitution that round-1 QA correctly flagged as BLOCKED_ASSET_BY_CHATGPT rather than a Claude fault.",
+      "demoDisclosure": "Visible caption: 'Hình ảnh minh hoạ V1, không phải danh sách khách hàng đã xác nhận.'"
+    },
+    "assetUsageMapCorrection": "/lien-he contactIcon changed icon-phone → icon-mail with a new fourthChannel: EMAIL/PENDING_DISABLED entry — PDF page-12 visibly shows Zalo/Messenger/Telegram/Email, not Zalo/Messenger/Telegram/Phone as round-1 implemented from the JSON authority alone. ChatGPT's correction explicitly resolves this upstream JSON-vs-PDF contradiction in the PDF's favor."
+  },
   "framework": {
     "choice": "Next.js 15 (App Router) + TypeScript + Tailwind CSS 3",
-    "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Next.js App Router matches the route/slug structure in ROUTE_IMPLEMENTATION_MAP.json (static + dynamic [slug] routes), gives SEO metadata/sitemap/robots primitives out of the box, and Tailwind's theme config maps 1:1 onto tokens.json/typography.json/responsive.json without hand-rolled CSS."
+    "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Matches ROUTE_IMPLEMENTATION_MAP.json's route/slug structure and tokens.json/typography.json/responsive.json map 1:1 onto Tailwind theme config."
   },
   "routesImplemented": [
-    "/",
-    "/website",
-    "/support-mxh",
-    "/dich-vu-so",
-    "/du-an",
-    "/du-an/[slug]",
-    "/kien-thuc",
-    "/kien-thuc/[slug]",
-    "/gioi-thieu",
-    "/lien-he",
+    "/", "/website", "/support-mxh", "/dich-vu-so", "/du-an", "/du-an/[slug]",
+    "/kien-thuc", "/kien-thuc/[slug]", "/gioi-thieu", "/lien-he",
     "/404 (not-found.tsx, minimal header/footer)"
   ],
   "pdfMasterRendered": {
-    "tool": "PyMuPDF (fitz), 3x zoom, all 14 pages of .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
-    "shaVerified": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f — matches WEBBY_LOCK.json/HANDOFF.json pinned hash",
-    "usage": "Every fix below was checked against the rendered page for its route (page-03..13), not the low-fidelity committed preview webp, resolving the concern in ChatGPT's item 14."
+    "tool": "PyMuPDF (fitz), 3x zoom full pages + 8x-10x zoom crops for card-level transcription, all 14 pages of .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "shaVerified": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f — matches WEBBY_LOCK.json pinned hash",
+    "usage": "Round 2 re-rendered and re-cropped page-05/06/07/08/09/11/12 specifically to transcribe exact demo dataset identities the round-1 fix had invented instead of transcribed."
   },
-  "fixLog": [
-    { "defect": 1, "scope": "Global header/nav", "fix": "Rebuilt nav to Trang chủ / Dịch vụ (dropdown: Website/Support MXH/Dịch vụ số) / Dự án / Kiến thức / Giới thiệu / Liên hệ + CTA, desktop dropdown (click-toggle, aria-haspopup/expanded, outside-click+Escape close) and mobile expandable submenu." },
-    { "defect": 2, "scope": "Home /", "fix": "Hero copy reverted to brand-first (eyebrow slogan, H1 = brand name, 3 feature bullets, 2 CTAs, trust row '200+ khách hàng...' + rating); service cards now use per-service icons (monitor-smartphone/messages-square/package) instead of one icon for all three; metrics corrected to 200+/350+/4+/99%; process expanded to the 6 steps actually present on the rendered master (Tiếp nhận/Đề xuất/Thực hiện/Kiểm tra & QA/Bàn giao/Hỗ trợ) — the QA comment said 5, the rendered master shows 6; went with the rendered master per its own supreme-authority rule." },
-    { "defect": 3, "scope": "/website", "fix": "Hero copy matched; industries grid 4→6 icons; packages 3→4 with real demo prices (8.9M/4.9M/13.9M/liên hệ) + 'Phổ biến nhất' badge on Website Bán hàng (PricingCard now takes a price prop instead of a hardcoded string); benefit-strip 4→5 icons on a dark section; process 4→6 steps; FAQ 3→6 items." },
-    { "defect": 4, "scope": "/support-mxh", "fix": "Service grid 3→4 cards (Facebook/TikTok/Meta Business real brand marks + a 4th consulting card; ServiceCard gained a `brand` prop); common-issues 4→6; why-lac-viet 3→5 on a dark section; process 3→5 steps; trust-client-row now shows the '200+ khách hàng đã được hỗ trợ thành công' headline (no fabricated client logos — none exist in asset-manifest for this role, so it reuses the 4 sanctioned platform marks); metrics corrected to 200+/98%/24-7/100%; FAQ 2→6 items." },
-    { "defect": 5, "scope": "/dich-vu-so", "fix": "ASSET_USAGE_MAP violation fixed: product grid now includes YouTube Premium (3→4 cards: ChatGPT Plus/YouTube Premium/Microsoft 365/Canva Pro) with real demo prices+feature bullets+'Đăng ký ngay'; category strip 3→4 icons; why-us 3→5 on a dark section; process 3→4 steps; FAQ moved into a 2-col layout with a 'Bạn cần hỗ trợ thêm?' support card beside it instead of a separate full-width block below." },
-    { "defect": 6, "scope": "/du-an", "fix": "Grid lg:grid-cols-3→lg:grid-cols-4; filter taxonomy replaced with the fixed 5-category set from the master (Website/Social/Digital Services/Landing Page/UI-UX) — 6 of 12 demo projects re-tagged from 'Support MXH'/'Dịch vụ số' to 'Social'/'Digital Services' to match; hero gained inline proof metrics (200+/20+/99%, via a new PageHero `metrics` prop); featured-case-study flipped to a dark section with a 4-stat banner (+165%/+70%/+30%/35%)." },
-    { "defect": 7, "scope": "/kien-thuc", "fix": "load-more was never rendering because PAGE_SIZE(6) equaled the total remaining demo articles(6) — not a deleted section, a pagination-size bug. Fixed by lowering PAGE_SIZE to 3 (kept the same 7 real demo articles rather than fabricating extras that would reuse an identity-bound cover asset across a different article). Featured-article rebuilt as a large two-column card with a 'Nổi bật' badge instead of a narrow reused ArticleCard. Newsletter section restyled as a dark card (NewsletterForm gained an `onDark` prop) matching the master; final CTA copy aligned to the master's Digital Marketing service-cta tone." },
-    { "defect": 8, "scope": "/gioi-thieu", "fix": "Principles 4→3 (Liêm+Chính merged into one 'Liêm Chính' item, matching the master exactly) with icons added; service-ecosystem 3→4 cards, adding 'Tư vấn & Chiến lược' with its own icon (lightbulb) so no card reuses another's icon." },
-    { "defect": 9, "scope": "/du-an/[slug]", "fix": "Hero flipped from dark to light tone; now shows the device-mockup asset (project-detail-device-master) instead of the project photo directly, plus a 4-item icon meta grid (Lĩnh vực/Dịch vụ/Thời gian/Năm hoàn thành — added durationLabel/completedLabel fields to the Project type/content). visual-showcase section now shows the project's own cover photo on a dark 'Giao diện website' band instead of duplicating the hero's device mockup." },
-    { "defect": 10, "scope": "/kien-thuc/[slug]", "fix": "Layout rebuilt from 2 columns (TOC+body) to 3 (TOC / body / sticky right rail with related-article mini-cards + a 'Cần tư vấn thêm?' consultation card), matching the master. related-articles is now that rail rather than a separate full-width section below the article." },
-    { "defect": 11, "scope": "/lien-he", "fix": "ASSET_USAGE_MAP violation fixed: channel row is now Zalo/Facebook Messenger/Telegram/Phone (was Zalo/Telegram/Phone/disabled-Facebook — Messenger was missing entirely). Messenger renders disabled ('Sắp cập nhật') rather than link to a fabricated m.me URL, since facebookUrl is still unconfirmed per CONTENT_TRUTH.json. Process 3→5 steps. secondary-contact-card replaced the invented 'office address' placeholder with the master's actual 'Bạn còn câu hỏi khác?' card, placed beside the FAQ list." },
-    { "defect": 12, "scope": "Data-model tagging", "fix": "MetricStrip's Metric type gained a required `demoOnly: boolean` field (all 10 metric entries across home/support-mxh/dich-vu-so now set it explicitly; the disclaimer line only renders when at least one metric is flagged, replacing the old always-on hardcoded string). TestimonialCard gained a required `demoOnly` prop wired from the home page's testimonial data, rendering a 'Minh hoạ' badge. The receipt's earlier claim that this was already true was inaccurate for testimonials/metrics — corrected here." },
-    { "defect": 13, "scope": "Loading state evidence", "fix": "tests/evidence.spec.ts now has a dedicated 'loading' test that holds the /api/leads response open via page.route() for 2s inside the test only (no delay added to the real route), then screenshots the disabled 'Đang gửi...' button — deterministic, no production behavior change." },
-    { "defect": 14, "scope": "Visual reference tooling", "fix": "Rendered the actual pinned PDF (not the low-res preview) at 3x zoom with PyMuPDF this round; used those renders as ground truth for every fix above and to resolve one direct conflict between the QA comment's text (5 process steps on home) and the master's actual content (6) — went with the master." },
-    { "defect": 15, "scope": "Re-verification", "fix": "typecheck/lint/build clean; functional suite 28/28; evidence suite 30/30 (29 + new loading state) at 1440/390; receipt updated (this file); commit pushed; PR kept Draft, not merged." }
+  "fixLogRound2": [
+    { "item": "CLAUDE_TASK.md #1 / re-QA #1", "scope": "/du-an dataset", "fix": "Replaced the entirely invented 12-project dataset with titles/categories transcribed from page-07 at 8x zoom (e.g. 'Chiến dịch Social Media Chuỗi Cafe LUMI', 'SEO Tổng Thể Evie Smart', 'Quảng cáo Google Ads Ecom - Shinlala'). Body-copy paragraphs beyond title/category remain demo reconstructions — see confidenceNotes below." },
+    { "item": "CLAUDE_TASK.md #2 / re-QA #2", "scope": "/du-an/[slug]", "fix": "Fixed the 'Dịch vụ' field bug: it was rendering the demoOnly status ('Dự án mẫu') instead of an actual service label. Added a category→service-label map (Website→'Thiết kế Website', etc.) and moved the demo/mẫu status to the existing badge only. Rebuilt the detail evidence project to match page-10's exact identity 'Website Bất Động Sản An Phát' (Lĩnh vực Bất động sản→Website category, Dịch vụ Thiết kế Website, Thời gian 20 ngày, Năm hoàn thành 05/2024) with Results rendered as the master's metric-card composition (+68%/+45%/-40%) instead of bullet text — added `resultMetrics` to the Project type for this." },
+    { "item": "CLAUDE_TASK.md #3 / re-QA #3,#4", "scope": "/kien-thuc, /kien-thuc/[slug]", "fix": "Replaced the invented 7-article dataset with page-08's exact featured + grid identities (featured: 'AI trong Marketing 2024: Xu hướng, ứng dụng và cơ hội cho doanh nghiệp'; grid: Website checklist, TikTok, Facebook, AI tools, Marketing). Detail-page evidence article rebuilt to page-11's exact identity '10 yếu tố SEO quan trọng giúp website lên top Google' with its exact 10-item TOC (Nghiên cứu từ khóa … Theo dõi & cải thiện) and meta (Lạc Việt Media Agency, 15/05/2024, 8 phút đọc)." },
+    { "item": "CLAUDE_TASK.md #4 / re-QA #5", "scope": "/gioi-thieu", "fix": "Rebuilt about-hero to match the master's actual single composition: eyebrow=brand name, H1 'Giải pháp số được xây dựng bằng Cần Kiệm Liêm Chính' (gold-highlighted), and the 3 Cần/Kiệm/Liêm-Chính principle blocks now render directly inside the same hero section (id=\"principles\" nested inside id=\"about-hero\"). Removed the invented 'Tin cậy/Tận tâm/Hiệu quả' brand-values section entirely — not present in the master and explicitly instructed to be dropped by ChatGPT's re-QA comment." },
+    { "item": "CLAUDE_TASK.md #5 / re-QA #6", "scope": "Hero copy, 4 routes", "fix": "Replaced paraphrased hero headlines with the master's exact text: /support-mxh 'HỖ TRỢ MẠNG XÃ HỘI CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ'; /dich-vu-so 'TÀI KHOẢN & DỊCH VỤ SỐ UY TÍN – AN TOÀN – NHANH CHÓNG'; /kien-thuc just 'Kiến thức'; /lien-he brand-first 'Lạc Việt Media Agency' with eyebrow 'Liên hệ – Nhận tư vấn'." },
+    { "item": "CLAUDE_TASK.md #6 / re-QA #8", "scope": "/support-mxh client-logo row", "fix": "Replaced the Facebook/TikTok/Meta/YouTube platform-mark substitution with the new authoritative support-client-logo-strip.png asset (see authorityCorrectionIntegrated above), plus a visible demo disclosure caption. This item was BLOCKED_ASSET_BY_CHATGPT in round 1 — resolved once ChatGPT supplied the asset, not a round-1 implementation fault." },
+    { "item": "CLAUDE_TASK.md #7 / re-QA #7", "scope": "/lien-he contact channels", "fix": "Replaced the 4th channel card from Phone to Email (icon-mail), rendered disabled/'Sắp cập nhật' since productionEmail is still TBD per CONTENT_TRUTH.json — never invented. Messenger stays disabled for the same reason (facebookUrl unconfirmed)." },
+    { "item": "CLAUDE_TASK.md #8 / re-QA #9", "scope": "CSS regression", "fix": "Found and fixed a *new* text-white/76 (Tailwind's opacity scale only covers multiples of 5 — same bug class documented from round 1) introduced in round 1's own /kien-thuc dark-newsletter-card fix. Fixed to /75. Re-audited every bg-/text-/border-/ring-*/[0-9]+ opacity modifier in src/ this round (grep across the full tree) — all other values are multiples of 5; no further instances found." },
+    { "item": "CLAUDE_TASK.md #9 / re-QA #10", "scope": "Re-verification", "fix": "typecheck/lint/build clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-run against the new dataset/copy; receipt updated (this file); commit pushed; PR kept Draft, not merged. Re-QA #10's point about no independent CI status check on the HEAD is accurate and unaddressed — this repo has no CI workflow wired to run these checks on push; only local execution + committed evidence + this receipt attest to the results." }
   ],
+  "confidenceNotes": {
+    "highConfidence": "Route hero headlines (item quoted verbatim from re-QA comments and independently re-verified by cropping the exact PDF region at 8x zoom), section/card counts, project/article TITLES and CATEGORY tags, the SEO article's 10-item TOC, and case-study meta/stats (+68%/+45%/-40%, +165%/+70%/+30%/35%) — all read clearly at 3x-8x zoom.",
+    "lowerConfidence": "Project/article body-copy PARAGRAPHS beyond title/category/excerpt-length text remain demo reconstructions consistent with each identity's category, not verbatim transcriptions — the source card body text on this GD1 preview render is below reliable legibility even at 8x zoom (small sans-serif text inside a screenshot-of-a-screenshot). If ChatGPT has access to the original higher-resolution design file, exact body copy would need a second pass against that source rather than this PDF.",
+    "knownIdentityUnification": [
+      "/du-an project #1: page-07's grid literally reads 'Website Bất Động Sản The Maison'; page-10's detail-page-template mockup for the same real-estate case study reads 'Website Bất Động Sản An Phát' with its own distinct meta/stats. Only 12 unique project-cover assets exist (identity-bound, cannot be reused across a 13th distinct project without violating the asset cross-context-reuse rule), so these could not both get their own dedicated entry. Unified to 'An Phát' for the grid+detail slot (using page-10's meta since detail-page fidelity was the more specific, repeated ask) while keeping page-07's own banner stats (+165%/+70%/+30%/35%) for the separate featured-case-study spotlight banner, since the master itself presents different numbers in those two contexts.",
+      "/kien-thuc article 'SEO' slot: page-08's grid reads 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu'; page-11's article-detail-template mockup reads '10 yếu tố SEO quan trọng giúp website lên top Google' with its own 10-item TOC. Only 7 unique article-cover assets exist, same constraint as above. Unified to the page-11 identity for that slot for the same reason."
+    ],
+    "recommendation": "If ChatGPT/Lucifer want the grid literally showing 'The Maison'/'SEO Onpage là gì?' AND the detail pages showing 'An Phát'/'10 yếu tố SEO...' as fully distinct entries, two additional identity-bound cover assets (project-cover-13, article-cover-08) would need to be produced/approved — Claude cannot generate or substitute them per the asset rules."
+  },
   "componentsImplemented": [
     "Container", "Section", "Button", "IconButton", "Chip", "Icon (CSS-mask, currentColor)",
     "BrandMark", "Breadcrumbs", "SectionEyebrow/SectionHeading/Divider",
@@ -78,25 +83,25 @@
     "noSecretsCommitted": true
   },
   "assets": {
-    "logicalAssetCount": 84,
+    "logicalAssetCount": 85,
+    "logicalAssetCountNote": "85 = 35 raster + 50 vector per the GD10 authority correction (was 84 in round 1; see authorityCorrectionIntegrated above).",
     "usedExactly": "All image references resolve through src/lib/assets.ts, a closed map keyed by the exact asset ids in ASSET_USAGE_MAP.json/asset-manifest.json destinationPaths already materialized under public/assets. No asset was searched, generated, substituted, or index-mapped.",
-    "assetUsageMapViolationsFixed": [
-      "/dich-vu-so was missing brand-youtube from its required brandMarks — fixed (defect 5).",
-      "/lien-he was missing brand-messenger from its required brandMarks — fixed (defect 11)."
+    "assetUsageMapViolationsFixedThisRound": [
+      "/support-mxh client-logo row now uses the newly-authorized support-client-logo-strip asset instead of platform-mark substitution (was BLOCKED_ASSET_BY_CHATGPT, now resolved).",
+      "/lien-he 4th channel corrected from Phone to Email per the authority correction's icon-mail/fourthChannel mapping."
     ],
-    "iconInventory": "All pinned Lucide icons rendered via CSS mask (src/components/ui/Icon.tsx) so currentColor drives color per DESIGN_SYSTEM.md 10 without redrawing the SVGs; brand marks rendered at native color via next/image, never recolored.",
+    "iconInventory": "All pinned Lucide icons rendered via CSS mask (src/components/ui/Icon.tsx) so currentColor drives color without redrawing the SVGs; brand marks rendered at native color via next/image, never recolored.",
     "canonicalLogo": "public/assets/brand/lac-viet-logo.webp used as-is at all reference sizes; never redrawn/recolored."
   },
   "contentTruth": {
-    "demoDataTagged": "12 projects (demoOnly:true), 3 home testimonials (demoOnly prop → 'Minh hoạ' badge), and every MetricStrip metric (demoOnly:true, required field) are tagged in the data model, not just via a hardcoded disclaimer string.",
-    "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD' in site-settings.ts. Facebook Messenger channel card on /lien-he renders disabled ('Sắp cập nhật') rather than link to a fabricated destination; no office-address placeholder is shown (dropped in favor of the master's actual 'Bạn còn câu hỏi khác?' secondary-contact-card, which needed no fabricated data).",
+    "demoDataTagged": "12 projects (demoOnly:true), 7 articles (implicitly demo per CONTENT_TRUTH — no fabricated verified-fact framing), 3 home testimonials (demoOnly prop → 'Minh hoạ' badge), the support client-logo strip (visible demo disclosure caption), and every MetricStrip metric (demoOnly:true, required field) are tagged as demo/illustrative, never presented as verified fact.",
+    "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD'. Facebook Messenger and Email channel cards on /lien-he both render disabled ('Sắp cập nhật') rather than link to/display fabricated data.",
     "structuredData": "Organization/BreadcrumbList/Article JSON-LD only, no Review/AggregateRating, per SEO_CONTRACT.json."
   },
   "motionMechanism": {
     "implementation": "CSS transitions/transforms for hover/focus/accordion; IntersectionObserver for ArticleTOC active heading; no global wheel/touch/key interception, no custom scroll engine.",
     "reducedMotion": "globals.css disables animation/transition duration and forces scroll-behavior:auto under prefers-reduced-motion: reduce.",
-    "globalBehaviorSurfaceReported": false,
-    "note": "Escape-to-close keydown listeners in a11y-hooks.ts are scoped to open dialogs/drawers only (attached/detached with the open state), not a persistent global capture — did not trigger the mustReportBeforeBroadApplication clause."
+    "globalBehaviorSurfaceReported": false
   },
   "build": {
     "typecheck": "PASS (tsc --noEmit, 0 errors)",
@@ -104,44 +109,43 @@
     "build": "PASS (next build — 34/34 pages generated, all 11 routes + API routes + sitemap.xml + robots.txt)"
   },
   "tests": {
-    "functional": "PASS — 28/28 (tests/functional.spec.ts), re-run clean after all fixes.",
-    "evidence": "PASS — 30/30 screenshots captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the new deterministic 'loading' state. See playwrightEvidence below.",
-    "bugsFoundAndFixedDuringOwnQA_previousRound": [
-      "tailwind.config.ts 'dark-hero' background-image mixed in a trailing solid color (invalid CSS); every dark hero rendered with no background. Fixed by splitting into bg-ink-950 + bg-dark-hero.",
-      "bg-ink-950/92 and text-*/76 opacity modifiers silently produced no utility (Tailwind's default opacity scale only covers multiples of 5). Fixed by moving to /90 and /75."
-    ]
+    "functional": "PASS — 28/28 (tests/functional.spec.ts), re-run clean after round-2 fixes (evidence route slugs updated to website-bat-dong-san-an-phat / 10-yeu-to-seo-quan-trong-giup-website-len-top-google).",
+    "evidence": "PASS — 30/30 screenshots re-captured (tests/evidence.spec.ts) at 1440 desktop / 390 mobile, including the deterministic 'loading' state.",
+    "noIndependentCi": "Confirmed accurate per re-QA #10: this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These results are local-execution + committed-evidence + this receipt only, not a remote status check attached to the HEAD commit."
   },
   "playwrightEvidence": {
     "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
-    "evidenceDirNote": "Stable branch-scoped name, not the raw commit hash — see prior round's note. Re-captured in full this round; previous screenshots were overwritten, not appended.",
+    "evidenceDirNote": "Stable branch-scoped name, not the raw commit hash. Re-captured in full this round against the corrected dataset; previous screenshots were overwritten, not appended.",
     "desktop1440": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
     "mobile390": ["home", "website", "support-mxh", "dich-vu-so", "du-an", "du-an-slug", "kien-thuc", "kien-thuc-slug", "gioi-thieu", "lien-he", "404"],
     "states": ["mobile-menu-open", "consultation-modal (desktop+mobile)", "faq-open", "form-success", "form-error", "focus-visible", "loading"],
-    "statesNotCaptured": [],
-    "note": "'loading' is now captured deterministically (defect 13) — no longer an open gap."
+    "note": "du-an-slug now captures /du-an/website-bat-dong-san-an-phat; kien-thuc-slug now captures /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google."
   },
   "visualParity": {
-    "method": "Built from SPEC_AND_MANIFEST (tokens/typography/responsive/section-map/placement-map/component-map) per the deterministic-UI rule — no raster pixel measurement was used to derive geometry.",
-    "referenceCheck": "This round rendered the actual pinned PDF (PyMuPDF, 3x zoom, sha256-verified against WEBBY_LOCK.json) rather than relying on the low-fidelity committed preview webp. Every fix in fixLog above was checked against that render, page by page, including cropped close-reads where element counts were ambiguous at normal zoom (e.g. home's process-step row).",
-    "knownDeviation": "Home's process section has 6 steps in this implementation; ChatGPT's QA comment stated the master shows 5. A 10x-zoom crop of the rendered PDF page-03 process row shows 6 numbered circles (Tiếp nhận/Đề xuất/Thực hiện/Kiểm tra & QA/Bàn giao/Hỗ trợ). Implemented 6 to match the rendered master itself, per the protocol's own rule that the approved PDF is the supreme visual authority — flagging this explicitly in case ChatGPT's source differs from what's committed at .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf (sha256 f015b20d...b60c4f).",
-    "automatedDiff": "NOT_RUN — still no pixel-diff tooling in this environment; manual page-by-page comparison against the rendered PDF was used instead this round.",
-    "recommendation": "ChatGPT QA should re-compare the evidence screenshots against the same rendered PDF pages; flag if the knownDeviation above reflects a source mismatch rather than a miscount."
+    "method": "Built from SPEC_AND_MANIFEST per the deterministic-UI rule — no raster pixel measurement was used to derive geometry.",
+    "referenceCheck": "Round 2 re-rendered and re-cropped the pinned PDF (PyMuPDF, 3x full-page + 8-10x targeted crops) specifically for card-level dataset transcription on pages 05, 06, 07, 08, 09, 11, 12 — resolving re-QA's core complaint that round 1 had structure/counts right but identities/copy invented.",
+    "knownDeviations": [
+      "Home process steps: 6 (not 5) — re-QA round 2 explicitly confirmed this was correct and superseded its own round-1 comment; no longer open.",
+      "See confidenceNotes.knownIdentityUnification above for the /du-an and /kien-thuc detail-vs-grid identity unification tradeoff — flagged for explicit ChatGPT confirmation, not silently resolved."
+    ],
+    "automatedDiff": "NOT_RUN — no pixel-diff tooling in this environment; manual page-by-page/crop-level comparison against the rendered PDF was used instead.",
+    "recommendation": "ChatGPT QA should confirm the identity-unification tradeoff in confidenceNotes, and re-compare body-copy paragraphs against a higher-resolution source if pixel-exact card text (not just title/category) is required for final sign-off."
   },
   "blockers": [
     {
       "type": "BLOCKED_SPEC",
-      "detail": "facebookUrl (CONTENT_TRUTH.json 'pending') — Facebook Messenger channel card on /lien-he renders disabled with 'Sắp cập nhật' until a real URL is supplied.",
+      "detail": "facebookUrl and productionEmail (CONTENT_TRUTH.json 'pending') — /lien-he Messenger and Email channel cards both render disabled with 'Sắp cập nhật' until real values are supplied.",
       "resolutionOwner": "Lucifer/ChatGPT"
     },
     {
       "type": "BLOCKED_SPEC",
-      "detail": "productionEmail and streetAddress remain unverified per CONTENT_TRUTH.json; no address is displayed anywhere rather than inventing one.",
+      "detail": "streetAddress remains unverified; no address is displayed anywhere rather than inventing one.",
       "resolutionOwner": "Lucifer/ChatGPT"
     },
     {
       "type": "NEED_ASSET",
-      "detail": "None — all 84 manifest assets were already materialized under public/assets and consumed exactly as mapped; no missing asset blocked implementation.",
-      "resolutionOwner": null
+      "detail": "Two identity-bound cover assets (a 13th project cover, an 8th article cover) would be needed to give the /du-an 'The Maison' vs 'An Phát' and /kien-thuc 'SEO Onpage là gì?' vs '10 yếu tố SEO...' identities fully separate grid+detail entries instead of the unified tradeoff described in confidenceNotes.",
+      "resolutionOwner": "ChatGPT (asset authority)"
     }
   ],
   "mustNotViolationsChecked": {
@@ -152,5 +156,5 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "Push claude/gd9-implementation-v1 (fix commit), keep PR #5 Draft, hand back to ChatGPT for GD10 re-QA against the rendered PDF master. Do not merge."
+  "nextStep": "Push claude/gd9-implementation-v1 (round-2 fix + authority-correction merge commits), keep PR #5 Draft, hand back to ChatGPT for re-QA. Do not merge."
 }

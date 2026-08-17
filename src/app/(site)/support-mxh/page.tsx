@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -6,11 +7,11 @@ import { PageHero } from "@/components/layout/PageHero";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { MetricStrip } from "@/components/content/MetricStrip";
-import { TrustLogoRow } from "@/components/content/TrustLogoRow";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { SupportHeroCta, SupportLeadCta } from "./SupportInteractive";
 import { getFaqsByScope } from "@/content/faqs";
+import { assetPath } from "@/lib/assets";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -79,8 +80,8 @@ export default function SupportMxhPage() {
     <>
       <PageHero
         eyebrow="Support MXH"
-        title="Vận hành mạng xã hội ổn định, xử lý sự cố kịp thời"
-        description="Hỗ trợ khắc phục sự cố và phát triển các kênh Facebook, TikTok, YouTube cho doanh nghiệp."
+        title="HỖ TRỢ MẠNG XÃ HỘI CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ"
+        description="Hỗ trợ Facebook, TikTok, Business & Ads theo quy trình chính thống. Đồng hành cùng bạn khắc phục và phát triển kênh bền vững."
         imageAssetId="support-hero-master"
         imageAlt="Support mạng xã hội Lạc Việt Media"
         cta={<SupportHeroCta />}
@@ -147,9 +148,17 @@ export default function SupportMxhPage() {
           <p className="text-center text-h4-mobile lg:text-h4-desktop text-ink-950">
             200+ khách hàng đã được hỗ trợ thành công
           </p>
-          <div className="mt-6">
-            <TrustLogoRow brands={["facebook", "tiktok", "meta", "youtube"]} />
+          <div className="relative mx-auto mt-6 h-16 w-full max-w-2xl">
+            <Image
+              src={assetPath("support-client-logo-strip")}
+              alt="Danh sách khách hàng minh hoạ"
+              fill
+              className="object-contain"
+            />
           </div>
+          <p className="mt-3 text-center text-caption text-text-muted">
+            Hình ảnh minh hoạ V1, không phải danh sách khách hàng đã xác nhận.
+          </p>
         </Container>
       </Section>
 

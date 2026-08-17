@@ -19,6 +19,16 @@ const TABS = [
   { id: "technology", label: "Công nghệ" },
 ];
 
+// "Dịch vụ" must be the actual demo service label, not the demoOnly status — that status
+// belongs only in the badge/disclosure per GD10 re-QA round 2 item 2.
+const SERVICE_LABEL_BY_CATEGORY: Record<string, string> = {
+  Website: "Thiết kế Website",
+  Social: "Social Media",
+  "Digital Services": "Dịch vụ số",
+  "Landing Page": "Landing Page",
+  "UI/UX": "Thiết kế UI/UX",
+};
+
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
@@ -84,7 +94,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 <Icon name="briefcase" size="default" className="mt-0.5 text-gold-600" />
                 <div>
                   <dt className="text-caption text-text-muted">Dịch vụ</dt>
-                  <dd className="text-body font-medium text-ink-950">{project.demoOnly ? "Dự án mẫu" : "Đã triển khai"}</dd>
+                  <dd className="text-body font-medium text-ink-950">{SERVICE_LABEL_BY_CATEGORY[project.category] ?? project.category}</dd>
                 </div>
               </div>
               {project.durationLabel ? (
@@ -158,18 +168,30 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </Section>
       ) : null}
 
-      {project.results && project.results.length > 0 ? (
+      {(project.resultMetrics && project.resultMetrics.length > 0) || (project.results && project.results.length > 0) ? (
         <Section id="results" tone="ivory">
           <Container width="editorial">
             <SectionHeading eyebrow="Kết quả" title="Kết quả đạt được" />
-            <ul className="mt-4 flex flex-col gap-3">
-              {project.results.map((r) => (
-                <li key={r} className="flex items-start gap-2 text-body-lg text-text-secondary">
-                  <Icon name="circle-check" size="default" className="mt-0.5 shrink-0 text-state-success" />
-                  {r}
-                </li>
-              ))}
-            </ul>
+            {project.resultMetrics && project.resultMetrics.length > 0 ? (
+              <dl className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3">
+                {project.resultMetrics.map((m) => (
+                  <div key={m.label} className="rounded-md border border-border bg-white p-5 text-center shadow-sm">
+                    <dt className="sr-only">{m.label}</dt>
+                    <dd className="text-h3-mobile font-heading text-gold-700">{m.value}</dd>
+                    <p className="mt-1 text-small text-text-secondary">{m.label}</p>
+                  </div>
+                ))}
+              </dl>
+            ) : (
+              <ul className="mt-4 flex flex-col gap-3">
+                {project.results?.map((r) => (
+                  <li key={r} className="flex items-start gap-2 text-body-lg text-text-secondary">
+                    <Icon name="circle-check" size="default" className="mt-0.5 shrink-0 text-state-success" />
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            )}
             <p className="mt-4 text-caption text-text-muted">Kết quả minh hoạ cho dự án mẫu, chưa phải số liệu thực tế xác nhận.</p>
           </Container>
         </Section>

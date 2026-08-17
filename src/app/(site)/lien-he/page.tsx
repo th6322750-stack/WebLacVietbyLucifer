@@ -33,9 +33,9 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Liên hệ"
-        title="Sẵn sàng lắng nghe nhu cầu của bạn"
-        description="Để lại thông tin hoặc liên hệ trực tiếp qua Zalo, Telegram — Lạc Việt Media sẽ phản hồi trong thời gian sớm nhất."
+        eyebrow="Liên hệ – Nhận tư vấn"
+        title={siteSettings.brandName}
+        description="Chúng tôi luôn sẵn sàng lắng nghe và tư vấn giải pháp phù hợp nhất cho mục tiêu của bạn."
         imageAssetId="contact-hero-master"
         imageAlt="Liên hệ Lạc Việt Media"
       />
@@ -50,10 +50,11 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Channel set per .webby/ASSET_USAGE_MAP.json "/lien-he": brandMarks
-                zalo/messenger/telegram + contactIcon icon-phone. Messenger is pending —
-                CONTENT_TRUTH.json marks facebookUrl unconfirmed, so it renders disabled
-                rather than link to a fabricated destination. */}
+            {/* Channel set per .webby/ASSET_USAGE_MAP.json "/lien-he" (GD10 authority
+                correction): brandMarks zalo/messenger/telegram + contactIcon icon-mail as the
+                4th "fourthChannel: EMAIL PENDING_DISABLED" card. Messenger stays disabled
+                since facebookUrl is still unconfirmed per CONTENT_TRUTH.json; Email is
+                disabled for the same reason — productionEmail is TBD, never invented. */}
             <div id="contact-channels" className="flex flex-col gap-4">
               <ContactChannelCard brand="zalo" title="Zalo" value={siteSettings.zalo} href={`https://zalo.me/${siteSettings.zalo}`} />
               <ContactChannelCard brand="messenger" title="Facebook Messenger" value="Sắp cập nhật" disabled />
@@ -63,7 +64,7 @@ export default function ContactPage() {
                 value={siteSettings.telegram}
                 href={`https://t.me/${siteSettings.telegram.replace("@", "")}`}
               />
-              <ContactChannelCard icon="phone" title="Điện thoại" value={siteSettings.zalo} href={`tel:${siteSettings.zalo}`} />
+              <ContactChannelCard icon="mail" title="Email" value="Sắp cập nhật" disabled />
             </div>
           </div>
         </Container>

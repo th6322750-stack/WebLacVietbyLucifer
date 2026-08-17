@@ -36,8 +36,8 @@ export default async function KnowledgePage({
     <>
       <PageHero
         eyebrow="Kiến thức"
-        title="Kiến thức về website, mạng xã hội & công cụ số"
-        description="Chia sẻ kinh nghiệm thực tế giúp doanh nghiệp vận hành hiệu quả hơn trên môi trường số."
+        title="Kiến thức"
+        description="Chia sẻ kiến thức, kinh nghiệm và xu hướng mới nhất trong Digital Marketing, Mạng xã hội, AI và Truyền thông giúp doanh nghiệp bứt phá trong kỷ nguyên số."
         imageAssetId="knowledge-hero-master"
         imageAlt="Kiến thức Lạc Việt Media"
       />
@@ -97,7 +97,7 @@ export default async function KnowledgePage({
           <div className="rounded-lg bg-ink-950 p-8 text-center md:p-10">
             <Icon name="mail" size="feature" className="mx-auto text-gold-300" />
             <h2 className="mt-4 text-h3-mobile text-white">Cập nhật kiến thức mới nhất mỗi tuần từ Lạc Việt</h2>
-            <p className="mt-2 text-body text-white/76">Đăng ký để không bỏ lỡ bài viết mới về website, mạng xã hội và công cụ số.</p>
+            <p className="mt-2 text-body text-white/75">Đăng ký để không bỏ lỡ bài viết mới về website, mạng xã hội và công cụ số.</p>
             <div className="mx-auto mt-6 max-w-md text-left">
               <NewsletterForm onDark />
             </div>

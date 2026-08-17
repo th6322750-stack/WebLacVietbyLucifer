@@ -83,8 +83,8 @@ export default function DigitalServicesPage() {
     <>
       <PageHero
         eyebrow="Dịch vụ số"
-        title="Tài khoản & công cụ số cho công việc hàng ngày"
-        description="Cung cấp và hỗ trợ các tài khoản, công cụ số phổ biến giúp đội ngũ làm việc hiệu quả hơn."
+        title="TÀI KHOẢN & DỊCH VỤ SỐ UY TÍN – AN TOÀN – NHANH CHÓNG"
+        description="Lạc Việt cung cấp tài khoản AI, App Premium và dịch vụ tiện ích chính hãng, hỗ trợ nhanh tận tình cho cá nhân và doanh nghiệp."
         imageAssetId="digital-hero-master"
         imageAlt="Dịch vụ số Lạc Việt Media"
         cta={<DigitalHeroCta />}

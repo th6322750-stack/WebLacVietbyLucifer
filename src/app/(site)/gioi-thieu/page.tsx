@@ -16,12 +16,6 @@ export const metadata = pageMetadata({
   path: "/gioi-thieu",
 });
 
-const brandValues: { icon: IconName; label: string; description: string }[] = [
-  { icon: "shield-check", label: "Tin cậy", description: "Cam kết đúng phạm vi và tiến độ đã thống nhất." },
-  { icon: "sparkles", label: "Tận tâm", description: "Đồng hành cùng khách hàng từ tư vấn đến hỗ trợ sau bàn giao." },
-  { icon: "target", label: "Hiệu quả", description: "Giải pháp tập trung vào mục tiêu kinh doanh thực tế." },
-];
-
 // 3 principles per approved master (page-09): Liêm + Chính are one combined item, not two.
 const principles: { word: string; meaning: string; icon: IconName }[] = [
   { word: "Cần", meaning: "Làm việc tận tâm, chăm chỉ, luôn nỗ lực hơn mỗi ngày.", icon: "clock" },
@@ -47,39 +41,44 @@ export default function AboutPage() {
         <Breadcrumbs items={[{ label: "Trang chủ", href: "/" }, { label: "Giới thiệu" }]} />
       </Container>
 
+      {/* about-hero + principles are one composition per approved master (page-09) — ChatGPT
+          GD10 re-QA round 2 explicitly instructed mapping both named sections onto this single
+          visible block instead of a separate later "principles" section or an invented
+          "brand-values" (Tin cậy/Tận tâm/Hiệu quả) section not present in the master. */}
       <section id="about-hero">
         <Container className="grid items-center gap-10 py-6 md:py-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-eyebrow uppercase text-gold-700">Giới thiệu</p>
-            <h1 className="mt-3 text-h1-mobile lg:text-h1-desktop text-ink-950">{siteSettings.brandName}</h1>
+            <p className="text-eyebrow uppercase text-gold-700">{siteSettings.brandName}</p>
+            <h1 className="mt-3 text-h1-mobile lg:text-h1-desktop text-ink-950">
+              Giải pháp số được xây dựng bằng{" "}
+              <span className="text-gold-700">{siteSettings.slogan}</span>
+            </h1>
             <p className="mt-5 max-w-editorial text-body-lg text-text-secondary">
-              Chúng tôi là đối tác số toàn diện, đồng hành cùng doanh nghiệp Việt trong hành
-              trình xây dựng và vận hành hiện diện số — từ website, mạng xã hội đến các công
-              cụ số cần thiết cho công việc hàng ngày.
+              Chúng tôi tin rằng, sự tử tế và minh bạch là nền tảng để tạo nên những sản phẩm
+              chất lượng và mối quan hệ bền vững.
             </p>
           </div>
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
             <Image src={assetPath("about-bird-master")} alt={siteSettings.brandName} fill priority className="object-cover" />
           </div>
         </Container>
-      </section>
 
-      <Section id="brand-values" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Giá trị cốt lõi" title="Điều chúng tôi theo đuổi" align="center" />
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {brandValues.map((v) => (
-              <div key={v.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
-                <Icon name={v.icon} size="feature" className="text-gold-600" />
-                <h3 className="text-h4-mobile text-ink-950">{v.label}</h3>
-                <p className="text-small text-text-secondary">{v.description}</p>
+          <div id="principles" className="grid gap-6 border-t border-border py-10 md:grid-cols-3">
+            {principles.map((p) => (
+              <div key={p.word} className="flex items-start gap-4">
+                <Icon name={p.icon} size="feature" className="mt-1 shrink-0 text-gold-600" />
+                <div>
+                  <p className="text-h4-mobile font-heading text-ink-950">{p.word}</p>
+                  <p className="mt-1 text-small text-text-secondary">{p.meaning}</p>
+                </div>
               </div>
             ))}
           </div>
         </Container>
-      </Section>
+      </section>
 
-      <Section id="service-ecosystem">
+      <Section id="service-ecosystem" tone="ivory">
         <Container>
           <SectionHeading eyebrow="Hệ sinh thái dịch vụ" title="Chúng tôi cung cấp giải pháp toàn diện cho cá nhân & doanh nghiệp" align="center" />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -90,7 +89,7 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-      <Section id="brand-story" tone="ivory">
+      <Section id="brand-story">
         <Container width="editorial">
           <SectionHeading eyebrow="Câu chuyện thương hiệu" title={`Vì sao là "${siteSettings.brandName}"`} />
           <p className="mt-4 text-body-lg text-text-secondary">
@@ -102,23 +101,6 @@ export default function AboutPage() {
             Khẩu hiệu <span className="font-semibold text-ink-950">“{siteSettings.slogan}”</span> là
             kim chỉ nam cho cách chúng tôi làm việc với từng khách hàng.
           </p>
-        </Container>
-      </Section>
-
-      <Section id="principles">
-        <Container>
-          <SectionHeading eyebrow={siteSettings.slogan} title="Ba nguyên tắc làm việc" align="center" />
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {principles.map((p) => (
-              <div key={p.word} className="flex items-start gap-4 rounded-md border border-border bg-white p-6 shadow-sm">
-                <Icon name={p.icon} size="feature" className="mt-1 shrink-0 text-gold-600" />
-                <div>
-                  <p className="text-h4-mobile font-heading text-ink-950">{p.word}</p>
-                  <p className="mt-1 text-small text-text-secondary">{p.meaning}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </Container>
       </Section>
 

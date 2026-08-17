@@ -15,9 +15,9 @@ const ROUTES: Record<string, string> = {
   "support-mxh": "/support-mxh",
   "dich-vu-so": "/dich-vu-so",
   "du-an": "/du-an",
-  "du-an-slug": "/du-an/website-noi-that-phuong-nam",
+  "du-an-slug": "/du-an/website-bat-dong-san-an-phat",
   "kien-thuc": "/kien-thuc",
-  "kien-thuc-slug": "/kien-thuc/5-dau-hieu-website-doanh-nghiep-can-nang-cap",
+  "kien-thuc-slug": "/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google",
   "gioi-thieu": "/gioi-thieu",
   "lien-he": "/lien-he",
 };
