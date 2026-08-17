@@ -1,97 +1,45 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "protocolVersion": "3.1.0",
   "canonicalSkillCommit": "b805dfdab336ff3942c68bb0e20a9edb0a047a18",
   "taskMode": "NEW_REDESIGN",
-  "auditStatus": "IN_PROGRESS_BLOCKING_IMPLEMENTATION_READY_UI",
-  "auditedAt": "2026-08-17T03:31:00+07:00",
+  "auditStatus": "ASSET_COMPLETE_PREAPPROVAL_PASS_AWAITING_USER_ASSET_APPROVAL",
+  "auditedAt": "2026-08-17T07:57:00+07:00",
   "baseline": {
-    "parentBranch": "chatgpt/gd3-git-self-contained-v1",
-    "parentHead": "09ad912eb5728395bafce96025734e4ac0491047",
+    "migrationProvenanceCommit": "09ad912eb5728395bafce96025734e4ac0491047",
     "approvedPdfSha256": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f",
-    "userVisualApproval": "DUYỆT GIAO DIỆN V1",
-    "gitSelfContainedUnderPreviousProtocol": true
+    "userVisualApproval": "DUYỆT GIAO DIỆN V1"
   },
-  "carryForwardPass": [
-    "user visual direction approval",
-    "Git-resident approved PDF and 14 raster reference pages",
-    "design tokens/typography/responsive contracts",
-    "route/section/component/data/SEO/analytics/accessibility contracts",
-    "canonical logo source hash lock",
-    "GIT transport; Google Drive is not required for implementation"
-  ],
   "v31GateAudit": {
     "taskRouter": "PASS_NEW_REDESIGN",
-    "projectIntake": "MIGRATED_TO_SCHEMA_V2",
-    "assetCountPlan": "MISSING_NOT_YET_REPORTED",
-    "assetManifest": "LEGACY_SHAPE_MUST_MIGRATE_TO_V3_1",
-    "assetTransport": "PASS_GIT_ACCESS_PROOF_NOT_REQUIRED",
-    "iconInventory": "MISSING_BLOCKER",
-    "motionAuthoritySplit": "PARTIAL_NEEDS_EXPLICIT_FEEL_VS_MECHANISM_CONTRACT",
-    "highResMasters": "FAIL_NOT_PROVEN",
-    "implementationReadyUi": false
+    "projectIntake": "PASS",
+    "assetCountPlan": "PASS_REPORTED_84",
+    "assetManifest": "PASS_MATERIALIZED_GIT",
+    "assetTransport": "PASS_GIT_NO_DRIVE_SESSION_PROOF_REQUIRED",
+    "iconInventory": "PASS_40_UI_ICONS_PLUS_10_BRAND_MARKS",
+    "motionAuthoritySplit": "PASS_FEEL_CHATGPT_MECHANISM_CLAUDE",
+    "highResMasters": "PASS_7_4K_PLUS_26_NEW_FHD_AND_CANONICAL_LOGO_EXCEPTION",
+    "mapping": "PASS",
+    "canonicalPreapprovalValidator": "PASS",
+    "implementationReadyUi": false,
+    "onlyRemainingGate": "USER_ASSET_V3_1_APPROVAL_THEN_FINAL_READY_VALIDATION"
   },
-  "currentGitDeliveryAssetAudit": {
-    "logicalAssetCount": 23,
-    "note": "These files are valid current web-delivery/reference assets but are not accepted as authoritative FHD/4K raster masters under webbyLucifer v3.1.",
-    "groups": {
-      "hero": {
-        "count": 7,
-        "widthRangePx": [305, 385],
-        "heightRangePx": [225, 305],
-        "status": "DELIVERY_ONLY_NEEDS_HIGH_RES_MASTER"
-      },
-      "projects": {
-        "count": 6,
-        "widthRangePx": [147, 157],
-        "heightRangePx": [82, 83],
-        "status": "DELIVERY_ONLY_AND_VISUAL_INVENTORY_APPEARS_INCOMPLETE"
-      },
-      "articles": {
-        "count": 6,
-        "widthRangePx": [196, 242],
-        "heightRangePx": [125, 194],
-        "status": "DELIVERY_ONLY_AND_VISUAL_INVENTORY_REQUIRES_RECOUNT"
-      },
-      "detail": {
-        "count": 3,
-        "widthRangePx": [250, 310],
-        "heightRangePx": [185, 195],
-        "status": "DELIVERY_ONLY_NEEDS_HIGH_RES_MASTER"
-      },
-      "brand": {
-        "count": 1,
-        "widthRangePx": [480, 480],
-        "heightRangePx": [480, 480],
-        "status": "CANONICAL_ORIGINAL_IDENTITY_SOURCE_MUST_NOT_BE_REDRAWN_OR_SUBSTITUTED"
-      }
-    }
+  "assetAuthority": {
+    "logicalAssetCount": 84,
+    "rasterLogicalCount": 34,
+    "vectorCount": 50,
+    "runtimeRoot": "public/assets",
+    "manifest": ".webby/asset-manifest.json"
   },
-  "approvedUiVisibleAssetGapsObserved": [
-    "project listing visibly contains more unique project cards than the six current project delivery covers",
-    "knowledge listing requires a full featured/latest article cover inventory beyond the legacy six-file assumption",
-    "homepage customer/testimonial avatars are visible but absent from the current logical asset catalog",
-    "support platform brand marks are visible and require exact mappings",
-    "digital-product brand marks are visible and require exact mappings",
-    "contact/footer social/channel marks are visible and require exact mappings",
-    "generic visible UI icons require an explicit v3.1 icon inventory with actual mapped vector assets or explicitly authorized exact package exports"
-  ],
-  "motionFinding": {
-    "currentContractHasFeelValues": true,
-    "existingFeelExamples": ["160/240/360ms", "cubic-bezier(.2,.8,.2,1)", "button/card transform intent", "reduced-motion rule"],
-    "migrationNeeded": [
-      "mark ChatGPT as MOTION_FEEL authority",
-      "mark Claude as MOTION_MECHANISM authority",
-      "require pre-report before global wheel/touch/key interception, browser-scroll replacement, app-wide capture or site-wide scroll/provider engine"
-    ]
+  "legacyDeliveryEvidence": {
+    "status": "PROVENANCE_ONLY_SUPERSEDED",
+    "note": "The earlier small delivery/reference pack is retained only in Git history/provenance. It is not current v3.1 asset authority."
   },
   "nextGateWork": [
-    "complete route/section asset decomposition and ASSET_COUNT_PLAN",
-    "produce/obtain authoritative high-resolution masters for required raster assets without fake upscaling",
-    "create complete icon/brand-mark inventory and exact mappings",
-    "produce v3.1 asset-manifest with GIT transport, destinationPath and runtime source per delivery",
-    "lock motion FEEL and mechanism boundary",
-    "run canonical webbyLucifer v3.1 validator",
-    "only then promote HANDOFF to IMPLEMENTATION_READY_UI and authorize Claude"
+    "user reviews ASSET_REVIEW_BOARD_V31.md",
+    "record DUYỆT ASSET V3.1 receipt",
+    "promote HANDOFF to IMPLEMENTATION_READY_UI",
+    "run canonical v3.1 validator plus stale-authority audit on latest remote HEAD",
+    "only after both pass set UI_SETUP_COMPLETE=true and implementationAuthorized=true"
   ]
 }

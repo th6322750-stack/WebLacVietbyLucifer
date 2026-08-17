@@ -1,3 +1,5 @@
+> v3.1 status: **REVIEW MIRROR ONLY**. Git-resident PDF/page masters are implementation authority; external links below are optional human-review mirrors.
+
 # GĐ1 Preview Authority
 
 ## SUPREME VISUAL RULE

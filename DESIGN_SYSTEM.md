@@ -452,6 +452,6 @@ GĐ1/GĐ2 cho phép demo copy, case study và số liệu để khóa UI. Tuy nh
 
 ## 17. GĐ2 lock
 
-Design System này là authority cho GĐ3/GĐ4 trừ khi Lucifer duyệt revision mới.
+Design System này là authority cho deterministic spec và GĐ9 Implementation theo webbyLucifer v3.1, trừ khi người dùng duyệt revision mới.
 
 Nếu implementation muốn đổi font, màu, spacing, icon, component anatomy, responsive behavior hoặc motion vì “tiện code” → **không được tự đổi**; phải mở request.

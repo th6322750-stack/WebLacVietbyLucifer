@@ -1,14 +1,27 @@
-# Git-self-contained implementation artifact protocol
+# webbyLucifer v3.1 implementation artifact protocol
 
-The implementation handoff is self-contained in Git. Google Drive is review/backup only and is **not** an implementation dependency.
+Status: **ACTIVE v3.1**.
 
-Before coding, from a fresh checkout of `chatgpt/gd3-git-self-contained-v1`, run:
+The implementation handoff is self-contained in Git on `chatgpt/webby-v3.1-implementation-ready`. Google Drive is review/archive only and is not an implementation dependency.
 
-```bash
-python scripts/reconstruct-git-self-contained.py
-python scripts/validate-gd3-git-self-contained.py --require-ready
-```
+## Runtime asset authority
 
-Both commands must PASS. The supreme visible UI authority is the exact Lucifer-approved PDF stored at `.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf`, SHA-256 `f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f`. Route masters are in `.webby/visual-master/gd1-v1/pages/`; production assets are in `assets/production/`.
+- `.webby/asset-manifest.json` — 84 logical assets and exact `destinationPath` mappings.
+- `.webby/ASSET_USAGE_MAP.json` — route/component usage mapping.
+- `public/assets` — materialized runtime files.
+- `assets/production/masters` — authoritative high-resolution raster masters.
+- `assets/production/vectors` — pinned UI/brand vectors.
+- `assets/production/brand/lac-viet-logo-source.png` — canonical logo source.
 
-Do not download substitute assets, redraw the logo, redesign the approved UI, or use Drive to fill perceived gaps. If a Git-resident authority file or binary fails validation, stop implementation and report the exact failing path/hash.
+## Visual authority
+
+- `.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf`
+- `.webby/visual-master/gd1-v1/pages/`
+- `.webby/MASTER_INDEX.json`
+- `.webby/ROUTE_IMPLEMENTATION_MAP.json`
+
+## Gate
+
+Claude must not code until `.webby/UI_SETUP_COMPLETE` reports both `UI_SETUP_COMPLETE=true` and `implementationAuthorized=true`, and the final canonical v3.1 validator passes on the same latest remote HEAD.
+
+Do not retrieve substitute assets, redraw the logo, redesign approved V1, infer missing icons, or use Drive to fill perceived gaps. If an active Git authority file/path/hash fails validation, stop and report the exact finding.

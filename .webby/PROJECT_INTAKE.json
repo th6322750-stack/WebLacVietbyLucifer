@@ -18,8 +18,16 @@
       "Cá nhân/doanh nghiệp cần support MXH",
       "Khách hàng dịch vụ số"
     ],
-    "needs": ["clarity", "trust", "fast contact"],
-    "trustSignals": ["giao diện chuyên nghiệp", "quy trình rõ ràng", "dự án/case study khi đã được xác minh"]
+    "needs": [
+      "clarity",
+      "trust",
+      "fast contact"
+    ],
+    "trustSignals": [
+      "giao diện chuyên nghiệp",
+      "quy trình rõ ràng",
+      "dự án/case study khi đã được xác minh"
+    ]
   },
   "businessPriority": [
     "Website services",
@@ -36,8 +44,10 @@
     "demoClaimsMustNotShipAsFacts": true
   },
   "assets": [
-    ".webby/GIT_BINARY_MANIFEST.json",
-    "assets/production"
+    ".webby/asset-manifest.json",
+    ".webby/ASSET_USAGE_MAP.json",
+    "public/assets",
+    "assets/production/masters"
   ],
   "references": [
     ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
@@ -67,7 +77,11 @@
       "article table of contents",
       "loading/error/404/focus states"
     ],
-    "responsive": ["390 mobile reference", "1440 desktop reference", "project breakpoints in .webby/responsive.json"]
+    "responsive": [
+      "390 mobile reference",
+      "1440 desktop reference",
+      "project breakpoints in .webby/responsive.json"
+    ]
   },
   "layout": {
     "mode": "FULL_BLEED_WITH_CONTAINER",
@@ -78,20 +92,19 @@
     "github": {
       "repository": "th6322750-stack/WebLacVietbyLucifer",
       "branch": "chatgpt/webby-v3.1-implementation-ready",
-      "parentValidatedBranch": "chatgpt/gd3-git-self-contained-v1",
-      "parentValidatedHead": "09ad912eb5728395bafce96025734e4ac0491047",
       "chatgptRemoteAccess": true,
       "claudeAccess": true,
-      "claudeLocalUnpushedDrift": "NONE_REQUIRED_FOR_HANDOFF_MIGRATION"
+      "claudeLocalUnpushedDrift": "NONE_REQUIRED_FOR_HANDOFF_MIGRATION",
+      "migrationProvenanceCommit": "09ad912eb5728395bafce96025734e4ac0491047"
     },
     "assetTransport": {
       "mode": "GIT",
       "driveSessionProofRequired": false,
-      "runtimeRule": "PROJECT_DESTINATION_PATHS_OR_DECLARED_RUNTIME_SOURCE"
+      "runtimeRule": "ASSET_MANIFEST_DESTINATION_PATHS_ARE_AUTHORITATIVE"
     },
     "drive": {
       "requiredForCurrentPhase": false,
-      "role": "OPTIONAL_HUMAN_REVIEW_BACKUP_ONLY",
+      "role": "OPTIONAL_HUMAN_REVIEW_ARCHIVE_ONLY",
       "folderRef": null,
       "note": "No DRIVE/HYBRID transport is used for implementation, so v3.1 session-scoped Drive proof is NOT_REQUIRED."
     },
