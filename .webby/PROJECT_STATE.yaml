@@ -6,8 +6,8 @@ canonicalSkill:
   branch: main
   commit: b805dfdab336ff3942c68bb0e20a9edb0a047a18
   version: 3.1.0
-updatedAt: 2026-08-17T07:57:00+07:00
-phase: V3_1_IMPLEMENTATION_READY_HARDENING
+updatedAt: 2026-08-17T10:43:00+07:00
+phase: V3_1_IMPLEMENTATION_READY_CANDIDATE
 taskMode: NEW_REDESIGN
 branch: chatgpt/webby-v3.1-implementation-ready
 visualDirection: APPROVED_V1_BASELINE
@@ -38,6 +38,11 @@ assetAuthority:
   delivery: PASS
   mapping: PASS
   iconInventory: COMPLETE
+assetApproval:
+  status: USER_APPROVED_FINAL
+  statement: DUYỆT ASSET V3.1
+  receipt: .webby/USER_ASSET_APPROVAL_V31.json
+  approvedAt: 2026-08-17T10:43:00+07:00
 transport:
   mode: GIT
   driveSessionProofRequired: false
@@ -51,7 +56,7 @@ motion:
   mechanismStatus: IMPLEMENTATION_OWNED
   globalBehaviorSurfaceRule: REPORT_BEFORE_BROAD_APPLICATION
 v31Readiness:
-  status: AWAITING_USER_ASSET_INTEGRATED_APPROVAL
+  status: IMPLEMENTATION_READY_UI_CANDIDATE
   intakeV31: PASS
   assetCountPlan: REPORTED
   assetManifestV31: MATERIALIZED
@@ -63,22 +68,22 @@ v31Readiness:
   motionMechanismAuthority: CLAUDE
   deterministicSpec: PASS_PREAPPROVAL_VALIDATION
   userVisualApproval: PASS_V1_BASELINE
-  assetIntegratedUserApproval: PENDING
+  assetIntegratedUserApproval: PASS_USER_APPROVED_FINAL
   canonicalPreapprovalValidator: PASS
+  candidateReadyValidator: PENDING
+  finalReleaseValidator: PENDING
 implementation:
   authority: Claude
   phase: GĐ9_IMPLEMENTATION
-  status: BLOCKED
+  status: BLOCKED_PENDING_FINAL_VALIDATION
   authorized: false
-  reason: USER_ASSET_V3_1_APPROVAL_AND_FINAL_IMPLEMENTATION_READY_VALIDATION_PENDING
+  reason: USER_ASSET_APPROVAL_RECORDED; CANDIDATE_AND_FINAL_RELEASE_VALIDATION_PENDING
 nextActions:
-  - user reviews ASSET_REVIEW_BOARD_V31.md and approves the integrated v3.1 asset set
-  - record the user asset approval receipt
-  - set handoff status to IMPLEMENTATION_READY_UI only after approval
-  - run canonical webbyLucifer v3.1 validator on the new remote HEAD
-  - run active-authority stale-state audit on the same remote HEAD
-  - only after both pass set UI_SETUP_COMPLETE=true and implementationAuthorized=true
-  - re-check remote HEAD and final release gate before handing GĐ9 to Claude
+  - run canonical webbyLucifer v3.1 candidate validator on the exact latest remote HEAD
+  - run active-authority and runtime SHA audit on the same exact HEAD
+  - only after candidate PASS set UI_SETUP_COMPLETE=true and implementationAuthorized=true
+  - run final marker-true release validation on the new exact latest remote HEAD
+  - re-check remote HEAD and only then hand GĐ9 to Claude
 policies:
   userIsFinalAcceptanceAuthority: true
   chatgptOwnsDesignUiAssetStateMotionFeel: true
