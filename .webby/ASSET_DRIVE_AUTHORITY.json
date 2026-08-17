@@ -1,1 +1,18 @@
-{"schemaVersion":4,"status":"DEPRECATED_FOR_IMPLEMENTATION","implementationAuthority":".webby/GIT_BINARY_MANIFEST.json","productionAssetRoot":"assets/production","implementationRequiresGoogleDrive":false,"driveRole":"REVIEW_BACKUP_ONLY","legacyDriveMirror":{"fileId":"17SYWFQGXbs1VKYdpzVKFHDCaLu-Ba9bY","sha256":"fdb66fc92e2e60a3816b81209d50ae241d951bb2d2936eb826f60c57ffb805c5"},"rule":"Claude must not retrieve Drive assets for implementation; all required implementation binaries are Git-resident."}
+{
+  "schemaVersion": 5,
+  "protocolVersion": "3.1.0",
+  "status": "DEPRECATED_FOR_IMPLEMENTATION",
+  "activeAssetAuthority": ".webby/asset-manifest.json",
+  "runtimeRoot": "public/assets",
+  "logicalAssetCount": 84,
+  "transportMode": "GIT",
+  "implementationRequiresGoogleDrive": false,
+  "driveSessionProofRequired": false,
+  "driveRole": "REVIEW_BACKUP_ONLY",
+  "legacyDriveMirror": {
+    "fileId": "17SYWFQGXbs1VKYdpzVKFHDCaLu-Ba9bY",
+    "sha256": "fdb66fc92e2e60a3816b81209d50ae241d951bb2d2936eb826f60c57ffb805c5",
+    "authoritativeForImplementation": false
+  },
+  "rule": "Claude must not retrieve implementation assets from Drive. Clone the Git handoff and use exact destinationPath values from .webby/asset-manifest.json. Drive may be used only for human review/archive/backup."
+}
