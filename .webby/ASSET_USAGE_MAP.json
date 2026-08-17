@@ -169,7 +169,7 @@
       "fourthChannel": {
         "type": "EMAIL",
         "state": "PENDING_DISABLED",
-        "rule": "productionEmail is TBD; render Email card disabled/Sắp cập nhật; do not invent an address."
+        "rule": "productionEmail is TBD; render Email disabled/Sắp cập nhật; never invent it."
       }
     },
     "/404": {
