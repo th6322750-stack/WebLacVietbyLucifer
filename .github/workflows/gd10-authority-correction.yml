@@ -1,0 +1,275 @@
+name: GD10 Approved-PDF Authority Correction
+
+on:
+  push:
+    branches: [chatgpt/webby-v3.1-implementation-ready]
+    paths:
+      - '.github/workflows/gd10-authority-correction.yml'
+      - '.webby/GD10_AUTHORITY_CORRECTION_TRIGGER'
+
+permissions:
+  contents: write
+
+jobs:
+  correct-and-verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/webby-v3.1-implementation-ready
+          fetch-depth: 0
+
+      - name: Confirm exact triggering remote HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          remote="$(git ls-remote origin refs/heads/chatgpt/webby-v3.1-implementation-ready | awk '{print $1}')"
+          test "$remote" = "$GITHUB_SHA"
+
+      - name: Install approved-PDF extraction dependency
+        run: python -m pip install --disable-pip-version-check 'pymupdf==1.26.7'
+
+      - name: Apply authority correction from approved V1 PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, shutil
+          import fitz
+
+          R=Path('.')
+          PDF=R/'.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf'
+          PDF_SHA='f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f'
+          STRIP_SHA='a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691'
+          NOW='2026-08-17T18:51:00+07:00'
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          def load(p): return json.loads((R/p).read_text(encoding='utf-8'))
+          def dump(p,d):
+              q=R/p; q.parent.mkdir(parents=True,exist_ok=True)
+              q.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          def add(seq,v):
+              if v not in seq: seq.append(v)
+
+          assert sha(PDF)==PDF_SHA, 'approved PDF SHA mismatch'
+          master=R/'assets/production/masters/raster/client-logos/support-client-logo-strip.png'
+          delivery=R/'assets/production/delivery/raster/client-logos/support-client-logo-strip.png'
+          runtime=R/'public/assets/client-logos/support-client-logo-strip.png'
+          for p in (master,delivery,runtime): p.parent.mkdir(parents=True,exist_ok=True)
+          doc=fitz.open(PDF); page=doc[4]
+          pix=page.get_pixmap(matrix=fitz.Matrix(12,12),clip=fitz.Rect(264.6,255.96,405.0,261.72),alpha=False)
+          pix.save(master); doc.close()
+          assert (pix.width,pix.height)==(1685,70)
+          assert sha(master)==STRIP_SHA, sha(master)
+          shutil.copy2(master,delivery); shutil.copy2(master,runtime)
+          assert sha(delivery)==STRIP_SHA and sha(runtime)==STRIP_SHA
+          size=master.stat().st_size
+
+          strip={
+            'id':'support-client-logo-strip','classification':'DEMO','role':'CLIENT_LOGO_STRIP','item':'approved-v1-demo-client-logo-row','identityRequired':True,'authoritative':True,
+            'master':{'qualityClass':'FHD_CLASS','fileName':'assets/production/masters/raster/client-logos/support-client-logo-strip.png','format':'png','width':1685,'height':70,'sha256':STRIP_SHA,'nativeOrAuthoritativeHighRes':True,'derivedFromLowRes':False,'qualityException':'Exact source extract from the user-approved V1 PDF page 5; semantic strip dimensions are intentional. Never upscale/redraw/recompose individual marks as a new authority.'},
+            'delivery':[{'usage':'default','fileName':'support-client-logo-strip.png','destinationPath':'public/assets/client-logos/support-client-logo-strip.png','runtimeSourceType':'PROJECT_PATH','runtimeSource':None,'width':1685,'height':70,'format':'png','byteSize':size,'maxWeight':500000,'transparent':False,'sha256':STRIP_SHA}],
+            'allowedUsage':['default'],'presentationByUsage':{'default':{'objectFit':'contain','objectPosition':'center','preserveAspectRatio':True,'crop':'none','source':'approved V1 PDF page 5 exact extract'}},
+            'priority':'lazy','livePolicy':'DEMO_ONLY','mustNot':['present logos as a verified client list','substitute with platform/social logos','split, redraw or recompose individual marks as a new identity authority']
+          }
+
+          m=load('.webby/asset-manifest.json')
+          before=len(m['assets'])
+          m['assets']=[a for a in m['assets'] if a.get('id')!='support-client-logo-strip']
+          assert before in (84,85)
+          m['assets'].append(strip); assert len(m['assets'])==85
+          m.setdefault('qualityPolicy',{})['gd10RasterAmendment']='.webby/GD10_RASTER_ASSET_AMENDMENT.json'
+          dump('.webby/asset-manifest.json',m)
+
+          u=load('.webby/ASSET_USAGE_MAP.json')
+          u['routes']['/support-mxh']['clientLogoStrip']='support-client-logo-strip'
+          u['routes']['/lien-he']['contactIcon']='icon-mail'
+          u['routes']['/lien-he']['fourthChannel']={'type':'EMAIL','state':'PENDING_DISABLED','rule':'productionEmail is TBD; render Email card disabled/Sắp cập nhật; do not invent an address.'}
+          dump('.webby/ASSET_USAGE_MAP.json',u)
+
+          p=load('.webby/ASSET_COUNT_PLAN.json'); t=p['totals']
+          t['all']=85; t['chatgptCreateOrPrepare']=84; t['fhdClass']=28
+          if not any(g.get('assetId')=='support-client-logo-strip' for g in p['uniqueAssetGroups']):
+              p['uniqueAssetGroups'].append({'assetId':'support-client-logo-strip','role':'CLIENT_LOGO_STRIP','quantity':1,'classification':'DEMO','sourceStatus':'CHATGPT_PREPARE','masterQuality':'FHD_CLASS','identityRequired':True,'notes':'Exact raster strip extracted from the already user-approved V1 PDF page 5 to close the Support client-logo asset gap. Demo-only; not verified client evidence.'})
+          for route in p['routes']:
+              if route['route']=='/support-mxh' and not any(s.get('section')=='support-client-logo-row' for s in route['sections']):
+                  route['sections'].append({'section':'support-client-logo-row','visibleItemCount':1,'assets':[{'assetId':'support-client-logo-strip','role':'CLIENT_LOGO_STRIP','quantity':1,'classification':'DEMO','sourceStatus':'CHATGPT_PREPARE','masterQuality':'FHD_CLASS','responsiveStrategy':'EXACT_SOURCE_STRIP_CONTAIN_NO_RECOMPOSITION','identityRequired':True,'notes':'Exact V1 PDF source extract; show demo/non-verified-client disclaimer.'}]})
+              if route['route']=='/lien-he':
+                  for s in route['sections']:
+                      if s.get('section')=='contact-channels': s['assets'][0]['notes']='Zalo, Messenger, Telegram and Email (icon-mail). Email is pending/disabled until productionEmail is confirmed; no invented email.'
+          dump('.webby/ASSET_COUNT_PLAN.json',p)
+
+          c=load('.webby/CONTENT_TRUTH.json')
+          add(c['demoOnly'],'support client-logo strip shown in approved V1 is demo-only visual evidence and must not be represented as a verified client list')
+          c['implementationRule']='Preserve demo content for visual parity in non-production preview, tag it in data as demoOnly=true, and block PRODUCTION_READY until required factual replacements are verified. Pending contact fields may preserve approved card geometry only as disabled/Sắp cập nhật; never invent the factual value. Never inject fake structured Review/AggregateRating schema.'
+          dump('.webby/CONTENT_TRUTH.json',c)
+
+          h=load('.webby/HANDOFF.json'); h['assetPlan']['logicalAssetCount']=85; h['assetManifest']['logicalAssetCount']=85
+          ar=h['assetReview']; ar['baselineApprovedLogicalAssetCount']=84; ar['authorityCorrectionAssetCount']=1; ar['producedLogicalAssetCount']=85; ar['status']='USER_APPROVED_FINAL_PLUS_APPROVED_PDF_AUTHORITY_CORRECTION'
+          h['gd10AuthorityCorrection']={'status':'APPLIED','correctedAt':NOW,'receipt':'.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json','baselineApprovedAssetCount':84,'correctedAssetCount':85,'supportClientLogoStrip':'support-client-logo-strip','supportClientLogoStripSource':'exact extract from approved V1 PDF page 5','contactChannelCorrection':'Zalo/Messenger/Telegram/Email; Email pending-disabled because productionEmail is TBD','visualRevisionChanged':False}
+          h['implementationAuthorization']['status']='AUTHORIZED_GD10_TARGETED_FIX'; h['implementationAuthorization']['rule']='Claude must first integrate the exact latest remote handoff HEAD containing this GD10 authority correction, then perform only the targeted fixes in .webby/CLAUDE_TASK.md.'
+          for rel in ['.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json','.webby/GD10_RASTER_ASSET_AMENDMENT.json','.webby/GD10_RASTER_SHA256SUMS.txt']: add(h['requiredInputs'],rel)
+          add(h['hardRules'],'Support client-logo evidence must use support-client-logo-strip exactly; platform logos are not a substitute for that row')
+          add(h['hardRules'],'Contact V1 fourth channel is Email; while productionEmail is pending, preserve the Email card as disabled/Sắp cập nhật using icon-mail')
+          dump('.webby/HANDOFF.json',h)
+
+          lock=load('.webby/WEBBY_LOCK.json'); aa=lock['assetAuthority']; aa['logicalAssetCount']=85; aa['rasterLogicalCount']=35; aa['vectorCount']=50; aa['authorityCorrectionReceipt']='.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json'
+          lock['gd10AuthorityCorrection']={'status':'APPLIED','baselineApprovedAssetCount':84,'correctedAssetCount':85,'visualRevisionChanged':False,'sourceAuthority':'approved V1 PDF','correctedAt':NOW}
+          for rel in ['.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json','.webby/GD10_RASTER_ASSET_AMENDMENT.json','.webby/GD10_RASTER_SHA256SUMS.txt']:
+              if not any(x.get('path')==rel for x in lock['files']): lock['files'].append({'path':rel,'required':True})
+          dump('.webby/WEBBY_LOCK.json',lock)
+
+          mba=load('.webby/MASTER_BINARY_AUTHORITY.json'); aa=mba['assetAuthority']; aa['logicalAssetCount']=85; aa['rasterLogicalCount']=35; aa['vectorCount']=50; aa['gd10RasterAmendment']='.webby/GD10_RASTER_ASSET_AMENDMENT.json'; mba['gd10AuthorityCorrectionReceipt']='.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json'; dump('.webby/MASTER_BINARY_AUTHORITY.json',mba)
+
+          audit=load('.webby/V3_1_MIGRATION_AUDIT.json'); audit['auditStatus']='IMPLEMENTATION_READY_UI_GD10_AUTHORITY_CORRECTED'; audit['auditedAt']=NOW
+          gate=audit['v31GateAudit']; gate['assetCountPlan']='PASS_REPORTED_85_AFTER_GD10_AUTHORITY_CORRECTION'; gate['highResMasters']='PASS_CORE_34_RASTER_PLUS_1_EXACT_APPROVED_PDF_SOURCE_EXTRACT'; gate['mapping']='PASS_85_WITH_SUPPORT_CLIENT_LOGO_STRIP_AND_CONTACT_EMAIL_CORRECTION'; gate['onlyRemainingGate']='CLAUDE_GD10_TARGETED_FIX_THEN_CHATGPT_REQA'
+          aa=audit['assetAuthority']; aa['logicalAssetCount']=85; aa['rasterLogicalCount']=35; aa['vectorCount']=50
+          audit['gd10AuthorityCorrection']={'status':'APPLIED','receipt':'.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json','baselineApprovedAssetCount':84,'correctedAssetCount':85,'supportClientLogoStripSha256':STRIP_SHA,'contactIcon':'icon-mail','visualRevisionChanged':False}
+          audit['nextGateWork']=['Claude integrates exact latest corrected handoff HEAD into PR #5','Claude performs targeted GD10 fixes only and refreshes evidence/receipt','ChatGPT re-QA against approved V1 PDF before user acceptance']; dump('.webby/V3_1_MIGRATION_AUDIT.json',audit)
+
+          ps=R/'.webby/PROJECT_STATE.yaml'; s=ps.read_text(encoding='utf-8')
+          s=s.replace('updatedAt: 2026-08-17T11:35:00+07:00','updatedAt: '+NOW).replace('phase: IMPLEMENTATION_READY_UI','phase: GD10_TARGETED_FIX_AUTHORITY_CORRECTED',1)
+          s=s.replace('  logicalAssetCount: 84\n  rasterLogicalCount: 34\n  vectorCount: 50','  logicalAssetCount: 85\n  rasterLogicalCount: 35\n  vectorCount: 50',1)
+          s=s.replace('  phase: GĐ9_IMPLEMENTATION\n  status: AUTHORIZED_FINAL_RELEASE_PASS','  phase: GD10_TARGETED_FIX\n  status: AUTHORIZED_GD10_TARGETED_FIX')
+          s=s.replace('nextActions:\n  - run one exact-HEAD post-closure verification after this metadata closure\n  - if that verification succeeds and remote HEAD is unchanged, hand GĐ9 to Claude','nextActions:\n  - Claude must integrate the exact latest corrected handoff HEAD into PR #5\n  - Claude performs GD10 targeted fixes only and refreshes tests/evidence\n  - ChatGPT re-QA against approved V1 PDF before user acceptance')
+          if 'gd10AuthorityCorrection:' not in s: s+='\ngd10AuthorityCorrection:\n  status: APPLIED\n  correctedAt: '+NOW+'\n  receipt: .webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json\n  baselineApprovedAssetCount: 84\n  correctedAssetCount: 85\n  supportClientLogoStrip: support-client-logo-strip\n  contactFourthChannel: EMAIL_PENDING_DISABLED\n  visualRevisionChanged: false\n'
+          ps.write_text(s,encoding='utf-8')
+
+          marker=R/'.webby/UI_SETUP_COMPLETE'; s=marker.read_text(encoding='utf-8').replace('logicalAssetCount=84','logicalAssetCount=85')
+          s='\n'.join('nextGate=CLAUDE_GD10_TARGETED_FIX_THEN_CHATGPT_REQA' if x.startswith('nextGate=') else x for x in s.splitlines())+'\n'
+          if 'gd10AuthorityCorrection=' not in s: s+='gd10AuthorityCorrection=PASS\ngd10AuthorityCorrectionReceipt=.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json\n'
+          marker.write_text(s,encoding='utf-8')
+
+          amendment={'schemaVersion':1,'protocolVersion':'3.1.0','status':'ACTIVE_GD10_AUTHORITY_CORRECTION','source':{'approvedPdf':str(PDF),'approvedPdfSha256':PDF_SHA,'pageNumber1Based':5,'clipRectPoints':[264.6,255.96,405.0,261.72],'renderMatrix':[12,12],'rule':'Exact source extraction from the already user-approved V1 PDF; no redraw, no logo substitution, no identity reconstruction.'},'coreRasterMetadata':'.webby/RASTER_ASSET_METADATA.json','coreRasterLogicalCount':34,'amendmentRasterLogicalCount':1,'correctedRasterLogicalCount':35,'entry':strip}; dump('.webby/GD10_RASTER_ASSET_AMENDMENT.json',amendment)
+          (R/'.webby/GD10_RASTER_SHA256SUMS.txt').write_text(f'{STRIP_SHA}  assets/production/masters/raster/client-logos/support-client-logo-strip.png\n{STRIP_SHA}  assets/production/delivery/raster/client-logos/support-client-logo-strip.png\n{STRIP_SHA}  public/assets/client-logos/support-client-logo-strip.png\n',encoding='utf-8')
+
+          receipt={'schemaVersion':1,'protocolVersion':'3.1.0','status':'AUTHORITY_CORRECTED_PENDING_WORKFLOW_EXACT_HEAD_VALIDATION','correctedAt':NOW,'reason':'GD10 re-QA found two ChatGPT-owned authority gaps: Support client-logo row absent from the approved asset package and contact map used phone where V1 shows Email.','userInstruction':{'source':'CHAT_CONVERSATION_AFTER_GD10_REQA_ROUND_2','newVisualRevisionRequested':False},'baseline':{'handoffHeadBeforeCorrection':os.environ.get('GITHUB_SHA'),'userVisualApproval':'DUYỆT GIAO DIỆN V1','userAssetApproval':'DUYỆT ASSET V3.1','baselineApprovedLogicalAssetCount':84,'historicalFinalReleaseReceipt':'.webby/FINAL_RELEASE_RECEIPT.json','historicalFinalReleaseMustRemainUnmodified':True},'correction':{'correctedLogicalAssetCount':85,'rasterLogicalCount':35,'vectorCount':50,'supportClientLogoStrip':{'id':'support-client-logo-strip','source':'exact approved V1 PDF page 5 extract','sha256':STRIP_SHA,'width':1685,'height':70,'runtimePath':'public/assets/client-logos/support-client-logo-strip.png','classification':'DEMO','mustNotClaimVerifiedClients':True},'contactChannel':{'approvedOrder':['Zalo','Messenger','Telegram','Email'],'emailState':'PENDING_DISABLED','icon':'icon-mail','productionEmailStillTBD':True,'mustNotInventEmail':True},'visualRevisionChanged':False},'validationContract':{'canonicalSkillCommit':'b805dfdab336ff3942c68bb0e20a9edb0a047a18','workflow':'.github/workflows/gd10-authority-correction.yml','workflowRunId':int(os.environ['GITHUB_RUN_ID']),'required':'Canonical validator plus 85 runtime SHA checks must pass after the correction package commit and after the validation-receipt closure commit.'}}; dump('.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json',receipt)
+
+          # Future-safe manifest rebuild: seal the old 84 builder, then wrap it with the additive correction.
+          cur=R/'scripts/build-v31-asset-manifest.py'; legacy=R/'scripts/build-v31-asset-manifest-legacy84.py'
+          if 'PASS_V31_ASSET_MANIFEST_GD10_CORRECTED' not in cur.read_text(encoding='utf-8'):
+              legacy.write_text(cur.read_text(encoding='utf-8'),encoding='utf-8')
+          wrapper='''#!/usr/bin/env python3\nfrom pathlib import Path\nimport hashlib,json,subprocess,sys\nR=Path(__file__).resolve().parents[1]; SHA="a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691"\ndef sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()\ndef dump(p,d): p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")\nsubprocess.run([sys.executable,str(R/"scripts/build-v31-asset-manifest-legacy84.py")],check=True,cwd=R)\nmaster=R/"assets/production/masters/raster/client-logos/support-client-logo-strip.png"; runtime=R/"public/assets/client-logos/support-client-logo-strip.png"\nif not master.exists() or sha(master)!=SHA: raise SystemExit("GD10 approved-PDF strip missing/wrong SHA")\nruntime.parent.mkdir(parents=True,exist_ok=True); runtime.write_bytes(master.read_bytes())\nm=json.loads((R/".webby/asset-manifest.json").read_text()); m["assets"]=[a for a in m["assets"] if a.get("id")!="support-client-logo-strip"]; m["assets"].append('''+repr(strip)+'''); m.setdefault("qualityPolicy",{})["gd10RasterAmendment"]=".webby/GD10_RASTER_ASSET_AMENDMENT.json"\nassert len(m["assets"])==85; dump(R/".webby/asset-manifest.json",m)\nu=json.loads((R/".webby/ASSET_USAGE_MAP.json").read_text()); u["routes"]["/support-mxh"]["clientLogoStrip"]="support-client-logo-strip"; u["routes"]["/lien-he"]["contactIcon"]="icon-mail"; u["routes"]["/lien-he"]["fourthChannel"]={"type":"EMAIL","state":"PENDING_DISABLED","rule":"productionEmail is TBD; render Email disabled/Sắp cập nhật; never invent it."}; dump(R/".webby/ASSET_USAGE_MAP.json",u)\nprint("PASS_V31_ASSET_MANIFEST_GD10_CORRECTED assets=85 raster=35 vector=50")\n'''
+          cur.write_text(wrapper,encoding='utf-8')
+          tmp=R/'scripts/build-v31-asset-manifest-gd10-wrapper.tmp'
+          if tmp.exists(): tmp.unlink()
+
+          extract='''#!/usr/bin/env python3\nfrom pathlib import Path\nimport hashlib,shutil,fitz\nR=Path(__file__).resolve().parents[1]; P=R/".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf"; PS="f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f"; S="a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691"\ndef sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()\nassert sha(P)==PS\nm=R/"assets/production/masters/raster/client-logos/support-client-logo-strip.png"; d=R/"assets/production/delivery/raster/client-logos/support-client-logo-strip.png"; r=R/"public/assets/client-logos/support-client-logo-strip.png"\nfor p in (m,d,r): p.parent.mkdir(parents=True,exist_ok=True)\ndoc=fitz.open(P); pix=doc[4].get_pixmap(matrix=fitz.Matrix(12,12),clip=fitz.Rect(264.6,255.96,405.0,261.72),alpha=False); pix.save(m); doc.close(); assert (pix.width,pix.height)==(1685,70) and sha(m)==S\nshutil.copy2(m,d); shutil.copy2(m,r); assert sha(d)==S and sha(r)==S; print("PASS_APPROVED_PDF_SUPPORT_CLIENT_LOGO_STRIP "+S)\n'''
+          (R/'scripts/extract-gd10-approved-pdf-assets.py').write_text(extract,encoding='utf-8')
+
+          claude='''# CLAUDE TASK — WEBBY v3.1 GD10 TARGETED FIX\n\n> Current gate: **AUTHORIZED_GD10_TARGETED_FIX**. PR #5 already contains GĐ9; do not restart or redesign.\n\nCanonical webbyLucifer: v3.1.0 at `b805dfdab336ff3942c68bb0e20a9edb0a047a18`.\n\n## Mandatory first action\nFetch and integrate the **exact latest remote HEAD** of `chatgpt/webby-v3.1-implementation-ready` into `claude/gd9-implementation-v1`, then read `.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json` and `.webby/ASSET_USAGE_MAP.json`. If the corrected base is absent, STOP.\n\n## Corrected authority\n- **85 assets** = 35 raster + 50 vector. The original 84 remains the historical user-approved baseline; asset #85 is an exact source extract from the already approved V1 PDF page 5, not a new visual revision.\n- Use `support-client-logo-strip` at `public/assets/client-logos/support-client-logo-strip.png` exactly for the Support client-logo row. It is DEMO_ONLY; show a nearby disclaimer that it is V1 demo/illustration, not a verified client list. Never substitute platform logos.\n- `/lien-he` approved channel order is Zalo / Messenger / Telegram / Email. `productionEmail` remains TBD, so Email must be disabled / `Sắp cập nhật` with `icon-mail`; never invent an email.\n\n## Remaining targeted fixes\n1. Transcribe exact project demo identities/copy from approved PDF page 7; do not guess unreadable text; keep `demoOnly=true`.\n2. Make `/du-an/[slug]` match the approved demo case-study identity/meta/results. `Dịch vụ` is the actual demo service label; demo status stays in badge/disclaimer.\n3. Match exact V1 knowledge/article identities/copy. `/kien-thuc` uses the V1 AI-in-Marketing featured article; `/kien-thuc/[slug]` matches the V1 SEO article.\n4. Rebuild `/gioi-thieu` hero/principle hierarchy to the V1 `Cần Kiệm Liêm Chính` composition.\n5. Match exact V1 hero copy on `/support-mxh`, `/dich-vu-so`, `/kien-thuc`, `/lien-he`; no paraphrase.\n6. Use `support-client-logo-strip` instead of the platform-logo substitution.\n7. Replace phone as the fourth contact card with pending-disabled Email + `icon-mail`.\n8. Fix invalid/non-token opacity modifiers such as `text-white/76` and audit the changed UI for the same regression class.\n9. Update `.webby/implementation/IMPLEMENTATION_RECEIPT.json` to final fixed HEAD/evidence truth.\n\nRun typecheck, lint, production build, Playwright functional + evidence at 1440/390 including loading; render the exact pinned PDF SHA for comparison. Keep PR #5 Draft, do not merge, return the new exact HEAD and STOP for ChatGPT re-QA.\n'''
+          (R/'.webby/CLAUDE_TASK.md').write_text(claude,encoding='utf-8')
+
+          # Local invariant pass before canonical validation.
+          m=load('.webby/asset-manifest.json'); assert len(m['assets'])==85 and len(m['iconInventory'])==40
+          seen=set()
+          for a in m['assets']:
+              d=a['delivery'][0]; rp=R/d['destinationPath']; assert rp.exists() and sha(rp)==d['sha256']; assert str(rp) not in seen; seen.add(str(rp))
+          assert len(seen)==85
+          print('PASS_GD10_AUTHORITY_CORRECTION_LOCAL')
+          print('logical_assets=85 raster=35 vector=50 runtime_sha=PASS_85_OF_85')
+          PY
+
+      - name: Fetch canonical validator and validate corrected working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/th6322750-stack/webbyLucifer/b805dfdab336ff3942c68bb0e20a9edb0a047a18/scripts/webby-validate.py' -o /tmp/webby-validate.py
+          python /tmp/webby-validate.py .
+
+      - name: Commit corrected authority package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ChatGPT webby authority'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'webby(gd10): correct approved-PDF asset and contact authority'
+          PACKAGE_HEAD="$(git rev-parse HEAD)"
+          git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
+          test "$(git ls-remote origin refs/heads/chatgpt/webby-v3.1-implementation-ready | awk '{print $1}')" = "$PACKAGE_HEAD"
+          echo "PACKAGE_HEAD=$PACKAGE_HEAD" >> "$GITHUB_ENV"
+
+      - name: Validate exact correction package HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PACKAGE_HEAD"
+          python /tmp/webby-validate.py .
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os
+          R=Path('.'); S='a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691'
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          m=json.loads((R/'.webby/asset-manifest.json').read_text()); u=json.loads((R/'.webby/ASSET_USAGE_MAP.json').read_text()); lock=json.loads((R/'.webby/WEBBY_LOCK.json').read_text())
+          assert len(m['assets'])==85 and lock['assetAuthority']['logicalAssetCount']==85 and lock['assetAuthority']['rasterLogicalCount']==35
+          assert u['routes']['/support-mxh']['clientLogoStrip']=='support-client-logo-strip' and u['routes']['/lien-he']['contactIcon']=='icon-mail'
+          assert sha(R/'public/assets/client-logos/support-client-logo-strip.png')==S
+          paths=[]
+          for a in m['assets']:
+              d=a['delivery'][0]; p=R/d['destinationPath']; assert sha(p)==d['sha256']; paths.append(str(p))
+          assert len(paths)==85 and len(set(paths))==85
+          print('PASS_GD10_CORRECTION_PACKAGE_EXACT_HEAD '+os.environ['PACKAGE_HEAD'])
+          PY
+
+      - name: Close correction validation metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,os
+          p=Path('.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json')
+          d={'schemaVersion':1,'protocolVersion':'3.1.0','status':'PASS','workflowRunId':int(os.environ['GITHUB_RUN_ID']),'validatedCorrectionPackageHead':os.environ['PACKAGE_HEAD'],'canonicalSkillCommit':'b805dfdab336ff3942c68bb0e20a9edb0a047a18','logicalAssetCount':85,'rasterLogicalCount':35,'vectorCount':50,'runtimeSha256':'PASS_85_OF_85','supportClientLogoStripSha256':'a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691','contactFourthChannel':'EMAIL_PENDING_DISABLED','transportMode':'GIT','implementationRequiresGoogleDrive':False,'nextGate':'CLAUDE_GD10_TARGETED_FIX_THEN_CHATGPT_REQA'}
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          # Make the validation receipt an active required input without rewriting historical release receipts.
+          for rel in ['.webby/HANDOFF.json','.webby/WEBBY_LOCK.json']:
+              x=json.loads(Path(rel).read_text())
+              if rel.endswith('HANDOFF.json'):
+                  if '.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json' not in x['requiredInputs']: x['requiredInputs'].append('.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json')
+                  x['gd10AuthorityCorrection']['validationReceipt']='.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json'
+              else:
+                  if not any(v.get('path')=='.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json' for v in x['files']): x['files'].append({'path':'.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json','required':True})
+                  x['gd10AuthorityCorrection']['validationReceipt']='.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json'
+              Path(rel).write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+          PY
+          git add .webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json .webby/HANDOFF.json .webby/WEBBY_LOCK.json
+          git commit -m 'webby(gd10): close authority correction validation receipt'
+          FINAL_HEAD="$(git rev-parse HEAD)"
+          git push origin HEAD:chatgpt/webby-v3.1-implementation-ready
+          test "$(git ls-remote origin refs/heads/chatgpt/webby-v3.1-implementation-ready | awk '{print $1}')" = "$FINAL_HEAD"
+          echo "FINAL_HEAD=$FINAL_HEAD" >> "$GITHUB_ENV"
+
+      - name: Final exact-HEAD canonical and adversarial verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$FINAL_HEAD"
+          test "$(git ls-remote origin refs/heads/chatgpt/webby-v3.1-implementation-ready | awk '{print $1}')" = "$FINAL_HEAD"
+          git fsck --full
+          python /tmp/webby-validate.py .
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os
+          R=Path('.'); S='a398f0f6002f3c71f13770c3cdcf9854f14887ff2cf2acd4fc3c46b59c9d8691'
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          m=json.loads((R/'.webby/asset-manifest.json').read_text()); h=json.loads((R/'.webby/HANDOFF.json').read_text()); l=json.loads((R/'.webby/WEBBY_LOCK.json').read_text()); v=json.loads((R/'.webby/GD10_AUTHORITY_CORRECTION_VALIDATION.json').read_text()); u=json.loads((R/'.webby/ASSET_USAGE_MAP.json').read_text()); marker=(R/'.webby/UI_SETUP_COMPLETE').read_text()
+          assert v['status']=='PASS' and v['validatedCorrectionPackageHead']==os.environ['PACKAGE_HEAD']
+          assert len(m['assets'])==85 and h['assetPlan']['logicalAssetCount']==85 and l['assetAuthority']['logicalAssetCount']==85 and l['assetAuthority']['rasterLogicalCount']==35
+          assert u['routes']['/support-mxh']['clientLogoStrip']=='support-client-logo-strip' and u['routes']['/lien-he']['contactIcon']=='icon-mail'
+          assert sha(R/'public/assets/client-logos/support-client-logo-strip.png')==S
+          paths=[]
+          for a in m['assets']:
+              d=a['delivery'][0]; p=R/d['destinationPath']; assert p.exists() and sha(p)==d['sha256']; paths.append(str(p))
+          assert len(paths)==85 and len(set(paths))==85
+          assert 'UI_SETUP_COMPLETE=true' in marker and 'implementationAuthorized=true' in marker and 'releaseHold=false' in marker and 'logicalAssetCount=85' in marker
+          task=(R/'.webby/CLAUDE_TASK.md').read_text(); assert '85 assets' in task and 'GD10 TARGETED FIX' in task and 'final release hold remains' not in task
+          assert sha(R/'.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf')=='f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f'
+          print('PASS_GD10_AUTHORITY_CORRECTION_FINAL_EXACT_HEAD')
+          print('final_head='+os.environ['FINAL_HEAD'])
+          print('logical_assets=85 raster=35 vector=50 runtime_sha=PASS_85_OF_85')
+          print('support_client_logo_strip_sha='+S)
+          print('contact_fourth_channel=EMAIL_PENDING_DISABLED')
+          print('next=CLAUDE_GD10_TARGETED_FIX_THEN_CHATGPT_REQA')
+          PY
