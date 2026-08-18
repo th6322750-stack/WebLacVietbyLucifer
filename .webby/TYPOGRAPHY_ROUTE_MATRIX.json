@@ -1,5 +1,5 @@
 {
-  "revision": "pha1-typography-v1",
+  "revision": "pha1-typography-v2",
   "routes": {
     "/": {"heroRole":"heroDisplay","case":"uppercase","heroWeight":600},
     "/website": {"heroRole":"heroH1","heroWeight":700},
@@ -15,12 +15,23 @@
   },
   "global": {
     "sectionTitles":"sectionH2",
+    "structuralThirdLevelHeadings":"structuralH3",
     "cards":"cardH3",
     "body":"body",
+    "largeBody":"bodyLG",
+    "captions":"caption",
     "navigation":"nav",
     "buttons":"button",
+    "chips":"chip",
     "eyebrows":"eyebrow",
     "forms":["formLabel","formControl"],
+    "processStepNumber":"stepNumber",
     "footer":"footer"
-  }
+  },
+  "compatibility": {
+    "bodyXL":"PRESERVE_UNTIL_ZERO_USAGE_PROVEN",
+    "h3":"alias structuralH3",
+    "h4":"alias cardH3"
+  },
+  "rule":"Route matrix does not authorize deletion of legacy emitted typography utilities. TYPOGRAPHY_AUTHORITY.tokenEmissionContract is mandatory."
 }
