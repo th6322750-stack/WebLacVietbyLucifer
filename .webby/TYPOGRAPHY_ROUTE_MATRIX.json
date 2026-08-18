@@ -1,0 +1,26 @@
+{
+  "revision": "pha1-typography-v1",
+  "routes": {
+    "/": {"heroRole":"heroDisplay","case":"uppercase","heroWeight":600},
+    "/website": {"heroRole":"heroH1","heroWeight":700},
+    "/support-mxh": {"heroRole":"heroH1","heroWeight":700},
+    "/dich-vu-so": {"heroRole":"heroH1","heroWeight":700},
+    "/du-an": {"heroRole":"heroH1","heroWeight":700},
+    "/kien-thuc": {"heroRole":"heroH1","heroWeight":700},
+    "/gioi-thieu": {"heroRole":"heroH1","heroWeight":700},
+    "/du-an/[slug]": {"heroRole":"detailH1","heroWeight":700},
+    "/kien-thuc/[slug]": {"heroRole":"detailH1","heroWeight":700},
+    "/lien-he": {"heroRole":"heroDisplay","case":"uppercase","heroWeight":600},
+    "/404": {"heroRole":"detailH1","heroWeight":700}
+  },
+  "global": {
+    "sectionTitles":"sectionH2",
+    "cards":"cardH3",
+    "body":"body",
+    "navigation":"nav",
+    "buttons":"button",
+    "eyebrows":"eyebrow",
+    "forms":["formLabel","formControl"],
+    "footer":"footer"
+  }
+}
