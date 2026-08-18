@@ -1,0 +1,20 @@
+{
+  "projectId": "lacvietmedia-web",
+  "phase": "PHA1_FINAL_ASSET_FREEZE_FULL_VISUAL_MASTER",
+  "status": "READY_FOR_USER_ASSET_UI_APPROVAL",
+  "authoritySource": "LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "baseImplementationCommit": "f414b6abfb9e7efdb6792d1f03126e2df4f924bd",
+  "finalAssetCount": 91,
+  "raster": 38,
+  "vector": 53,
+  "newRasterAssets": ["support-cta-device-shield-approved-crop","digital-cta-phoenix-approved-crop","project-detail-showcase-approved-crop"],
+  "newlyCountedExistingVectors": ["dong-son-ring","gold-divider","gold-noise"],
+  "rejectedAssets": "All AI-generated generic WebLacViet / standalone real-estate mockups generated during diagnosis are excluded.",
+  "visualMasterMethod": "Reuse exact embedded approved route composites for desktop+mobile authority; no redesign.",
+  "implementationGate": "DO NOT HAND TO CLAUDE until user says DUYỆT ASSET + GIAO DIỆN.",
+  "drive": {
+    "visualMaster": {"id":"1ZyHkKRwVjtAnH3YcezHjFjmq3KaePB5n","url":"https://drive.google.com/file/d/1ZyHkKRwVjtAnH3YcezHjFjmq3KaePB5n/view?usp=drivesdk"},
+    "freezeBundle": {"id":"1zzX0Lw88XU2YIb-8EWfas0-hBOJNVe9w","url":"https://drive.google.com/file/d/1zzX0Lw88XU2YIb-8EWfas0-hBOJNVe9w/view?usp=drivesdk"}
+  },
+  "gitBranch": "chatgpt/pha1-final-asset-freeze-91"
+}
