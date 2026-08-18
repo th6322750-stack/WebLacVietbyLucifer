@@ -1,26 +1,44 @@
-# CLAUDE TASK — WEBBY v3.1 GD10 TARGETED FIX
+# CLAUDE TASK — PHA 2 ALL-IN-ONE HANDOFF (GATED)
 
-> Current gate: **AUTHORIZED_GD10_TARGETED_FIX**. PR #5 already contains GĐ9; do not restart or redesign.
+> Current gate: **DO NOT IMPLEMENT YET**.
+> User has NOT approved final Asset + Typography authority. Do not modify implementation, PR #5, or runtime code until the user explicitly sends `DUYỆT ASSET + GIAO DIỆN` / equivalent final PHA 1 approval.
 
-Canonical webbyLucifer: v3.1.0 at `b805dfdab336ff3942c68bb0e20a9edb0a047a18`.
+## PHA 1 authority that supersedes all older GD9/GD10 task text
 
-## Mandatory first action
-Fetch and integrate the **exact latest remote HEAD** of `chatgpt/webby-v3.1-implementation-ready` into `claude/gd9-implementation-v1`, then read `.webby/GD10_AUTHORITY_CORRECTION_RECEIPT.json` and `.webby/ASSET_USAGE_MAP.json`. If the corrected base is absent, STOP.
+1. `.webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf` — supreme visible UI authority.
+2. `.webby/ASSET_COUNT_PLAN.json` — resolved asset count **91 = 38 raster + 53 vector**.
+3. `.webby/ASSET_MANIFEST_DELTA_91.json` + base `.webby/asset-manifest.json` — resolved asset inventory; no guessing/substitution.
+4. `.webby/ASSET_USAGE_MAP.json` — exact route/section/role asset mapping.
+5. `.webby/TYPOGRAPHY_AUTHORITY.json` — exact typography families and semantic tokens.
+6. `.webby/TYPOGRAPHY_ROUTE_MATRIX.json` — route-specific hero typography.
+7. `.webby/TYPOGRAPHY_IMPLEMENTATION_MAP.json` — exact source files/components that consume each typography role.
+8. `.webby/typography.json` — compact typography token mirror.
 
-## Corrected authority
-- **85 assets** = 35 raster + 50 vector. The original 84 remains the historical user-approved baseline; asset #85 is an exact source extract from the already approved V1 PDF page 5, not a new visual revision.
-- Use `support-client-logo-strip` at `public/assets/client-logos/support-client-logo-strip.png` exactly for the Support client-logo row. It is DEMO_ONLY; show a nearby disclaimer that it is V1 demo/illustration, not a verified client list. Never substitute platform logos.
-- `/lien-he` approved channel order is Zalo / Messenger / Telegram / Email. `productionEmail` remains TBD, so Email must be disabled / `Sắp cập nhật` with `icon-mail`; never invent an email.
+## Typography authority
 
-## Remaining targeted fixes
-1. Transcribe exact project demo identities/copy from approved PDF page 7; do not guess unreadable text; keep `demoOnly=true`.
-2. Make `/du-an/[slug]` match the approved demo case-study identity/meta/results. `Dịch vụ` is the actual demo service label; demo status stays in badge/disclaimer.
-3. Match exact V1 knowledge/article identities/copy. `/kien-thuc` uses the V1 AI-in-Marketing featured article; `/kien-thuc/[slug]` matches the V1 SEO article.
-4. Rebuild `/gioi-thieu` hero/principle hierarchy to the V1 `Cần Kiệm Liêm Chính` composition.
-5. Match exact V1 hero copy on `/support-mxh`, `/dich-vu-so`, `/kien-thuc`, `/lien-he`; no paraphrase.
-6. Use `support-client-logo-strip` instead of the platform-logo substitution.
-7. Replace phone as the fourth contact card with pending-disabled Email + `icon-mail`.
-8. Fix invalid/non-token opacity modifiers such as `text-white/76` and audit the changed UI for the same regression class.
-9. Update `.webby/implementation/IMPLEMENTATION_RECEIPT.json` to final fixed HEAD/evidence truth.
+- Heading family: **Noto Serif**, weights 600/700.
+- Body/UI family: **Inter**, weights 400/500/600/700.
+- Previous `Noto Serif Display + Be Vietnam Pro` authority is **deprecated for visual match**.
+- Use `next/font/google`; do not introduce local/custom/substitute font files.
+- `src/app/layout.tsx`: load `Noto_Serif` + `Inter`, expose `--font-heading` / `--font-body`.
+- `tailwind.config.ts`: map font families and semantic type tokens to the new authority.
+- `src/app/globals.css`: body → body font; h1–h4 → heading font.
+- Use `.webby/TYPOGRAPHY_IMPLEMENTATION_MAP.json` for exact component roles (SiteHeader nav, PageHero hero roles, SectionHeading H2, cards, pricing, metrics, buttons, breadcrumbs, footer, FAQ/TOC/filter).
+- Use `.webby/TYPOGRAPHY_ROUTE_MATRIX.json` for all 11 route hero roles; no route-level guessing.
+- Visual screenshot capture MUST wait for `document.fonts.ready`.
+- Computed heading family must resolve to `Noto Serif`; body/UI must resolve to `Inter`.
+- Line-break drift from the approved master is a blocker even when family is correct.
+- Synthetic weights and fallback fonts at visual QA are forbidden.
 
-Run typecheck, lint, production build, Playwright functional + evidence at 1440/390 including loading; render the exact pinned PDF SHA for comparison. Keep PR #5 Draft, do not merge, return the new exact HEAD and STOP for ChatGPT re-QA.
+## Asset authority
+
+- Resolved pack: **91 assets**, not the historical 85.
+- Claude must not search, generate, redraw or substitute image/vector assets.
+- The three added raster sources are exact approved-UI crops, not AI-generated replacements.
+- The three decorative SVGs are source-controlled canonical files.
+
+## When the user approves PHA 1
+
+ChatGPT will replace this gate with a single PHA 2 ALL-IN-ONE implementation instruction. Claude then implements asset + typography + visual corrections together, runs typecheck/lint/build/full functional/evidence at 1440 and 390, reports one exact final HEAD, and STOPs for ChatGPT final QA.
+
+Until that explicit approval: **STOP.**
