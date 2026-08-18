@@ -26,11 +26,27 @@ async function readJsonArray<T>(file: string): Promise<T[]> {
   }
 }
 
-async function appendJsonArray<T>(file: string, record: T): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
-  const existing = await readJsonArray<T>(file);
-  existing.push(record);
-  await writeFile(file, JSON.stringify(existing, null, 2), "utf8");
+/** Serverless hosts (Vercel/Lambda) give the app a read-only filesystem, so the local-file sink
+ * cannot persist there. Rather than returning a 500 and breaking the approved form flow, the
+ * write is attempted and its success reported honestly to the caller — a record that could not
+ * be persisted is marked `external_sync_status: "failed"` and logged loudly. It is NEVER reported
+ * as stored when it was not. A real CRM/email adapter replaces this per DATA_BACKEND_CONTRACT. */
+async function tryAppendJsonArray<T>(file: string, record: T): Promise<boolean> {
+  try {
+    await mkdir(DATA_DIR, { recursive: true });
+    const existing = await readJsonArray<T>(file);
+    existing.push(record);
+    await writeFile(file, JSON.stringify(existing, null, 2), "utf8");
+    return true;
+  } catch (error) {
+    console.warn(
+      `[sinks] Local file persistence unavailable (${path.basename(file)}). ` +
+        "Expected on a read-only serverless filesystem — the record is NOT stored. " +
+        "Configure a real CRM/email adapter before production use.",
+      error instanceof Error ? error.message : error,
+    );
+    return false;
+  }
 }
 
 class LocalFileLeadSink implements LeadSink {
@@ -44,8 +60,8 @@ class LocalFileLeadSink implements LeadSink {
       external_sync_status: "pending",
       external_id: null,
     };
-    await appendJsonArray(this.file, lead);
-    return lead;
+    const persisted = await tryAppendJsonArray(this.file, lead);
+    return persisted ? lead : { ...lead, external_sync_status: "failed" };
   }
 }
 
@@ -64,8 +80,8 @@ class LocalFileSubscriberSink implements SubscriberSink {
       external_sync_status: "pending",
       external_id: null,
     };
-    await appendJsonArray(this.file, subscriber);
-    return subscriber;
+    const persisted = await tryAppendJsonArray(this.file, subscriber);
+    return persisted ? subscriber : { ...subscriber, external_sync_status: "failed" };
   }
 }
 

@@ -29,3 +29,6 @@ next-env.d.ts
 # local data store (leads/newsletter) - not committed
 /data/leads.json
 /data/subscribers.json
+
+.vercel
+.env*

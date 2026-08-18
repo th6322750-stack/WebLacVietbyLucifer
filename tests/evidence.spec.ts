@@ -43,14 +43,32 @@ async function disableAnimationsAndWait(page: Page) {
     window.scrollTo(0, 0);
   });
   await page.waitForLoadState("networkidle");
-  await page.waitForFunction(() =>
-    Array.from(document.images).every((img) => img.complete && img.naturalWidth > 0),
-  );
+  // Gate on decodable pixels, not on `complete`. Next 15.5 leaves `complete === false` on a
+  // lazy next/image whose srcset candidate is still settling even after the bitmap is available
+  // (observed on the footer logo: complete=false, naturalWidth=256), which would hang forever.
+  // naturalWidth > 0 is the property that actually matters for a screenshot; decode() below is
+  // the real paint gate. Bounded so one stuck image degrades the wait instead of failing the run.
+  await page
+    .waitForFunction(() => Array.from(document.images).every((img) => img.naturalWidth > 0), undefined, {
+      timeout: 15000,
+    })
+    .catch(() => undefined);
   // `complete` only means "fetched" — the bitmap may still be undecoded when the screenshot is
   // taken, which left the logo and hero regions intermittently unpainted. decode() resolves only
-  // once the image is ready to paint.
-  await page.evaluate(() =>
-    Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => undefined))),
+  // once the image is ready to paint. Each decode is raced against a short cap: a lazy image that
+  // is scrolled back out of view can leave decode() pending forever (Next 15.5 footer logo), and
+  // one such image must not stall the whole capture.
+  await page.evaluate(
+    (capMs) =>
+      Promise.all(
+        Array.from(document.images).map((img) =>
+          Promise.race([
+            img.decode().catch(() => undefined),
+            new Promise((resolve) => setTimeout(resolve, capMs)),
+          ]),
+        ),
+      ),
+    3000,
   );
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null)))));
