@@ -92,7 +92,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </span>
             ) : null}
             <span className="mt-3 block text-eyebrow uppercase text-gold-700">{project.category}</span>
-            <h1 className="mt-2 text-h1-mobile lg:text-h1-desktop font-heading text-ink-950">{project.title}</h1>
+            <h1 className="mt-2 text-detail-h1-mobile lg:text-detail-h1-desktop font-heading text-ink-950">{project.title}</h1>
             <p className="mt-4 max-w-editorial text-body-lg text-text-secondary">{project.summary}</p>
 
             <dl id="project-meta" className="mt-8 grid grid-cols-2 gap-6">

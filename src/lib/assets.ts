@@ -35,6 +35,12 @@ const ASSET_PATHS: Record<string, string> = {
   "demo-avatar-04": "/assets/avatars/demo-avatar-04.webp",
   "lac-viet-logo-canonical": "/assets/brand/lac-viet-logo.webp",
   "support-client-logo-strip": "/assets/client-logos/support-client-logo-strip.png",
+
+  // PHA1 delta — the three source-controlled decorative vectors, now counted and mapped
+  // (ASSET_MANIFEST_DELTA_91.json). Purely decorative: never identity-bound content.
+  "dong-son-ring": "/assets/decorative/dong-son-ring.svg",
+  "gold-divider": "/assets/decorative/gold-divider.svg",
+  "gold-noise": "/assets/decorative/gold-noise.svg",
 };
 
 /** Resolves a pinned asset id to its runtime destinationPath. Throws on unknown ids by

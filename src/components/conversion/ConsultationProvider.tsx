@@ -63,7 +63,7 @@ export function ConsultationProvider({ children }: { children: React.ReactNode }
           >
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
-                <h2 id="consultation-modal-title" className="text-h4-mobile font-heading text-ink-950">
+                <h2 id="consultation-modal-title" className="text-card-h3-mobile lg:text-card-h3-desktop font-heading text-ink-950">
                   Nhận tư vấn miễn phí
                 </h2>
                 <p className="mt-1 text-small text-text-secondary">

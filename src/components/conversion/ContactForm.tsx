@@ -89,7 +89,7 @@ export function ContactForm({
         className="flex flex-col items-center gap-3 rounded-md border border-state-success/30 bg-state-success/5 p-8 text-center"
       >
         <Icon name="circle-check" size="feature" className="text-state-success" />
-        <p className="text-h4-mobile font-heading text-ink-950">Đã gửi yêu cầu thành công</p>
+        <p className="text-card-h3-mobile lg:text-card-h3-desktop font-heading text-ink-950">Đã gửi yêu cầu thành công</p>
         <p className="text-body text-text-secondary">
           Lạc Việt Media sẽ liên hệ lại với bạn trong thời gian sớm nhất.
         </p>
@@ -117,7 +117,7 @@ export function ContactForm({
       />
 
       <fieldset>
-        <legend className="text-small font-semibold text-text-primary">
+        <legend className="text-form-label text-text-primary">
           Kênh liên hệ ưu tiên <span className="text-state-error">*</span>
         </legend>
         <div className="mt-2 flex flex-wrap gap-4">
@@ -170,7 +170,7 @@ function Field({
   const errorId = `${name}-error`;
   return (
     <div>
-      <label htmlFor={name} className="text-small font-semibold text-text-primary">
+      <label htmlFor={name} className="text-form-label text-text-primary">
         {label} {required ? <span className="text-state-error">*</span> : null}
         {hint ? <span className="ml-1 font-normal text-text-muted">({hint})</span> : null}
       </label>
@@ -179,7 +179,7 @@ function Field({
         name={name}
         aria-invalid={errors ? true : undefined}
         aria-describedby={errors ? errorId : undefined}
-        className="mt-1 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body placeholder:text-placeholder focus-visible:border-gold-600"
+        className="mt-1 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-form-control placeholder:text-placeholder focus-visible:border-gold-600"
         {...inputProps}
       />
       {errors ? (
@@ -209,7 +209,7 @@ function SelectField({
   const errorId = `${name}-error`;
   return (
     <div>
-      <label htmlFor={name} className="text-small font-semibold text-text-primary">
+      <label htmlFor={name} className="text-form-label text-text-primary">
         {label} {required ? <span className="text-state-error">*</span> : null}
       </label>
       <select
@@ -218,7 +218,7 @@ function SelectField({
         defaultValue={defaultValue ?? ""}
         aria-invalid={errors ? true : undefined}
         aria-describedby={errors ? errorId : undefined}
-        className="mt-1 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-body focus-visible:border-gold-600"
+        className="mt-1 h-12 w-full rounded-sm border border-border-input bg-white px-4 text-form-control focus-visible:border-gold-600"
       >
         <option value="" disabled>
           Chọn {label.toLowerCase()}

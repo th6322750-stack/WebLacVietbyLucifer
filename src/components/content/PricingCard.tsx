@@ -38,9 +38,9 @@ export function PricingCard({
           Phổ biến nhất
         </span>
       ) : null}
-      <h3 className={`text-h4-desktop font-heading ${featured ? "text-white" : "text-ink-950"}`}>{plan}</h3>
+      <h3 className={`text-card-h3-mobile lg:text-card-h3-desktop font-heading ${featured ? "text-white" : "text-ink-950"}`}>{plan}</h3>
       <p className={`mt-2 text-small ${featured ? "text-white/75" : "text-text-secondary"}`}>{description}</p>
-      <p className={`mt-6 text-h3-mobile font-heading ${featured ? "text-gold-300" : "text-gold-700"}`}>
+      <p className={`mt-6 text-price font-heading ${featured ? "text-gold-300" : "text-gold-700"}`}>
         {price}
         {priceSuffix ? <span className="text-small font-body text-white/60"> {priceSuffix}</span> : null}
       </p>

@@ -58,8 +58,8 @@ export function SiteHeader() {
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`relative py-2 text-small font-medium text-white/90 hover:text-white ${
-                      active ? "text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
+                    className={`relative py-2 text-nav text-white/90 hover:text-white ${
+                      active ? "font-semibold text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
                     }`}
                   >
                     {link.label}
@@ -199,8 +199,8 @@ function ServiceDropdown({ active }: { active: boolean }) {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className={`relative flex items-center gap-1 py-2 text-small font-medium text-white/90 hover:text-white ${
-          active ? "text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
+        className={`relative flex items-center gap-1 py-2 text-nav text-white/90 hover:text-white ${
+          active ? "font-semibold text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
         }`}
       >
         Dịch vụ
@@ -218,7 +218,7 @@ function ServiceDropdown({ active }: { active: boolean }) {
                 role="menuitem"
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-sm px-3 py-2 text-small text-white/85 hover:bg-white/10 hover:text-white"
+                className="block rounded-sm px-3 py-2 text-nav text-white/85 hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>

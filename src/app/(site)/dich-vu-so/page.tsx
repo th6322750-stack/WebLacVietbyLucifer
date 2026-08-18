@@ -179,7 +179,8 @@ export default function DigitalServicesPage() {
         </Container>
       </Section>
 
-      <FinalCta sourceComponent="digital-final-cta" defaultService="Dịch vụ số / tài khoản" />
+      <FinalCta
+        decorated sourceComponent="digital-final-cta" defaultService="Dịch vụ số / tài khoản" />
     </>
   );
 }

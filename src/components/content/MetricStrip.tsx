@@ -11,7 +11,7 @@ export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; on
         {metrics.map((m) => (
           <div key={m.label} className="text-center">
             <dt className="sr-only">{m.label}</dt>
-            <dd className={`text-h2-mobile lg:text-h2-desktop font-heading ${onDark ? "text-gold-300" : "text-gold-700"}`}>
+            <dd className={`text-metric font-heading ${onDark ? "text-gold-300" : "text-gold-700"}`}>
               {m.value}
             </dd>
             <p className={`mt-1 text-small ${onDark ? "text-white/75" : "text-text-secondary"}`}>{m.label}</p>

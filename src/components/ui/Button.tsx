@@ -4,10 +4,12 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 type Variant = "primary" | "secondary" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
+// TYPOGRAPHY_AUTHORITY defines a single `button` role (14 / 1.2 / 600) regardless of size —
+// only the box geometry changes per size, not the label type.
 const SIZE_CLASS: Record<Size, string> = {
-  sm: "h-10 px-4 text-small",
-  md: "h-12 px-6 text-body",
-  lg: "h-[52px] px-8 text-body-lg",
+  sm: "h-10 px-4 text-button",
+  md: "h-12 px-6 text-button",
+  lg: "h-[52px] px-8 text-button",
 };
 
 const VARIANT_CLASS: Record<Variant, string> = {

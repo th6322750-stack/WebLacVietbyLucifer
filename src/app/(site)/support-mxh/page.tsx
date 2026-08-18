@@ -123,7 +123,7 @@ export default function SupportMxhPage() {
         </Container>
       </Section>
 
-      <Section id="why-lac-viet" tone="dark">
+      <Section id="why-lac-viet" tone="dark" texture>
         <Container>
           <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt Media Agency" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
           <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
@@ -167,7 +167,7 @@ export default function SupportMxhPage() {
         </Container>
       </Section>
 
-      <Section id="support-metrics" tone="dark">
+      <Section id="support-metrics" tone="dark" texture>
         <Container>
           <MetricStrip
             onDark

@@ -34,7 +34,7 @@ export default function NotFound() {
           <Icon name="circle-alert" size="feature" className="text-gold-600" />
           <div>
             <p className="text-eyebrow uppercase text-gold-700">404</p>
-            <h1 className="mt-3 text-h1-mobile lg:text-h1-desktop text-ink-950">
+            <h1 className="mt-3 text-detail-h1-mobile lg:text-detail-h1-desktop text-ink-950">
               Không tìm thấy trang
             </h1>
             <p className="mx-auto mt-4 max-w-editorial text-body-lg text-text-secondary">

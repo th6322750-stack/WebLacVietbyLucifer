@@ -19,7 +19,7 @@ export function ArticlePreviewCard({ preview }: { preview: ArticlePreview }) {
       </div>
       <div>
         <p className="line-clamp-2 text-small font-medium text-ink-950 group-hover:text-gold-700">{preview.title}</p>
-        <p className="text-caption text-text-muted">{formatDate(preview.publishedAt)}</p>
+        <p className="text-article-meta text-text-muted">{formatDate(preview.publishedAt)}</p>
       </div>
     </Link>
   );

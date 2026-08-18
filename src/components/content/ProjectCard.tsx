@@ -31,7 +31,7 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <div className="flex flex-1 flex-col p-5">
         <span className="text-caption uppercase text-gold-700">{project.category}</span>
-        <h3 className="mt-1 text-h4-mobile text-ink-950">{project.title}</h3>
+        <h3 className="mt-1 text-card-h3-mobile lg:text-card-h3-desktop text-ink-950">{project.title}</h3>
         <p className="mt-2 flex-1 text-small text-text-secondary">{project.summary}</p>
       </div>
     </Link>

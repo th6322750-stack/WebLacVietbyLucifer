@@ -1,7 +1,29 @@
 import type { Config } from "tailwindcss";
 
+// Every typography token declared by the authority, safelisted so it ALWAYS emits CSS even
+// before/without source usage. This implements TYPOGRAPHY_AUTHORITY.tokenEmissionContract
+// (`usedTypographyUtilityMustEmitCss`, `captionMustExist`) and removes the silent-failure class
+// where an off-scale or unused utility produces no rule at all — the bug that shipped a 256px
+// header logo and zero mobile section padding through five QA rounds.
+const TYPOGRAPHY_TOKENS = [
+  "display-desktop", "display-mobile",
+  "h1-desktop", "h1-mobile",
+  "detail-h1-desktop", "detail-h1-mobile",
+  "h2-desktop", "h2-mobile",
+  "h3-desktop", "h3-mobile",
+  "h4-desktop", "h4-mobile",
+  "card-h3-desktop", "card-h3-mobile",
+  "body-xl", "body-lg", "body", "small", "caption", "eyebrow",
+  "nav", "button", "chip", "form-label", "form-control",
+  "step-number", "metric", "price", "article-meta", "breadcrumb", "footer",
+];
+
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
+  safelist: [
+    ...TYPOGRAPHY_TOKENS.map((t) => `text-${t}`),
+    ...TYPOGRAPHY_TOKENS.map((t) => `lg:text-${t}`),
+  ],
   theme: {
     screens: {
       xs: "390px",
@@ -98,22 +120,41 @@ const config: Config = {
       ],
     },
     fontSize: {
-      "display-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-      "display-desktop": ["64px", { lineHeight: "1.05", letterSpacing: "-0.025em" }],
-      "h1-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-      "h1-desktop": ["56px", { lineHeight: "1.08", letterSpacing: "-0.022em" }],
-      "h2-mobile": ["32px", { lineHeight: "1.18", letterSpacing: "-0.015em" }],
-      "h2-desktop": ["40px", { lineHeight: "1.15", letterSpacing: "-0.018em" }],
-      "h3-mobile": ["24px", { lineHeight: "1.28", letterSpacing: "-0.01em" }],
-      "h3-desktop": ["28px", { lineHeight: "1.25", letterSpacing: "-0.012em" }],
-      "h4-mobile": ["20px", { lineHeight: "1.3" }],
-      "h4-desktop": ["22px", { lineHeight: "1.3" }],
-      "body-xl": ["20px", { lineHeight: "1.65" }],
-      "body-lg": ["18px", { lineHeight: "1.7" }],
-      body: ["16px", { lineHeight: "1.7" }],
-      small: ["14px", { lineHeight: "1.6" }],
+      // Generated from .webby/TYPOGRAPHY_AUTHORITY.json semanticRoles +
+      // typography.json compatibilityTokens/tailwindTokenMap. Per the authority's
+      // tokenEmissionContract this is the UNION, never rebuilt from semanticRoles
+      // alone — legacy h3-*/h4-*/body-xl stay until source usage is proven zero.
+      "display-desktop": ["64px", { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600" }],
+      "display-mobile": ["40px", { lineHeight: "1.08", letterSpacing: "-0.015em", fontWeight: "600" }],
+      "h1-desktop": ["56px", { lineHeight: "1.08", letterSpacing: "-0.018em", fontWeight: "700" }],
+      "h1-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "700" }],
+      "detail-h1-desktop": ["48px", { lineHeight: "1.12", letterSpacing: "-0.015em", fontWeight: "700" }],
+      "detail-h1-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "700" }],
+      "h2-desktop": ["40px", { lineHeight: "1.15", letterSpacing: "-0.012em", fontWeight: "700" }],
+      "h2-mobile": ["32px", { lineHeight: "1.18", letterSpacing: "-0.01em", fontWeight: "700" }],
+      "h3-desktop": ["28px", { lineHeight: "1.25", letterSpacing: "-0.01em", fontWeight: "700" }],
+      "h3-mobile": ["24px", { lineHeight: "1.28", letterSpacing: "-0.008em", fontWeight: "700" }],
+      "h4-desktop": ["22px", { lineHeight: "1.3", fontWeight: "700" }],
+      "h4-mobile": ["20px", { lineHeight: "1.3", fontWeight: "700" }],
+      "card-h3-desktop": ["22px", { lineHeight: "1.3", fontWeight: "700" }],
+      "card-h3-mobile": ["20px", { lineHeight: "1.3", fontWeight: "700" }],
+      "body-xl": ["20px", { lineHeight: "1.65", fontWeight: "400" }],
+      "body-lg": ["18px", { lineHeight: "1.7", fontWeight: "400" }],
+      body: ["16px", { lineHeight: "1.7", fontWeight: "400" }],
+      small: ["14px", { lineHeight: "1.55", fontWeight: "400" }],
       caption: ["12px", { lineHeight: "1.5", fontWeight: "500" }],
-      eyebrow: ["12px", { lineHeight: "1.2", fontWeight: "700", letterSpacing: "0.14em" }],
+      eyebrow: ["12px", { lineHeight: "1.2", letterSpacing: "0.12em", fontWeight: "600" }],
+      nav: ["14px", { lineHeight: "1.4", fontWeight: "500" }],
+      button: ["14px", { lineHeight: "1.2", fontWeight: "600" }],
+      chip: ["14px", { lineHeight: "1.4", fontWeight: "500" }],
+      "form-label": ["14px", { lineHeight: "1.4", fontWeight: "600" }],
+      "form-control": ["14px", { lineHeight: "1.45", fontWeight: "400" }],
+      "step-number": ["18px", { lineHeight: "1.2", fontWeight: "700" }],
+      metric: ["28px", { lineHeight: "1.15", letterSpacing: "-0.01em", fontWeight: "700" }],
+      price: ["20px", { lineHeight: "1.25", fontWeight: "700" }],
+      "article-meta": ["12px", { lineHeight: "1.5", fontWeight: "500" }],
+      breadcrumb: ["12px", { lineHeight: "1.5", fontWeight: "400" }],
+      footer: ["13px", { lineHeight: "1.6", fontWeight: "400" }],
     },
     extend: {
       maxWidth: {

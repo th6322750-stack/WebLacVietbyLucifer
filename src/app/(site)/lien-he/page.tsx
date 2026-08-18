@@ -33,6 +33,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
+        heroRole="heroDisplay"
         eyebrow="Liên hệ – Nhận tư vấn"
         title={siteSettings.brandName}
         description="Chúng tôi luôn sẵn sàng lắng nghe và tư vấn giải pháp phù hợp nhất cho mục tiêu của bạn."

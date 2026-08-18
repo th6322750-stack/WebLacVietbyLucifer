@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { Noto_Serif_Display, Be_Vietnam_Pro } from "next/font/google";
+import { Noto_Serif, Inter } from "next/font/google";
 import { siteSettings } from "@/lib/site-settings";
 import "./globals.css";
 
-const headingFont = Noto_Serif_Display({
+// Typography v2 (.webby/TYPOGRAPHY_AUTHORITY.json, revision pha1-typography-v2).
+// Noto_Serif_Display + Be_Vietnam_Pro are DEPRECATED_FOR_VISUAL_MATCH: raster glyph matching
+// against the approved master showed the visible serif is materially closer to Noto Serif and
+// the body/UI face to Inter. Weights are exactly those the authority declares — no synthetic
+// weights (qa.syntheticWeightForbidden).
+const headingFont = Noto_Serif({
   subsets: ["latin", "vietnamese"],
-  weight: ["500", "600", "700"],
+  weight: ["600", "700"],
   variable: "--font-heading",
   display: "swap",
 });
 
-const bodyFont = Be_Vietnam_Pro({
+const bodyFont = Inter({
   subsets: ["latin", "vietnamese"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",

@@ -90,7 +90,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
       <section id="article-header">
         <Container width="editorial">
           <span className="text-eyebrow uppercase text-gold-700">{article.category}</span>
-          <h1 className="mt-3 text-h1-mobile lg:text-h1-desktop text-ink-950">{article.title}</h1>
+          <h1 className="mt-3 text-detail-h1-mobile lg:text-detail-h1-desktop text-ink-950">{article.title}</h1>
           <div className="mt-4 flex items-center gap-2 text-small text-text-muted">
             <span>{article.author}</span>
             <span aria-hidden="true">·</span>

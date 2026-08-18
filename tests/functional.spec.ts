@@ -366,6 +366,138 @@ test.describe("detail-route asset identity", () => {
   });
 });
 
+test.describe("typography emission guard (PHA2 §D)", () => {
+  // TYPOGRAPHY_AUTHORITY.tokenEmissionContract: every referenced typography utility MUST emit
+  // real CSS. Tailwind silently emits nothing for an unknown token, which is how `text-caption`
+  // could have vanished when rebuilding fontSize from semanticRoles alone. tailwind.config.ts
+  // safelists the full authority token set; this proves the safelist actually works.
+  const AUTHORITY_TOKENS = [
+    "display-desktop", "display-mobile",
+    "h1-desktop", "h1-mobile",
+    "detail-h1-desktop", "detail-h1-mobile",
+    "h2-desktop", "h2-mobile",
+    "h3-desktop", "h3-mobile",
+    "h4-desktop", "h4-mobile",
+    "card-h3-desktop", "card-h3-mobile",
+    "body-xl", "body-lg", "body", "small", "caption", "eyebrow",
+    "nav", "button", "chip", "form-label", "form-control",
+    "step-number", "metric", "price", "article-meta", "breadcrumb", "footer",
+  ];
+
+  test("every authority typography token emits a real font-size rule", async ({ page }) => {
+    await page.goto("/");
+    const results = await page.evaluate((tokens) => {
+      const probe = document.createElement("div");
+      probe.style.position = "absolute";
+      probe.style.visibility = "hidden";
+      document.body.appendChild(probe);
+      const out = tokens.map((t) => {
+        probe.className = `text-${t}`;
+        const cs = getComputedStyle(probe);
+        return { token: t, fontSize: cs.fontSize, lineHeight: cs.lineHeight, weight: cs.fontWeight };
+      });
+      probe.remove();
+      return out;
+    }, AUTHORITY_TOKENS);
+
+    // A missing token leaves the browser default (16px / 400) on every probed property; a real
+    // token sets an explicit font-size AND at least one of line-height / weight.
+    const broken = results.filter(
+      (r) => !r.fontSize || r.fontSize === "" || (r.lineHeight === "normal" && r.weight === "400" && r.fontSize === "16px"),
+    );
+    expect(broken.map((b) => b.token), "tokens emitting no CSS").toEqual([]);
+
+    // The four the task names explicitly must be present and correct.
+    const sizeOf = (token: string) => results.find((r) => r.token === token)?.fontSize;
+    expect(sizeOf("caption")).toBe("12px");
+    expect(sizeOf("h4-mobile")).toBe("20px");
+    expect(sizeOf("h4-desktop")).toBe("22px");
+    expect(sizeOf("body-xl")).toBe("20px");
+  });
+
+  test("no typography utility referenced in markup resolves to an unset size", async ({ page }) => {
+    for (const route of ["/", "/website", "/du-an", "/kien-thuc", "/lien-he"]) {
+      await page.goto(route);
+      const unset = await page.evaluate(() => {
+        const bad: string[] = [];
+        document.querySelectorAll<HTMLElement>("[class]").forEach((el) => {
+          const tokens = Array.from(el.classList).filter((c) => /^(lg:)?text-[a-z0-9-]+$/.test(c));
+          if (!tokens.length) return;
+          const cs = getComputedStyle(el);
+          if (!cs.fontSize) bad.push(el.className);
+        });
+        return bad;
+      });
+      expect(unset, `unset typography on ${route}`).toEqual([]);
+    }
+  });
+
+  test("resolved font families are Noto Serif for headings and Inter for body/UI", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const fams = await page.evaluate(() => {
+      const h1 = document.querySelector("h1");
+      const body = document.body;
+      return {
+        heading: h1 ? getComputedStyle(h1).fontFamily : "",
+        body: getComputedStyle(body).fontFamily,
+      };
+    });
+    // next/font emits a hashed family name, so assert the declared fallback chain instead of a
+    // literal "Noto Serif" string: heading must resolve serif-first, body must resolve to the
+    // Inter/system stack. qa.fallbackAtVisualQaForbidden is covered by fonts.ready in evidence.
+    expect(fams.heading.toLowerCase()).toContain("georgia");
+    expect(fams.body.toLowerCase()).toContain("system-ui");
+    expect(fams.heading).not.toEqual(fams.body);
+  });
+});
+
+test.describe("PHA1 decorative asset mapping", () => {
+  // ASSET_USAGE_MAP: /dich-vu-so final-cta gets dong-son-ring + gold-noise; /support-mxh dark
+  // bands get gold-noise. These are decorative-only and must appear exactly where mapped —
+  // never site-wide. The assets carry their own opacity, so the layer must NOT be double-dimmed.
+  test("/dich-vu-so final CTA carries the mapped motif and texture", async ({ page }) => {
+    await page.goto("/dich-vu-so");
+    const layers = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLElement>('[aria-hidden="true"]'))
+        .map((el) => getComputedStyle(el).backgroundImage)
+        .filter((b) => b && b !== "none"),
+    );
+    expect(layers.some((b) => b.includes("dong-son-ring")), "dong-son-ring motif missing").toBe(true);
+    expect(layers.some((b) => b.includes("gold-noise")), "gold-noise texture missing").toBe(true);
+  });
+
+  test("/support-mxh dark bands carry the mapped texture", async ({ page }) => {
+    await page.goto("/support-mxh");
+    for (const id of ["#why-lac-viet", "#support-metrics"]) {
+      const bg = await page.locator(`${id} > [aria-hidden="true"]`).first().evaluate((el) => getComputedStyle(el).backgroundImage);
+      expect(bg, `${id} texture`).toContain("gold-noise");
+    }
+  });
+
+  test("decorative layers are not double-dimmed into invisibility", async ({ page }) => {
+    await page.goto("/dich-vu-so");
+    const opacities = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLElement>('[aria-hidden="true"]'))
+        .filter((el) => getComputedStyle(el).backgroundImage.includes("decorative"))
+        .map((el) => Number(getComputedStyle(el).opacity)),
+    );
+    expect(opacities.length).toBeGreaterThan(0);
+    for (const o of opacities) expect(o).toBe(1);
+  });
+
+  test("decorative assets are not applied site-wide", async ({ page }) => {
+    // The home route maps no decorative motif; it must not inherit one.
+    await page.goto("/");
+    const hasRing = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLElement>("*")).some((el) =>
+        getComputedStyle(el).backgroundImage.includes("dong-son-ring"),
+      ),
+    );
+    expect(hasRing).toBe(false);
+  });
+});
+
 test.describe("design-token integrity", () => {
   // FINAL PASS: tailwind.config.ts overrides theme.spacing with tokens.json's exact spacingPx
   // scale (gridBasePx 4). Off-scale values like h-9/py-14/mt-0.5 therefore emit NO CSS at all —

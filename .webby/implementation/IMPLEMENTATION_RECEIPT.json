@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "IMPLEMENTED_FINAL_PASS_PENDING_CHATGPT_FINAL_QA",
-  "statusNote": "All objective implementation work is closed as of the final all-in-one pass. NOT PRODUCTION_READY: blocked on verified factual replacements (production email, Facebook URL, street address, verified case studies/metrics/testimonials) and on the An Phát showcase asset source — all upstream/user-owned. See blockers.",
+  "status": "PHA2_IMPLEMENTED_PENDING_CHATGPT_FINAL_QA",
+  "statusNote": "PHA 2 all-in-one executed against authority e84d3094. Typography v2, the 91-asset pack (3 decorative vectors) and the visual correction pass are complete. ONE external blocker remains: the three frozen raster deliveries live only on Drive and the Drive MCP session is expired in this non-interactive run, so they could not be fetched or checksum-verified. They were deliberately NOT faked, regenerated or substituted. See pha2.blockedRasters.",
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
@@ -324,11 +324,11 @@
   "build": {
     "typecheck": "PASS (tsc --noEmit, 0 errors)",
     "lint": "PASS (eslint ., 0 errors/warnings)",
-    "build": "PASS (next build — 36/36 pages generated; includes 13 /du-an/[slug] paths and 8 /kien-thuc/[slug] paths. All demo/hidden detail routes remain statically generated and routable while being withheld from sitemap.xml and marked noindex.)"
+    "build": "PASS (next build — 36/36 pages; all static routes succeed after the typography v2 swap)"
   },
   "tests": {
-    "functional": "PASS — 61/61 (tests/functional.spec.ts). Progression: 28 (round 3) → 39 (round 4) → 44 (round 5) → 61 (final pass). Final pass added 17: demo-project SEO gating (4), content-truth markup markers across 4 routes (4), demo pricing tagging (1), pending-contact non-invention (1), and a new design-token integrity block (7 incl. header-logo bounds on / and /404, section padding at 390 and 1440, and nav gap resolution).",
-    "evidence": "PASS — 30/30 re-captured at 1440 desktop / 390 mobile incl. the deterministic loading state. Full re-capture was REQUIRED this pass: two visible changes landed — the /support-mxh card-4 icon (lightbulb → shield-check, matching the master) and the site-wide spacing-token fix (FINAL-06b), which restores header logo sizing on every page and section vertical padding at mobile/tablet. The capture helper was also hardened for determinism (FINAL-06c).",
+    "functional": "PASS — 68/68 (tests/functional.spec.ts). 61 → 68: added the PHA2 §D typography emission guard (3) and PHA1 decorative asset mapping assertions (4).",
+    "evidence": "PASS — 30/30 re-captured at 1440/390 including the loading state. Full recapture was mandatory: the font families, the full token scale and the decorative layers all change visible geometry. document.fonts.ready plus the image load/decode settle gates precede every capture.",
     "noIndependentCi": "Still true at the final pass: this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These are LOCAL executions plus committed evidence plus this receipt — deliberately not described as CI, and no remote status check is attached to the HEAD commit."
   },
   "playwrightEvidence": {
@@ -516,5 +516,45 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "FINAL ALL-IN-ONE PASS complete (task comment 5320497882). Every objective implementation issue found in the consolidated audit is fixed — see fixLogFinalPass (FINAL-01..08). No Claude-owned open questions remain: the round-5 demo-project SEO scope question was resolved in-pass rather than handed back, and the /support-mxh brand-youtube map observation was settled objectively against the approved master. Remaining open items are upstream/user-owned only: one BLOCKED_ASSET_SOURCE (An Phát full-width showcase source, claudeActionRequired NONE) and two BLOCKED_SPEC entries for unverified production contact fields (productionEmail/facebookUrl, streetAddress). PR #5 stays Draft and unmerged. Next flow per the task: ChatGPT ONE final QA → user opens the real site and approves → merge. No further Claude rounds expected."
+  "nextStep": "PHA 2 complete except the three Drive-only rasters (see pha2.blockedRasters). PR #5 stays Draft/OPEN/unmerged for one ChatGPT final QA. Supply the three .webp files via git or an interactive Drive session and their three mapped placements can be finished in a single short pass.",
+  "pha2": {
+    "authorityHeadIntegrated": "e84d3094efffeb447716144a95d63bcbc226f8ca",
+    "authorityMergeCommit": "c589769c1186966447f363270b121a1a6d2a81e6",
+    "gateVerified": "PHA1_FREEZE_RECEIPT.status == USER_APPROVED_PHA2_AUTHORIZED, checked before any runtime change",
+    "typography": {
+      "revision": "pha1-typography-v2",
+      "fonts": "layout.tsx now loads Noto_Serif (600/700) + Inter (400/500/600/700) via next/font/google, subsets latin+vietnamese, display swap. Noto_Serif_Display + Be_Vietnam_Pro removed.",
+      "tokenEmission": "tailwind.config.ts fontSize was GENERATED from TYPOGRAPHY_AUTHORITY.semanticRoles + typography.json compatibilityTokens/tailwindTokenMap by script, not hand-transcribed — 31 tokens, the full union. Legacy h3-*/h4-*/body-xl retained as emitted aliases per tokenEmissionContract.",
+      "detailH1Note": "semanticRoles defines detailH1 but typography.json.tailwindTokenMap (an explicit mirror) omits a token for it. semanticRoles is the stated authority, so detail-h1-desktop/mobile were emitted following the mirror's own naming convention. Flagged for ChatGPT to fold into the mirror.",
+      "safelist": "All 31 typography tokens (plus lg: variants) are safelisted so a token ALWAYS emits CSS even with zero source usage. This is what makes the §D guard deterministic instead of dependent on incidental class usage.",
+      "componentRoles": "Applied per TYPOGRAPHY_IMPLEMENTATION_MAP v2, including the seven components that were missing in v1 (ContactForm, NewsletterForm, TestimonialCard, ProcessSteps, ConsultationProvider, ContactChannelCard, Chip).",
+      "routeMatrix": "PageHero gained an explicit heroRole prop; / and /lien-he use heroDisplay + uppercase, six service/listing routes use heroH1, and /du-an/[slug], /kien-thuc/[slug], /404 use the new detailH1 tokens.",
+      "deliberateDeviations": [
+        "Mobile drawer links kept at body-lg rather than the 14px nav role: nav is defined desktop-only and shrinking a touch drawer to 14px would hurt usability without the master demanding it.",
+        "ArticlePreviewCard title kept at small rather than cardH3: it sits in a 280px sticky rail beside an 80x48 thumbnail, and 20px serif would overflow the approved page-11 composition. articleMeta WAS applied to its date."
+      ]
+    },
+    "decorativeAssets": {
+      "integrated": [
+        "dong-son-ring",
+        "gold-divider",
+        "gold-noise"
+      ],
+      "placements": "dong-son-ring + gold-noise on the /dich-vu-so final CTA (FinalCta `decorated` prop); gold-noise on the two mapped /support-mxh dark bands (Section `texture` prop); gold-divider wired into the existing Divider component.",
+      "notAutoInserted": "Divider is not force-inserted anywhere — the master shows no divider at a verifiable placement and adding one would be a redesign.",
+      "defectFoundAndFixed": "First implementation stacked a Tailwind opacity on top of the vectors' own baked-in opacity (ring .2, noise .28), multiplying them to ~0.04 and rendering the mapped decoration effectively invisible. Removed the extra dimming; a regression test now asserts these layers compute to opacity 1 and that no decorative asset leaks onto unmapped routes."
+    },
+    "blockedRasters": {
+      "type": "BLOCKED_EXTERNAL_SOURCE",
+      "detail": "support-cta-device-shield-approved-crop, digital-cta-phoenix-approved-crop and project-detail-showcase-approved-crop are Drive-only (HYBRID_DRIVE_GIT transport). The Google Drive MCP connector returns `session expired` and OAuth cannot run in this non-interactive session, so the files could not be fetched, SHA-256 verified, or committed.",
+      "claudeAction": "NONE TAKEN — not generated, not substituted, not re-cropped from the PDF, and not referenced anywhere in src/. Re-cropping would also fail the mandated checksum, since WebP re-encoding cannot reproduce the frozen bytes.",
+      "consequence": "Three mapped placements remain unimplemented: /support-mxh consultationCtaVisual, /dich-vu-so finalCtaVisual, and /du-an/[slug] visualShowcase (which still shows the authority-safe project-detail-device-master fallback).",
+      "resolution": "Either push the three .webp files into git at their manifest repoDestination paths, or authorize an interactive Drive session. Checksums to verify on arrival are pinned in CLAUDE_TASK.md section A."
+    },
+    "visualCorrection": [
+      "Home hero: the three feature items were wrapping 2+1 in a flex row; approved master page-03 shows all three on ONE row. Changed to a 3-column grid from sm up.",
+      "Home social proof: count and rating were stacked on two lines; the master shows count + stars + score inline. Changed to a single wrapping row.",
+      "Header/logo/nav, section rhythm, forms, modal, footer and 404 re-verified after the font swap — no further objective mismatch found at 1440/390."
+    ]
+  }
 }

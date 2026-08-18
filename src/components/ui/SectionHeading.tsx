@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { assetPath } from "@/lib/assets";
 
 export function SectionEyebrow({
   children,
@@ -52,6 +53,15 @@ export function SectionHeading({
   );
 }
 
+/** Section ornament using the approved `gold-divider` vector (ASSET_USAGE_MAP shared.decorative).
+ * Kept as a semantic <hr>; the asset is drawn as a centered background so it degrades to a plain
+ * rule if the image is unavailable. Not auto-inserted into any approved layout — the master does
+ * not show a divider at a verifiable placement, and adding one would be a redesign. */
 export function Divider({ className = "" }: { className?: string }) {
-  return <hr className={`border-t border-border ${className}`} />;
+  return (
+    <hr
+      className={`h-2 border-0 bg-center bg-no-repeat ${className}`}
+      style={{ backgroundImage: `url(${assetPath("gold-divider")})` }}
+    />
+  );
 }

@@ -26,7 +26,7 @@ export function ServiceCard({
       <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-ivory-100 text-gold-700">
         {brand ? <BrandMark name={brand} size={24} /> : icon ? <Icon name={icon} size="feature" /> : null}
       </span>
-      <h3 className="mt-5 text-h4-mobile lg:text-h4-desktop text-ink-950">{title}</h3>
+      <h3 className="mt-5 text-card-h3-mobile lg:text-card-h3-desktop text-ink-950">{title}</h3>
       <p className="mt-2 text-body text-text-secondary">{description}</p>
       {bullets && bullets.length > 0 ? (
         <ul className="mt-4 flex flex-col gap-2">
