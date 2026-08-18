@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { useConsultation } from "@/components/conversion/ConsultationProvider";
@@ -11,6 +12,7 @@ export function FinalCta({
   sourceComponent,
   defaultService,
   decorated = false,
+  visualAssetId,
 }: {
   title?: string;
   description?: string;
@@ -19,6 +21,9 @@ export function FinalCta({
   /** Enables the approved `dong-son-ring` motif + `gold-noise` texture. ASSET_USAGE_MAP maps
    * these to /dich-vu-so final-cta only — deliberately not applied to every FinalCta. */
   decorated?: boolean;
+  /** Approved-UI CTA crop (e.g. /dich-vu-so finalCtaVisual). Rendered at native size only —
+   * these are SOURCE_LIMITED_APPROVED_CROP and must not be upscaled. */
+  visualAssetId?: string;
 }) {
   const { open } = useConsultation();
   return (
@@ -38,6 +43,16 @@ export function FinalCta({
         </>
       ) : null}
       <Container className={`flex flex-col items-center gap-6 text-center ${decorated ? "relative" : ""}`}>
+        {visualAssetId ? (
+          <Image
+            src={assetPath(visualAssetId)}
+            alt=""
+            aria-hidden="true"
+            width={205}
+            height={98}
+            className="h-auto w-full max-w-[205px]"
+          />
+        ) : null}
         <h2 className="max-w-editorial text-h2-mobile lg:text-h2-desktop text-white">{title}</h2>
         <p className="max-w-editorial text-body-lg text-white/75">{description}</p>
         <Button size="lg" onClick={() => open(sourceComponent, defaultService)}>

@@ -180,7 +180,9 @@ export default function DigitalServicesPage() {
       </Section>
 
       <FinalCta
-        decorated sourceComponent="digital-final-cta" defaultService="Dịch vụ số / tài khoản" />
+        decorated
+        visualAssetId="digital-cta-phoenix-approved-crop"
+        sourceComponent="digital-final-cta" defaultService="Dịch vụ số / tài khoản" />
     </>
   );
 }

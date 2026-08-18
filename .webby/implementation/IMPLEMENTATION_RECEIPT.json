@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "PHA2_IMPLEMENTED_PENDING_CHATGPT_FINAL_QA",
-  "statusNote": "PHA 2 all-in-one executed against authority e84d3094. Typography v2, the 91-asset pack (3 decorative vectors) and the visual correction pass are complete. ONE external blocker remains: the three frozen raster deliveries live only on Drive and the Drive MCP session is expired in this non-interactive run, so they could not be fetched or checksum-verified. They were deliberately NOT faked, regenerated or substituted. See pha2.blockedRasters.",
+  "status": "PHA2_COMPLETE_PENDING_CHATGPT_FINAL_QA",
+  "statusNote": "PHA 2 all-in-one complete against authority e84d3094. Typography v2, the full 91-asset pack (3 approved-UI raster crops + 3 decorative vectors) and the visual correction pass are all implemented. The earlier Drive blocker was resolved in-session after the user opened link access.",
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
@@ -327,8 +327,8 @@
     "build": "PASS (next build — 36/36 pages; all static routes succeed after the typography v2 swap)"
   },
   "tests": {
-    "functional": "PASS — 68/68 (tests/functional.spec.ts). 61 → 68: added the PHA2 §D typography emission guard (3) and PHA1 decorative asset mapping assertions (4).",
-    "evidence": "PASS — 30/30 re-captured at 1440/390 including the loading state. Full recapture was mandatory: the font families, the full token scale and the decorative layers all change visible geometry. document.fonts.ready plus the image load/decode settle gates precede every capture.",
+    "functional": "PASS — 72/72 (tests/functional.spec.ts). 61 → 72: PHA2 §D typography emission guard (3), PHA1 decorative mapping (4), approved-crop no-upscale guards (4). One pre-existing assertion was updated, not weakened: the An Phát showcase expectation moved from the temporary device-master fallback to the authority-mapped approved crop, keeping the original invariant that no project-cover may appear on that route.",
+    "evidence": "PASS — 30/30 re-captured at 1440/390 including the loading state, after fonts, tokens, decorative layers and all three raster placements landed.",
     "noIndependentCi": "Still true at the final pass: this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These are LOCAL executions plus committed evidence plus this receipt — deliberately not described as CI, and no remote status check is attached to the HEAD commit."
   },
   "playwrightEvidence": {
@@ -516,7 +516,7 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "PHA 2 complete except the three Drive-only rasters (see pha2.blockedRasters). PR #5 stays Draft/OPEN/unmerged for one ChatGPT final QA. Supply the three .webp files via git or an interactive Drive session and their three mapped placements can be finished in a single short pass.",
+  "nextStep": "PHA 2 complete with no Claude-owned open items. PR #5 stays Draft/OPEN/unmerged for one ChatGPT final QA. Two authority nits to fold back upstream: typography.json.tailwindTokenMap has no token for detailH1 though semanticRoles defines it, and ASSET_USAGE_MAP still lists brand-youtube under /support-mxh where the approved master shows no YouTube card.",
   "pha2": {
     "authorityHeadIntegrated": "e84d3094efffeb447716144a95d63bcbc226f8ca",
     "authorityMergeCommit": "c589769c1186966447f363270b121a1a6d2a81e6",
@@ -545,16 +545,44 @@
       "defectFoundAndFixed": "First implementation stacked a Tailwind opacity on top of the vectors' own baked-in opacity (ring .2, noise .28), multiplying them to ~0.04 and rendering the mapped decoration effectively invisible. Removed the extra dimming; a regression test now asserts these layers compute to opacity 1 and that no decorative asset leaks onto unmapped routes."
     },
     "blockedRasters": {
-      "type": "BLOCKED_EXTERNAL_SOURCE",
-      "detail": "support-cta-device-shield-approved-crop, digital-cta-phoenix-approved-crop and project-detail-showcase-approved-crop are Drive-only (HYBRID_DRIVE_GIT transport). The Google Drive MCP connector returns `session expired` and OAuth cannot run in this non-interactive session, so the files could not be fetched, SHA-256 verified, or committed.",
-      "claudeAction": "NONE TAKEN — not generated, not substituted, not re-cropped from the PDF, and not referenced anywhere in src/. Re-cropping would also fail the mandated checksum, since WebP re-encoding cannot reproduce the frozen bytes.",
-      "consequence": "Three mapped placements remain unimplemented: /support-mxh consultationCtaVisual, /dich-vu-so finalCtaVisual, and /du-an/[slug] visualShowcase (which still shows the authority-safe project-detail-device-master fallback).",
-      "resolution": "Either push the three .webp files into git at their manifest repoDestination paths, or authorize an interactive Drive session. Checksums to verify on arrival are pinned in CLAUDE_TASK.md section A."
+      "status": "RESOLVED_IN_SESSION",
+      "history": "The Google Drive MCP connector returned `session expired` and OAuth cannot run in a non-interactive session, so the three frozen rasters were initially unavailable and were reported as an external blocker rather than faked.",
+      "resolution": "User opened link-level access on both Drive files. Fetched over plain HTTPS instead of the connector: the visual master downloaded directly, and the 29.9 MB freeze bundle required following Google's large-file virus-scan interstitial (confirm token + uuid) to reach drive.usercontent.google.com. No other Drive file was pulled, searched or browsed.",
+      "checksumVerification": "3/3 PASS — verified twice: once against the bytes read out of the ZIP before writing, and again from the files on disk after writing to repoDestination.",
+      "verified": [
+        {
+          "asset": "support-cta-device-shield-approved-crop",
+          "sha256": "291d5815ab0e7146fb81c0cba4b0ccd0545b2aa665a4b1faeeac02e54ed91665",
+          "bytes": 8214,
+          "native": "295x120",
+          "match": true
+        },
+        {
+          "asset": "digital-cta-phoenix-approved-crop",
+          "sha256": "a4eeb0783d43d2dda392d128eec6dc6e1c3105d1395ba1f64570704c5d9e11f2",
+          "bytes": 7306,
+          "native": "205x98",
+          "match": true
+        },
+        {
+          "asset": "project-detail-showcase-approved-crop",
+          "sha256": "019b5dc4e1ed5679668e1b9944399c7128a416e0607dc856ccf65aab2ef1549f",
+          "bytes": 3618,
+          "native": "516x33",
+          "match": true
+        }
+      ]
     },
     "visualCorrection": [
       "Home hero: the three feature items were wrapping 2+1 in a flex row; approved master page-03 shows all three on ONE row. Changed to a 3-column grid from sm up.",
       "Home social proof: count and rating were stacked on two lines; the master shows count + stars + score inline. Changed to a single wrapping row.",
       "Header/logo/nav, section rhythm, forms, modal, footer and 404 re-verified after the font swap — no further objective mismatch found at 1440/390."
-    ]
+    ],
+    "rasterPlacements": {
+      "/support-mxh consultation-cta": "Device+shield crop rendered at native 295x120 inside the support-lead-cta card, decorative (aria-hidden), never upscaled.",
+      "/dich-vu-so final-cta": "Phoenix crop at native 205x98 above the CTA heading, via a new FinalCta visualAssetId prop, alongside the mapped dong-son-ring motif and gold-noise texture.",
+      "/du-an/[slug] visual-showcase": "Approved crop now replaces the temporary device-master fallback for the identity-bound demo-project-01 fixture. It is 516x33 (~15.6:1) and the delta forbids upscaling, so the section geometry was adapted to the source: the strip renders at its native width, centred, with NO invented continuation below the approved cut-off. Verified against ui-007.png from the freeze bundle, which shows exactly this cropped strip under the 'GIAO DIỆN WEBSITE' heading.",
+      "guards": "Four new tests assert each crop renders at or below its frozen dimensions with native aspect preserved, plus an explicit assertion that the showcase strip is never stretched into a fake 16:9 (aspect must stay >10:1)."
+    }
   }
 }

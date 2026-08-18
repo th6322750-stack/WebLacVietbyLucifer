@@ -36,6 +36,13 @@ const ASSET_PATHS: Record<string, string> = {
   "lac-viet-logo-canonical": "/assets/brand/lac-viet-logo.webp",
   "support-client-logo-strip": "/assets/client-logos/support-client-logo-strip.png",
 
+  // PHA1 delta — the three approved-UI raster crops. SOURCE_LIMITED_APPROVED_CROP: exact pixels
+  // from the approved composite, sha256-verified on download and again on disk. They must be
+  // rendered at native size (contain, no upscale) — see ASSET_MANIFEST_DELTA_91.responsive.
+  "support-cta-device-shield-approved-crop": "/assets/cta/support-cta-device-shield-approved-crop.webp",
+  "digital-cta-phoenix-approved-crop": "/assets/cta/digital-cta-phoenix-approved-crop.webp",
+  "project-detail-showcase-approved-crop": "/assets/detail/project-detail-showcase-approved-crop.webp",
+
   // PHA1 delta — the three source-controlled decorative vectors, now counted and mapped
   // (ASSET_MANIFEST_DELTA_91.json). Purely decorative: never identity-bound content.
   "dong-son-ring": "/assets/decorative/dong-son-ring.svg",

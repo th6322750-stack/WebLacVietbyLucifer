@@ -61,8 +61,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   // A project's own identity-bound cover is legitimate here; a detail-only fixture supplies its
   // own mapped DETAIL_VISUAL instead of borrowing one (GD10 re-QA round 4, R4-01). The device
   // master is presented `contain` per asset-manifest.json presentationByUsage, not `cover`.
-  const showcaseAssetId = project.detailVisualAssetId ?? project.heroAssetId;
-  const showcaseFit = showcaseAssetId === "project-detail-device-master" ? "object-contain" : "object-cover";
+  // ASSET_USAGE_MAP "/du-an/[slug]".visualShowcase = project-detail-showcase-approved-crop, an
+  // identity-bound crop for item demo-project-01. Visible projects keep their own cover.
+  const showcaseAssetId = project.hidden
+    ? "project-detail-showcase-approved-crop"
+    : (project.detailVisualAssetId ?? project.heroAssetId);
+  const showcaseIsApprovedCrop = showcaseAssetId === "project-detail-showcase-approved-crop";
 
   return (
     <>
@@ -228,9 +232,21 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <Section id="visual-showcase" tone="dark">
         <Container>
           <SectionHeading onDark eyebrow="Giao diện" title="Giao diện website" align="center" />
-          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-lg">
+          {/* project-detail-showcase-approved-crop is SOURCE_LIMITED_APPROVED_CROP at 516x33:
+              the approved master only ever exposes the top strip of this screenshot, cut off by
+              the mockup frame. The delta forbids upscaling or stretching it into a fake 16:9, so
+              the section geometry adapts to the source instead — rendered at its native width,
+              centred, with no invented continuation below. */}
+          <div className="mx-auto mt-8 w-full max-w-[516px] overflow-hidden rounded-lg">
             {showcaseAssetId ? (
-              <Image src={assetPath(showcaseAssetId)} alt={`Minh hoạ giao diện ${project.title}`} fill className={showcaseFit} />
+              <Image
+                src={assetPath(showcaseAssetId)}
+                alt={`Minh hoạ giao diện ${project.title}`}
+                width={showcaseIsApprovedCrop ? 516 : 1280}
+                height={showcaseIsApprovedCrop ? 33 : 720}
+                className="h-auto w-full"
+                sizes="516px"
+              />
             ) : null}
           </div>
         </Container>

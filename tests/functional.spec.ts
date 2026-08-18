@@ -358,7 +358,10 @@ test.describe("detail-route asset identity", () => {
     await page.goto("/du-an/website-bat-dong-san-an-phat");
     const showcase = page.locator("#visual-showcase img");
     await expect(showcase).toHaveCount(1);
-    await expect(showcase).toHaveAttribute("src", /project-detail-device-master/);
+    // PHA2: the temporary device-master fallback is superseded by the authority-mapped
+    // approved crop. The invariant is unchanged — no project-cover may appear on this route.
+    await expect(showcase).toHaveAttribute("src", /project-detail-showcase-approved-crop/);
+    await expect(showcase).not.toHaveAttribute("src", /project-cover/);
     // The related-projects rail legitimately uses covers 01..04 per ASSET_USAGE_MAP; the
     // showcase and hero must not.
     const heroImg = page.locator("#case-study-hero img");
@@ -495,6 +498,40 @@ test.describe("PHA1 decorative asset mapping", () => {
       ),
     );
     expect(hasRing).toBe(false);
+  });
+});
+
+test.describe("PHA1 approved-crop rasters", () => {
+  // SOURCE_LIMITED_APPROVED_CROP: exact pixels from the approved composite. The delta forbids
+  // upscaling beyond native, so each must render at (or below) its frozen dimensions.
+  const CROPS = [
+    { route: "/support-mxh", id: "support-cta-device-shield-approved-crop", w: 295, h: 120 },
+    { route: "/dich-vu-so", id: "digital-cta-phoenix-approved-crop", w: 205, h: 98 },
+    { route: "/du-an/website-bat-dong-san-an-phat", id: "project-detail-showcase-approved-crop", w: 516, h: 33 },
+  ];
+
+  for (const { route, id, w, h } of CROPS) {
+    test(`${id} renders at native size, never upscaled`, async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(route);
+      const img = page.locator(`img[src*="${id}"]`).first();
+      await expect(img).toHaveCount(1);
+      const box = await img.boundingBox();
+      expect(box, `${id} not rendered`).not.toBeNull();
+      // Allow a 1px rounding tolerance; anything larger means the crop was stretched.
+      expect(box!.width, `${id} upscaled horizontally`).toBeLessThanOrEqual(w + 1);
+      expect(box!.height, `${id} upscaled vertically`).toBeLessThanOrEqual(h + 1);
+      // Native aspect must be preserved (no squashing into a fake 16:9).
+      expect(box!.width / box!.height).toBeCloseTo(w / h, 1);
+    });
+  }
+
+  test("the showcase strip is not stretched into a fake 16:9 block", async ({ page }) => {
+    await page.goto("/du-an/website-bat-dong-san-an-phat");
+    const img = page.locator('#visual-showcase img').first();
+    const box = await img.boundingBox();
+    // 516/33 ≈ 15.6:1. A 16:9 fake would be ≈1.78.
+    expect(box!.width / box!.height).toBeGreaterThan(10);
   });
 });
 
