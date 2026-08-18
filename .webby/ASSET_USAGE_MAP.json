@@ -13,7 +13,7 @@
   "routes": {
     "/": {"hero":"home-hero-master","featuredProjects":["project-cover-01","project-cover-02","project-cover-03","project-cover-04"],"knowledge":["article-cover-01","article-cover-02","article-cover-03","article-cover-04"]},
     "/website": {"hero":"website-hero-master","projects":["project-cover-01","project-cover-02","project-cover-03","project-cover-04"]},
-    "/support-mxh": {"hero":"support-hero-master","brandMarks":["brand-facebook","brand-tiktok","brand-meta","brand-youtube"],"clientLogoStrip":"support-client-logo-strip","consultationCtaVisual":"support-cta-device-shield-approved-crop","darkTexture":"gold-noise"},
+    "/support-mxh": {"hero":"support-hero-master","brandMarks":["brand-facebook","brand-tiktok","brand-meta"],"serviceCard4Icon":"icon-shield-check","clientLogoStrip":"support-client-logo-strip","consultationCtaVisual":"support-cta-device-shield-approved-crop","darkTexture":"gold-noise"},
     "/dich-vu-so": {"hero":"digital-hero-master","brandMarks":["brand-openai-chatgpt","brand-youtube","brand-microsoft","brand-canva"],"finalCtaVisual":"digital-cta-phoenix-approved-crop","finalCtaMotif":"dong-son-ring","finalCtaTexture":"gold-noise"},
     "/du-an": {"hero":"projects-hero-master","projects":["project-cover-01","project-cover-02","project-cover-03","project-cover-04","project-cover-05","project-cover-06","project-cover-07","project-cover-08","project-cover-09","project-cover-10","project-cover-11","project-cover-12"]},
     "/kien-thuc": {"hero":"knowledge-hero-master","articles":["article-cover-01","article-cover-02","article-cover-03","article-cover-04","article-cover-05","article-cover-06","article-cover-07"]},
@@ -22,5 +22,9 @@
     "/kien-thuc/[slug]": {"detail":"article-seo-hero-master","relatedArticles":["article-cover-01","article-cover-02","article-cover-03"]},
     "/lien-he": {"hero":"contact-hero-master","brandMarks":["brand-zalo","brand-messenger","brand-telegram"],"contactIcon":"icon-mail","fourthChannel":{"type":"EMAIL","state":"PENDING_DISABLED","rule":"productionEmail is TBD; render Email disabled/Sắp cập nhật; never invent it."}},
     "/404": {"icons":["icon-circle-alert","icon-arrow-left"]}
+  },
+  "postApprovalCorrection": {
+    "type": "NON_VISUAL_AUTHORITY_CONSISTENCY",
+    "reason": "Removed stale brand-youtube mapping from /support-mxh and explicitly recorded the approved fourth service-card shield icon. The approved master already showed Facebook/TikTok/Meta + shield consulting; YouTube remains correctly mapped only on /dich-vu-so. No approved visual or asset count changed."
   }
 }
