@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "FINAL_QA_AUTHORITY_CORRECTION_READY_FOR_CLAUDE",
   "baseApprovedAuthorityHead": "e84d3094efffeb447716144a95d63bcbc226f8ca",
-  "correctionHead": "37182d950062e1a7972bf4b8af3bac4cd80b2d30",
+  "authorityDataHeadBeforeReceipt": "37182d950062e1a7972bf4b8af3bac4cd80b2d30",
   "scope": "NON_VISUAL_AUTHORITY_CONSISTENCY_ONLY",
   "visualRevision": false,
   "assetCountChanged": false,
@@ -19,5 +19,6 @@
       "change": "Removed brand-youtube from /support-mxh and recorded serviceCard4Icon=icon-shield-check. YouTube remains mapped on /dich-vu-so."
     }
   ],
-  "finalQaGate": "Claude must integrate correctionHead before the one final targeted QA-fix pass."
+  "headResolutionRule": "Use the latest remote HEAD of chatgpt/pha1-final-asset-freeze-91 containing this receipt; the receipt does not self-reference its own commit SHA.",
+  "finalQaGate": "Claude must integrate the latest remote authority-branch HEAD before the one final targeted QA-fix pass."
 }
