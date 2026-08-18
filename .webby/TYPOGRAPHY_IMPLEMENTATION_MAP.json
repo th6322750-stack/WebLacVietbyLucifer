@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "revision": "pha1-typography-v1",
+  "status": "AUTHORITY_ONLY_NOT_IMPLEMENTED",
+  "rule": "Claude implements only after user typography approval; no font substitution or per-component guessing.",
+  "authorityFiles": [
+    ".webby/TYPOGRAPHY_AUTHORITY.json",
+    ".webby/TYPOGRAPHY_ROUTE_MATRIX.json",
+    ".webby/typography.json",
+    ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf"
+  ],
+  "fontFamilies": {
+    "heading": {"family": "Noto Serif", "weights": [600, 700]},
+    "bodyUI": {"family": "Inter", "weights": [400, 500, 600, 700]}
+  },
+  "globalCodeTargets": {
+    "src/app/layout.tsx": "Replace Noto_Serif_Display + Be_Vietnam_Pro with Noto_Serif + Inter via next/font/google; expose --font-heading and --font-body; subsets latin + vietnamese; display swap.",
+    "tailwind.config.ts": "Map font-heading to --font-heading and font-body to --font-body; update typography token sizes/weights/line-heights/letter-spacing to TYPOGRAPHY_AUTHORITY semanticRoles.",
+    "src/app/globals.css": "body resolves to font-body; h1-h4 resolve to font-heading; do not add route-specific family overrides here."
+  },
+  "componentRoleMap": {
+    "src/components/layout/SiteHeader.tsx": ["nav", "button"],
+    "src/components/layout/PageHero.tsx": ["heroDisplay", "heroH1", "detailH1", "eyebrow", "bodyLG"],
+    "src/components/layout/FinalCta.tsx": ["sectionH2", "body", "button"],
+    "src/components/layout/SiteFooter.tsx": ["footer", "small"],
+    "src/components/ui/SectionHeading.tsx": ["sectionH2", "eyebrow", "body"],
+    "src/components/ui/Button.tsx": ["button"],
+    "src/components/ui/Breadcrumbs.tsx": ["breadcrumb"],
+    "src/components/content/ProjectCard.tsx": ["cardH3", "small", "body"],
+    "src/components/content/ProjectPreviewCard.tsx": ["cardH3", "small", "body"],
+    "src/components/content/ArticleCard.tsx": ["cardH3", "articleMeta", "body"],
+    "src/components/content/ArticlePreviewCard.tsx": ["cardH3", "articleMeta", "body"],
+    "src/components/content/ServiceCard.tsx": ["cardH3", "body"],
+    "src/components/content/PricingCard.tsx": ["cardH3", "price", "body", "button"],
+    "src/components/content/MetricStrip.tsx": ["metric", "small"],
+    "src/components/content/FAQAccordion.tsx": ["body", "button"],
+    "src/components/content/ArticleTOC.tsx": ["small", "body"],
+    "src/components/content/CategoryFilter.tsx": ["button", "small"]
+  },
+  "routeHeroMap": {
+    "/": {"role": "heroDisplay", "weight": 600, "case": "uppercase"},
+    "/website": {"role": "heroH1", "weight": 700},
+    "/support-mxh": {"role": "heroH1", "weight": 700},
+    "/dich-vu-so": {"role": "heroH1", "weight": 700},
+    "/du-an": {"role": "heroH1", "weight": 700},
+    "/kien-thuc": {"role": "heroH1", "weight": 700},
+    "/gioi-thieu": {"role": "heroH1", "weight": 700},
+    "/du-an/[slug]": {"role": "detailH1", "weight": 700},
+    "/kien-thuc/[slug]": {"role": "detailH1", "weight": 700},
+    "/lien-he": {"role": "heroDisplay", "weight": 600, "case": "uppercase"},
+    "/404": {"role": "detailH1", "weight": 700}
+  },
+  "qa": {
+    "viewports": [1440, 390],
+    "fontReadyGate": "await document.fonts.ready",
+    "computedFamilyHeading": "Noto Serif",
+    "computedFamilyBodyUI": "Inter",
+    "lineBreakDriftIsBlocker": true,
+    "syntheticWeightForbidden": true,
+    "fallbackAtVisualQaForbidden": true
+  }
+}
