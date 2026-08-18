@@ -2,7 +2,7 @@
   "schemaVersion": 4,
   "manifestMode": "LAYERED_IMMUTABLE_BASE_PLUS_DELTA",
   "projectId": "lacvietmedia-web",
-  "status": "FINAL_ASSET_FREEZE_PENDING_USER_APPROVAL",
+  "status": "FINAL_ASSET_FREEZE_USER_APPROVED",
   "resolvedTotals": {"all":91,"raster":38,"vector":53},
   "base85": {
     "commit": "f414b6abfb9e7efdb6792d1f03126e2df4f924bd",
@@ -30,7 +30,7 @@
       "responsive":{"desktop":"native crop; contain/no-upscale","mobile":"native crop; contain/no-upscale","maxNativeWidthPx":205,"maxNativeHeightPx":98}
     },
     {
-      "assetId":"project-detail-showcase-approved-crop","role":"DETAIL_VISUAL","classification":"DEMO","identityRequired":true,"route":"/du-an/[slug]","section":"visual-showcase",
+      "assetId":"project-detail-showcase-approved-crop","role":"DETAIL_VISUAL","classification":"DEMO","identityRequired":true,"item":"demo-project-01","route":"/du-an/[slug]","section":"visual-showcase",
       "sourceAuthority":{"type":"APPROVED_UI_EMBEDDED_RASTER_CROP","approvedPdfDriveId":"1qLrhLzLHObagqDtA07aL5ITKrEFtChRh","approvedPdfLibraryFileId":"file_00000000b990820b887257e95ebbe20d","sourceComposite":"ui-007.png","sourceBoxPx":[34,468,550,501],"qualityStatus":"SOURCE_LIMITED_APPROVED_CROP","notes":"Exact pixels cropped from the user-approved UI composite. No AI generation and no fake upscale."},
       "master":{"path":"01_NEW_RASTER_MASTERS/project-detail-showcase-approved-crop.png","width":516,"height":33,"format":"PNG","sha256":"178f910c955e80af4ce41d5ba3eea081706a203311c558f3ad21b55e4714414f","repoDestination":"assets/production/masters/raster/detail/project-detail-showcase-approved-crop.png"},
       "delivery":{"path":"02_WEB_DELIVERY/project-detail-showcase-approved-crop.webp","width":516,"height":33,"format":"WEBP","sha256":"019b5dc4e1ed5679668e1b9944399c7128a416e0607dc856ccf65aab2ef1549f","repoDestination":"public/assets/detail/project-detail-showcase-approved-crop.webp","runtimePath":"/assets/detail/project-detail-showcase-approved-crop.webp"},
@@ -46,10 +46,10 @@
     "Do not upscale SOURCE_LIMITED_APPROVED_CROP assets beyond their native pixel authority."
   ],
   "deliveryTransport": {
-    "mode":"HYBRID_DRIVE_GIT",
+    "mode":"HYBRID_DRIVE_GIT_USER_APPROVED",
     "driveHeavyPack":{"id":"1zzX0Lw88XU2YIb-8EWfas0-hBOJNVe9w","url":"https://drive.google.com/file/d/1zzX0Lw88XU2YIb-8EWfas0-hBOJNVe9w/view?usp=drivesdk"},
     "driveVisualMaster":{"id":"1ZyHkKRwVjtAnH3YcezHjFjmq3KaePB5n","url":"https://drive.google.com/file/d/1ZyHkKRwVjtAnH3YcezHjFjmq3KaePB5n/view?usp=drivesdk"},
     "gitBranch":"chatgpt/pha1-final-asset-freeze-91",
-    "rule":"Drive stores the heavy freeze bundle/master. Git stores the authoritative count/manifest/usage map and immutable base85; Claude may only copy exact mapped deliveries from this frozen Drive bundle."
+    "rule":"User approved PHA1. Claude is explicitly authorized during PHA2 to copy only the exact mapped raster deliveries from the frozen Drive bundle, verify the pinned sha256 values before use, commit them to repoDestination, and must not pull/search/generate any other visual asset."
   }
 }
