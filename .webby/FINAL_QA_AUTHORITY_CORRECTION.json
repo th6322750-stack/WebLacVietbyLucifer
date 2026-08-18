@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "FINAL_QA_AUTHORITY_CORRECTION_READY_FOR_CLAUDE",
+  "baseApprovedAuthorityHead": "e84d3094efffeb447716144a95d63bcbc226f8ca",
+  "correctionHead": "37182d950062e1a7972bf4b8af3bac4cd80b2d30",
+  "scope": "NON_VISUAL_AUTHORITY_CONSISTENCY_ONLY",
+  "visualRevision": false,
+  "assetCountChanged": false,
+  "typographyMetricsChanged": false,
+  "corrections": [
+    {
+      "file": ".webby/typography.json",
+      "reason": "detailH1 already existed in semanticRoles but its Tailwind mirror entries were omitted.",
+      "change": "Added detail-h1-desktop and detail-h1-mobile token-map entries; no metric/family/route-role change."
+    },
+    {
+      "file": ".webby/ASSET_USAGE_MAP.json",
+      "reason": "The /support-mxh brand-youtube entry was stale and contradicted the approved master and implemented Facebook/TikTok/Meta + shield-consulting row.",
+      "change": "Removed brand-youtube from /support-mxh and recorded serviceCard4Icon=icon-shield-check. YouTube remains mapped on /dich-vu-so."
+    }
+  ],
+  "finalQaGate": "Claude must integrate correctionHead before the one final targeted QA-fix pass."
+}
