@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 2,
+  "revision": "pha1-typography-v2",
+  "authority": "ChatGPT Design Authority",
+  "sourceOfTruth": {
+    "visualMaster": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "rule": "VISIBLE MASTER OVERRIDES PREVIOUS INTENDED FONT NAMES"
+  },
+  "auditFinding": {
+    "previousHeading": "Noto Serif Display",
+    "previousBody": "Be Vietnam Pro",
+    "status": "DEPRECATED_FOR_VISUAL_MATCH",
+    "reason": "Raster glyph matching against the approved master shows the visible serif is materially closer to Noto Serif Bold than Noto Serif Display SemiBold, while body/UI is materially closer to Inter."
+  },
+  "families": {
+    "heading": {
+      "family": "Noto Serif",
+      "nextFont": "Noto_Serif",
+      "weights": [600, 700],
+      "fallback": ["Georgia", "Times New Roman", "serif"],
+      "defaultWeight": 700
+    },
+    "body": {
+      "family": "Inter",
+      "nextFont": "Inter",
+      "weights": [400, 500, 600, 700],
+      "fallback": ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+      "defaultWeight": 400
+    }
+  },
+  "semanticRoles": {
+    "heroDisplay": {"family":"heading","desktop":[64,1.05,600,-0.02],"mobile":[40,1.08,600,-0.015]},
+    "heroH1": {"family":"heading","desktop":[56,1.08,700,-0.018],"mobile":[40,1.10,700,-0.015]},
+    "detailH1": {"family":"heading","desktop":[48,1.12,700,-0.015],"mobile":[40,1.10,700,-0.015]},
+    "sectionH2": {"family":"heading","desktop":[40,1.15,700,-0.012],"mobile":[32,1.18,700,-0.01]},
+    "structuralH3": {"family":"heading","desktop":[28,1.25,700,-0.01],"mobile":[24,1.28,700,-0.008]},
+    "cardH3": {"family":"heading","desktop":[22,1.30,700,0],"mobile":[20,1.30,700,0]},
+    "bodyLG": {"family":"body","desktop":[18,1.70,400,0]},
+    "body": {"family":"body","desktop":[16,1.70,400,0],"mobile":[16,1.65,400,0]},
+    "small": {"family":"body","desktop":[14,1.55,400,0]},
+    "caption": {"family":"body","desktop":[12,1.50,500,0]},
+    "nav": {"family":"body","desktop":[14,1.40,500,0],"activeWeight":600},
+    "button": {"family":"body","desktop":[14,1.20,600,0]},
+    "chip": {"family":"body","desktop":[14,1.40,500,0]},
+    "eyebrow": {"family":"body","desktop":[12,1.20,600,0.12],"transform":"uppercase"},
+    "formLabel": {"family":"body","desktop":[14,1.40,600,0]},
+    "formControl": {"family":"body","desktop":[14,1.45,400,0]},
+    "stepNumber": {"family":"heading","desktop":[18,1.20,700,0]},
+    "metric": {"family":"heading","desktop":[28,1.15,700,-0.01]},
+    "price": {"family":"body","desktop":[20,1.25,700,0]},
+    "articleMeta": {"family":"body","desktop":[12,1.50,500,0]},
+    "breadcrumb": {"family":"body","desktop":[12,1.50,400,0]},
+    "footer": {"family":"body","desktop":[13,1.60,400,0]}
+  },
+  "compatibilityTokens": {
+    "bodyXL": {
+      "family": "body",
+      "desktop": [20,1.65,400,0],
+      "status": "RESERVED_COMPATIBILITY_TOKEN",
+      "rule": "Preserve emitted utility even if no current componentRoleMap entry uses it. Do not silently delete it."
+    },
+    "h3": {
+      "aliasOf": "structuralH3",
+      "status": "LEGACY_STRUCTURAL_ALIAS"
+    },
+    "h4": {
+      "aliasOf": "cardH3",
+      "status": "LEGACY_COMPACT_HEADING_ALIAS",
+      "rule": "Existing text-h4-* utilities remain valid during migration; card components should converge on cardH3 metrics."
+    }
+  },
+  "resolutionNotes": {
+    "A_caption": "RESOLVED: caption is a first-class semantic role at 12px / 1.5 / 500. Existing text-caption utilities must continue to emit CSS.",
+    "B_cardSizing": "RESOLVED: structural H3 remains 28/24. Card title H3 is a separate visual role at 22 desktop / 20 mobile and intentionally matches the legacy h4 metrics. Do not use structuralH3 for cards.",
+    "C_orphans": "RESOLVED: form roles are assigned to concrete form components in TYPOGRAPHY_IMPLEMENTATION_MAP; bodyXL is explicitly preserved as compatibility-only rather than treated as an orphan semantic role."
+  },
+  "tokenEmissionContract": {
+    "rule": "Tailwind font-size tokens MUST NOT be rebuilt from semanticRoles alone. Emit the union of semanticRoles + compatibilityTokens + any existing typography utility still referenced by source code until that source usage is migrated in the same commit.",
+    "captionMustExist": true,
+    "usedTypographyUtilityMustEmitCss": true,
+    "buildGuardRequired": true,
+    "buildGuardDescription": "During PHA 2, scan referenced typography utilities and fail if any referenced token has no generated CSS/computed typography. This explicitly covers text-caption and prevents recurrence of silent off-scale utility failures."
+  },
+  "fontLoadingContract": {
+    "provider": "next/font/google",
+    "subsets": ["latin", "vietnamese"],
+    "display": "swap",
+    "screenshotGate": "await document.fonts.ready before visual capture",
+    "noUnapprovedFallbackAtQA": true
+  },
+  "confidence": {
+    "headingFamily": 0.91,
+    "bodyFamily": 0.93,
+    "note": "Original font metadata cannot be recovered from the flattened raster master; confidence refers to implementation match, not provenance."
+  }
+}
