@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 4,
+  "revision": "master-parity-v4-2026-08-20",
+  "status": "LOCKED_FOR_IMPLEMENTATION",
+  "authority": {
+    "owner": "ChatGPT Design Authority",
+    "supremeVisualAuthority": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "auditedImplementationHead": "c785c1e8bd1764b37433d32535526481f2a5351f",
+    "referenceViewports": {"desktop": 1440, "mobile": 390},
+    "acceptance": "MASTER_PARITY_NOT_STYLE_MATCH",
+    "allowedDifference": "browser/font rasterization and anti-aliasing only",
+    "mustNot": [
+      "redesign approved UI",
+      "invent alternate section geometry",
+      "reuse one generic hero composition across routes where the master differs",
+      "treat 390px as desktop stacked vertically",
+      "change V3 HD/4K asset identity, search images, generate substitutes, rename/remap asset authority",
+      "merge PR #5 before user acceptance",
+      "claim visual PASS from automated tests alone"
+    ]
+  },
+  "lockedInputs": {
+    "sectionMap": ".webby/section-map.json",
+    "visualContract": ".webby/visual-contract.json",
+    "placementMap": ".webby/placement-map.json",
+    "typographyAuthority": ".webby/TYPOGRAPHY_AUTHORITY.json",
+    "assetAuthority": ".webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json",
+    "audit": ".webby/MASTER_PARITY_AUDIT_V4.md"
+  },
+  "globalRecovery": {
+    "P0_sharedStructuralCauses": [
+      {
+        "id": "P0-HERO",
+        "problem": "PageHero/Home hero cap route visuals at roughly max-w 390px and impose a generic 2-column template.",
+        "required": "Introduce route-specific hero composition variants. Desktop hero artwork must occupy the same visual share/position as each approved master. Remove universal max-w-[390px] visual cap. Mobile hero composition must follow each mobile master independently."
+      },
+      {
+        "id": "P0-SECTION-SPACING",
+        "problem": "Section uses xl:py-24 universally, effectively adding 96px top + 96px bottom and inflating page height.",
+        "required": "Replace universal section vertical padding with route/section-specific master-derived spacing. placement-map sectionGap is a composition interval, not mandatory padding on both edges."
+      },
+      {
+        "id": "P0-CTA",
+        "problem": "FinalCta is a universal tall centered black block.",
+        "required": "Implement master-specific CTA variants: compact horizontal strips/cards/bands with route-specific light/dark treatment, visual placement and height."
+      },
+      {
+        "id": "P0-MOBILE-COMPOSITION",
+        "problem": "Desktop sections/cards are mostly stacked into one mobile column, producing pages far taller than the approved mobile master.",
+        "required": "Create explicit 390px route compositions: use mobile-specific card/list variants, approved initial item counts, load-more where shown, compact strips, and accordion footer."
+      },
+      {
+        "id": "P0-EVIDENCE",
+        "problem": "Stored mobile-menu state contradicts current source and comparison board metadata can be stale.",
+        "required": "Recapture every state from the final deployed HEAD and stamp exact final HEAD + preview URL into the comparison board."
+      }
+    ],
+    "header": {
+      "desktop": "Match approved navigation geometry, logo scale, Dịch vụ dropdown, active treatment and CTA at 1440.",
+      "mobile": "Match approved compact header and hamburger. Drawer/sheet must show actual navigation, not page hero content."
+    },
+    "footer": {
+      "desktop": "Compact multi-column footer matching master rhythm; do not let CTA+footer become a large dark tail.",
+      "mobile": "Accordion-style compact groups where master shows them."
+    },
+    "typography": "Preserve locked Noto Serif + Inter authority and semantic roles; adjust only role application/size/line-wrap where needed to match approved master.",
+    "assets": "V3 HD/4K assets are LOCKED. This pass is layout/composition only."
+  },
+  "routes": {
+    "/": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","hero","service-overview","featured-projects","metrics-strip","work-process","testimonials","latest-knowledge","final-cta","site-footer"],
+        "hero": "Large phoenix is dominant right-side focal visual, not a small boxed image. Preserve approved slogan/H1/features/social proof composition.",
+        "content": ["3 compact service cards", "4 project previews", "4-metric dark strip", "6-step process in approved compact geometry", "3 testimonials", "4 knowledge previews"],
+        "recovery": "Compress vertical whitespace throughout; match light/ivory/dark band order; Home-specific compact CTA and footer."
+      },
+      "mobile": {
+        "composition": ["compact header","hero","3 compact service rows/cards","1 featured project","compact 4-metric block","compact consultation CTA","accordion footer"],
+        "mustNotDefaultRender": ["desktop process block","desktop testimonial grid","desktop latest-knowledge grid","4 project cards before any interaction"],
+        "recovery": "Build explicit mobile composition rather than stacking the desktop page."
+      }
+    },
+    "/website": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","website-hero","industry-fit-grid","website-packages","benefit-strip","website-projects","website-process","faq","final-cta","site-footer"],
+        "hero": "Laptop+phone must be a large hero focal composition matching master share/placement.",
+        "content": ["6 industry-fit items", "4 package cards", "compact dark benefit strip", "4 project previews", "horizontal process", "FAQ"],
+        "recovery": "Reduce package/process/FAQ/CTA vertical expansion and match master dark/ivory geometry."
+      },
+      "mobile": {
+        "composition": ["hero with clearly visible device mockup","compact 2-column industry grid","4 compact package cards","dark benefit band","compact project list","process","FAQ","compact CTA","accordion footer"],
+        "recovery": "Use mobile-specific compact cards/list variants; do not stretch desktop cards to full-height one-column blocks."
+      }
+    },
+    "/support-mxh": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","support-hero","support-service-grid","common-issues-grid","why-lac-viet","support-process","trust-client-row","support-metrics","faq","support-lead-cta","impact-cta","site-footer"],
+        "hero": "Shield + Facebook/TikTok/Meta visual large and dominant on right.",
+        "content": ["4 support-platform cards", "compact issue icons", "dark why-us strip", "compact 5-step process", "trust/client strip", "metrics", "FAQ", "light urgent-support CTA", "dark impact CTA"],
+        "recovery": "Convert oversized full-width sections back to compact master bands/cards."
+      },
+      "mobile": {
+        "composition": "Compact stacked platform/support rows and issue rows; preserve master ordering; CTA/footer compact.",
+        "recovery": "List-based mobile treatment where shown by master, not desktop grid cards stacked unchanged."
+      }
+    },
+    "/dich-vu-so": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","digital-hero","service-category-strip","featured-digital-products","why-lac-viet","purchase-process","trust-metrics","faq","support-card","final-cta","site-footer"],
+        "hero": "Large phoenix focal visual, matching approved scale and offset.",
+        "content": ["4 compact category tiles", "4 featured product cards with approved brand identity/demo pricing", "dark why-us band", "4-step purchase process", "compact trust metrics", "FAQ + support card"],
+        "recovery": "Master-sized decorated CTA; compress product/process/FAQ vertical rhythm."
+      },
+      "mobile": {
+        "composition": ["hero + phoenix","compact category list","compact vertical product cards","dark proof band","compact process/metrics","FAQ/support","compact CTA/footer"],
+        "recovery": "Dedicated mobile geometry; no desktop card-height inheritance."
+      }
+    },
+    "/du-an": {
+      "severity": "BLOCKER_MOBILE_MAJOR_DESKTOP",
+      "desktop": {
+        "requiredOrder": ["site-header","projects-hero","category-filters","projects-grid","featured-case-study","project-cta","site-footer"],
+        "hero": "Large phoenix with compact proof metrics.",
+        "content": ["compact filter chips", "12 projects dense 4-column grid", "dark featured case-study", "compact light project CTA"],
+        "recovery": "Keep faithful V3 project assets; fix only scale, spacing, grid density, featured-case and CTA geometry."
+      },
+      "mobile": {
+        "composition": ["hero","filter chips","first 4 project cards","Xem thêm dự án control","featured case","compact 2x2 metrics","light project CTA","accordion footer"],
+        "mustNot": "Render all 12 project cards immediately in default 390px composition."
+      }
+    },
+    "/kien-thuc": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","knowledge-hero","category-filters","featured-article","article-grid","load-more","newsletter","service-cta","site-footer"],
+        "hero": "Large 3D still-life visual occupying approved right-side hero share.",
+        "content": ["compact filter row", "featured article large-left-image/right-copy", "6 dense latest article cards", "load-more", "compact newsletter", "compact service CTA"],
+        "recovery": "Do not use 3 oversized latest cards; restore six-card density and master feature proportions."
+      },
+      "mobile": {
+        "composition": ["hero","chips","featured article","approximately six compact latest-content list rows","load-more","newsletter","service CTA","accordion footer"],
+        "recovery": "Use mobile article-row treatment rather than large desktop cards."
+      }
+    },
+    "/gioi-thieu": {
+      "severity": "MAJOR",
+      "desktop": {
+        "requiredOrder": ["site-header","breadcrumbs","about-hero","brand-values","service-ecosystem","brand-story","principles","final-cta","site-footer"],
+        "visibleMaster": ["light hero title block left", "large gold bird right", "3 compact values", "4 service ecosystem cards"],
+        "recovery": "Match visible upper composition pixel-wise. Below visible crop preserve section-map requirements but keep density subordinate/compact; no invented large blocks."
+      },
+      "mobile": {
+        "composition": ["hero + bird","Cần/Kiệm/Liêm Chính compact vertical rows","service ecosystem","required below-fold sections compact","accordion footer"]
+      }
+    },
+    "/du-an/[slug]": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","breadcrumbs","case-study-hero","project-meta","case-tabs","overview","problem","solution","results","technology","visual-showcase","related-projects","final-cta","site-footer"],
+        "visibleMaster": ["title/copy left", "large laptop+phone right", "4 compact meta items", "tabs", "overview left + combined result metrics card right", "visual-showcase begins immediately below"],
+        "recovery": "Scale device up, remove excess whitespace, combine result metrics into master geometry, prevent visual-showcase from becoming an oversized black stage. Required below-fold related/final CTA remain compact."
+      },
+      "mobile": {
+        "composition": ["breadcrumb/title/meta","large device visual","tabs","overview","subsequent required sections in compact mobile treatment"],
+        "mustNot": "Introduce desktop-scale dark blocks or oversized related/CTA sections."
+      }
+    },
+    "/kien-thuc/[slug]": {
+      "severity": "MAJOR",
+      "desktop": {
+        "requiredOrder": ["site-header","breadcrumbs","article-header","article-layout","article-toc","article-body","related-articles","service-cta","site-footer"],
+        "visibleMaster": "3-column article frame: narrow sticky TOC left, center title/meta/intro/SEO hero, compact right related rail + consultation card.",
+        "recovery": "Match master column widths, title line-wrap, hero image scale and rail dimensions; keep article typography rhythm compact and CTA/footer small."
+      },
+      "mobile": {
+        "composition": ["breadcrumb","title/meta","hero","intro","inline/collapsible Mục lục","article body","compact related/service CTA","accordion footer"],
+        "mustNot": "Keep desktop side rails visible."
+      }
+    },
+    "/lien-he": {
+      "severity": "BLOCKER",
+      "desktop": {
+        "requiredOrder": ["site-header","contact-hero","consultation-section","contact-form","contact-channels","contact-process","faq","secondary-contact-card","final-cta","site-footer"],
+        "hero": "Large phoenix/contact hero with approved proof bullets; not a small image card.",
+        "content": ["compact consultation copy + form two-column block", "4 compact channel cards", "5-step compact process", "FAQ + secondary contact", "compact black/gold final CTA"],
+        "recovery": "Match form placement/height, channel card proportions, process density and CTA/footer rhythm."
+      },
+      "mobile": {
+        "composition": ["contact hero with large phoenix", "consultation copy", "form", "4 compact channel rows/cards", "compact process", "FAQ/secondary contact", "compact CTA", "accordion footer"],
+        "recovery": "Avoid giant stacked cards/whitespace; preserve approved order and density."
+      }
+    },
+    "/404": {
+      "severity": "MAJOR",
+      "desktop": {
+        "requiredOrder": ["site-header-minimal","not-found-state","home-cta","site-footer-minimal"],
+        "recovery": "Match approved 404 typography, spacing, dark texture, CTA geometry and compact vertical composition."
+      },
+      "mobile": {
+        "recovery": "Match approved centered mobile 404 composition and button; no extra page-height expansion."
+      }
+    }
+  },
+  "states": {
+    "evidenceCount": 8,
+    "items": [
+      {"id":"mobile-menu-open","viewport":390,"required":"Opaque approved navigation drawer/sheet with logo, real nav items/service disclosure and CTA; body hidden behind it; not Home hero content."},
+      {"id":"consultation-modal-desktop","viewport":1440,"required":"Centered approved modal geometry, dim backdrop, correct form density."},
+      {"id":"consultation-modal-mobile","viewport":390,"required":"Approved mobile drawer/full-height modal geometry; no desktop-modal scaling."},
+      {"id":"faq-open","viewport":1440,"required":"Expanded FAQ row/panel matching approved card spacing and typography."},
+      {"id":"form-success","viewport":1440,"required":"Approved success state visibly present in capture."},
+      {"id":"form-error","viewport":1440,"required":"Approved error state visibly present and visually distinct from success."},
+      {"id":"loading","viewport":1440,"required":"Deterministic approved loading state; production code must not gain artificial delay."},
+      {"id":"focus-visible","viewport":1440,"required":"Visible keyboard focus treatment matching design system and master intent."}
+    ]
+  },
+  "implementationSequence": [
+    "Integrate exact latest authority branch HEAD and verify this spec status LOCKED_FOR_IMPLEMENTATION.",
+    "Fix shared structural causes P0 first: hero variants, section spacing, CTA variants, mobile composition primitives, footer/menu state.",
+    "Complete all 11 desktop routes at 1440 against approved master.",
+    "Complete all 11 mobile routes at 390 as separately approved compositions.",
+    "Fix and capture all 8 states.",
+    "Run typecheck, lint, production build, full functional Playwright.",
+    "Deploy fresh Vercel preview from exact final HEAD.",
+    "Capture 22 full-page route screenshots + 8 states = 30 evidence screenshots from that preview.",
+    "Create fresh MASTER|VERCEL board using actual desktop and mobile master columns and stamp exact final HEAD + URL.",
+    "Self-review every route/state visually. Automated PASS is not visual PASS.",
+    "Return exact final HEAD, preview URL, test counts, evidence paths/board, then STOP for ChatGPT final QA."
+  ],
+  "finalGate": {
+    "implementation": "OPEN_AFTER_AUTHORITY_INTEGRATION",
+    "merge": "CLOSED_UNTIL_USER_ACCEPTANCE",
+    "visualPassAuthority": "ChatGPT after post-deploy comparison, then user final acceptance"
+  }
+}
