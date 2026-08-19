@@ -4,17 +4,30 @@ import { useState } from "react";
 import type { FAQ } from "@/lib/types";
 import { Icon } from "@/components/ui/Icon";
 
-export function FAQAccordion({ items }: { items: FAQ[] }) {
+/** `columns={2}` lays the approved compact two-column desktop FAQ out (master pages 4, 5, 6
+ * and 12 all show two columns of short rows, not one long single-column stack). Single-open
+ * behaviour is preserved across both columns. */
+export function FAQAccordion({ items, columns = 1 }: { items: FAQ[]; columns?: 1 | 2 }) {
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
   return (
-    <div className="flex flex-col divide-y divide-border rounded-md border border-border bg-white">
+    <div
+      className={
+        columns === 2
+          ? "grid gap-x-6 gap-y-0 rounded-md border border-border bg-white md:grid-cols-2 md:divide-x md:divide-border"
+          : "flex flex-col divide-y divide-border rounded-md border border-border bg-white"
+      }
+    >
       {items.map((item) => {
         const isOpen = openId === item.id;
         const panelId = `faq-panel-${item.id}`;
         const buttonId = `faq-button-${item.id}`;
         return (
-          <div key={item.id} data-state={isOpen ? "faq-open" : undefined}>
+          <div
+            key={item.id}
+            data-state={isOpen ? "faq-open" : undefined}
+            className={columns === 2 ? "border-b border-border" : undefined}
+          >
             <h3>
               <button
                 id={buttonId}

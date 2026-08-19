@@ -14,20 +14,35 @@
 // 14x zoom), so this stays a data/markup-level tag and does not change the card visual.
 export type ProjectPreview = { title: string; category: string; coverAssetId: string; demoOnly: true };
 
-// Home page-03 "Một số dự án chúng tôi đã thực hiện" labels.
+// Home page-03 "Một số dự án tiêu biểu" labels.
+//
+// RECOVERY V2: these use `home-project-preview-01..04`, NOT `project-cover-01..04`. The
+// recovery authority is explicit that Home's preview row is a route-specific image set in the
+// approved master and only looked like the /du-an grid because the old mapping borrowed those
+// covers (VISUAL_RECOVERY_AUTHORITY_V2.supersedes).
 export const homeProjectShowcase: ProjectPreview[] = [
-  { title: "Website Bất Động Sản", category: "Bất động sản", coverAssetId: "project-cover-01", demoOnly: true },
-  { title: "Website Nội Thất", category: "Nội thất", coverAssetId: "project-cover-02", demoOnly: true },
-  { title: "Website Giáo Dục", category: "Giáo dục", coverAssetId: "project-cover-03", demoOnly: true },
-  { title: "Landing Page Dịch Vụ", category: "Landing Page", coverAssetId: "project-cover-04", demoOnly: true },
+  { title: "Website Bất Động Sản", category: "Bất động sản", coverAssetId: "home-project-preview-01", demoOnly: true },
+  { title: "Website Nội Thất", category: "Nội thất", coverAssetId: "home-project-preview-02", demoOnly: true },
+  { title: "Website Giáo Dục", category: "Giáo dục", coverAssetId: "home-project-preview-03", demoOnly: true },
+  { title: "Landing Page Dịch Vụ", category: "Landing Page", coverAssetId: "home-project-preview-04", demoOnly: true },
+];
+
+// Home page-03 "Kiến thức mới nhất" row — again a route-specific image set in the master, not
+// the /kien-thuc article covers.
+export const homeArticleShowcase: ArticlePreview[] = [
+  { title: "10 yếu tố SEO quan trọng giúp website lên top Google", publishedAt: "2024-05-15", coverAssetId: "home-article-preview-01", demoOnly: true },
+  { title: "Cách bảo mật Facebook hiệu quả tránh bị khóa tài khoản", publishedAt: "2024-05-10", coverAssetId: "home-article-preview-02", demoOnly: true },
+  { title: "Kinh nghiệm xây dựng kênh TikTok hiệu quả từ A–Z", publishedAt: "2024-05-08", coverAssetId: "home-article-preview-03", demoOnly: true },
+  { title: "Top công cụ AI hữu ích cho doanh nghiệp năm 2024", publishedAt: "2024-05-05", coverAssetId: "home-article-preview-04", demoOnly: true },
 ];
 
 // /website page-04 "Một số website chúng tôi đã thực hiện" labels.
+// RECOVERY V2: route-specific `website-project-preview-01..04`.
 export const websiteProjectShowcase: ProjectPreview[] = [
-  { title: "An Phát Real Estate", category: "Website Bất động sản", coverAssetId: "project-cover-01", demoOnly: true },
-  { title: "GreenMart Vietnam", category: "Website Bán hàng", coverAssetId: "project-cover-02", demoOnly: true },
-  { title: "Isuu Education", category: "Website Giáo dục", coverAssetId: "project-cover-03", demoOnly: true },
-  { title: "Dr. Wellness Clinic", category: "Website Y tế", coverAssetId: "project-cover-04", demoOnly: true },
+  { title: "An Phát Real Estate", category: "Website Bất động sản", coverAssetId: "website-project-preview-01", demoOnly: true },
+  { title: "GreenMart Vietnam", category: "Website Bán hàng", coverAssetId: "website-project-preview-02", demoOnly: true },
+  { title: "Isuu Education", category: "Website Giáo dục", coverAssetId: "website-project-preview-03", demoOnly: true },
+  { title: "Dr. Wellness Clinic", category: "Website Y tế", coverAssetId: "website-project-preview-04", demoOnly: true },
 ];
 
 // ASSET_USAGE_MAP.json "/du-an/[slug]".relatedProjects — deterministic preview set, not

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { assetPath, assetSize } from "@/lib/assets";
 import { useBodyScrollLock, useEscapeClose, useFocusTrap } from "@/lib/a11y-hooks";
 import { navLinks, serviceMenu } from "@/lib/site-settings";
 import { useConsultation } from "@/components/conversion/ConsultationProvider";
@@ -33,10 +34,10 @@ export function SiteHeader() {
       <Container className="flex h-full items-center justify-between">
         <Link href="/" className="flex items-center" aria-label="Lạc Việt Media Agency — Trang chủ">
           <Image
-            src="/assets/brand/lac-viet-logo.webp"
+            src={assetPath("lac-viet-logo-horizontal-approved")}
             alt="Lạc Việt Media Agency"
-            width={180}
-            height={44}
+            width={assetSize("lac-viet-logo-horizontal-approved").width}
+            height={assetSize("lac-viet-logo-horizontal-approved").height}
             priority
             className="h-8 w-auto lg:h-10"
           />
@@ -98,11 +99,21 @@ export function SiteHeader() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu điều hướng"
+            data-state="mobile-menu-open"
             tabIndex={-1}
-            className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-ink-950 p-6"
+            /* Approved state master: an opaque full-viewport black drawer. It must cover the page
+             * entirely — an earlier partial-width drawer let the Home hero show through, which the
+             * recovery audit flagged. `inset-0` + solid bg is what makes the state screenshot honest. */
+            className="absolute inset-0 flex w-full flex-col overflow-y-auto bg-ink-950 p-6"
           >
             <div className="flex items-center justify-between">
-              <span className="text-body-lg font-heading text-white">Menu</span>
+              <Image
+                src={assetPath("lac-viet-logo-horizontal-approved")}
+                alt="Lạc Việt Media Agency"
+                width={assetSize("lac-viet-logo-horizontal-approved").width}
+                height={assetSize("lac-viet-logo-horizontal-approved").height}
+                className="h-8 w-auto"
+              />
               <IconButton icon="close" label="Đóng menu" onDark onClick={() => setMenuOpen(false)} />
             </div>
             <nav aria-label="Chính (di động)" className="mt-8 flex-1">

@@ -84,7 +84,12 @@ test.describe("consultation modal", () => {
     await dialog.getByLabel(/Tôi đồng ý/).check();
     await dialog.getByRole("button", { name: "Gửi yêu cầu tư vấn" }).click();
 
-    await expect(dialog.getByText("Đã gửi yêu cầu thành công")).toBeVisible();
+    // RECOVERY V2: the approved success state (master ui-010) is its own centred dialog reading
+    // "Cảm ơn bạn!", not an inline note inside the consultation modal — so it is asserted at
+    // page level, by its state marker and approved copy, rather than scoped to `dialog`.
+    const success = page.locator('[data-state="form-success"]');
+    await expect(success).toBeVisible();
+    await expect(success.getByText("Cảm ơn bạn!")).toBeVisible();
   });
 
   test("closes on Escape and restores focus to trigger", async ({ page }) => {

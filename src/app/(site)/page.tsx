@@ -6,16 +6,15 @@ import { Button } from "@/components/ui/Button";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { ProjectPreviewCard } from "@/components/content/ProjectPreviewCard";
-import { ArticleCard } from "@/components/content/ArticleCard";
+import { ArticlePreviewCard } from "@/components/content/ArticlePreviewCard";
 import { MetricStrip } from "@/components/content/MetricStrip";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { TestimonialCard } from "@/components/content/TestimonialCard";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { HomeHeroCta } from "./HomeHeroCta";
 import { services } from "@/content/services";
-import { homeProjectShowcase } from "@/content/route-fixtures";
-import { articles } from "@/content/articles";
-import { assetPath } from "@/lib/assets";
+import { homeProjectShowcase, homeArticleShowcase } from "@/content/route-fixtures";
+import { assetPath, assetSize } from "@/lib/assets";
 import { siteSettings } from "@/lib/site-settings";
 import { pageMetadata, organizationJsonLd } from "@/lib/seo";
 
@@ -25,8 +24,6 @@ export const metadata = pageMetadata({
     "Lạc Việt Media Agency thiết kế website doanh nghiệp, hỗ trợ mạng xã hội và cung cấp dịch vụ số cho doanh nghiệp Việt Nam.",
   path: "/",
 });
-
-const latestArticles = articles.filter((a) => !a.hidden).slice(0, 4);
 
 // Demo testimonials — demoOnly:true per CONTENT_TRUTH.json, never a verified claim.
 const testimonials = [
@@ -81,8 +78,13 @@ export default function HomePage() {
         <Container className="grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-16 lg:py-24">
           <div className="text-white">
             <p className="text-eyebrow uppercase text-gold-300">{siteSettings.slogan}</p>
+            {/* Approved master ui-000: "LẠC VIỆT" white, "MEDIA AGENCY" GOLD on the second line.
+                The gold span is part of the approved H1 composition, not optional decoration —
+                rendering the whole headline white was a recovery-audit defect. */}
             <h1 className="mt-3 text-display-mobile lg:text-display-desktop font-heading uppercase text-white">
-              {siteSettings.brandName}
+              LẠC VIỆT
+              <br />
+              <span className="text-gold-500">MEDIA AGENCY</span>
             </h1>
             <p className="mt-5 max-w-editorial text-body-lg text-white/80">
               Giải pháp số giúp cá nhân và doanh nghiệp vận hành tốt hơn trên internet.
@@ -102,18 +104,16 @@ export default function HomePage() {
             </div>
             <HomeHeroCta />
             <div className="mt-8 flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {["demo-avatar-01", "demo-avatar-02", "demo-avatar-03", "demo-avatar-04"].map((id) => (
-                  <Image
-                    key={id}
-                    src={assetPath(id)}
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 rounded-full border-2 border-ink-950 object-cover"
-                  />
-                ))}
-              </div>
+              {/* Approved social-proof faces are a single master strip, not four separate
+                  avatar files (globalAssetMap.socialProofFaces). Rendered at native size. */}
+              <Image
+                src={assetPath("social-proof-avatar-strip-approved")}
+                alt=""
+                aria-hidden="true"
+                width={assetSize("social-proof-avatar-strip-approved").width}
+                height={assetSize("social-proof-avatar-strip-approved").height}
+                className="h-8 w-auto"
+              />
               {/* Demo customer count per CONTENT_TRUTH.json demoOnly — tagged in markup. The
                   4.9/5 rating below already carries the master's own "(minh hoạ)" disclosure. */}
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-white/80" data-demo-only="true">
@@ -125,14 +125,18 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
+          {/* Recovered master hero: the gold phoenix. It is an exact source crop, so it is
+              rendered contained at its own aspect ratio and never cropped or stretched by an
+              imposed 4:3 frame. On mobile the master shows it as a smaller supporting visual. */}
+          <div className="flex justify-center lg:justify-end">
             <Image
               src={assetPath("home-hero-master")}
               alt="Lạc Việt Media Agency"
-              fill
+              width={assetSize("home-hero-master").width}
+              height={assetSize("home-hero-master").height}
               priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
+              sizes="(min-width: 1024px) 40vw, 60vw"
+              className="h-auto w-[60%] max-w-[390px] lg:w-full"
             />
           </div>
         </Container>
@@ -221,9 +225,11 @@ export default function HomePage() {
               <Icon name="arrow-right" size="inline" />
             </Button>
           </div>
+          {/* RECOVERY V2: Home's knowledge row is a route-specific master image set
+              (home-article-preview-01..04), not the /kien-thuc article covers. */}
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {latestArticles.map((a) => (
-              <ArticleCard key={a.slug} article={a} />
+            {homeArticleShowcase.map((a) => (
+              <ArticlePreviewCard key={a.title} preview={a} variant="card" />
             ))}
           </div>
         </Container>

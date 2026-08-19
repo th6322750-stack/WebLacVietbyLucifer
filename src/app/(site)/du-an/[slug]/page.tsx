@@ -6,19 +6,12 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Icon } from "@/components/ui/Icon";
 import { ProjectPreviewCard } from "@/components/content/ProjectPreviewCard";
+import { ProjectDetailTabs } from "@/components/content/ProjectDetailTabs";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { projects, getProjectBySlug } from "@/content/projects";
 import { relatedProjectPreview } from "@/content/route-fixtures";
 import { assetPath } from "@/lib/assets";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
-
-const TABS = [
-  { id: "overview", label: "Tổng quan" },
-  { id: "problem", label: "Vấn đề" },
-  { id: "solution", label: "Giải pháp" },
-  { id: "results", label: "Kết quả" },
-  { id: "technology", label: "Công nghệ" },
-];
 
 // "Dịch vụ" must be the actual demo service label, not the demoOnly status — that status
 // belongs only in the badge/disclosure per GD10 re-QA round 2 item 2.
@@ -146,98 +139,54 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </Container>
       </section>
 
-      <nav id="case-tabs" aria-label="Điều hướng nội dung dự án" className="sticky top-16 z-10 border-b border-border bg-ivory-50/95 backdrop-blur lg:top-[76px]">
+      {/* RECOVERY V2 (audit §8): a single tabbed content pane replaces the five stacked
+          full-height sections. The anchor-link tab strip that used to sit here scrolled between
+          those sections; it is now the tab control itself. */}
+      <Section id="case-content">
         <Container>
-          <ul className="no-scrollbar flex gap-6 overflow-x-auto py-3 text-small font-medium text-text-secondary">
-            {TABS.map((t) => (
-              <li key={t.id}>
-                <a href={`#${t.id}`} className="whitespace-nowrap hover:text-gold-700">
-                  {t.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </nav>
-
-      <Section id="overview">
-        <Container width="editorial">
-          <SectionHeading eyebrow="Tổng quan" title="Bối cảnh dự án" />
-          <p className="mt-4 text-body-lg text-text-secondary">{project.summary}</p>
+          <ProjectDetailTabs
+            panes={[
+              {
+                id: "overview",
+                label: "Tổng quan",
+                paragraphs: [project.summary],
+                metrics: project.resultMetrics?.map((m) => ({ value: m.value, label: m.label })),
+              },
+              ...(project.challenge
+                ? [{ id: "problem", label: "Vấn đề", paragraphs: [project.challenge] }]
+                : []),
+              ...(project.solution
+                ? [{ id: "solution", label: "Giải pháp", paragraphs: [project.solution] }]
+                : []),
+              ...(project.resultMetrics?.length || project.results?.length
+                ? [
+                    {
+                      id: "results",
+                      label: "Kết quả",
+                      metrics: project.resultMetrics?.map((m) => ({ value: m.value, label: m.label })),
+                      bullets: project.resultMetrics?.length ? undefined : project.results,
+                      note: "Kết quả minh hoạ cho dự án mẫu, chưa phải số liệu thực tế xác nhận.",
+                    },
+                  ]
+                : []),
+              ...(project.technology?.length
+                ? [{ id: "technology", label: "Công nghệ", chips: project.technology }]
+                : []),
+            ]}
+          />
         </Container>
       </Section>
 
-      {project.challenge ? (
-        <Section id="problem" tone="ivory">
-          <Container width="editorial">
-            <SectionHeading eyebrow="Vấn đề" title="Thách thức ban đầu" />
-            <p className="mt-4 text-body-lg text-text-secondary">{project.challenge}</p>
-          </Container>
-        </Section>
-      ) : null}
-
-      {project.solution ? (
-        <Section id="solution">
-          <Container width="editorial">
-            <SectionHeading eyebrow="Giải pháp" title="Cách chúng tôi triển khai" />
-            <p className="mt-4 text-body-lg text-text-secondary">{project.solution}</p>
-          </Container>
-        </Section>
-      ) : null}
-
-      {(project.resultMetrics && project.resultMetrics.length > 0) || (project.results && project.results.length > 0) ? (
-        <Section id="results" tone="ivory">
-          <Container width="editorial">
-            <SectionHeading eyebrow="Kết quả" title="Kết quả đạt được" />
-            {project.resultMetrics && project.resultMetrics.length > 0 ? (
-              <dl className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3">
-                {project.resultMetrics.map((m) => (
-                  <div key={m.label} className="rounded-md border border-border bg-white p-5 text-center shadow-sm">
-                    <dt className="sr-only">{m.label}</dt>
-                    <dd className="text-h3-mobile font-heading text-gold-700">{m.value}</dd>
-                    <p className="mt-1 text-small text-text-secondary">{m.label}</p>
-                  </div>
-                ))}
-              </dl>
-            ) : (
-              <ul className="mt-4 flex flex-col gap-3">
-                {project.results?.map((r) => (
-                  <li key={r} className="flex items-start gap-2 text-body-lg text-text-secondary">
-                    <Icon name="circle-check" size="default" className="mt-px shrink-0 text-state-success" />
-                    {r}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <p className="mt-4 text-caption text-text-muted">Kết quả minh hoạ cho dự án mẫu, chưa phải số liệu thực tế xác nhận.</p>
-          </Container>
-        </Section>
-      ) : null}
-
-      {project.technology && project.technology.length > 0 ? (
-        <Section id="technology">
-          <Container width="editorial">
-            <SectionHeading eyebrow="Công nghệ" title="Công nghệ sử dụng" />
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.technology.map((t) => (
-                <span key={t} className="rounded-pill border border-border px-3 py-1 text-small text-text-secondary">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </Container>
-        </Section>
-      ) : null}
-
-      <Section id="visual-showcase" tone="dark">
+      {/* project-detail-showcase-approved-crop is SOURCE_LIMITED_APPROVED_CROP at 516x33: the
+          approved master only ever exposes the top strip of this screenshot, cut off by the
+          mockup frame. The delta forbids upscaling or stretching it into a fake 16:9, so the
+          geometry adapts to the source — native width, centred, no invented continuation.
+          RECOVERY V2 (audit §8.6): the heading begins immediately below the pane and the band
+          is padded to the strip, NOT a giant empty black container. */}
+      <section id="visual-showcase" className="bg-ink-950 py-10">
         <Container>
           <SectionHeading onDark eyebrow="Giao diện" title="Giao diện website" align="center" />
-          {/* project-detail-showcase-approved-crop is SOURCE_LIMITED_APPROVED_CROP at 516x33:
-              the approved master only ever exposes the top strip of this screenshot, cut off by
-              the mockup frame. The delta forbids upscaling or stretching it into a fake 16:9, so
-              the section geometry adapts to the source instead — rendered at its native width,
-              centred, with no invented continuation below. */}
-          <div className="mx-auto mt-8 w-full max-w-[516px] overflow-hidden rounded-lg">
+          <div className="mx-auto mt-4 w-full max-w-[516px] overflow-hidden rounded-sm">
             {showcaseAssetId ? (
               <Image
                 src={assetPath(showcaseAssetId)}
@@ -250,7 +199,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             ) : null}
           </div>
         </Container>
-      </Section>
+      </section>
 
       {related.length > 0 ? (
         <Section id="related-projects">

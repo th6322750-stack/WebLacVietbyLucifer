@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionHeading";
-import { assetPath } from "@/lib/assets";
+import { assetPath, assetSize } from "@/lib/assets";
 
 export function PageHero({
   eyebrow,
@@ -53,14 +53,20 @@ export function PageHero({
             </dl>
           ) : null}
         </div>
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg lg:aspect-[4/3]">
+        {/* Recovered hero visuals are exact source-limited master crops with their own aspect
+            ratios (phoenix, shield, device). Forcing them into a 16:9/4:3 frame with
+            object-cover cropped the approved artwork, so they render contained at native
+            aspect instead. Mobile keeps the hero text-led with a smaller supporting visual,
+            per the mobile column of ui-000..ui-009. */}
+        <div className="flex justify-center lg:justify-end">
           <Image
             src={assetPath(imageAssetId)}
             alt={imageAlt}
-            fill
+            width={assetSize(imageAssetId).width}
+            height={assetSize(imageAssetId).height}
             priority
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 40vw, 60vw"
+            className="h-auto w-[60%] max-w-[390px] lg:w-full"
           />
         </div>
       </Container>

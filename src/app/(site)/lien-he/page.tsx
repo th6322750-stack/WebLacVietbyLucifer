@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Icon } from "@/components/ui/Icon";
 import { PageHero } from "@/components/layout/PageHero";
 import { ContactForm } from "@/components/conversion/ContactForm";
 import { ContactChannelCard } from "@/components/conversion/ContactChannelCard";
@@ -43,35 +44,62 @@ export default function ContactPage() {
 
       <Section id="consultation-section">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
-            <div id="contact-form" className="rounded-lg border border-border bg-white p-6 shadow-sm md:p-8">
-              <SectionHeading eyebrow="Nhận tư vấn" title="Điền thông tin để được liên hệ" />
-              <div className="mt-6">
-                <ContactForm />
-              </div>
+          {/* RECOVERY V2 (audit §10, master ui-009): desktop is intro/checklist on the LEFT and
+              the form on the RIGHT. The previous form-left + narrow channel-rail composition is
+              explicitly listed for removal; channels are now their own 4-equal-card row below. */}
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div id="contact-intro">
+              <SectionHeading eyebrow="Nhận tư vấn" title="Bạn cần hỗ trợ điều gì?" />
+              <p className="mt-4 text-body-lg text-text-secondary">
+                Để lại thông tin, đội ngũ Lạc Việt Media sẽ liên hệ tư vấn giải pháp phù hợp với
+                nhu cầu và ngân sách của bạn.
+              </p>
+              <ul className="mt-6 flex flex-col gap-3">
+                {[
+                  "Tư vấn miễn phí, không ràng buộc",
+                  "Phản hồi trong giờ làm việc",
+                  "Báo giá minh bạch theo đúng phạm vi",
+                  "Đồng hành hỗ trợ sau bàn giao",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-body text-text-secondary">
+                    <Icon name="circle-check" size="default" className="mt-px shrink-0 text-state-success" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Channel set per .webby/ASSET_USAGE_MAP.json "/lien-he" (GD10 authority
-                correction): brandMarks zalo/messenger/telegram + contactIcon icon-mail as the
-                4th "fourthChannel: EMAIL PENDING_DISABLED" card. Messenger stays disabled
-                since facebookUrl is still unconfirmed per CONTENT_TRUTH.json; Email is
-                disabled for the same reason — productionEmail is TBD, never invented. */}
-            <div id="contact-channels" className="flex flex-col gap-4">
-              <ContactChannelCard brand="zalo" title="Zalo" value={siteSettings.zalo} href={`https://zalo.me/${siteSettings.zalo}`} />
-              <ContactChannelCard brand="messenger" title="Facebook Messenger" value="Sắp cập nhật" disabled />
-              <ContactChannelCard
-                brand="telegram"
-                title="Telegram"
-                value={siteSettings.telegram}
-                href={`https://t.me/${siteSettings.telegram.replace("@", "")}`}
-              />
-              <ContactChannelCard icon="mail" title="Email" value="Sắp cập nhật" disabled />
+            <div id="contact-form" className="rounded-lg border border-border bg-white p-6 shadow-sm md:p-8">
+              <ContactForm />
             </div>
           </div>
         </Container>
       </Section>
 
-      <Section id="contact-process" tone="ivory">
+      {/* Channel set per .webby/ASSET_USAGE_MAP.json "/lien-he" (GD10 authority correction):
+          brandMarks zalo/messenger/telegram + contactIcon icon-mail as the 4th
+          "fourthChannel: EMAIL PENDING_DISABLED" card. Messenger stays disabled since
+          facebookUrl is still unconfirmed per CONTENT_TRUTH.json; Email is disabled for the
+          same reason — productionEmail is TBD, never invented.
+          RECOVERY V2: four EQUAL cards in a row, not a narrow sidebar rail. */}
+      <Section id="quick-channels" tone="ivory">
+        <Container>
+          <SectionHeading eyebrow="Kênh liên hệ nhanh" title="Chọn kênh phù hợp với bạn" align="center" />
+          <div id="contact-channels" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ContactChannelCard brand="zalo" title="Zalo" value={siteSettings.zalo} href={`https://zalo.me/${siteSettings.zalo}`} />
+            <ContactChannelCard brand="messenger" title="Facebook Messenger" value="Sắp cập nhật" disabled />
+            <ContactChannelCard
+              brand="telegram"
+              title="Telegram"
+              value={siteSettings.telegram}
+              href={`https://t.me/${siteSettings.telegram.replace("@", "")}`}
+            />
+            <ContactChannelCard icon="mail" title="Email" value="Sắp cập nhật" disabled />
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="contact-process">
         <Container>
           <SectionHeading eyebrow="Quy trình" title="Điều gì xảy ra sau khi bạn liên hệ" align="center" />
           <div className="mt-10">
@@ -84,7 +112,7 @@ export default function ContactPage() {
         <Container>
           <SectionHeading eyebrow="Câu hỏi thường gặp" title="Những câu hỏi phổ biến" align="center" />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_320px]">
-            <FAQAccordion items={faqs} />
+            <FAQAccordion items={faqs} columns={2} />
             <div id="secondary-contact-card">
               <ContactQuestionCard />
             </div>

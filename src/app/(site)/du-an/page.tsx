@@ -9,7 +9,7 @@ import { ProjectCard } from "@/components/content/ProjectCard";
 import { CategoryFilter } from "@/components/content/CategoryFilter";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { getVisibleProjects } from "@/content/projects";
-import { assetPath } from "@/lib/assets";
+import { assetPath, assetSize } from "@/lib/assets";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -75,10 +75,18 @@ export default async function ProjectsPage({
             href={`/du-an/${featuredCaseStudy.slug}`}
             className="mt-8 grid gap-6 overflow-hidden rounded-lg border border-white/10 bg-white/5 lg:grid-cols-2"
           >
-            <div className="relative aspect-[16/10] w-full lg:aspect-auto">
-              {featuredCaseStudy.heroAssetId ? (
-                <Image src={assetPath(featuredCaseStudy.heroAssetId)} alt={featuredCaseStudy.title} fill className="object-cover" />
-              ) : null}
+            {/* RECOVERY V2: the featured-case banner has its own master visual
+                (`project-featured-case-master`), not the grid cover of whichever project
+                happens to sit first — see VISUAL_RECOVERY_AUTHORITY_V2 "/du-an".featuredCase. */}
+            <div className="flex items-center justify-center p-6">
+              <Image
+                src={assetPath("project-featured-case-master")}
+                alt={featuredCaseStudy.title}
+                width={assetSize("project-featured-case-master").width}
+                height={assetSize("project-featured-case-master").height}
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="h-auto w-full max-w-[470px]"
+              />
             </div>
             <div className="flex flex-col justify-center p-6 md:p-10">
               <span className="text-caption uppercase text-gold-300">{featuredCaseStudy.category}</span>

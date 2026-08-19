@@ -171,7 +171,7 @@ export default function DigitalServicesPage() {
         <Container>
           <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp nhanh những thắc mắc phổ biến" align="center" />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_320px]">
-            <FAQAccordion items={faqs} />
+            <FAQAccordion items={faqs} columns={2} />
             <div id="support-card">
               <DigitalSupportCard />
             </div>

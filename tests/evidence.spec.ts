@@ -99,12 +99,37 @@ for (const [viewportName, viewport] of Object.entries(VIEWPORTS)) {
   });
 }
 
+/** Recovery audit "Interaction-state evidence — fix the old false positives": a state capture
+ * must prove the state is actually inside the screenshot viewport. The previous suite passed
+ * while the success message sat below the fold, which is how form-success and form-error came
+ * out byte-identical. Every state test now gates on the state element being in-viewport. */
+async function expectStateVisibleInViewport(page: Page, selector: string) {
+  const el = page.locator(selector).first();
+  await el.waitFor({ state: "visible" });
+  // The settle helper returns the page to scroll-top, which can push an in-flow state (the
+  // expanded FAQ panel sits ~3700px down) back out of the capture area. Bring it into view
+  // before measuring; for fixed overlays this is a no-op.
+  await el.scrollIntoViewIfNeeded();
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => r(null))));
+  const box = await el.boundingBox();
+  const viewport = page.viewportSize();
+  if (!box || !viewport) throw new Error(`state ${selector}: no bounding box / viewport`);
+  const visible =
+    box.y < viewport.height && box.y + box.height > 0 && box.x < viewport.width && box.x + box.width > 0;
+  if (!visible) {
+    throw new Error(
+      `state ${selector} is outside the capture viewport (box y=${box.y} h=${box.height}, viewport h=${viewport.height})`,
+    );
+  }
+}
+
 test.describe("interactive states", () => {
   test("mobile-menu-open @ mobile", async ({ page }) => {
     await page.setViewportSize(VIEWPORTS.mobile);
     await page.goto("/");
     await page.getByRole("button", { name: "Mở menu" }).click();
     await disableAnimationsAndWait(page);
+    await expectStateVisibleInViewport(page, '[data-state="mobile-menu-open"][role="dialog"]');
     await page.screenshot({ path: `${EVIDENCE_DIR}/mobile/states--mobile-menu-open.png` });
   });
 
@@ -114,6 +139,7 @@ test.describe("interactive states", () => {
       await page.goto("/");
       await page.getByRole("button", { name: "Nhận tư vấn" }).first().click();
       await disableAnimationsAndWait(page);
+      await expectStateVisibleInViewport(page, '[role="dialog"]');
       await page.screenshot({ path: `${EVIDENCE_DIR}/${viewportName}/states--consultation-modal.png` });
     });
   }
@@ -121,10 +147,14 @@ test.describe("interactive states", () => {
   test("faq-open @ desktop", async ({ page }) => {
     await page.setViewportSize(VIEWPORTS.desktop);
     await page.goto("/website");
-    const question = page.locator('[id^="faq-button-"]').first();
+    // The first FAQ is open by default, so clicking IT would collapse the accordion and the
+    // capture would show no expanded region at all. Open a currently-closed question instead.
+    const question = page.locator('[id^="faq-button-"][aria-expanded="false"]').first();
     await question.scrollIntoViewIfNeeded();
     await question.click();
     await disableAnimationsAndWait(page);
+    // Must contain the EXPANDED panel, not merely the collapsed FAQ list.
+    await expectStateVisibleInViewport(page, '[data-state="faq-open"] [role="region"]');
     await page.screenshot({ path: `${EVIDENCE_DIR}/desktop/states--faq-open.png` });
   });
 
@@ -138,8 +168,8 @@ test.describe("interactive states", () => {
     await form.getByLabel(/Dịch vụ quan tâm/).selectOption({ index: 1 });
     await form.getByLabel(/Tôi đồng ý/).check();
     await form.getByRole("button", { name: "Gửi yêu cầu tư vấn" }).click();
-    await form.getByText("Đã gửi yêu cầu thành công").waitFor();
     await disableAnimationsAndWait(page);
+    await expectStateVisibleInViewport(page, '[data-state="form-success"]');
     await page.screenshot({ path: `${EVIDENCE_DIR}/desktop/states--form-success.png` });
   });
 
@@ -150,8 +180,8 @@ test.describe("interactive states", () => {
     await form.getByLabel("Họ tên").fill("A");
     await form.getByLabel("Số điện thoại").fill("123");
     await form.getByRole("button", { name: "Gửi yêu cầu tư vấn" }).click();
-    await form.getByRole("alert").first().waitFor();
     await disableAnimationsAndWait(page);
+    await expectStateVisibleInViewport(page, '[data-state="form-error"]');
     await page.screenshot({ path: `${EVIDENCE_DIR}/desktop/states--form-error.png` });
   });
 
@@ -188,6 +218,7 @@ test.describe("interactive states", () => {
     await page.addStyleTag({
       content: `*, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }`,
     });
+    await expectStateVisibleInViewport(page, '[data-state="loading"]');
     await page.screenshot({ path: `${EVIDENCE_DIR}/desktop/states--loading.png` });
   });
 });

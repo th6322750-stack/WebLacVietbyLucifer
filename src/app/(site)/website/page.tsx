@@ -155,7 +155,7 @@ export default function WebsitePage() {
         <Container width="editorial">
           <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp về dịch vụ website" align="center" />
           <div className="mt-10">
-            <FAQAccordion items={faqs} />
+            <FAQAccordion items={faqs} columns={2} />
           </div>
         </Container>
       </Section>

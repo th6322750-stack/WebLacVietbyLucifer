@@ -10,7 +10,7 @@ import { FinalCta } from "@/components/layout/FinalCta";
 import { ArticleConsultCard } from "./ArticleConsultCard";
 import { articles, getArticleBySlug } from "@/content/articles";
 import { seoArticleRelatedPreview } from "@/content/route-fixtures";
-import { assetPath } from "@/lib/assets";
+import { assetPath, assetSize } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
 import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -87,31 +87,9 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
         <Breadcrumbs items={[{ label: "Trang chủ", href: "/" }, { label: "Kiến thức", href: "/kien-thuc" }, { label: article.title }]} />
       </Container>
 
-      <section id="article-header">
-        <Container width="editorial">
-          <span className="text-eyebrow uppercase text-gold-700">{article.category}</span>
-          <h1 className="mt-3 text-detail-h1-mobile lg:text-detail-h1-desktop text-ink-950">{article.title}</h1>
-          <div className="mt-4 flex items-center gap-2 text-small text-text-muted">
-            <span>{article.author}</span>
-            <span aria-hidden="true">·</span>
-            <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
-            {article.readMinutes ? (
-              <>
-                <span aria-hidden="true">·</span>
-                <span>{article.readMinutes} phút đọc</span>
-              </>
-            ) : null}
-          </div>
-        </Container>
-        {headerImageId ? (
-          <Container className="mt-8">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
-              <Image src={assetPath(headerImageId)} alt={article.title} fill priority className="object-cover" />
-            </div>
-          </Container>
-        ) : null}
-      </section>
-
+      {/* RECOVERY V2 (audit §9, master ui-008): the 3-column editorial layout begins
+          immediately after the breadcrumb. There is NO full-width dark/gold chart hero above
+          the article — the title, meta and the purple SEO image all live in the centre column. */}
       <Section id="article-layout">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[220px_1fr_280px]">
@@ -119,6 +97,34 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
               <ArticleTOC sections={article.content} />
             </div>
             <div id="article-body" className="max-w-editorial">
+              <header id="article-header">
+                <span className="text-eyebrow uppercase text-gold-700">{article.category}</span>
+                <h1 className="mt-3 text-detail-h1-mobile lg:text-detail-h1-desktop text-ink-950">{article.title}</h1>
+                <div className="mt-4 flex items-center gap-2 text-small text-text-muted">
+                  <span>{article.author}</span>
+                  <span aria-hidden="true">·</span>
+                  <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+                  {article.readMinutes ? (
+                    <>
+                      <span aria-hidden="true">·</span>
+                      <span>{article.readMinutes} phút đọc</span>
+                    </>
+                  ) : null}
+                </div>
+                {headerImageId ? (
+                  <Image
+                    src={assetPath(headerImageId)}
+                    alt={article.title}
+                    width={assetSize(headerImageId).width}
+                    height={assetSize(headerImageId).height}
+                    priority
+                    sizes="(min-width: 1024px) 640px, 100vw"
+                    className="mt-6 h-auto w-full rounded-lg"
+                  />
+                ) : null}
+              </header>
+
+              <div className="mt-10">
               {article.content.map((sec) => (
                 <div key={sec.id} className="mb-8 scroll-mt-24">
                   <h2 id={sec.id} className="text-h3-mobile lg:text-h3-desktop text-ink-950">
@@ -131,6 +137,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                   ))}
                 </div>
               ))}
+              </div>
             </div>
             <aside id="related-articles" className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
               {article.hidden ? (

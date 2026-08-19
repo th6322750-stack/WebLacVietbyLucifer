@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { assetPath, assetSize } from "@/lib/assets";
 import { footerLinks, siteSettings } from "@/lib/site-settings";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
@@ -20,7 +21,13 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
     return (
       <footer className="bg-ink-950 py-8 text-white/70">
         <Container className="flex flex-col items-center gap-3 text-center text-small">
-          <Image src="/assets/brand/lac-viet-logo.webp" alt="Lạc Việt Media Agency" width={36} height={36} />
+          <Image
+            src={assetPath("lac-viet-logo-horizontal-approved")}
+            alt="Lạc Việt Media Agency"
+            width={assetSize("lac-viet-logo-horizontal-approved").width}
+            height={assetSize("lac-viet-logo-horizontal-approved").height}
+            className="h-8 w-auto"
+          />
           <p>
             © {new Date().getFullYear()} {siteSettings.brandName}. Mọi quyền được bảo lưu.
           </p>
@@ -68,7 +75,13 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
 function BrandColumn() {
   return (
     <div>
-      <Image src="/assets/brand/lac-viet-logo.webp" alt={siteSettings.brandName} width={160} height={48} className="h-12 w-auto" />
+      <Image
+        src={assetPath("lac-viet-logo-horizontal-approved")}
+        alt={siteSettings.brandName}
+        width={assetSize("lac-viet-logo-horizontal-approved").width}
+        height={assetSize("lac-viet-logo-horizontal-approved").height}
+        className="h-10 w-auto"
+      />
       <p className="mt-4 max-w-xs text-small text-white/75">
         {siteSettings.brandName} — dịch vụ website, hỗ trợ mạng xã hội và tài khoản số cho doanh nghiệp Việt.
       </p>

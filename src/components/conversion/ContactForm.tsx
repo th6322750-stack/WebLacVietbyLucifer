@@ -81,19 +81,21 @@ export function ContactForm({
     }
   }
 
+  /* Approved state master (ui-010): success and error are centred white DIALOGS, not inline
+   * notes. Rendering them as fixed, centred overlays is also what makes the state evidence
+   * honest — the previous inline success block sat below the fold, so the success and error
+   * captures came out byte-identical and proved nothing. */
   if (status === "success") {
     return (
-      <div
-        role="status"
-        data-state="form-success"
-        className="flex flex-col items-center gap-3 rounded-md border border-state-success/30 bg-state-success/5 p-8 text-center"
-      >
-        <Icon name="circle-check" size="feature" className="text-state-success" />
-        <p className="text-card-h3-mobile lg:text-card-h3-desktop font-heading text-ink-950">Đã gửi yêu cầu thành công</p>
-        <p className="text-body text-text-secondary">
-          Lạc Việt Media sẽ liên hệ lại với bạn trong thời gian sớm nhất.
-        </p>
-      </div>
+      <StatusDialog
+        state="form-success"
+        tone="success"
+        icon="circle-check"
+        title="Cảm ơn bạn!"
+        message="Chúng tôi đã nhận được yêu cầu của bạn. Lạc Việt Media sẽ liên hệ lại trong thời gian sớm nhất."
+        actionLabel="Đóng"
+        onAction={() => setStatus("idle")}
+      />
     );
   }
 
@@ -140,16 +142,94 @@ export function ContactForm({
       {fieldErrors.consent ? <p className="text-small text-state-error">{fieldErrors.consent[0]}</p> : null}
 
       {status === "error" && errorMessage ? (
-        <p role="alert" data-state="form-error" className="flex items-center gap-2 text-small text-state-error">
-          <Icon name="circle-alert" size="inline" />
-          {errorMessage}
-        </p>
+        <>
+          <p role="alert" className="flex items-center gap-2 text-small text-state-error">
+            <Icon name="circle-alert" size="inline" />
+            {errorMessage}
+          </p>
+          <StatusDialog
+            state="form-error"
+            tone="error"
+            icon="circle-alert"
+            title="Có lỗi xảy ra!"
+            message={errorMessage}
+            actionLabel="Thử lại"
+            onAction={() => {
+              setStatus("idle");
+              setErrorMessage(null);
+            }}
+          />
+        </>
       ) : null}
 
       <Button type="submit" disabled={status === "submitting"} className="w-full md:w-auto">
         {status === "submitting" ? "Đang gửi..." : "Gửi yêu cầu tư vấn"}
       </Button>
+
+      {/* Approved loading panel: dark card, gold circular spinner, "Đang tải...". Rendered as a
+       * centred overlay so the state is unambiguously visible in the evidence viewport. */}
+      {status === "submitting" ? (
+        <div
+          role="status"
+          aria-live="polite"
+          data-state="loading"
+          className="fixed inset-0 z-[80] flex items-center justify-center p-6"
+        >
+          <div aria-hidden="true" className="absolute inset-0 bg-ink-950/60" />
+          <div className="relative flex flex-col items-center gap-4 rounded-lg bg-ink-900 px-12 py-10 shadow-lg">
+            <span
+              aria-hidden="true"
+              className="h-12 w-12 rounded-full border-4 border-white/15 border-t-gold-500 motion-safe:animate-spin"
+            />
+            <p className="text-body text-white/80">Đang tải...</p>
+          </div>
+        </div>
+      ) : null}
     </form>
+  );
+}
+
+/** Centred white result dialog matching the approved state panels: green check + "Cảm ơn bạn!"
+ * for success, red alert + "Có lỗi xảy ra!" for failure, each with one gold action button. */
+function StatusDialog({
+  state,
+  tone,
+  icon,
+  title,
+  message,
+  actionLabel,
+  onAction,
+}: {
+  state: "form-success" | "form-error";
+  tone: "success" | "error";
+  icon: "circle-check" | "circle-alert";
+  title: string;
+  message: string;
+  actionLabel: string;
+  onAction: () => void;
+}) {
+  return (
+    <div
+      role={tone === "error" ? "alertdialog" : "dialog"}
+      aria-modal="false"
+      aria-label={title}
+      data-state={state}
+      className="fixed inset-0 z-[80] flex items-center justify-center p-6"
+    >
+      <div aria-hidden="true" className="absolute inset-0 bg-ink-950/60" />
+      <div className="relative flex w-full max-w-md flex-col items-center gap-3 rounded-lg bg-white p-8 text-center shadow-lg">
+        <Icon
+          name={icon}
+          size="feature"
+          className={tone === "success" ? "text-state-success" : "text-state-error"}
+        />
+        <p className="text-card-h3-mobile lg:text-card-h3-desktop font-heading text-ink-950">{title}</p>
+        <p className="text-body text-text-secondary">{message}</p>
+        <Button type="button" onClick={onAction} className="mt-2">
+          {actionLabel}
+        </Button>
+      </div>
+    </div>
   );
 }
 
