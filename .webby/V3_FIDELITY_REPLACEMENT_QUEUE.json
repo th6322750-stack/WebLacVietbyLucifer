@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "revision": "pha1-v3-fidelity-replacement-queue",
+  "status": "CHATGPT_REPLACEMENT_PENDING_CLAUDE_MAY_IMPLEMENT_STABLE_PATHS",
+  "supremeVisualAuthority": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "rule": "Claude may implement/wire the current V3 bytes at the exact stable paths, but MUST NOT redesign, regenerate, search, substitute, rename or remap the fidelity-queued assets. ChatGPT will replace bytes in-place later; Claude then re-integrates/verifies only.",
+  "notAnError": ["hero/404-background-4k.png"],
+  "replacementCount": 15,
+  "replacementAssets": [
+    {"id":"project-cover-03","path":"project/project-cover-03.png","target":"1920x1080 lossless","masterIdentity":"dark blue digital-marketing cover with laptop + phone + user/person; premium realistic device mockup"},
+    {"id":"project-cover-04","path":"project/project-cover-04.png","target":"1920x1080 lossless","masterIdentity":"black/orange landing-page Master UX composition with desktop/tablet/phone UI mockups"},
+    {"id":"project-cover-06","path":"project/project-cover-06.png","target":"1920x1080 lossless","masterIdentity":"dark navy Finoviet mobile-app UI composition with phone screens"},
+    {"id":"project-cover-07","path":"project/project-cover-07.png","target":"1920x1080 lossless","masterIdentity":"Edu Smart real website/campus scene with ferris-wheel/amusement-park visual and web UI treatment"},
+    {"id":"project-cover-08","path":"project/project-cover-08.png","target":"1920x1080 lossless","masterIdentity":"Tet 2024 fashion campaign, red/black cinematic composition with female model and mobile/social creative"},
+    {"id":"project-cover-10","path":"project/project-cover-10.png","target":"1920x1080 lossless","masterIdentity":"BizFlow SaaS landing-page mockups, dark navy, multiple desktop/mobile product screens"},
+    {"id":"project-cover-11","path":"project/project-cover-11.png","target":"1920x1080 lossless","masterIdentity":"HealthCare UI/UX, bright white/blue healthcare application screens and mobile UI"},
+    {"id":"project-cover-12","path":"project/project-cover-12.png","target":"1920x1080 lossless","masterIdentity":"SkinLabs e-commerce / Google Ads case visual, warm white/orange, phone/product UI composition"},
+    {"id":"article-cover-02","path":"article/article-cover-02.png","target":"1920x1080 lossless","masterIdentity":"purple/blue website checklist montage with multiple real website/device thumbnails"},
+    {"id":"article-cover-03","path":"article/article-cover-03.png","target":"1920x1080 lossless","masterIdentity":"TikTok neon hero, central TikTok mark, cyan/magenta light trails and social-tech depth"},
+    {"id":"article-cover-04","path":"article/article-cover-04.png","target":"1920x1080 lossless","masterIdentity":"Facebook advertising hero, large blue Facebook mark with blue digital panels around it"},
+    {"id":"article-cover-05","path":"article/article-cover-05.png","target":"1920x1080 lossless","masterIdentity":"SEO magnifying-glass composition on dark slate, gold SEO ring and surrounding search/analytics icons"},
+    {"id":"article-cover-06","path":"article/article-cover-06.png","target":"1920x1080 lossless","masterIdentity":"realistic blue humanoid AI robot portrait in a dark server/lab environment"},
+    {"id":"article-cover-07","path":"article/article-cover-07.png","target":"1920x1080 lossless","masterIdentity":"white tabletop/strategy-board scene, bold MARKETING STRATEGY typography, stationery and diagram elements"},
+    {"id":"knowledge-hero-master","path":"hero/knowledge-hero-master-4k.png","runtimeFHD":"runtime/hero/knowledge-hero-fhd.png","target":"3840x2160 lossless + deterministic lossless FHD","masterIdentity":"3D premium still life: open book, warm light bulbs, gold/black bar chart, magnifying glass, black laptop with Lac Viet gold mark, circular Dong Son style floor motif"}
+  ],
+  "approvedNow": {
+    "instruction":"Claude proceeds with every asset/route not in replacementAssets and may wire these 15 using stable paths only. Do not block code/layout work on the replacement render. Final visual QA must be recaptured after ChatGPT replaces these bytes."
+  }
+}
