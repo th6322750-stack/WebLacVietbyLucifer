@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "PHA2_COMPLETE_PENDING_CHATGPT_FINAL_QA",
-  "statusNote": "PHA 2 all-in-one complete against authority e84d3094. Typography v2, the full 91-asset pack (3 approved-UI raster crops + 3 decorative vectors) and the visual correction pass are all implemented. The earlier Drive blocker was resolved in-session after the user opened link access.",
+  "status": "RECOVERY_V2_COMPLETE_PENDING_CHATGPT_FINAL_VISUAL_QA",
+  "statusNote": "Final Visual Recovery V2 all-in-one executed against authority 440ca7d. 45 recovery rasters produced from the SHA-verified frozen ui-000..ui-010 bundle using ChatGPT's locked crop rectangles; 30 superseded schematic rasters deleted; routes, states and evidence rebuilt. One authority defect found and reported rather than worked around: 44/45 declared pixel hashes do not match what the locked rectangles yield.",
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
@@ -594,5 +594,98 @@
       "/du-an/[slug] visual-showcase": "Approved crop now replaces the temporary device-master fallback for the identity-bound demo-project-01 fixture. It is 516x33 (~15.6:1) and the delta forbids upscaling, so the section geometry was adapted to the source: the strip renders at its native width, centred, with NO invented continuation below the approved cut-off. Verified against ui-007.png from the freeze bundle, which shows exactly this cropped strip under the 'GIAO DIỆN WEBSITE' heading.",
       "guards": "Four new tests assert each crop renders at or below its frozen dimensions with native aspect preserved, plus an explicit assertion that the showcase strip is never stretched into a fake 16:9 (aspect must stay >10:1)."
     }
+  },
+  "recoveryV2": {
+    "authorityIntegrated": "440ca7dddb0502002999246f3d3e22f2e4bb2cd6",
+    "authorityMergeCommit": "64fb07b124b6d0f75741d6fc09f96cf1cfc0ee18",
+    "authorityScopeVerified": "Diffed against merge base e84d309: the authority touches only .webby/ - no src/ or tests/ file.",
+    "sourceBundle": {
+      "file": "LacVietMedia_PHA1_FinalAssetFreeze_91_v2.zip::04_FINAL_UI_REFERENCE/",
+      "sourceShaVerified": "11/11 PASS against the SHA-256 values hardcoded in ChatGPT's own producer script",
+      "noDriveBrowsing": true,
+      "noImageSearchOrGeneration": true
+    },
+    "assetProduction": {
+      "produced": "45/45",
+      "method": "ChatGPT's exact locked sourceCrop rectangles from RECOVERY_ASSET_MANIFEST_V2.json. Claude selected no crop, altered no pixel, and did not re-crop, upscale or substitute.",
+      "declaredHashMatches": "1/45",
+      "declaredHashMismatches": "44/45",
+      "blockerClassification": "AUTHORITY_MANIFEST_DEFECT (not a Claude implementation defect)",
+      "evidenceThatCropsAreCorrect": [
+        "All 11 sources verify byte-identical to the producer's own pinned SHA-256 values.",
+        "Every crop rectangle is in-bounds and its width/height exactly equals the declared nativeWidth/nativeHeight (0/45 mismatches).",
+        "Visual inspection of all 45 crops shows each is exactly the asset its id names (phoenix heroes, gold shield, purple SEO image, real project/article screenshots, horizontal logo).",
+        "Only lac-viet-logo-horizontal-approved matches its declared hash; the other 44 match NO crop at those coordinates in ANY of the 11 sources.",
+        "Ruled out encoding variance: raw-RGB, RGBA and PNG-file-byte hashing all fail.",
+        "Ruled out coordinate drift: an exhaustive +/-4px offset search finds no match."
+      ],
+      "actionTaken": "The authority manifest was NOT edited. Assets were produced from the verified sources at the locked rectangles, and declared-vs-actual hashes for all 45 are recorded in .webby/implementation/RECOVERY_ASSET_ACTUAL_HASHES.json for ChatGPT to reconcile.",
+      "resolutionOwner": "ChatGPT (asset authority)"
+    },
+    "supersededRastersDeleted": 30,
+    "globalRebuild": [
+      "Header, footer, 404 header and mobile drawer now use lac-viet-logo-horizontal-approved; the square mark is no longer the global identity.",
+      "Home H1 restores the approved gold span: LAC VIET white / MEDIA AGENCY gold.",
+      "PageHero renders hero rasters CONTAINED at native crop aspect; the previous 16:9/4:3 object-cover frame was cropping the approved artwork on six routes.",
+      "ProcessSteps became a connected horizontal timeline (numbered nodes + arrow connectors) on desktop with a compact vertical rail on mobile, replacing the 4-up card grid.",
+      "Two-column desktop FAQ on /website, /support-mxh, /dich-vu-so and /lien-he."
+    ],
+    "routeRebuild": {
+      "/": "home-project-preview-01..04 and home-article-preview-01..04 replace the borrowed /du-an and /kien-thuc covers; real phoenix hero; approved social-proof avatar strip; 6-step timeline.",
+      "/du-an": "featured-case banner now uses its own project-featured-case-master instead of the first project's grid cover; 12 covers already 4x3.",
+      "/website": "website-project-preview-01..04; 4 packages, 6 icon cards, 5 benefit columns retained; 2-column FAQ.",
+      "/du-an/[slug]": "Five stacked full-height sections replaced by a single tabbed content pane (Tong quan/Van de/Giai phap/Ket qua/Cong nghe) with overview text + result metrics as the default pane; the 516x33 approved strip now sits in a padded band, not a giant empty black container.",
+      "/kien-thuc/[slug]": "3-column editorial layout starts immediately after the breadcrumb; title, meta and the purple SEO image moved into the centre column; the full-width hero above the article is gone.",
+      "/lien-he": "Desktop is intro/checklist-left + form-right; the narrow channel rail became a 4-equal-card row.",
+      "/404": "Rebuilt as the approved dark/gold state from ui-010: oversized gold 404, white headline, grey message, gold button over a subtle dark texture."
+    },
+    "interactionStates": {
+      "productFixes": [
+        "Success is now the approved centred white dialog with a green check and 'Cam on ban!'.",
+        "Error is the approved centred white dialog with a red icon, 'Co loi xay ra!' and a 'Thu lai' action.",
+        "Loading is the approved dark panel with a gold circular spinner and 'Dang tai...'.",
+        "The mobile drawer is now an opaque full-viewport black panel with the horizontal logo; it no longer lets the Home hero show through."
+      ],
+      "captureFixes": "Every state capture now asserts the state element is inside the screenshot viewport before shooting, and scrolls it into view after the settle helper returns to top.",
+      "falsePositivesCaught": [
+        "form-success and form-error previously produced byte-identical screenshots (both 302145 bytes) because the inline success block sat below the fold.",
+        "faq-open captured no expanded panel at all: the expanded region sat at y=3717 in a 900px viewport. The old test also clicked the FIRST question, which is open by default, so it actually COLLAPSED the accordion."
+      ],
+      "stateShaDistinctness": "8/8 state screenshots have distinct SHA-256; 0 duplicates."
+    },
+    "testInfrastructureDefectFound": {
+      "issue": "playwright.config.ts used reuseExistingServer with url http://localhost:3000. An unrelated local project ('NDTHICH LAND', PID 61492) was listening on 3000, so the suite was executing against a DIFFERENT WEBSITE.",
+      "impact": "A functional run under that server reported 19 passed with many failures whose markup does not exist in this repo. Any previous local run that reused port 3000 cannot be trusted.",
+      "fix": "The suite now owns a dedicated port (3100, PLAYWRIGHT_PORT overridable) and reuseExistingServer is false, so a port collision fails loudly instead of silently testing someone else's site. The other project's server was left running and untouched."
+    },
+    "verification": {
+      "typecheck": "PASS (tsc --noEmit, 0 errors)",
+      "lint": "PASS (eslint ., 0 errors) - next-env.d.ts, auto-generated and gitignored, is now ignored so its Next-authored triple-slash reference stops producing a false error",
+      "build": "PASS (next build, 36/36 static pages)",
+      "functional": "PASS 72/72 against this project's own server",
+      "evidence": "PASS 30/30 captured from the live Vercel preview",
+      "recoveryAssetChecksum": "sources 11/11 PASS; outputs 45/45 produced; declared-hash agreement 1/45 (see assetProduction)"
+    },
+    "livePreview": "https://lacvietmedia-3i481drlc-lucifer-scmta.vercel.app",
+    "comparisonBoard": {
+      "mobileMasterFix": "The board's MOBILE section now compares against the REAL mobile column cropped from ui-000..ui-009 (each master contains a desktop mockup on the left and a mobile mockup on the right; the gutter is detected programmatically per image). The previous board repeated the desktop master in the mobile rows, which the audit rejected.",
+      "detectedMobileColumnOffsets": {
+        "ui-000": 800,
+        "ui-001": 713,
+        "ui-002": 717,
+        "ui-003": 730,
+        "ui-004": 727,
+        "ui-005": 700,
+        "ui-006": 582,
+        "ui-007": 601,
+        "ui-008": 582,
+        "ui-009": 702
+      }
+    },
+    "remainingDeltasFlaggedNotHidden": [
+      "Home mobile: the master places the phoenix as a small watermark at the top-right of the hero; this build places it below the CTA block. Position differs, asset is correct.",
+      "Home mobile: the master orders CTAs before the three proof items; this build keeps proof items then CTAs, matching the desktop order.",
+      "lac-viet-logo-horizontal-approved is an exact master crop that includes its own black background, so it shows a faint dark plate on the header. Removing it would mean editing approved pixels, which the contract forbids - flagged for ChatGPT to supply a transparent variant if wanted."
+    ]
   }
 }
