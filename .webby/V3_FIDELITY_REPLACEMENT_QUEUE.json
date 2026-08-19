@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 3,
+  "revision": "pha1-v3-fidelity-replacement-queue-drive-locked-2026-08-20",
+  "status": "REPLACEMENTS_RENDERED_DRIVE_LOCKED_READY_FOR_CLAUDE_REINTEGRATION",
+  "supremeVisualAuthority": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "manifestAuthority": ".webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json",
+  "rule": "Claude must use only the exact Drive file IDs and SHA256 values in .webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json. No redesign, search, generation, substitution, rename or remap. Replace stable runtime paths only, then rebuild/test/deploy and recapture 30 evidence screenshots + MASTER|VERCEL board. STOP for ChatGPT QA.",
+  "notAnError": [
+    "hero/404-background-4k.png"
+  ],
+  "replacementCount": 15,
+  "replacementFileCount": 16,
+  "driveDelivery": {
+    "rootFolderId": "1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+    "rootFolderUrl": "https://drive.google.com/drive/folders/1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+    "manifestFileId": "1OWMPRGRwdmBc4SwmTpF6QeKg6V9OynfP",
+    "receiptFileId": "1WMS-DXxsf0gKhWSD2oFxX8kXVgSBOLqj",
+    "qaContactSheetFileId": "1utd4JOYl8sHbXrE28XSNX6e4NCvD9IIW",
+    "manifestSha256": "1a67b5026c8d40e5e7a296efaf2327df40c8b7c2c1ded4905338791bea21341e",
+    "status": "DRIVE_FILE_IDS_LOCKED_SHA256_RECORDED"
+  },
+  "stablePaths": [
+    "project/project-cover-03.png",
+    "project/project-cover-04.png",
+    "project/project-cover-06.png",
+    "project/project-cover-07.png",
+    "project/project-cover-08.png",
+    "project/project-cover-10.png",
+    "project/project-cover-11.png",
+    "project/project-cover-12.png",
+    "article/article-cover-02.png",
+    "article/article-cover-03.png",
+    "article/article-cover-04.png",
+    "article/article-cover-05.png",
+    "article/article-cover-06.png",
+    "article/article-cover-07.png",
+    "hero/knowledge-hero-master-4k.png",
+    "runtime/hero/knowledge-hero-fhd.png"
+  ],
+  "qualityContract": {
+    "projectArticle": "1920x1080 PNG lossless",
+    "knowledgeHero": "3840x2160 PNG lossless + deterministic 1920x1080 runtime",
+    "masterCrops": "REFERENCE_ONLY",
+    "noReferenceRuntime": true,
+    "noUpscaleGeneratedSource": true,
+    "sha256MustMatch": true,
+    "driveFileIdsAreAuthoritative": true
+  },
+  "nextAction": {
+    "owner": "Claude Code",
+    "instruction": "Pull exactly the 16 Drive file IDs in .webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json, verify SHA256, replace stable runtime source paths, rebuild/test/deploy, recapture 30 evidence screenshots + MASTER|VERCEL board, return exact HEAD, then STOP."
+  }
+}
