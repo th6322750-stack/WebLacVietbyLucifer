@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "revision": "v3-fidelity-replacements-final-candidate",
+  "status": "READY_FOR_CLAUDE_REINTEGRATION",
+  "supremeVisualAuthority": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "replacementCountLogical": 15,
+  "fileCount": 16,
+  "driveRoot": "https://drive.google.com/drive/folders/1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+  "manifestDriveFileId": "1hQ9F6dY0MnfELQk6P3lVoTUzrl-r4pnc",
+  "manifestSha256": "a643725435cedbf6b50e574dd5d2eda8caf31e4648ff46d6cfad36db819776ac",
+  "policy": {
+    "masterCrops": "REFERENCE_ONLY",
+    "projectArticle": "1920x1080 PNG lossless",
+    "knowledgeHero": "3840x2160 PNG lossless + 1920x1080 deterministic runtime",
+    "noReferenceRuntime": true,
+    "noSourceUpscale": true,
+    "stablePathsRequired": true
+  },
+  "assetHashes": {
+    "project/project-cover-03.png": "1b4f4e0755f19b186a4f362e93cb044c1ce6233cc33414ed4afa8276606ed099",
+    "project/project-cover-04.png": "82de3a65b8405305eb69031a39638c38b993929abdaff0b7d7a1071b08563d41",
+    "project/project-cover-06.png": "0fce34417854ad8e1030ca77dd677c7b4860e1df0c279deff369c633f2f33ac2",
+    "project/project-cover-07.png": "2e017a443cc0e976716ad38c34366a95f6b059453715219505317edf57639fad",
+    "project/project-cover-08.png": "d72c41496fd8d632b9cd2b4e7c9dbf8c4fd9f1f5df955105b894319c286950bc",
+    "project/project-cover-10.png": "c2d78218202cc41181a7f0c8c412898d11804389b75db6e2bbd64534af6d50ad",
+    "project/project-cover-11.png": "7497d1c92e6b8b9c239ffa446a557263b31462d0e521982037f05cb700de7cbb",
+    "project/project-cover-12.png": "af4bd1a0b7993d908d9f5163309e67e941a87a2c7b4b2e643b3f98aace8baefc",
+    "article/article-cover-02.png": "a2bccc3dbc7b8cafcd1bdcecd531c80d2ab55c276119b80853a1c95ac4adec8a",
+    "article/article-cover-03.png": "bab41f068410436667fe2a25561c655766782f2eee181ca8b235e390b53153d3",
+    "article/article-cover-04.png": "19affc4ff59bee2f1138dd7a0670031c25b571c85f12f750602888a61af6833f",
+    "article/article-cover-05.png": "63268bdd3ee74d1cea88bead9081897e06c2297e9d052a212c7771a66a12bd86",
+    "article/article-cover-06.png": "7328683a4ba02513f3c66b889a1d0921a433df34f80dd3d26e9a450aa452db3d",
+    "article/article-cover-07.png": "86ec5856fd49426ae35f9fe4b2e9dce34919851f5a41bfe623ab09e1da42a578",
+    "hero/knowledge-hero-master-4k.png": "bb00c336dde26c7b6c237c369b10e6a4a7bf01fef55fe380fa6daf2f592fc621",
+    "runtime/hero/knowledge-hero-fhd.png": "49d27c84e45e48c1660c73d508874a73905980df9968369cdd35cf8ff626358e"
+  }
+}
