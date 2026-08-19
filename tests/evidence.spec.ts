@@ -2,7 +2,9 @@ import { test, type Page } from "@playwright/test";
 
 // .webby/qa/PLAYWRIGHT_CAPTURE_PLAN.json evidencePathSuggestion (commit folder finalized
 // once the implementation branch is created — see IMPLEMENTATION_RECEIPT.json).
-const EVIDENCE_DIR = ".webby/implementation/evidence/gd9-implementation-v1";
+// EVIDENCE_DIR override lets a capture round target a dedicated folder (e.g. a live-preview
+// QA round) without moving the default local-run evidence path.
+const EVIDENCE_DIR = process.env.EVIDENCE_DIR ?? ".webby/implementation/evidence/gd9-implementation-v1";
 
 const VIEWPORTS = {
   desktop: { width: 1440, height: 900 },

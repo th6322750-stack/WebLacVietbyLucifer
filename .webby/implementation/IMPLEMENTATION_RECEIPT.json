@@ -516,7 +516,17 @@
     "noMerge": true,
     "criticalFindingsDuringImplementation": "NONE"
   },
-  "nextStep": "PHA 2 complete with no Claude-owned open items. PR #5 stays Draft/OPEN/unmerged for one ChatGPT final QA. Two authority nits to fold back upstream: typography.json.tailwindTokenMap has no token for detailH1 though semanticRoles defines it, and ASSET_USAGE_MAP still lists brand-youtube under /support-mxh where the approved master shows no YouTube card.",
+  "nextStep": "PHA 2 complete with no Claude-owned open items. Live-preview evidence for ChatGPT's final QA is now committed (see finalVercelQaEvidence below). PR #5 stays Draft/OPEN/unmerged for that QA. Two authority nits to fold back upstream: typography.json.tailwindTokenMap has no token for detailH1 though semanticRoles defines it, and ASSET_USAGE_MAP still lists brand-youtube under /support-mxh where the approved master shows no YouTube card.",
+  "finalVercelQaEvidence": {
+    "reason": "PR #5 comment requested full evidence captured directly from the live Vercel deploy (not localhost), covering all 11 routes at 1440/390 plus 8 interactive states, committed to a dedicated evidence folder.",
+    "livePreviewUrl": "https://lacvietmedia-4n8ik2cjk-lucifer-scmta.vercel.app",
+    "evidenceDir": ".webby/implementation/evidence/final-vercel-qa",
+    "infraChange": "playwright.config.ts baseURL/webServer and tests/evidence.spec.ts's EVIDENCE_DIR were made overridable via PLAYWRIGHT_BASE_URL / EVIDENCE_DIR env vars (both default to the prior local-run behavior when unset), so this capture ran the exact same evidence.spec.ts suite against the deployed URL instead of a modified copy. No product code (src/) touched.",
+    "captureGates": "Same helper as every prior evidence round: document.fonts.ready, full-page scroll to trigger next/image lazy loads, naturalWidth>0 wait, per-image decode() raced against a 3s cap, then settle to top before the screenshot.",
+    "counts": "30/30 captured and verified non-empty: 11 routes x {desktop 1440, mobile 390} = 22, plus 8 interactive states (mobile-menu-open, consultation-modal desktop+mobile, faq-open, form-success, form-error, loading, focus-visible).",
+    "verification": "Every PNG's IHDR dimensions checked programmatically (desktop=1440px-wide full-page, mobile=390px-wide full-page, state captures=viewport-sized) and zero-byte-file check run — none found. Two full-page captures (home desktop, mobile-menu-open) visually re-inspected: hero, service cards, project grid, testimonials, footer and the mobile drawer overlay all render with real content, not blank.",
+    "liveFormNote": "form-success/form-error/loading exercised the live serverless /api/leads endpoint (previously confirmed to return 201 even though the read-only filesystem cannot persist — see sinks.ts). The UI success state depends only on res.ok, so it renders correctly regardless of persistence."
+  },
   "pha2": {
     "authorityHeadIntegrated": "e84d3094efffeb447716144a95d63bcbc226f8ca",
     "authorityMergeCommit": "c589769c1186966447f363270b121a1a6d2a81e6",
