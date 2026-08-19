@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "V3_HD4K_COMPLETE_PENDING_CHATGPT_FINAL_VISUAL_QA",
-  "statusNote": "V3 HD/4K all-in-one executed against authority 4f593df. 10/10 Drive shards SHA-256 verified before extraction, 38/38 alias targets wired, V2 crops removed. 15 delivered assets match the master's resolution but not its subject and are handed back to ChatGPT for re-render.",
+  "status": "V3_FIDELITY_REINTEGRATION_COMPLETE_PENDING_CHATGPT_FINAL_QA",
+  "statusNote": "Fidelity re-integration executed against authority d9f6d3f. The 15 assets Claude flagged as subject-mismatched are replaced with ChatGPT's re-rendered deliveries, fetched by exact driveFileId and SHA-256 verified 16/16 before and after replacement.",
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
@@ -762,5 +762,39 @@
       "referenceOnlyBytesServed": 0
     },
     "livePreview": "https://lacvietmedia-elor6k8t1-lucifer-scmta.vercel.app"
+  },
+  "v3Fidelity": {
+    "authorityIntegrated": "d9f6d3f88cabf14d4f44ee1a2f677c8806fda5ad",
+    "authorityMergeCommit": "cf563808f3bfbda97b7d10a63f86748001e8e1c3",
+    "authorityScopeVerified": "Diff vs merge base 4f593df touches only .webby/ (5 files).",
+    "prHandoffComment": "5346057734",
+    "delivery": {
+      "logicalAssets": 15,
+      "files": 16,
+      "discoveryRule": "Downloaded strictly by manifest driveFileId. The manifest warns the Drive folder holds historical duplicates with identical filenames, so no file was resolved by name.",
+      "sha256OnDownload": "16/16 PASS",
+      "sha256OnDiskAfterReplace": "16/16 PASS",
+      "replacedExistingStablePaths": 15,
+      "newPath": "runtime/hero/knowledge-hero-fhd.png"
+    },
+    "fidelityOutcome": "Direct old-vs-new inspection confirms all 15 are now real renders rather than text-on-a-grid: project-cover-07 is the ferris-wheel website shot the approved master shows, article-cover-03 is the neon TikTok artwork, knowledge-hero is the gold 3D desk composition.",
+    "metricCorrection": "Claude's earlier distinct-colour proxy under-reported the improvement for article-cover-04/05/07 (counts barely moved) — flat-design illustrations legitimately carry few colours. The visual comparison, not the colour count, is the reliable check.",
+    "flaggedUpstream": "The delivered runtime/hero/knowledge-hero-fhd.png is present but unreferenced: the V3 alias map resolves knowledge-hero-master to the 4K master, and the manifest forbids rename/remap, so the alias was left untouched rather than silently repointed.",
+    "constraintsHonoured": [
+      "no redesign",
+      "no image search/generation/substitution",
+      "no rename or remap",
+      "no reference-only bytes under public/ (verified, and /assets/recovery-v2/... returns 404 live)"
+    ],
+    "verification": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "build": "PASS 36/36",
+      "functional": "PASS 74/74",
+      "evidence": "PASS 30/30 from live preview",
+      "stateShaDistinct": "8/8, 0 duplicates"
+    },
+    "livePreview": "https://lacvietmedia-dnvqxet72-lucifer-scmta.vercel.app",
+    "uncommittedWorkNote": "The user's in-progress nav-glider and CTA effect experiments were stashed (git stash) before this pass so the evidence captures the approved build, not local design experiments. They are preserved and were not committed."
   }
 }
