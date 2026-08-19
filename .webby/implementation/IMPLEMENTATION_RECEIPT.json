@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "RECOVERY_V2_COMPLETE_PENDING_CHATGPT_FINAL_VISUAL_QA",
-  "statusNote": "Final Visual Recovery V2 all-in-one executed against authority 440ca7d. 45 recovery rasters produced from the SHA-verified frozen ui-000..ui-010 bundle using ChatGPT's locked crop rectangles; 30 superseded schematic rasters deleted; routes, states and evidence rebuilt. One authority defect found and reported rather than worked around: 44/45 declared pixel hashes do not match what the locked rectangles yield.",
+  "status": "V3_HD4K_COMPLETE_PENDING_CHATGPT_FINAL_VISUAL_QA",
+  "statusNote": "V3 HD/4K all-in-one executed against authority 4f593df. 10/10 Drive shards SHA-256 verified before extraction, 38/38 alias targets wired, V2 crops removed. 15 delivered assets match the master's resolution but not its subject and are handed back to ChatGPT for re-render.",
   "protocolVersion": "3.1.0",
   "handoffId": "lacvietmedia-webby-v3.1-migration",
   "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
@@ -687,5 +687,80 @@
       "Home mobile: the master orders CTAs before the three proof items; this build keeps proof items then CTAs, matching the desktop order.",
       "lac-viet-logo-horizontal-approved is an exact master crop that includes its own black background, so it shows a faint dark plate on the header. Removing it would mean editing approved pixels, which the contract forbids - flagged for ChatGPT to supply a transparent variant if wanted."
     ]
+  },
+  "v3HdK": {
+    "authorityIntegrated": "4f593dfa744377e63ce20218bde08286caa30216",
+    "authorityMergeCommit": "465345233aed499dd35cc95a7d9e3a6a3a0e58a2",
+    "authorityScopeVerified": "Diff vs merge base 440ca7d touches only .webby/ (3 files).",
+    "driveVerification": {
+      "shardsDownloaded": "10/10",
+      "sha256VerifiedBeforeExtraction": "10/10 PASS, 0 FAIL",
+      "totalBytes": 486710536,
+      "uniqueAliasTargetsPresent": "38/38",
+      "aliasesWired": "50/50 verbatim from authority",
+      "referenceOnlyQuarantined": "05_REFERENCE_ONLY extracted to a quarantine dir; never copied into public/",
+      "noDriveBrowsing": true,
+      "noImageSearchOrGeneration": true
+    },
+    "runtime": {
+      "assetRoot": "public/assets/v3 (38 targets)",
+      "v2CropsDeleted": "public/assets/recovery-v2 removed entirely; superseded PHA1 crops removed. Live preview returns 404 for /assets/recovery-v2/... and a functional test asserts no reference-only bytes are served.",
+      "globalLogo": "Approved horizontal SVG vector. Also resolves the V2 nit that the raster logo carried a baked-in black plate.",
+      "supersededGeometry": "Showcase / support CTA / digital CTA are now full 1920x1080 production renders; the 516x33, 295x120 and 205x98 source-limited geometry and its tests are retired and replaced by a noFakeUpscale + aspect-preservation guard."
+    },
+    "lossyDeliveryApproval": {
+      "rule": "V3 rules.mustNot forbids converting production PNG to lossy WebP/AVIF without user approval.",
+      "approvalObtained": true,
+      "howObtained": "User was shown the cost (24.9 MB per 4K hero, 6.2 MB per FHD card, ~80 MB for /du-an) and explicitly chose high-quality WebP for delivery.",
+      "implementation": "next.config.ts images.formats=['image/webp'], qualities=[90]. Delivery only — the lossless masters are untouched at rest.",
+      "svgHandling": "dangerouslyAllowSVG enabled for the first-party vector logo, with sandbox + CSP restricting it."
+    },
+    "assetsRequiringReRenderByChatGPT": {
+      "classification": "AUTHORITY_ASSET_FIDELITY_DEFECT (not a Claude implementation defect)",
+      "finding": "15 delivered assets are the correct resolution but a different, much simpler subject than the approved master — not higher-fidelity versions of it.",
+      "evidencePack": "V3_ASSETS_NEED_RERENDER.png — direct master-vs-delivered side-by-side for all 15.",
+      "items": [
+        "knowledge-hero-master",
+        "project-cover-03",
+        "project-cover-04",
+        "project-cover-06",
+        "project-cover-07",
+        "project-cover-08",
+        "project-cover-10",
+        "project-cover-11",
+        "project-cover-12",
+        "article-cover-02",
+        "article-cover-03",
+        "article-cover-04",
+        "article-cover-05",
+        "article-cover-06",
+        "article-cover-07"
+      ],
+      "examples": {
+        "project-cover-07": "master = real website screenshot (dark, ferris wheel); V3 = 'SEO' text + blue line on a grid",
+        "project-cover-12": "master = Edu Smart website + phone mockup; V3 = 'ADS ROAS +42%' + drawn laptop",
+        "article-cover-03": "master = neon TikTok artwork; V3 = outlined rectangle + '7x'",
+        "knowledge-hero-master": "master = 3D book/lamp/magnifier/LAC VIET laptop render; V3 = flat shapes"
+      },
+      "consequence": "Home project row and knowledge row render as flat schematic cards where the master shows photographic work. This is a visual regression against the V2 recovery crops, which were low-res but faithful; those crops were removed because V3 rules forbid them as runtime bytes.",
+      "heroFramingObservation": "The 4K hero canvases place a native-resolution object in the centre of a 3840x2160 field, so the phoenix renders noticeably smaller than in V2. Flagged in case the framing was unintended.",
+      "notADefect": "404-background is only 31 distinct colours, but the master's 404 panel calls for a subtle dark texture, so it was judged correct and shipped.",
+      "resolutionOwner": "ChatGPT (asset authority)"
+    },
+    "testInfrastructure": {
+      "coldCacheContention": "The lossless V3 masters make Next's optimizer do real CPU work per variant. Under 8 parallel workers the cold-cache queue produced navigation aborts on /du-an that looked like product failures but were not — the same URL served in 28 ms when requested directly.",
+      "fix": "Added a serial warm-up Playwright project that primes the optimizer cache before the functional and evidence suites, reduced workers to 4, and raised the per-test timeout.",
+      "portOwnership": "Still in force from the previous pass: the suite owns port 3100 instead of reusing whatever occupies 3000."
+    },
+    "verification": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "build": "PASS 36/36",
+      "functional": "PASS 74/74",
+      "evidence": "PASS 30/30 from live preview",
+      "stateShaDistinct": "8/8 distinct, 0 duplicates",
+      "referenceOnlyBytesServed": 0
+    },
+    "livePreview": "https://lacvietmedia-elor6k8t1-lucifer-scmta.vercel.app"
   }
 }
