@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { useConsultation } from "@/components/conversion/ConsultationProvider";
-import { assetPath } from "@/lib/assets";
+import { assetPath, assetSize } from "@/lib/assets";
 
 export function FinalCta({
   title = "Sẵn sàng nâng tầm hiện diện số của bạn?",
@@ -48,9 +48,10 @@ export function FinalCta({
             src={assetPath(visualAssetId)}
             alt=""
             aria-hidden="true"
-            width={205}
-            height={98}
-            className="h-auto w-full max-w-[205px]"
+            width={assetSize(visualAssetId).width}
+            height={assetSize(visualAssetId).height}
+            sizes="(min-width: 1024px) 320px, 60vw"
+            className="h-auto w-full max-w-[320px]"
           />
         ) : null}
         <h2 className="max-w-editorial text-h2-mobile lg:text-h2-desktop text-white">{title}</h2>

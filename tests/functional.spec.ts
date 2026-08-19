@@ -365,12 +365,12 @@ test.describe("detail-route asset identity", () => {
     await expect(showcase).toHaveCount(1);
     // PHA2: the temporary device-master fallback is superseded by the authority-mapped
     // approved crop. The invariant is unchanged — no project-cover may appear on this route.
-    await expect(showcase).toHaveAttribute("src", /project-detail-showcase-approved-crop/);
+    await expect(showcase).toHaveAttribute("src", /project-detail-showcase-fhd/);
     await expect(showcase).not.toHaveAttribute("src", /project-cover/);
     // The related-projects rail legitimately uses covers 01..04 per ASSET_USAGE_MAP; the
     // showcase and hero must not.
     const heroImg = page.locator("#case-study-hero img");
-    await expect(heroImg).toHaveAttribute("src", /project-detail-device-master/);
+    await expect(heroImg).toHaveAttribute("src", /project-detail-device-master-4k/);
   });
 });
 
@@ -506,37 +506,52 @@ test.describe("PHA1 decorative asset mapping", () => {
   });
 });
 
-test.describe("PHA1 approved-crop rasters", () => {
-  // SOURCE_LIMITED_APPROVED_CROP: exact pixels from the approved composite. The delta forbids
-  // upscaling beyond native, so each must render at (or below) its frozen dimensions.
-  const CROPS = [
-    { route: "/support-mxh", id: "support-cta-device-shield-approved-crop", w: 295, h: 120 },
-    { route: "/dich-vu-so", id: "digital-cta-phoenix-approved-crop", w: 205, h: 98 },
-    { route: "/du-an/website-bat-dong-san-an-phat", id: "project-detail-showcase-approved-crop", w: 516, h: 33 },
+test.describe("V3 production rasters", () => {
+  // V3 HD/4K supersedes the V2 source-limited crops: all three of these roles are now full
+  // 1920x1080 lossless production renders, so the old "must stay within 295x120 / 205x98 /
+  // 516x33" assertions no longer describe the authority. The invariant that still matters is
+  // the one V3 states itself (quality.noFakeUpscale): never render ABOVE native pixels, and
+  // never distort the native aspect ratio.
+  const RASTERS = [
+    { route: "/support-mxh", file: "support-cta-device-shield-fhd", w: 1920, h: 1080 },
+    { route: "/dich-vu-so", file: "digital-cta-phoenix-fhd", w: 1920, h: 1080 },
+    { route: "/du-an/website-bat-dong-san-an-phat", file: "project-detail-showcase-fhd", w: 1920, h: 1080 },
   ];
 
-  for (const { route, id, w, h } of CROPS) {
-    test(`${id} renders at native size, never upscaled`, async ({ page }) => {
+  for (const { route, file, w, h } of RASTERS) {
+    test(`${file} renders within native size and keeps its aspect`, async ({ page }) => {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(route);
-      const img = page.locator(`img[src*="${id}"]`).first();
+      // next/image rewrites src to /_next/image?url=...; match the encoded source filename.
+      const img = page.locator(`img[src*="${file}"]`).first();
       await expect(img).toHaveCount(1);
       const box = await img.boundingBox();
-      expect(box, `${id} not rendered`).not.toBeNull();
-      // Allow a 1px rounding tolerance; anything larger means the crop was stretched.
-      expect(box!.width, `${id} upscaled horizontally`).toBeLessThanOrEqual(w + 1);
-      expect(box!.height, `${id} upscaled vertically`).toBeLessThanOrEqual(h + 1);
-      // Native aspect must be preserved (no squashing into a fake 16:9).
-      expect(box!.width / box!.height).toBeCloseTo(w / h, 1);
+      expect(box, `${file} not rendered`).not.toBeNull();
+      expect(box!.width, `${file} upscaled beyond native width`).toBeLessThanOrEqual(w + 1);
+      expect(box!.height, `${file} upscaled beyond native height`).toBeLessThanOrEqual(h + 1);
+      expect(box!.width / box!.height, `${file} aspect distorted`).toBeCloseTo(w / h, 1);
     });
   }
 
-  test("the showcase strip is not stretched into a fake 16:9 block", async ({ page }) => {
-    await page.goto("/du-an/website-bat-dong-san-an-phat");
-    const img = page.locator('#visual-showcase img').first();
-    const box = await img.boundingBox();
-    // 516/33 ≈ 15.6:1. A 16:9 fake would be ≈1.78.
-    expect(box!.width / box!.height).toBeGreaterThan(10);
+  test("no V2 recovery crop or reference crop is served at runtime", async ({ page }) => {
+    // V3 rules: master/PDF crops and every V2 recovery crop are REFERENCE_ONLY and must never
+    // be runtime bytes. public/assets/recovery-v2 was deleted; this proves nothing re-adds it.
+    const bad: string[] = [];
+    page.on("response", (r) => {
+      const u = r.url();
+      if (/recovery-v2|master-crops|REFERENCE_ONLY/i.test(u)) bad.push(u);
+    });
+    for (const route of ["/", "/du-an", "/kien-thuc", "/du-an/website-bat-dong-san-an-phat"]) {
+      await page.goto(route);
+      await page.waitForLoadState("networkidle");
+    }
+    expect(bad, `reference-only bytes served: ${bad.join(", ")}`).toEqual([]);
+  });
+
+  test("global logo is the approved horizontal SVG vector", async ({ page }) => {
+    await page.goto("/");
+    const logo = page.locator("header img").first();
+    await expect(logo).toHaveAttribute("src", /lac-viet-logo-horizontal-approved\.svg/);
   });
 });
 

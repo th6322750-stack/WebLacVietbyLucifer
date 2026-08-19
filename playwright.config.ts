@@ -8,6 +8,13 @@ const LOCAL_PORT = Number(process.env.PLAYWRIGHT_PORT ?? 3100);
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
+  // The V3 masters are 1920x1080 / 3840x2160 lossless PNGs, so Next's image optimizer does real
+  // CPU work per variant. Eight parallel workers saturated it and produced navigation aborts
+  // that looked like product failures but were pure harness contention.
+  workers: 4,
+  // Cold-cache optimizer work on the V3 masters can legitimately exceed the 30s default on the
+  // heaviest route before the warm-up project has populated every variant.
+  timeout: 90_000,
   retries: 0,
   reporter: [["list"]],
   use: {
@@ -29,12 +36,21 @@ export default defineConfig({
       },
   projects: [
     {
+      // Runs first and serially: populates Next's image-optimizer cache for the heavy V3
+      // masters so the real suites are not measuring the transcoder.
+      name: "warmup",
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
+      testMatch: /warm-images\.setup\.ts/,
+    },
+    {
       name: "functional",
+      dependencies: ["warmup"],
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
       testMatch: /functional\.spec\.ts/,
     },
     {
       name: "evidence",
+      dependencies: ["warmup"],
       use: { ...devices["Desktop Chrome"] },
       testMatch: /evidence\.spec\.ts/,
     },

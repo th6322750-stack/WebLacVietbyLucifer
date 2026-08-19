@@ -10,7 +10,7 @@ import { ProjectDetailTabs } from "@/components/content/ProjectDetailTabs";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { projects, getProjectBySlug } from "@/content/projects";
 import { relatedProjectPreview } from "@/content/route-fixtures";
-import { assetPath } from "@/lib/assets";
+import { assetPath, assetSize } from "@/lib/assets";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 // "Dịch vụ" must be the actual demo service label, not the demoOnly status — that status
@@ -59,7 +59,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const showcaseAssetId = project.hidden
     ? "project-detail-showcase-approved-crop"
     : (project.detailVisualAssetId ?? project.heroAssetId);
-  const showcaseIsApprovedCrop = showcaseAssetId === "project-detail-showcase-approved-crop";
 
   return (
     <>
@@ -177,24 +176,22 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </Container>
       </Section>
 
-      {/* project-detail-showcase-approved-crop is SOURCE_LIMITED_APPROVED_CROP at 516x33: the
-          approved master only ever exposes the top strip of this screenshot, cut off by the
-          mockup frame. The delta forbids upscaling or stretching it into a fake 16:9, so the
-          geometry adapts to the source — native width, centred, no invented continuation.
-          RECOVERY V2 (audit §8.6): the heading begins immediately below the pane and the band
-          is padded to the strip, NOT a giant empty black container. */}
-      <section id="visual-showcase" className="bg-ink-950 py-10">
+      {/* V3 HD/4K supersedes the V2 source-limited 516x33 strip: the authority now delivers a
+          full 1920x1080 lossless showcase, so the section renders it at proper editorial width
+          instead of the tiny centred sliver the old cut-off source forced. Still never
+          upscaled beyond native (V3 quality.noFakeUpscale). */}
+      <section id="visual-showcase" className="bg-ink-950 py-12">
         <Container>
           <SectionHeading onDark eyebrow="Giao diện" title="Giao diện website" align="center" />
-          <div className="mx-auto mt-4 w-full max-w-[516px] overflow-hidden rounded-sm">
+          <div className="mx-auto mt-6 w-full max-w-[960px] overflow-hidden rounded-lg">
             {showcaseAssetId ? (
               <Image
                 src={assetPath(showcaseAssetId)}
                 alt={`Minh hoạ giao diện ${project.title}`}
-                width={showcaseIsApprovedCrop ? 516 : 1280}
-                height={showcaseIsApprovedCrop ? 33 : 720}
+                width={assetSize(showcaseAssetId).width}
+                height={assetSize(showcaseAssetId).height}
                 className="h-auto w-full"
-                sizes="516px"
+                sizes="(min-width: 1024px) 960px, 100vw"
               />
             ) : null}
           </div>

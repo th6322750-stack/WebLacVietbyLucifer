@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="420" viewBox="0 0 1800 420">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F5D06B"/><stop offset="0.55" stop-color="#D4AF37"/><stop offset="1" stop-color="#9E6A12"/></linearGradient></defs>
+<g fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+<path d="M95 250 C150 120 260 95 365 145 C300 160 260 205 240 270 C300 205 375 190 435 225 C350 250 315 315 280 360 C235 330 195 300 150 275"/>
+<path d="M165 270 C95 260 50 205 55 140 C95 195 145 205 200 190"/>
+<circle cx="255" cy="285" r="68"/><path d="M255 235 l18 35 38 6 -28 27 7 39 -35-18 -35 18 7-39 -28-27 38-6 z"/>
+<path d="M300 145 C350 88 420 80 470 110 C420 118 388 140 365 170"/>
+</g>
+<text x="540" y="215" fill="url(#g)" font-family="Noto Serif, Georgia, serif" font-size="150" font-weight="700" letter-spacing="8">LẠC VIỆT</text>
+<text x="550" y="315" fill="#D4AF37" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="600" letter-spacing="22">MEDIA AGENCY</text>
+</svg>

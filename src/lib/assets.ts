@@ -1,124 +1,129 @@
-// Runtime asset registry.
+// Runtime asset registry — V3 HD/4K.
 //
-// Recovery-v2 entries are exact source-limited crops of the approved master, produced by
-// ChatGPT's locked crop rectangles in .webby/recovery-v2/RECOVERY_ASSET_MANIFEST_V2.json
-// against the SHA-256-verified frozen ui-000..ui-010 bundle. Claude chose no crop and
-// altered no pixel. Per-asset declared-vs-actual hashes:
-// .webby/implementation/RECOVERY_ASSET_ACTUAL_HASHES.json
+// Every path resolves into public/assets/v3, produced by ChatGPT's frozen HD/4K shard
+// bundle. All 10 shards were SHA-256 verified against .webby/V3_HD_4K_AUTHORITY.json
+// before extraction (10/10 PASS), and the 50 semantic aliases below are copied verbatim
+// from that authority's `aliases` map — Claude chose no file and edited no pixel.
+//
+// Master/PDF crops and every V2 recovery crop are REFERENCE_ONLY per V3 rules and are
+// deliberately absent from public/: they must never be served as runtime bytes.
 const ASSET_PATHS: Record<string, string> = {
-  // --- recovery-v2: 15 new logical ids ---
-  "lac-viet-logo-horizontal-approved": "/assets/recovery-v2/brand/lac-viet-logo-horizontal-approved.png",
-  "home-project-preview-01": "/assets/recovery-v2/home/project/home-project-preview-01.png",
-  "home-project-preview-02": "/assets/recovery-v2/home/project/home-project-preview-02.png",
-  "home-project-preview-03": "/assets/recovery-v2/home/project/home-project-preview-03.png",
-  "home-project-preview-04": "/assets/recovery-v2/home/project/home-project-preview-04.png",
-  "home-article-preview-01": "/assets/recovery-v2/home/article/home-article-preview-01.png",
-  "home-article-preview-02": "/assets/recovery-v2/home/article/home-article-preview-02.png",
-  "home-article-preview-03": "/assets/recovery-v2/home/article/home-article-preview-03.png",
-  "home-article-preview-04": "/assets/recovery-v2/home/article/home-article-preview-04.png",
-  "social-proof-avatar-strip-approved": "/assets/recovery-v2/social-proof/social-proof-avatar-strip-approved.png",
-  "website-project-preview-01": "/assets/recovery-v2/website/project/website-project-preview-01.png",
-  "website-project-preview-02": "/assets/recovery-v2/website/project/website-project-preview-02.png",
-  "website-project-preview-03": "/assets/recovery-v2/website/project/website-project-preview-03.png",
-  "website-project-preview-04": "/assets/recovery-v2/website/project/website-project-preview-04.png",
-  "project-featured-case-master": "/assets/recovery-v2/projects/project-featured-case-master.png",
+  "home-hero-master": "/assets/v3/hero/home-hero-master-4k.png",
+  "website-hero-master": "/assets/v3/hero/website-hero-master-4k.png",
+  "support-hero-master": "/assets/v3/hero/support-hero-master-4k.png",
+  "digital-hero-master": "/assets/v3/hero/digital-hero-master-4k.png",
+  "projects-hero-master": "/assets/v3/hero/projects-hero-master-4k.png",
+  "knowledge-hero-master": "/assets/v3/hero/knowledge-hero-master-4k.png",
+  "contact-hero-master": "/assets/v3/hero/contact-hero-master-4k.png",
+  "about-bird-master": "/assets/v3/detail/about-bird-master-2k.png",
+  "article-seo-hero-master": "/assets/v3/detail/article-seo-hero-master-2k.png",
+  "project-detail-device-master": "/assets/v3/detail/project-detail-device-master-4k.png",
+  "project-featured-case-master": "/assets/v3/project/project-featured-case-master.png",
+  "support-client-logo-strip": "/assets/v3/shared/support-client-logo-strip-hd.png",
+  "social-proof-avatar-strip-approved": "/assets/v3/shared/social-proof-avatar-strip-hd.png",
+  "lac-viet-logo-horizontal-approved": "/assets/v3/brand/lac-viet-logo-horizontal-approved.svg",
+  "lac-viet-logo-canonical": "/assets/v3/brand/lac-viet-logo-mark.svg",
+  "support-cta-device-shield-approved-crop": "/assets/v3/shared/support-cta-device-shield-fhd.png",
+  "digital-cta-phoenix-approved-crop": "/assets/v3/shared/digital-cta-phoenix-fhd.png",
+  "project-detail-showcase-approved-crop": "/assets/v3/detail/project-detail-showcase-fhd.png",
+  "404-background": "/assets/v3/hero/404-background-4k.png",
+  "project-cover-01": "/assets/v3/project/project-cover-01.png",
+  "project-cover-02": "/assets/v3/project/project-cover-02.png",
+  "project-cover-03": "/assets/v3/project/project-cover-03.png",
+  "project-cover-04": "/assets/v3/project/project-cover-04.png",
+  "project-cover-05": "/assets/v3/project/project-cover-05.png",
+  "project-cover-06": "/assets/v3/project/project-cover-06.png",
+  "project-cover-07": "/assets/v3/project/project-cover-07.png",
+  "project-cover-08": "/assets/v3/project/project-cover-08.png",
+  "project-cover-09": "/assets/v3/project/project-cover-09.png",
+  "project-cover-10": "/assets/v3/project/project-cover-10.png",
+  "project-cover-11": "/assets/v3/project/project-cover-11.png",
+  "project-cover-12": "/assets/v3/project/project-cover-12.png",
+  "article-cover-01": "/assets/v3/article/article-cover-01.png",
+  "article-cover-02": "/assets/v3/article/article-cover-02.png",
+  "article-cover-03": "/assets/v3/article/article-cover-03.png",
+  "article-cover-04": "/assets/v3/article/article-cover-04.png",
+  "article-cover-05": "/assets/v3/article/article-cover-05.png",
+  "article-cover-06": "/assets/v3/article/article-cover-06.png",
+  "article-cover-07": "/assets/v3/article/article-cover-07.png",
+  "home-project-preview-01": "/assets/v3/project/project-cover-01.png",
+  "website-project-preview-01": "/assets/v3/project/project-cover-01.png",
+  "home-article-preview-01": "/assets/v3/article/article-cover-01.png",
+  "home-project-preview-02": "/assets/v3/project/project-cover-02.png",
+  "website-project-preview-02": "/assets/v3/project/project-cover-02.png",
+  "home-article-preview-02": "/assets/v3/article/article-cover-02.png",
+  "home-project-preview-03": "/assets/v3/project/project-cover-03.png",
+  "website-project-preview-03": "/assets/v3/project/project-cover-03.png",
+  "home-article-preview-03": "/assets/v3/article/article-cover-03.png",
+  "home-project-preview-04": "/assets/v3/project/project-cover-04.png",
+  "website-project-preview-04": "/assets/v3/project/project-cover-04.png",
+  "home-article-preview-04": "/assets/v3/article/article-cover-04.png",
 
-  // --- recovery-v2: 30 replaced logical ids (superseded schematic rasters deleted) ---
-  "home-hero-master": "/assets/recovery-v2/hero/home-hero-master.png",
-  "website-hero-master": "/assets/recovery-v2/hero/website-hero-master.png",
-  "support-hero-master": "/assets/recovery-v2/hero/support-hero-master.png",
-  "support-client-logo-strip": "/assets/recovery-v2/client-logos/support-client-logo-strip.png",
-  "digital-hero-master": "/assets/recovery-v2/hero/digital-hero-master.png",
-  "projects-hero-master": "/assets/recovery-v2/hero/projects-hero-master.png",
-  "project-cover-01": "/assets/recovery-v2/project/project-cover-01.png",
-  "project-cover-02": "/assets/recovery-v2/project/project-cover-02.png",
-  "project-cover-03": "/assets/recovery-v2/project/project-cover-03.png",
-  "project-cover-04": "/assets/recovery-v2/project/project-cover-04.png",
-  "project-cover-05": "/assets/recovery-v2/project/project-cover-05.png",
-  "project-cover-06": "/assets/recovery-v2/project/project-cover-06.png",
-  "project-cover-07": "/assets/recovery-v2/project/project-cover-07.png",
-  "project-cover-08": "/assets/recovery-v2/project/project-cover-08.png",
-  "project-cover-09": "/assets/recovery-v2/project/project-cover-09.png",
-  "project-cover-10": "/assets/recovery-v2/project/project-cover-10.png",
-  "project-cover-11": "/assets/recovery-v2/project/project-cover-11.png",
-  "project-cover-12": "/assets/recovery-v2/project/project-cover-12.png",
-  "knowledge-hero-master": "/assets/recovery-v2/hero/knowledge-hero-master.png",
-  "article-cover-01": "/assets/recovery-v2/article/article-cover-01.png",
-  "article-cover-02": "/assets/recovery-v2/article/article-cover-02.png",
-  "article-cover-03": "/assets/recovery-v2/article/article-cover-03.png",
-  "article-cover-04": "/assets/recovery-v2/article/article-cover-04.png",
-  "article-cover-05": "/assets/recovery-v2/article/article-cover-05.png",
-  "article-cover-06": "/assets/recovery-v2/article/article-cover-06.png",
-  "article-cover-07": "/assets/recovery-v2/article/article-cover-07.png",
-  "about-bird-master": "/assets/recovery-v2/detail/about-bird-master.png",
-  "project-detail-device-master": "/assets/recovery-v2/detail/project-detail-device-master.png",
-  "article-seo-hero-master": "/assets/recovery-v2/detail/article-seo-hero-master.png",
-  "contact-hero-master": "/assets/recovery-v2/hero/contact-hero-master.png",
-
-  // --- retained unchanged (PHA1 frozen approved crops + decorative vectors) ---
-  "support-cta-device-shield-approved-crop": "/assets/cta/support-cta-device-shield-approved-crop.webp",
-  "digital-cta-phoenix-approved-crop": "/assets/cta/digital-cta-phoenix-approved-crop.webp",
-  "project-detail-showcase-approved-crop": "/assets/detail/project-detail-showcase-approved-crop.webp",
-  "dong-son-ring": "/assets/decorative/dong-son-ring.svg",
-  "gold-divider": "/assets/decorative/gold-divider.svg",
-  "gold-noise": "/assets/decorative/gold-noise.svg",
-
-  // --- retained: demo avatars + square brand mark (no longer the global header lockup) ---
+  // Demo avatars are unrelated to the V3 raster roles and remain unchanged.
   "demo-avatar-01": "/assets/avatars/demo-avatar-01.webp",
   "demo-avatar-02": "/assets/avatars/demo-avatar-02.webp",
   "demo-avatar-03": "/assets/avatars/demo-avatar-03.webp",
   "demo-avatar-04": "/assets/avatars/demo-avatar-04.webp",
-  "lac-viet-logo-canonical": "/assets/brand/lac-viet-logo.webp",
+
+  // Decorative vectors carried forward unchanged (not part of the V3 raster set).
+  "dong-son-ring": "/assets/decorative/dong-son-ring.svg",
+  "gold-divider": "/assets/decorative/gold-divider.svg",
+  "gold-noise": "/assets/decorative/gold-noise.svg",
 };
 
-/** Native pixel dimensions of each source-limited recovery crop. These are exact master
- * pixels; render at or below native size and never upscale beyond the source. */
-export const RECOVERY_ASSET_SIZE: Record<string, { width: number; height: number }> = {
-  "lac-viet-logo-horizontal-approved": { width: 122, height: 43 },
-  "home-project-preview-01": { width: 159, height: 86 },
-  "home-project-preview-02": { width: 159, height: 86 },
-  "home-project-preview-03": { width: 159, height: 86 },
-  "home-project-preview-04": { width: 165, height: 86 },
-  "home-article-preview-01": { width: 161, height: 66 },
-  "home-article-preview-02": { width: 161, height: 66 },
-  "home-article-preview-03": { width: 161, height: 66 },
-  "home-article-preview-04": { width: 161, height: 66 },
-  "social-proof-avatar-strip-approved": { width: 63, height: 26 },
-  "website-project-preview-01": { width: 146, height: 68 },
-  "website-project-preview-02": { width: 145, height: 68 },
-  "website-project-preview-03": { width: 146, height: 68 },
-  "website-project-preview-04": { width: 146, height: 68 },
-  "project-featured-case-master": { width: 235, height: 132 },
-  "home-hero-master": { width: 390, height: 320 },
-  "website-hero-master": { width: 307, height: 191 },
-  "support-hero-master": { width: 251, height: 218 },
-  "support-client-logo-strip": { width: 584, height: 35 },
-  "digital-hero-master": { width: 225, height: 238 },
-  "projects-hero-master": { width: 236, height: 212 },
-  "project-cover-01": { width: 151, height: 86 },
-  "project-cover-02": { width: 151, height: 86 },
-  "project-cover-03": { width: 151, height: 86 },
-  "project-cover-04": { width: 151, height: 86 },
-  "project-cover-05": { width: 151, height: 91 },
-  "project-cover-06": { width: 151, height: 91 },
-  "project-cover-07": { width: 151, height: 91 },
-  "project-cover-08": { width: 151, height: 91 },
-  "project-cover-09": { width: 151, height: 90 },
-  "project-cover-10": { width: 151, height: 90 },
-  "project-cover-11": { width: 151, height: 90 },
-  "project-cover-12": { width: 151, height: 90 },
-  "knowledge-hero-master": { width: 325, height: 195 },
-  "article-cover-01": { width: 245, height: 195 },
-  "article-cover-02": { width: 194, height: 115 },
-  "article-cover-03": { width: 194, height: 115 },
-  "article-cover-04": { width: 195, height: 115 },
-  "article-cover-05": { width: 194, height: 116 },
-  "article-cover-06": { width: 194, height: 116 },
-  "article-cover-07": { width: 195, height: 116 },
-  "about-bird-master": { width: 197, height: 185 },
-  "project-detail-device-master": { width: 255, height: 185 },
-  "article-seo-hero-master": { width: 238, height: 124 },
-  "contact-hero-master": { width: 233, height: 223 },
+/** Native pixel dimensions of each V3 production asset, read from the delivered files.
+ * Images render at or below these; nothing is fake-upscaled (V3 quality.noFakeUpscale). */
+export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
+  "home-hero-master": { width: 3840, height: 2160 },
+  "website-hero-master": { width: 3840, height: 2160 },
+  "support-hero-master": { width: 3840, height: 2160 },
+  "digital-hero-master": { width: 3840, height: 2160 },
+  "projects-hero-master": { width: 3840, height: 2160 },
+  "knowledge-hero-master": { width: 3840, height: 2160 },
+  "contact-hero-master": { width: 3840, height: 2160 },
+  "about-bird-master": { width: 2160, height: 2160 },
+  "article-seo-hero-master": { width: 2560, height: 1440 },
+  "project-detail-device-master": { width: 3840, height: 2160 },
+  "project-featured-case-master": { width: 1920, height: 1080 },
+  "support-client-logo-strip": { width: 2400, height: 320 },
+  "social-proof-avatar-strip-approved": { width: 1200, height: 240 },
+  "lac-viet-logo-horizontal-approved": { width: 1800, height: 420 },
+  "lac-viet-logo-canonical": { width: 512, height: 512 },
+  "support-cta-device-shield-approved-crop": { width: 1920, height: 1080 },
+  "digital-cta-phoenix-approved-crop": { width: 1920, height: 1080 },
+  "project-detail-showcase-approved-crop": { width: 1920, height: 1080 },
+  "404-background": { width: 3840, height: 2160 },
+  "project-cover-01": { width: 1920, height: 1080 },
+  "project-cover-02": { width: 1920, height: 1080 },
+  "project-cover-03": { width: 1920, height: 1080 },
+  "project-cover-04": { width: 1920, height: 1080 },
+  "project-cover-05": { width: 1920, height: 1080 },
+  "project-cover-06": { width: 1920, height: 1080 },
+  "project-cover-07": { width: 1920, height: 1080 },
+  "project-cover-08": { width: 1920, height: 1080 },
+  "project-cover-09": { width: 1920, height: 1080 },
+  "project-cover-10": { width: 1920, height: 1080 },
+  "project-cover-11": { width: 1920, height: 1080 },
+  "project-cover-12": { width: 1920, height: 1080 },
+  "article-cover-01": { width: 1920, height: 1080 },
+  "article-cover-02": { width: 1920, height: 1080 },
+  "article-cover-03": { width: 1920, height: 1080 },
+  "article-cover-04": { width: 1920, height: 1080 },
+  "article-cover-05": { width: 1920, height: 1080 },
+  "article-cover-06": { width: 1920, height: 1080 },
+  "article-cover-07": { width: 1920, height: 1080 },
+  "home-project-preview-01": { width: 1920, height: 1080 },
+  "website-project-preview-01": { width: 1920, height: 1080 },
+  "home-article-preview-01": { width: 1920, height: 1080 },
+  "home-project-preview-02": { width: 1920, height: 1080 },
+  "website-project-preview-02": { width: 1920, height: 1080 },
+  "home-article-preview-02": { width: 1920, height: 1080 },
+  "home-project-preview-03": { width: 1920, height: 1080 },
+  "website-project-preview-03": { width: 1920, height: 1080 },
+  "home-article-preview-03": { width: 1920, height: 1080 },
+  "home-project-preview-04": { width: 1920, height: 1080 },
+  "website-project-preview-04": { width: 1920, height: 1080 },
+  "home-article-preview-04": { width: 1920, height: 1080 },
 };
 
 /** Resolves a pinned asset id to its runtime path. Throws on unknown ids by design —
@@ -129,10 +134,10 @@ export function assetPath(id: string): string {
   return path;
 }
 
-/** Native master-crop dimensions for a recovery asset. Throws on unknown ids for the same
- * reason assetPath does: a missing size must fail loudly, never silently render unsized. */
+/** Native dimensions for a V3 production asset. Throws on unknown ids for the same
+ * reason assetPath does: a missing size must fail loudly, never render unsized. */
 export function assetSize(id: string): { width: number; height: number } {
-  const size = RECOVERY_ASSET_SIZE[id];
+  const size = ASSET_SIZE[id];
   if (!size) throw new Error(`No native size recorded for asset id "${id}"`);
   return size;
 }
