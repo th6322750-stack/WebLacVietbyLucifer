@@ -1,48 +1,60 @@
-# CLAUDE TASK — PHA2 FINAL VISUAL IMPLEMENTATION V3 HD/4K — ALL IN ONE
+# CLAUDE TASK — V3 FIDELITY REPLACEMENT RE-INTEGRATION — FINAL TARGETED PASS
 
-> Gate: **AUTHORIZED** by `.webby/V3_HD_4K_AUTHORITY.json` status `V3_ASSET_FREEZE_COMPLETE_CLAUDE_AUTHORIZED`.
-> This V3 authority supersedes every V2 low-resolution raster/crop runtime rule. The approved PDF remains supreme visible authority.
+> Gate: **AUTHORIZED** by `.webby/V3_FIDELITY_REPLACEMENT_QUEUE.json` status `REPLACEMENTS_RENDERED_DRIVE_UPLOADED_READY_FOR_CLAUDE_REINTEGRATION`.
+> The approved PDF remains supreme visual authority.
+
+## Scope
+Do **not** redesign or reopen the V3 implementation. The current PR #5 implementation is already complete. This pass only replaces the 15 logical fidelity assets (16 PNG files because Knowledge Hero has 4K + runtime FHD), then rebuilds, redeploys, and recaptures evidence.
 
 ## Mandatory first action
-1. Start from the current PR #5 head and verify it is Draft/open/unmerged.
-2. Integrate the exact latest remote HEAD of `chatgpt/pha1-asset-production-v3-hd`.
-3. Read `.webby/V3_HD_4K_AUTHORITY.json` completely, then the approved PDF, typography v2, content-truth, SEO and interaction contracts.
-4. If the V3 authority status is not `V3_ASSET_FREEZE_COMPLETE_CLAUDE_AUTHORIZED`, STOP.
+1. Start from current PR #5 HEAD `3638d17008e2dbb53aa8fd67d3f6b653c65dce29` or newer if the user/PR has legitimately advanced.
+2. Confirm PR #5 is Draft/open/unmerged.
+3. Integrate exact latest HEAD of `chatgpt/pha1-asset-production-v3-hd`.
+4. Read `.webby/V3_FIDELITY_REPLACEMENT_QUEUE.json`, `.webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json`, and `.webby/FIDELITY_REPLACEMENT_DRIVE_RECEIPT_V3.json`.
+5. If the queue status is not `REPLACEMENTS_RENDERED_DRIVE_UPLOADED_READY_FOR_CLAUDE_REINTEGRATION`, STOP.
 
-## Binary acquisition
-Use only the Google Drive root/shards and exact SHA256 values embedded in `.webby/V3_HD_4K_AUTHORITY.json.drive`. Download the production shards, verify every exact shard SHA256 before extraction, then copy only the mapped production files. `05_REFERENCE_ONLY.zip` is inspection-only: **nothing inside it may be copied to `public/` or served at runtime**.
+## Drive source
+Root folder:
+`https://drive.google.com/drive/folders/1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho`
 
-## Asset implementation
-- Put V3 production binaries under a clear repo path such as `public/assets/v3/**`; preserve PNG/SVG source quality.
-- Map semantic logical IDs through `.webby/V3_HD_4K_AUTHORITY.json.aliases` and `sourceSets`.
-- Heroes: 4K masters + lossless FHD variants. Choose responsively; no lossy re-encode.
-- Project/article cards: FHD 1920×1080 production masters.
-- Detail visual: 2K/4K with lossless FHD delivery where supplied.
-- Global header/footer/mobile: `lac-viet-logo-horizontal-approved.svg`; use mark-only SVG only where the master actually uses mark-only.
-- Replace the three old tiny CTA/showcase crop bytes with the V3 FHD replacements mapped under the same semantic IDs.
-- Existing true vector icons/brand/decorative assets remain valid.
-- **No V2 low-res crop fallback, no image search, no image generation, no visual substitution.**
+Use only:
+- `project/` — 8 PNG
+- `article/` — 6 PNG
+- `hero/knowledge-hero-master-4k.png`
+- `runtime/hero/knowledge-hero-fhd.png`
+- `FIDELITY_REPLACEMENT_MANIFEST_V3.json`
 
-## Visual implementation
-Rebuild against the approved desktop **and actual mobile** compositions. Do not preserve current page geometry because tests pass. Match the master: gold text spans, compact vertical rhythm, horizontal timeline process treatment on desktop, correct imagery, correct detail skeletons, Contact composition, and dark/gold 404.
+Do not use anything under internal/debug folders or any `REFERENCE_ONLY` source.
 
-## Quality/performance rule
-Source quality is non-negotiable. Do not compress away detail. If a 4K master is excessive for a viewport, use the supplied lossless FHD variant or create a deterministic **downscaled lossless** derivative from the V3 master. Never use a reference crop as a performance fallback.
+## Re-integration rule
+- Verify SHA256 of all 16 downloaded files against `.webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json` **before copying**.
+- Replace bytes only at the exact existing stable runtime/source paths expected by V3.
+- Do not rename aliases, change route mapping, regenerate, search, substitute, crop from PDF, or redesign layout.
+- Preserve lossless PNG sources. Keep the already user-approved WebP runtime serving strategy only where the current implementation already applies it; do not alter source bytes.
+- `404-background` is not part of this replacement pass.
 
-## Verification — one final pass
+## Verification
+Run once after re-integration:
 - `tsc --noEmit`
 - `eslint .`
 - `next build`
 - full functional Playwright
-- all production shard SHA256 checks PASS
-- verify no reference-only raster is reachable from runtime
-- live Vercel: 11 full-page desktop screenshots @1440 + 11 full-page mobile screenshots @390 + 8 valid state screenshots
-- `await document.fonts.ready`, lazy-scroll, `naturalWidth`, and image `decode()` before evidence capture
-- success/error screenshot SHA must differ and each state must be visibly present
-- create a MASTER | VERCEL board where mobile compares against the **actual mobile master**, never desktop reused as mobile
-- self-review every route before handback
+- 16/16 replacement SHA256 PASS
+- no reference-only bytes reachable at runtime
+- deploy a fresh Vercel Preview
+- capture 11 desktop full-page @1440 + 11 mobile full-page @390 + 8 valid states = 30 screenshots
+- await `document.fonts.ready`, lazy-scroll, image naturalWidth/decode settling
+- success/error states must be visibly different and have different SHA
+- create fresh MASTER | VERCEL comparison board using actual mobile master
 
 ## Handback
-Keep PR #5 Draft/open/unmerged. Deploy a fresh Vercel Preview. Return exact V3 authority HEAD integrated, exact code/evidence HEAD, Vercel URL, typecheck/lint/build/test counts, shard checksum PASS count, 30/30 evidence count and comparison-board path, then **STOP** for ChatGPT final visual QA.
+Return:
+- exact authority HEAD integrated
+- exact final code/evidence HEAD
+- fresh Vercel Preview URL
+- typecheck/lint/build/test counts
+- `16/16 replacement SHA256 PASS`
+- `30/30 evidence PASS`
+- comparison board path
 
-No older GD9/GD10/PHA2/recovery-v2 task text may override V3.
+Keep PR #5 Draft/open/unmerged. Then **STOP for ChatGPT final QA**.
