@@ -1,5 +1,5 @@
 {
-  "revision": "pha1-typography-v2",
+  "revision": "pha1-typography-v2.1",
   "authority": ".webby/TYPOGRAPHY_AUTHORITY.json",
   "routeMatrix": ".webby/TYPOGRAPHY_ROUTE_MATRIX.json",
   "families": {
@@ -40,6 +40,8 @@
     "display-mobile":"heroDisplay.mobile",
     "h1-desktop":"heroH1.desktop",
     "h1-mobile":"heroH1.mobile",
+    "detail-h1-desktop":"detailH1.desktop",
+    "detail-h1-mobile":"detailH1.mobile",
     "h2-desktop":"sectionH2.desktop",
     "h2-mobile":"sectionH2.mobile",
     "h3-desktop":"structuralH3.desktop",
@@ -65,6 +67,10 @@
     "article-meta":"articleMeta.desktop",
     "breadcrumb":"breadcrumb.desktop",
     "footer":"footer.desktop"
+  },
+  "postApprovalCorrection": {
+    "type": "NON_VISUAL_AUTHORITY_CONSISTENCY",
+    "reason": "detailH1 already existed in semanticRoles and runtime authority but was accidentally omitted from the compact Tailwind mirror. Added the two missing token-map entries only; no typography metric, family, route role or approved visual changed."
   },
   "rule": "This file is a mirror, not an independent authority. If conflict exists, TYPOGRAPHY_AUTHORITY.json wins. Preserve every referenced legacy typography utility until source migration and CSS emission are verified in the same PHA 2 commit."
 }

@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 2,
+  "revision": "pha1-visual-recovery-v2",
+  "status": "LOCKED_FOR_CLAUDE_IMPLEMENTATION_BY_USER_INSTRUCTION",
+  "visualRevision": false,
+  "reconstructionOfApprovedMaster": true,
+  "lockedApprovedPdf": {
+    "path": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "sha256": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f",
+    "rule": "supreme visible authority"
+  },
+  "supersedes": [
+    "the assumption that base85/91 raster visuals are immutable",
+    "any mapping that uses /du-an project covers for Home or Website preview rows",
+    "any mapping that uses /kien-thuc article covers for Home knowledge row",
+    "desktop-only interpretation of the approved master for 390px QA"
+  ],
+  "assetResolution": {
+    "previousLogicalAssetCount": 91,
+    "newLogicalIdsAdded": 15,
+    "resolvedLogicalAssetCount": 106,
+    "recoveryPackRasterCount": 45,
+    "replacedExistingLogicalRasterIds": 30,
+    "addedLogicalRasterIds": 15,
+    "existingFrozenAssetsReusedUnchanged": [
+      "support-cta-device-shield-approved-crop",
+      "digital-cta-phoenix-approved-crop",
+      "project-detail-showcase-approved-crop",
+      "dong-son-ring",
+      "gold-divider",
+      "gold-noise"
+    ]
+  },
+  "globalAssetMap": {
+    "headerFooterLogo": "lac-viet-logo-horizontal-approved",
+    "socialProofFaces": "social-proof-avatar-strip-approved"
+  },
+  "routes": {
+    "/": {
+      "master": "ui-000 / PDF page 3",
+      "hero": "home-hero-master",
+      "featuredProjects": [
+        "home-project-preview-01",
+        "home-project-preview-02",
+        "home-project-preview-03",
+        "home-project-preview-04"
+      ],
+      "knowledge": [
+        "home-article-preview-01",
+        "home-article-preview-02",
+        "home-article-preview-03",
+        "home-article-preview-04"
+      ],
+      "processSteps": 6
+    },
+    "/website": {
+      "master": "ui-001 / PDF page 4",
+      "hero": "website-hero-master",
+      "projects": [
+        "website-project-preview-01",
+        "website-project-preview-02",
+        "website-project-preview-03",
+        "website-project-preview-04"
+      ],
+      "pricingCards": 4,
+      "processSteps": 6,
+      "faqColumnsDesktop": 2
+    },
+    "/support-mxh": {
+      "master": "ui-002 / PDF page 5",
+      "hero": "support-hero-master",
+      "services": [
+        "brand-facebook",
+        "brand-tiktok",
+        "brand-meta",
+        "icon-shield-check"
+      ],
+      "clientLogoStrip": "support-client-logo-strip",
+      "consultationCtaVisual": "support-cta-device-shield-approved-crop",
+      "processSteps": 5
+    },
+    "/dich-vu-so": {
+      "master": "ui-003 / PDF page 6",
+      "hero": "digital-hero-master",
+      "featuredBrands": [
+        "brand-openai-chatgpt",
+        "brand-youtube",
+        "brand-microsoft",
+        "brand-canva"
+      ],
+      "finalCtaVisual": "digital-cta-phoenix-approved-crop",
+      "processSteps": 4
+    },
+    "/du-an": {
+      "master": "ui-004 / PDF page 7",
+      "hero": "projects-hero-master",
+      "projects": [
+        "project-cover-01",
+        "project-cover-02",
+        "project-cover-03",
+        "project-cover-04",
+        "project-cover-05",
+        "project-cover-06",
+        "project-cover-07",
+        "project-cover-08",
+        "project-cover-09",
+        "project-cover-10",
+        "project-cover-11",
+        "project-cover-12"
+      ],
+      "featuredCase": "project-featured-case-master",
+      "gridDesktop": "4x3"
+    },
+    "/kien-thuc": {
+      "master": "ui-005 / PDF page 8",
+      "hero": "knowledge-hero-master",
+      "featuredArticle": "article-cover-01",
+      "latest": [
+        "article-cover-02",
+        "article-cover-03",
+        "article-cover-04",
+        "article-cover-05",
+        "article-cover-06",
+        "article-cover-07"
+      ],
+      "gridDesktop": "3x2"
+    },
+    "/gioi-thieu": {
+      "master": "ui-006 / PDF page 9",
+      "hero": "about-bird-master",
+      "principles": [
+        "Cần",
+        "Kiệm",
+        "Liêm Chính"
+      ],
+      "serviceCards": 4
+    },
+    "/du-an/[slug]": {
+      "master": "ui-007 / PDF page 10",
+      "detail": "project-detail-device-master",
+      "visualShowcase": "project-detail-showcase-approved-crop",
+      "contentMode": "single-tab-pane-not-stacked-sections"
+    },
+    "/kien-thuc/[slug]": {
+      "master": "ui-008 / PDF page 11",
+      "detail": "article-seo-hero-master",
+      "desktopLayout": "3-column-immediate"
+    },
+    "/lien-he": {
+      "master": "ui-009 / PDF page 12",
+      "hero": "contact-hero-master",
+      "desktopMain": "intro-left-form-right",
+      "channels": [
+        "brand-zalo",
+        "brand-messenger",
+        "brand-telegram",
+        "icon-mail"
+      ],
+      "processSteps": 5
+    },
+    "/404": {
+      "master": "ui-010 / PDF page 13 state strip",
+      "visual": "dark-gold-404-state"
+    }
+  },
+  "mustNot": [
+    "search or generate substitute assets",
+    "retain old schematic raster merely because its old ID existed",
+    "derive mobile by blind desktop stacking",
+    "invent sections absent from approved visible master",
+    "create a giant empty container around the 516x33 project-detail strip",
+    "claim visual pass from screenshot file-count tests"
+  ]
+}
