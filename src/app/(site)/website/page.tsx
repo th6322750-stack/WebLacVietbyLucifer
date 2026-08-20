@@ -19,14 +19,18 @@ export const metadata = pageMetadata({
   path: "/website",
 });
 
-// 6 industries per approved master (page-04) — not 4.
-const industries: { icon: IconName; label: string }[] = [
-  { icon: "building", label: "Doanh nghiệp nhỏ & vừa" },
-  { icon: "shopping-bag", label: "Cửa hàng, bán lẻ" },
-  { icon: "map-pin", label: "Bất động sản" },
-  { icon: "calendar", label: "Dịch vụ, sự kiện" },
-  { icon: "lightbulb", label: "Giáo dục, đào tạo" },
-  { icon: "users", label: "Doanh nghiệp, phi lợi nhuận" },
+// 6 industries per approved master (page-04). Labels AND the supporting line under each are
+// transcribed from the master crop at 3x zoom — three labels were previously wrong ("Doanh
+// nghiệp nhỏ & vừa", "Dịch vụ, sự kiện", "Doanh nghiệp, phi lợi nhuận") and the description
+// line was missing entirely. Icons come from the pinned inventory; the master's art is
+// line-work that has no exact match there, so the closest pinned semantic icon is used.
+const industries: { icon: IconName; label: string; description: string }[] = [
+  { icon: "briefcase", label: "Doanh nghiệp vừa & nhỏ", description: "Xây dựng thương hiệu chuyên nghiệp, tăng uy tín." },
+  { icon: "shopping-bag", label: "Cửa hàng, bán lẻ", description: "Bán hàng online hiệu quả, quản lý đơn hàng dễ dàng." },
+  { icon: "building", label: "Bất động sản", description: "Giới thiệu dự án, thu hút khách hàng tiềm năng." },
+  { icon: "headset", label: "Dịch vụ, tư vấn", description: "Tạo niềm tin, tăng tỉ lệ chuyển đổi khách hàng." },
+  { icon: "award", label: "Giáo dục, đào tạo", description: "Tuyển sinh online, quản lý khóa học hiệu quả." },
+  { icon: "shield-check", label: "Bệnh viện, phòng khám", description: "Tăng uy tín, dễ dàng đặt lịch hẹn và tư vấn." },
 ];
 
 // 5 benefits per approved master — not 4.
@@ -98,12 +102,21 @@ export default function WebsitePage() {
 
       <Section id="industry-fit-grid">
         <Container>
-          <SectionHeading eyebrow="Doanh nghiệp ở mọi quy mô" title="Doanh nghiệp ở mọi quy mô, mọi lĩnh vực" align="center" />
+          <SectionHeading
+            eyebrow="Dịch vụ website phù hợp với"
+            title="Doanh nghiệp ở mọi quy mô, mọi lĩnh vực"
+            align="center"
+          />
+          <p className="mx-auto mt-3 max-w-editorial text-center text-body text-text-secondary">
+            Dù bạn là startup, doanh nghiệp vừa và nhỏ hay thương hiệu lớn, chúng tôi đều có giải
+            pháp website phù hợp với mục tiêu và ngân sách của bạn.
+          </p>
           <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-6">
             {industries.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
+              <div key={item.label} className="flex flex-col items-center gap-2 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-5">
                 <Icon name={item.icon} size="feature" className="text-gold-600" />
-                <p className="text-small font-medium text-text-primary">{item.label}</p>
+                <p className="mt-1 text-small font-semibold text-ink-950">{item.label}</p>
+                <p className="text-caption leading-snug text-text-secondary">{item.description}</p>
               </div>
             ))}
           </div>

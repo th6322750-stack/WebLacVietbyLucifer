@@ -22,40 +22,71 @@ export const metadata = pageMetadata({
 });
 
 // 4 service cards per approved master (page-05) — one per platform + strategy consulting.
-const supportServices: { brand?: "facebook" | "tiktok" | "meta"; icon?: IconName; title: string; description: string }[] = [
+const supportServices: {
+  brand?: "facebook" | "tiktok" | "meta";
+  icon?: IconName;
+  title: string;
+  description: string;
+  bullets: string[];
+}[] = [
   {
     brand: "facebook",
     title: "Facebook Support",
     description: "Khắc phục lỗi trang, tài khoản quảng cáo bị hạn chế hoặc khoá.",
+    bullets: [
+      "Khôi phục tài khoản cá nhân",
+      "Khôi phục Fanpage bị khóa",
+      "Gỡ hạn chế, checkpoint",
+      "Hỗ trợ vấn đề đăng nhập",
+    ],
   },
   {
     brand: "tiktok",
     title: "TikTok Support",
     description: "Xử lý sự cố tài khoản, video bị hạn chế hiển thị.",
+    bullets: [
+      "Khôi phục tài khoản TikTok",
+      "Mở khóa tài khoản bị cấm",
+      "Gỡ hạn chế tương tác",
+      "Hỗ trợ vấn đề đăng nhập",
+    ],
   },
   {
     brand: "meta",
     title: "Meta Business / Ads Support",
     description: "Quản lý và khắc phục sự cố Meta Business Suite, tài khoản quảng cáo.",
+    bullets: [
+      "Khôi phục Trình quản lý BM",
+      "Gỡ hạn chế tài khoản quảng cáo",
+      "Xác minh doanh nghiệp",
+      "Hỗ trợ thanh toán & hoá đơn",
+    ],
   },
   {
     // Approved master page-05 card 4 shows a gold SHIELD, not a lightbulb — verified by cropping
-    // the exact card at 34x zoom. icon-shield-check is in the pinned icon inventory; nothing was
-    // invented or substituted.
+    // the exact card at 34x zoom. icon-shield-check is in the pinned icon inventory.
     icon: "shield-check",
-    title: "Tư vấn chiến lược & Khắc phục sự cố",
-    description: "Tư vấn định hướng nội dung và xử lý các sự cố kỹ thuật phát sinh.",
+    // Title transcribed from the master crop; the previous wording was not the approved text.
+    title: "Tư vấn bảo mật & Khôi phục hợp lệ",
+    description: "Tư vấn bảo mật và khôi phục quyền sở hữu hợp lệ cho kênh của bạn.",
+    bullets: [
+      "Tư vấn bảo mật tài khoản",
+      "Hướng dẫn lấy lại quyền sở hữu",
+      "Bảo vệ kênh trước rủi ro",
+      "Đào tạo & hướng dẫn sử dụng",
+    ],
   },
 ];
 
-// 6 issues per approved master — not 4.
-const commonIssues: { icon: IconName; label: string }[] = [
-  { icon: "lock-keyhole", label: "Tài khoản/Trang bị hạn chế" },
-  { icon: "circle-alert", label: "Mất quyền truy cập" },
-  { icon: "shield-check", label: "Pháp lý / vi phạm chính sách" },
-  { icon: "users", label: "BM / tài khoản chủ thể" },
-  { icon: "target", label: "Quảng cáo không hiệu quả" },
-  { icon: "messages-square", label: "Vấn đề khác" },
+// 6 issues per approved master. Labels and the supporting line are transcribed from the master
+// crop — the previous labels were paraphrases and the description line was missing.
+const commonIssues: { icon: IconName; label: string; description: string }[] = [
+  { icon: "lock-keyhole", label: "Tài khoản bị khóa / vô hiệu hóa", description: "Không thể đăng nhập hoặc tài khoản bị vô hiệu hóa." },
+  { icon: "circle-alert", label: "Mất quyền truy cập", description: "Không còn email, số điện thoại hoặc xác thực 2 lớp." },
+  { icon: "shield-check", label: "Page bị gỡ / hạn chế", description: "Fanpage bị gỡ hoặc giảm tương tác." },
+  { icon: "users", label: "BM / Ads bị hạn chế", description: "Tài khoản quảng cáo hoặc BM bị vô hiệu hóa." },
+  { icon: "target", label: "Bị checkpoint / xác minh", description: "Liên tục yêu cầu xác minh danh tính." },
+  { icon: "messages-square", label: "Khác", description: "Các vấn đề khác liên quan đến mạng xã hội." },
 ];
 
 // 5 icons per approved master — not 3.
@@ -98,11 +129,13 @@ export default function SupportMxhPage() {
               <ServiceCard
                 mobileRow
                 key={s.title}
+                bullets={s.bullets}
                 brand={s.brand}
                 icon={s.icon}
                 title={s.title}
                 description={s.description}
-                ctaLabel="Nhận tư vấn"
+                // Master card CTA reads "Xem chi tiết", not "Nhận tư vấn".
+                ctaLabel="Xem chi tiết"
                 href="/lien-he"
               />
             ))}
@@ -115,9 +148,10 @@ export default function SupportMxhPage() {
           <SectionHeading eyebrow="Sự cố thường gặp" title="Bạn đang gặp phải vấn đề nào?" align="center" />
           <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-6">
             {commonIssues.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
+              <div key={item.label} className="flex flex-col items-center gap-2 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-5">
                 <Icon name={item.icon} size="feature" className="text-gold-600" />
-                <p className="text-small font-medium text-text-primary">{item.label}</p>
+                <p className="mt-1 text-small font-semibold text-ink-950">{item.label}</p>
+                <p className="text-caption leading-snug text-text-secondary">{item.description}</p>
               </div>
             ))}
           </div>
