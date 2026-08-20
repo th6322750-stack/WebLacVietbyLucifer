@@ -32,6 +32,9 @@ const config: Config = {
       lg: "1024px",
       xl: "1280px",
       "2xl": "1440px",
+      // Above the 1440 master reference only. Lets very wide screens breathe without
+      // altering anything at or below the viewport ChatGPT QAs against.
+      ultra: "1600px",
     },
     colors: {
       transparent: "transparent",
@@ -159,6 +162,7 @@ const config: Config = {
     extend: {
       maxWidth: {
         container: "1280px",
+        "container-ultra": "1520px",
         wide: "1360px",
         editorial: "720px",
       },

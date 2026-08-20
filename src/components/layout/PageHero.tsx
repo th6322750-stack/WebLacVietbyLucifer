@@ -16,6 +16,7 @@ export function PageHero({
   visualShare = "dominant",
   proofItems,
   breadcrumbs,
+  titleClassName,
 }: {
   eyebrow: string;
   title: ReactNode;
@@ -36,6 +37,10 @@ export function PageHero({
    * column and lets the artwork fill it. `supporting` keeps the older balanced treatment for
    * heroes the master really does render small. */
   visualShare?: "dominant" | "supporting";
+  /** Overrides the H1 type size. The V4 spec allows adjusting "role application/size/line-wrap
+   * where needed to match approved master" — /support-mxh has a long headline that wraps to four
+   * lines at the default h1 size where the master shows two. */
+  titleClassName?: string;
   /** MASTER PARITY V4: several hero masters (e.g. /lien-he) show a row of icon proof items
    * under the copy — "Phản hồi nhanh / Trong 30 phút" and so on — which the runtime was missing
    * entirely. Distinct from `metrics`, which is the numeric strip used on /du-an. */
@@ -54,13 +59,13 @@ export function PageHero({
           `lg:py-24`, which was inflating every hero well past the approved height. */}
       <Container
         className={`grid items-center gap-8 py-10 md:py-12 lg:gap-12 lg:py-16 ${
-          visualShare === "dominant" ? "lg:grid-cols-[1fr_1.15fr]" : "lg:grid-cols-2"
+          visualShare === "dominant" ? "lg:grid-cols-[1.2fr_1fr]" : "lg:grid-cols-2"
         }`}
       >
         <div className="text-white">
           {breadcrumbs ? <div className="mb-5">{breadcrumbs}</div> : null}
           <SectionEyebrow onDark>{eyebrow}</SectionEyebrow>
-          <h1 className={`mt-3 ${heroClass} font-heading text-white`}>{title}</h1>
+          <h1 className={`mt-3 ${titleClassName ?? heroClass} font-heading text-white`}>{title}</h1>
           <p className="mt-5 max-w-editorial text-body-lg text-white/80">{description}</p>
           {proofItems && proofItems.length > 0 ? (
             <div className="mt-6 grid gap-4 sm:grid-cols-3">

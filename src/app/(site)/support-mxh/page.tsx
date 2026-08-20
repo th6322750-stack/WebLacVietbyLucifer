@@ -121,6 +121,9 @@ export default function SupportMxhPage() {
             items={[{ label: "Trang chủ", href: "/" }, { label: "Dịch vụ" }, { label: "Hỗ trợ mạng xã hội" }]}
           />
         }
+        // Master page 5 splits the H1 across two lines; at the default h1 size this headline
+        // wraps to four, so the size steps down per the V4 line-wrap allowance.
+        titleClassName="text-h2-mobile lg:text-[32px] lg:leading-[1.14] xl:text-[35px] ultra:text-[42px]"
         // Master page 5 splits the H1: the first line white, the promise line gold.
         title={
           <>
