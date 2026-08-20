@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
 import { PageHero } from "@/components/layout/PageHero";
 import { ProjectCard } from "@/components/content/ProjectCard";
+import { MobileLoadMore } from "@/components/content/MobileLoadMore";
 import { CategoryFilter } from "@/components/content/CategoryFilter";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { getVisibleProjects } from "@/content/projects";
@@ -48,7 +49,7 @@ export default async function ProjectsPage({
         ]}
       />
 
-      <Section id="category-filters">
+      <Section id="category-filters" compact>
         <Container>
           <CategoryFilter categories={categories} active={active} />
         </Container>
@@ -56,11 +57,15 @@ export default async function ProjectsPage({
 
       <Section id="projects-grid">
         <Container>
+          {/* MASTER PARITY V4: the 390 master shows the first 4 cards behind "Xem thêm dự án";
+              1440 shows the dense 4-column grid of all 12. */}
           {filtered.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {filtered.map((p) => (
-                <ProjectCard key={p.slug} project={p} />
-              ))}
+              <MobileLoadMore initial={4} label="Xem thêm dự án">
+                {filtered.map((p) => (
+                  <ProjectCard key={p.slug} project={p} />
+                ))}
+              </MobileLoadMore>
             </div>
           ) : (
             <p className="py-10 text-center text-body text-text-secondary">Chưa có dự án trong danh mục này.</p>
@@ -119,6 +124,8 @@ export default async function ProjectsPage({
       </Section>
 
       <FinalCta
+        variant="strip"
+        tone="ivory"
         sourceComponent="project-cta"
         title="Muốn có một dự án như thế này cho doanh nghiệp của bạn?"
         description="Để lại thông tin, chúng tôi sẽ tư vấn giải pháp phù hợp với nhu cầu của bạn."

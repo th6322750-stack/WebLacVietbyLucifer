@@ -22,7 +22,7 @@ export function ServiceCard({
   href: string;
 }) {
   return (
-    <div className="group flex flex-col rounded-md border border-border bg-white p-6 shadow-sm transition-[transform,box-shadow,border-color] duration-fast ease-standard hover:-translate-y-[3px] hover:border-gold-300 hover:shadow-md">
+    <div className="group flex flex-col rounded-md border border-border bg-white p-4 shadow-sm md:p-6 transition-[transform,box-shadow,border-color] duration-fast ease-standard hover:-translate-y-[3px] hover:border-gold-300 hover:shadow-md">
       <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-ivory-100 text-gold-700">
         {brand ? <BrandMark name={brand} size={24} /> : icon ? <Icon name={icon} size="feature" /> : null}
       </span>

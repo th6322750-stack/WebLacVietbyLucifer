@@ -94,7 +94,7 @@ export default function DigitalServicesPage() {
         <Container>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {categories.map((c) => (
-              <div key={c.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
+              <div key={c.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
                 <Icon name={c.icon} size="feature" className="text-gold-600" />
                 <p className="text-body font-medium text-ink-950">{c.label}</p>
               </div>
@@ -106,9 +106,9 @@ export default function DigitalServicesPage() {
       <Section id="featured-digital-products" tone="ivory">
         <Container>
           <SectionHeading eyebrow="Sản phẩm nổi bật" title="Lựa chọn hàng đầu của khách hàng" align="center" />
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((p) => (
-              <div key={p.name} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
+              <div key={p.name} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
                 <BrandMark name={p.brand} size={40} />
                 <h3 className="text-h4-mobile text-ink-950">{p.name}</h3>
                 <ul className="flex flex-col gap-1 self-start text-left">
@@ -133,7 +133,7 @@ export default function DigitalServicesPage() {
       <Section id="why-lac-viet" tone="dark">
         <Container>
           <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt?" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-8 grid gap-5 md:gap-8 sm:grid-cols-2 lg:grid-cols-5">
             {whyUs.map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3 text-center">
                 <Icon name={item.icon} size="feature" className="text-gold-300" />
@@ -170,7 +170,7 @@ export default function DigitalServicesPage() {
       <Section id="faq">
         <Container>
           <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp nhanh những thắc mắc phổ biến" align="center" />
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_320px]">
+          <div className="mt-8 grid gap-5 md:gap-8 lg:grid-cols-[1fr_320px]">
             <FAQAccordion items={faqs} columns={2} />
             <div id="support-card">
               <DigitalSupportCard />

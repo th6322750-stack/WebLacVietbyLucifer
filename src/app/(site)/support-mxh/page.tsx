@@ -93,7 +93,7 @@ export default function SupportMxhPage() {
       <Section id="support-service-grid">
         <Container>
           <SectionHeading eyebrow="Dịch vụ" title="Chúng tôi hỗ trợ toàn diện các nền tảng mạng xã hội phổ biến" align="center" />
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {supportServices.map((s) => (
               <ServiceCard
                 key={s.title}
@@ -112,9 +112,9 @@ export default function SupportMxhPage() {
       <Section id="common-issues-grid" tone="ivory">
         <Container>
           <SectionHeading eyebrow="Sự cố thường gặp" title="Bạn đang gặp phải vấn đề nào?" align="center" />
-          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-6">
             {commonIssues.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
+              <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
                 <Icon name={item.icon} size="feature" className="text-gold-600" />
                 <p className="text-small font-medium text-text-primary">{item.label}</p>
               </div>
@@ -126,7 +126,7 @@ export default function SupportMxhPage() {
       <Section id="why-lac-viet" tone="dark" texture>
         <Container>
           <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt Media Agency" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-8 grid gap-5 md:gap-8 sm:grid-cols-2 lg:grid-cols-5">
             {whyUs.map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3 text-center">
                 <Icon name={item.icon} size="feature" className="text-gold-300" />

@@ -49,7 +49,7 @@ export default async function KnowledgePage({
         imageAlt="Kiến thức Lạc Việt Media"
       />
 
-      <Section id="category-filters">
+      <Section id="category-filters" compact>
         <Container>
           <CategoryFilter categories={categories} active={active} />
         </Container>

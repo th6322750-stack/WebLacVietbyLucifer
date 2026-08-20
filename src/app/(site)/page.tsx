@@ -75,7 +75,10 @@ export default function HomePage() {
       />
 
       <section className="relative overflow-hidden bg-ink-950 bg-dark-hero">
-        <Container className="grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2 lg:gap-16 lg:py-24">
+        {/* MASTER PARITY V4 / P0-HERO: the master gives the phoenix the dominant right-hand
+            share, so the visual column is wider than the text column and the vertical padding
+            is pulled back from the old lg:py-24. */}
+        <Container className="grid items-center gap-8 py-12 md:py-14 lg:grid-cols-[1fr_1.15fr] lg:gap-12 lg:py-16">
           <div className="text-white">
             <p className="text-eyebrow uppercase text-gold-300">{siteSettings.slogan}</p>
             {/* Approved master ui-000: "LẠC VIỆT" white, "MEDIA AGENCY" GOLD on the second line.
@@ -125,9 +128,9 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* Recovered master hero: the gold phoenix. It is an exact source crop, so it is
-              rendered contained at its own aspect ratio and never cropped or stretched by an
-              imposed 4:3 frame. On mobile the master shows it as a smaller supporting visual. */}
+          {/* Contained at native aspect — an exact master crop, so object-cover would clip the
+              artwork. The universal max-w-[390px] cap is gone: P0-HERO calls out that it turned
+              the dominant phoenix into a small boxed image. */}
           <div className="flex justify-center lg:justify-end">
             <Image
               src={assetPath("home-hero-master")}
@@ -135,8 +138,8 @@ export default function HomePage() {
               width={assetSize("home-hero-master").width}
               height={assetSize("home-hero-master").height}
               priority
-              sizes="(min-width: 1024px) 40vw, 60vw"
-              className="h-auto w-[60%] max-w-[390px] lg:w-full"
+              sizes="(min-width: 1024px) 52vw, 78vw"
+              className="h-auto w-[78%] max-w-[520px] lg:w-full lg:max-w-none"
             />
           </div>
         </Container>
@@ -174,15 +177,18 @@ export default function HomePage() {
               <Icon name="arrow-right" size="inline" />
             </Button>
           </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {homeProjectShowcase.map((p) => (
-              <ProjectPreviewCard key={p.title} preview={p} />
+          {/* 390 master shows a single featured project; 1440 shows the four-card row. */}
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {homeProjectShowcase.map((p, i) => (
+              <div key={p.title} className={i === 0 ? "" : "hidden sm:block"}>
+                <ProjectPreviewCard preview={p} />
+              </div>
             ))}
           </div>
         </Container>
       </Section>
 
-      <Section id="metrics-strip" tone="dark">
+      <Section id="metrics-strip" tone="dark" density="band">
         <Container>
           <MetricStrip
             onDark
@@ -196,7 +202,11 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="work-process">
+      {/* MASTER PARITY V4 / P0-MOBILE-COMPOSITION: the approved 390 composition is
+          hero -> 3 services -> 1 featured project -> metrics -> CTA -> footer. The
+          process, testimonial and knowledge blocks are desktop-only by default rather
+          than stacked into the mobile column. */}
+      <Section id="work-process" className="hidden lg:block">
         <Container>
           <SectionHeading eyebrow="Quy trình làm việc" title="Minh bạch – Rõ ràng – Hiệu quả" align="center" />
           <div className="mt-10">
@@ -205,7 +215,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="testimonials" tone="ivory">
+      <Section id="testimonials" tone="ivory" className="hidden lg:block">
         <Container>
           <SectionHeading eyebrow="Khách hàng nói gì" title="Phản hồi từ doanh nghiệp đã đồng hành" align="center" />
           <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -216,7 +226,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="latest-knowledge">
+      <Section id="latest-knowledge" className="hidden lg:block">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <SectionHeading eyebrow="Kiến thức" title="Bài viết mới nhất" />
@@ -235,7 +245,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <FinalCta sourceComponent="home-final-cta" />
+      <FinalCta sourceComponent="home-final-cta" variant="strip" />
     </>
   );
 }

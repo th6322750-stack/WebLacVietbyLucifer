@@ -99,9 +99,9 @@ export default function WebsitePage() {
       <Section id="industry-fit-grid">
         <Container>
           <SectionHeading eyebrow="Doanh nghiệp ở mọi quy mô" title="Doanh nghiệp ở mọi quy mô, mọi lĩnh vực" align="center" />
-          <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-6">
             {industries.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-6 text-center shadow-sm">
+              <div key={item.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
                 <Icon name={item.icon} size="feature" className="text-gold-600" />
                 <p className="text-small font-medium text-text-primary">{item.label}</p>
               </div>
@@ -120,7 +120,7 @@ export default function WebsitePage() {
       <Section id="benefit-strip" tone="dark">
         <Container>
           <SectionHeading onDark eyebrow="Lợi ích khi tạo website cùng Lạc Việt" title="Tạo nền tảng số vững chắc – bứt phá tăng trưởng" align="center" />
-          <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-8 grid grid-cols-2 gap-5 md:gap-8 md:grid-cols-3 lg:grid-cols-5">
             {benefits.map((b) => (
               <div key={b.label} className="flex flex-col items-center gap-3 text-center">
                 <Icon name={b.icon} size="feature" className="text-gold-300" />
@@ -134,7 +134,7 @@ export default function WebsitePage() {
       <Section id="website-projects">
         <Container>
           <SectionHeading eyebrow="Dự án" title="Website đã triển khai" align="center" />
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {websiteProjectShowcase.map((p) => (
               <ProjectPreviewCard key={p.title} preview={p} />
             ))}
@@ -160,7 +160,7 @@ export default function WebsitePage() {
         </Container>
       </Section>
 
-      <FinalCta sourceComponent="website-final-cta" defaultService="Website doanh nghiệp" />
+      <FinalCta variant="strip" sourceComponent="website-final-cta" defaultService="Website doanh nghiệp" />
     </>
   );
 }

@@ -29,7 +29,7 @@ export function PricingCard({
   return (
     <div
       data-demo-only={demoOnly}
-      className={`flex flex-col rounded-lg p-6 md:p-8 ${
+      className={`flex flex-col rounded-lg p-4 md:p-8 ${
         featured ? "bg-ink-950 text-white shadow-lg ring-1 ring-gold-500/40" : "border border-border bg-white shadow-sm"
       }`}
     >

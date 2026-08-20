@@ -111,7 +111,7 @@ export default function ContactPage() {
       <Section id="faq">
         <Container>
           <SectionHeading eyebrow="Câu hỏi thường gặp" title="Những câu hỏi phổ biến" align="center" />
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_320px]">
+          <div className="mt-8 grid gap-5 md:gap-8 lg:grid-cols-[1fr_320px]">
             <FAQAccordion items={faqs} columns={2} />
             <div id="secondary-contact-card">
               <ContactQuestionCard />
@@ -120,7 +120,7 @@ export default function ContactPage() {
         </Container>
       </Section>
 
-      <FinalCta sourceComponent="contact-final-cta" title="Sẵn sàng bứt phá cùng Lạc Việt?" />
+      <FinalCta variant="strip" sourceComponent="contact-final-cta" title="Sẵn sàng bứt phá cùng Lạc Việt?" />
     </>
   );
 }
