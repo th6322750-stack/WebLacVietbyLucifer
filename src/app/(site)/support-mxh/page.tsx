@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
@@ -114,7 +115,27 @@ export default function SupportMxhPage() {
     <>
       <PageHero
         eyebrow="Support MXH"
-        title="HỖ TRỢ MẠNG XÃ HỘI CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ"
+        breadcrumbs={
+          <Breadcrumbs
+            onDark
+            items={[{ label: "Trang chủ", href: "/" }, { label: "Dịch vụ" }, { label: "Hỗ trợ mạng xã hội" }]}
+          />
+        }
+        // Master page 5 splits the H1: the first line white, the promise line gold.
+        title={
+          <>
+            HỖ TRỢ MẠNG XÃ HỘI
+            <br />
+            <span className="text-gold-500">CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ</span>
+          </>
+        }
+        // Four icon proof items, transcribed from the approved hero.
+        proofItems={[
+          { icon: "badge-check", title: "Xử lý chính chủ", note: "Theo quan hệ trực tiếp" },
+          { icon: "clock", title: "Theo quy trình", note: "Làm việc với hệ thống chính thức" },
+          { icon: "lock-keyhole", title: "Bảo mật tuyệt đối", note: "Không lưu mật khẩu" },
+          { icon: "target", title: "Tỉ lệ thành công cao", note: "Tối ưu thời gian & chi phí" },
+        ]}
         description="Hỗ trợ Facebook, TikTok, Business & Ads theo quy trình chính thống. Đồng hành cùng bạn khắc phục và phát triển kênh bền vững."
         imageAssetId="support-hero-master"
         imageAlt="Support mạng xã hội Lạc Việt Media"

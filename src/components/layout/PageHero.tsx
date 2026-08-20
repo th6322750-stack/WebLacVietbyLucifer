@@ -1,9 +1,8 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { assetPath, assetSize } from "@/lib/assets";
+import { HeroVisual } from "@/components/layout/HeroVisual";
 
 export function PageHero({
   eyebrow,
@@ -92,23 +91,15 @@ export function PageHero({
             </dl>
           ) : null}
         </div>
-        {/* Rendered contained at native aspect (these are exact master crops, so object-cover
-            would crop the approved artwork). The universal `max-w-[390px]` cap that used to sit
-            here is removed: it shrank every hero visual to a small boxed image regardless of
-            route, which P0-HERO identifies as a root cause of the drift from master. */}
+        {/* Cropped to the asset's measured focal box — see HeroVisual. Rendering the whole
+            4K canvas showed the artwork as a small object in a large dark field. */}
         <div className="flex justify-center lg:justify-end">
-          <Image
-            src={assetPath(imageAssetId)}
+          <HeroVisual
+            assetId={imageAssetId}
             alt={imageAlt}
-            width={assetSize(imageAssetId).width}
-            height={assetSize(imageAssetId).height}
             priority
-            sizes={visualShare === "dominant" ? "(min-width: 1024px) 52vw, 78vw" : "(min-width: 1024px) 40vw, 60vw"}
-            className={
-              visualShare === "dominant"
-                ? "h-auto w-[78%] max-w-[520px] lg:w-full lg:max-w-none"
-                : "h-auto w-[60%] max-w-[390px] lg:w-full"
-            }
+            className={visualShare === "dominant" ? "w-[86%] max-w-[560px] lg:w-full" : "w-[62%] max-w-[400px] lg:w-full"}
+            sizes={visualShare === "dominant" ? "(min-width: 1024px) 52vw, 86vw" : "(min-width: 1024px) 40vw, 62vw"}
           />
         </div>
       </Container>

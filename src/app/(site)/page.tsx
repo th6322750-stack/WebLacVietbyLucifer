@@ -11,6 +11,7 @@ import { MetricStrip } from "@/components/content/MetricStrip";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { TestimonialCard } from "@/components/content/TestimonialCard";
 import { FinalCta } from "@/components/layout/FinalCta";
+import { HeroVisual } from "@/components/layout/HeroVisual";
 import { HomeHeroCta } from "./HomeHeroCta";
 import { services } from "@/content/services";
 import { homeProjectShowcase, homeArticleShowcase } from "@/content/route-fixtures";
@@ -128,18 +129,14 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* Contained at native aspect — an exact master crop, so object-cover would clip the
-              artwork. The universal max-w-[390px] cap is gone: P0-HERO calls out that it turned
-              the dominant phoenix into a small boxed image. */}
+          {/* Cropped to the measured focal box (see HeroVisual): the 4K canvas puts the
+              phoenix in ~13% of the frame, which read as a small boxed image. */}
           <div className="flex justify-center lg:justify-end">
-            <Image
-              src={assetPath("home-hero-master")}
+            <HeroVisual
+              assetId="home-hero-master"
               alt="Lạc Việt Media Agency"
-              width={assetSize("home-hero-master").width}
-              height={assetSize("home-hero-master").height}
               priority
-              sizes="(min-width: 1024px) 52vw, 78vw"
-              className="h-auto w-[78%] max-w-[520px] lg:w-full lg:max-w-none"
+              className="w-[86%] max-w-[560px] lg:w-full"
             />
           </div>
         </Container>

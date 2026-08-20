@@ -126,6 +126,33 @@ export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
   "home-article-preview-04": { width: 1920, height: 1080 },
 };
 
+
+/** MASTER PARITY V4 / P0-HERO — focal content box, measured from the delivered pixels.
+ *
+ * The V3 hero masters are 4K canvases with the artwork sitting small inside a large dark field:
+ * measured content coverage is 10% (projects), 12-13% (home, digital, contact, knowledge) and
+ * 26% (support). Rendering the whole canvas is what makes the hero read as "a small picture in
+ * a box" instead of the dominant focal visual the approved master shows.
+ *
+ * Values are [x0, y0, x1, y1] as fractions of the canvas. Consumers crop to this box, which is a
+ * COMPOSITION change only — the asset bytes are untouched, nothing is upscaled beyond native,
+ * and no pixel is edited. */
+export const ASSET_FOCAL: Record<string, [number, number, number, number]> = {
+  "home-hero-master": [0.637, 0.267, 0.912, 0.748],
+  "website-hero-master": [0.392, 0.23, 0.938, 0.793],
+  "support-hero-master": [0.621, 0.148, 0.983, 0.852],
+  "digital-hero-master": [0.637, 0.281, 0.9, 0.733],
+  "projects-hero-master": [0.667, 0.326, 0.908, 0.741],
+  "knowledge-hero-master": [0.312, 0.326, 0.692, 0.674],
+  "contact-hero-master": [0.646, 0.348, 0.908, 0.8],
+  "about-bird-master": [0.254, 0.287, 0.688, 0.713],
+};
+
+/** Focal box for an asset, or the full canvas when none is recorded. */
+export function assetFocal(id: string): [number, number, number, number] {
+  return ASSET_FOCAL[id] ?? [0, 0, 1, 1];
+}
+
 /** Resolves a pinned asset id to its runtime path. Throws on unknown ids by design —
  * there is no silent fallback/substitution per the asset manifest contract. */
 export function assetPath(id: string): string {
