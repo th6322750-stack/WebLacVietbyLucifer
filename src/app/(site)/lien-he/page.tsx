@@ -85,7 +85,7 @@ export default function ContactPage() {
       <Section id="quick-channels" tone="ivory">
         <Container>
           <SectionHeading eyebrow="Kênh liên hệ nhanh" title="Chọn kênh phù hợp với bạn" align="center" />
-          <div id="contact-channels" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div id="contact-channels" className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             <ContactChannelCard brand="zalo" title="Zalo" value={siteSettings.zalo} href={`https://zalo.me/${siteSettings.zalo}`} />
             <ContactChannelCard brand="messenger" title="Facebook Messenger" value="Sắp cập nhật" disabled />
             <ContactChannelCard

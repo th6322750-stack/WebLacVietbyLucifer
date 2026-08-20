@@ -40,12 +40,12 @@ export function PricingCard({
       ) : null}
       <h3 className={`text-card-h3-mobile lg:text-card-h3-desktop font-heading ${featured ? "text-white" : "text-ink-950"}`}>{plan}</h3>
       <p className={`mt-2 text-small ${featured ? "text-white/75" : "text-text-secondary"}`}>{description}</p>
-      <p className={`mt-6 text-price font-heading ${featured ? "text-gold-300" : "text-gold-700"}`}>
+      <p className={`mt-4 md:mt-6 text-price font-heading ${featured ? "text-gold-300" : "text-gold-700"}`}>
         {price}
         {priceSuffix ? <span className="text-small font-body text-white/60"> {priceSuffix}</span> : null}
       </p>
 
-      <ul className="mt-6 flex flex-1 flex-col gap-3">
+      <ul className="mt-4 flex flex-1 flex-col gap-2 md:mt-6 md:gap-3">
         {features.map((f) => (
           <li key={f} className={`flex items-start gap-2 text-small ${featured ? "text-white/90" : "text-text-secondary"}`}>
             <Icon name="check" size="inline" className={`mt-px shrink-0 ${featured ? "text-gold-300" : "text-gold-600"}`} />
@@ -57,7 +57,7 @@ export function PricingCard({
       <Button
         variant={featured ? "primary" : "outline"}
         onDark={featured}
-        className="mt-8 w-full"
+        className="mt-5 w-full md:mt-8"
         onClick={onSelect}
       >
         {ctaLabel}

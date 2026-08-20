@@ -96,6 +96,7 @@ export default function SupportMxhPage() {
           <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {supportServices.map((s) => (
               <ServiceCard
+                mobileRow
                 key={s.title}
                 brand={s.brand}
                 icon={s.icon}

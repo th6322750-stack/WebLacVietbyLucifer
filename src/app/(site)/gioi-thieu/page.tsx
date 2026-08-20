@@ -83,7 +83,7 @@ export default function AboutPage() {
           <SectionHeading eyebrow="Hệ sinh thái dịch vụ" title="Chúng tôi cung cấp giải pháp toàn diện cho cá nhân & doanh nghiệp" align="center" />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {ecosystem.map((s) => (
-              <ServiceCard key={s.title} icon={s.icon} title={s.title} description={s.description} ctaLabel="Xem chi tiết" href={s.href} />
+              <ServiceCard key={s.title} mobileRow icon={s.icon} title={s.title} description={s.description} ctaLabel="Xem chi tiết" href={s.href} />
             ))}
           </div>
         </Container>

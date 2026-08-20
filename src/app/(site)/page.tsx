@@ -155,6 +155,7 @@ export default function HomePage() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {services.map((s) => (
               <ServiceCard
+                mobileRow
                 key={s.slug}
                 icon={s.icon as IconName}
                 title={s.title}

@@ -136,7 +136,7 @@ export default function WebsitePage() {
           <SectionHeading eyebrow="Dự án" title="Website đã triển khai" align="center" />
           <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {websiteProjectShowcase.map((p) => (
-              <ProjectPreviewCard key={p.title} preview={p} />
+              <ProjectPreviewCard key={p.title} mobileRow preview={p} />
             ))}
           </div>
         </Container>

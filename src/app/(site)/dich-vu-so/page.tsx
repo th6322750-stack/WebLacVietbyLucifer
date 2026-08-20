@@ -108,10 +108,22 @@ export default function DigitalServicesPage() {
           <SectionHeading eyebrow="Sản phẩm nổi bật" title="Lựa chọn hàng đầu của khách hàng" align="center" />
           <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((p) => (
-              <div key={p.name} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
-                <BrandMark name={p.brand} size={40} />
-                <h3 className="text-h4-mobile text-ink-950">{p.name}</h3>
-                <ul className="flex flex-col gap-1 self-start text-left">
+              // MASTER PARITY V4: the 390 master keeps these compact — brand mark, name and price
+              // on one row with the feature list suppressed. >= sm is the unchanged desktop card.
+              <div
+                key={p.name}
+                className="rounded-md border border-border bg-white shadow-sm sm:flex sm:flex-col sm:items-center sm:gap-3 sm:p-4 sm:text-center md:p-6"
+              >
+                <div className="flex items-center gap-3 p-3 sm:contents">
+                  <span className="shrink-0 sm:contents">
+                    <BrandMark name={p.brand} size={40} />
+                  </span>
+                  <span className="min-w-0 flex-1 sm:contents">
+                    <h3 className="text-small font-semibold text-ink-950 sm:text-h4-mobile sm:font-normal">{p.name}</h3>
+                    <p className="text-caption font-semibold text-gold-700 sm:hidden">{p.price}</p>
+                  </span>
+                </div>
+                <ul className="hidden flex-col gap-1 self-start text-left sm:flex">
                   {p.features.map((f) => (
                     <li key={f} className="flex items-start gap-1 text-small text-text-secondary">
                       <Icon name="check" size="inline" className="mt-px shrink-0 text-gold-600" />
@@ -119,8 +131,10 @@ export default function DigitalServicesPage() {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-2 text-h4-mobile font-heading text-gold-700">{p.price}</p>
-                <DigitalProductCta label="Đăng ký ngay" />
+                <p className="mt-2 hidden text-h4-mobile font-heading text-gold-700 sm:block">{p.price}</p>
+                <div className="hidden px-3 pb-3 sm:block sm:p-0">
+                  <DigitalProductCta label="Đăng ký ngay" />
+                </div>
               </div>
             ))}
           </div>
