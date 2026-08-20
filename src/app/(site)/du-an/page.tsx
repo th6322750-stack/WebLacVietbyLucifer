@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
 import { ProjectCard } from "@/components/content/ProjectCard";
 import { MobileLoadMore } from "@/components/content/MobileLoadMore";
@@ -38,14 +39,21 @@ export default async function ProjectsPage({
     <>
       <PageHero
         eyebrow="Dự án"
-        title="Dự án tiêu biểu"
+        breadcrumbs={
+          <Breadcrumbs onDark items={[{ label: "Trang chủ", href: "/" }, { label: "Dự án" }]} />
+        }
+        title={
+          <>
+            Dự án <span className="text-gold-500">tiêu biểu</span>
+          </>
+        }
         description="Những giải pháp số đã tạo ra giá trị thật cho thương hiệu và doanh nghiệp."
         imageAssetId="projects-hero-master"
         imageAlt="Dự án Lạc Việt Media"
         metrics={[
-          { value: "200+", label: "Dự án đã triển khai", demoOnly: true },
-          { value: "20+", label: "Lĩnh vực đa dạng", demoOnly: true },
-          { value: "99%", label: "Khách hàng hài lòng", demoOnly: true },
+          { value: "200+", label: "Dự án đã triển khai", demoOnly: true, icon: "briefcase" },
+          { value: "20+", label: "Lĩnh vực đa dạng", demoOnly: true, icon: "target" },
+          { value: "99%", label: "Khách hàng hài lòng", demoOnly: true, icon: "badge-check" },
         ]}
       />
 

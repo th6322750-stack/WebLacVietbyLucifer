@@ -36,10 +36,22 @@ export default function ContactPage() {
       <PageHero
         heroRole="heroDisplay"
         eyebrow="Liên hệ – Nhận tư vấn"
-        title={siteSettings.brandName}
+        title={
+          <>
+            LẠC VIỆT
+            <br />
+            <span className="text-gold-500">MEDIA AGENCY</span>
+          </>
+        }
         description="Chúng tôi luôn sẵn sàng lắng nghe và tư vấn giải pháp phù hợp nhất cho mục tiêu của bạn."
         imageAssetId="contact-hero-master"
         imageAlt="Liên hệ Lạc Việt Media"
+        // Transcribed from the approved master hero (page 12).
+        proofItems={[
+          { icon: "clock", title: "Phản hồi nhanh", note: "Trong 30 phút" },
+          { icon: "messages-square", title: "Tư vấn miễn phí", note: "Giải pháp phù hợp" },
+          { icon: "lock-keyhole", title: "Bảo mật thông tin", note: "Cam kết tuyệt đối" },
+        ]}
       />
 
       <Section id="consultation-section">
@@ -84,24 +96,45 @@ export default function ContactPage() {
           RECOVERY V2: four EQUAL cards in a row, not a narrow sidebar rail. */}
       <Section id="quick-channels" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Kênh liên hệ nhanh" title="Chọn kênh phù hợp với bạn" align="center" />
+          <SectionHeading eyebrow="Liên hệ nhanh" title="Kết nối với chúng tôi qua các kênh sau" align="center" />
           <div id="contact-channels" className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            <ContactChannelCard brand="zalo" title="Zalo" value={siteSettings.zalo} href={`https://zalo.me/${siteSettings.zalo}`} />
-            <ContactChannelCard brand="messenger" title="Facebook Messenger" value="Sắp cập nhật" disabled />
+            <ContactChannelCard
+              brand="zalo"
+              title="Zalo Official"
+              description="Nhắn tin nhanh qua Zalo để được hỗ trợ ngay."
+              ctaLabel="Nhắn trên Zalo"
+              value={siteSettings.zalo}
+              href={`https://zalo.me/${siteSettings.zalo}`}
+            />
+            <ContactChannelCard
+              brand="messenger"
+              title="Facebook Messenger"
+              description="Chat trực tiếp qua Fanpage Lạc Việt Media Agency."
+              value="Sắp cập nhật"
+              disabled
+            />
             <ContactChannelCard
               brand="telegram"
               title="Telegram"
+              description="Trao đổi nhanh và bảo mật qua Telegram."
+              ctaLabel="Nhắn trên Telegram"
               value={siteSettings.telegram}
               href={`https://t.me/${siteSettings.telegram.replace("@", "")}`}
             />
-            <ContactChannelCard icon="mail" title="Email" value="Sắp cập nhật" disabled />
+            <ContactChannelCard
+              icon="mail"
+              title="Email"
+              description="Gửi yêu cầu chi tiết qua email để chúng tôi phản hồi."
+              value="Sắp cập nhật"
+              disabled
+            />
           </div>
         </Container>
       </Section>
 
       <Section id="contact-process">
         <Container>
-          <SectionHeading eyebrow="Quy trình" title="Điều gì xảy ra sau khi bạn liên hệ" align="center" />
+          <SectionHeading eyebrow="Quy trình làm việc" title="Điều gì sẽ xảy ra sau khi bạn gửi thông tin?" align="center" />
           <div className="mt-10">
             <ProcessSteps steps={processSteps} />
           </div>

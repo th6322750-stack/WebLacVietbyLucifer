@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // `next dev` and `next build` both write to .next by default, so running a production build
+  // while a dev server is up wipes the chunks the dev server is serving and every route starts
+  // returning 500 ("Cannot find module './331.js'"). Giving dev its own directory makes that
+  // collision impossible instead of relying on remembering not to overlap them.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   reactStrictMode: true,
   eslint: {
     dirs: ["src"],
