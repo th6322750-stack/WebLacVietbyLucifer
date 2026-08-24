@@ -296,7 +296,14 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <FinalCta sourceComponent="home-final-cta" variant="strip" glow />
+      <FinalCta
+        eyebrow="Sẵn sàng bắt đầu"
+        sourceComponent="home-final-cta"
+        variant="strip"
+        glow
+        secondaryHref="/website#website-packages"
+        secondaryLabel="Xem bảng giá"
+      />
     </>
   );
 }

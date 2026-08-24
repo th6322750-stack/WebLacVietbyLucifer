@@ -9,6 +9,7 @@ import { assetPath, assetSize } from "@/lib/assets";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export function FinalCta({
+  eyebrow,
   title = "Sẵn sàng nâng tầm hiện diện số của bạn?",
   description = "Để lại thông tin, đội ngũ Lạc Việt Media sẽ liên hệ tư vấn giải pháp phù hợp trong ngày làm việc.",
   sourceComponent,
@@ -18,11 +19,22 @@ export function FinalCta({
   visualAssetId,
   variant = "band",
   tone = "dark",
+  secondaryHref,
+  secondaryLabel,
 }: {
+  /** PRO V2.1 §32: optional eyebrow line — the brief's "signature block" structure
+   * (eyebrow → headline → copy → CTAs). Omitted by default so every existing call site is
+   * unaffected; only routes that pass one get it. */
+  eyebrow?: string;
   title?: string;
   description?: string;
   sourceComponent: string;
   defaultService?: string;
+  /** PRO V2.1 §32/33: a second, secondary-styled action next to the primary CTA — a real
+   * in-page or route link (never a fabricated claim), e.g. "Xem bảng giá". Both must be given
+   * together or neither renders. */
+  secondaryHref?: string;
+  secondaryLabel?: string;
   /** Enables the approved `dong-son-ring` motif + `gold-noise` texture. ASSET_USAGE_MAP maps
    * these to /dich-vu-so final-cta only — deliberately not applied to every FinalCta. */
   decorated?: boolean;
@@ -86,6 +98,15 @@ export function FinalCta({
         ) : null}
         <ScrollReveal direction="up" distance={20} duration={0.6} className={variant === "strip" ? "md:max-w-2xl" : "contents"}>
           <div className={variant === "strip" ? "md:max-w-2xl" : "contents"}>
+            {eyebrow ? (
+              <p
+                className={`text-eyebrow uppercase tracking-[0.14em] ${
+                  tone === "ivory" ? "text-gold-700" : "text-gold-300"
+                }`}
+              >
+                {eyebrow}
+              </p>
+            ) : null}
             <h2
               className={`max-w-editorial text-h2-mobile lg:text-h2-desktop ${
                 tone === "ivory" ? "text-ink-950" : "text-white"
@@ -103,9 +124,16 @@ export function FinalCta({
           </div>
         </ScrollReveal>
         <ScrollReveal direction="up" distance={20} duration={0.6} delay={100}>
-          <Button size="lg" className="shrink-0" onClick={() => open(sourceComponent, defaultService)}>
-            Nhận tư vấn miễn phí
-          </Button>
+          <div className="flex shrink-0 flex-wrap justify-center gap-3">
+            <Button size="lg" onClick={() => open(sourceComponent, defaultService)}>
+              Nhận tư vấn miễn phí
+            </Button>
+            {secondaryHref && secondaryLabel ? (
+              <Button href={secondaryHref} size="lg" variant="outline" onDark={tone === "dark"}>
+                {secondaryLabel}
+              </Button>
+            ) : null}
+          </div>
         </ScrollReveal>
       </Container>
     </section>

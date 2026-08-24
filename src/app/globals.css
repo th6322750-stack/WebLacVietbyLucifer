@@ -857,6 +857,9 @@
 
 /* The spark is a dot pinned to the top of an invisible ring; spinning the ring carries it
    around the path. */
+/* PRO V2.1 §46: dimmed — 0.85-alpha 5px-spread glow read as a bright flare doing a full lap
+   every 30s, competing with the shield (the thing this composition is actually about) for
+   attention. Kept the spark, just quieter. */
 .orbit-spark::before {
   content: "";
   position: absolute;
@@ -867,7 +870,7 @@
   margin: -3px 0 0 -3px;
   border-radius: 50%;
   background: #FFE08A;
-  box-shadow: 0 0 16px 5px rgb(255 224 138 / 0.85);
+  box-shadow: 0 0 10px 2px rgb(255 224 138 / 0.5);
 }
 .orbit-spark-a { width: 74%; height: 88%; animation: orbit-spin 30s linear infinite; }
 .orbit-spark-b { width: 96%; height: 78%; animation: orbit-spin 44s linear infinite reverse; }
@@ -982,7 +985,11 @@
   70%  { transform: rotate(-4deg); }
   100% { transform: rotate(0deg); }
 }
-.dvs-needle { transform-origin: 31.4% 78.8%; animation: dvs-sweep 4.5s cubic-bezier(.22,.9,.3,1) infinite; }
+/* PRO V2.1 §49: was `infinite` — the needle re-swept from -52deg every 4.5s forever, which reads
+   as a broken gauge resetting itself rather than a needle settling once. It's the hero visual on
+   /dich-vu-so, always in view at load, so "run once on enter, then hold" needs no
+   IntersectionObserver here — just `1` iteration with `forwards` to hold the final 0deg frame. */
+.dvs-needle { transform-origin: 31.4% 78.8%; animation: dvs-sweep 1.6s cubic-bezier(.22,.9,.3,1) 1 forwards; }
 
 /* Quả cầu: xoay quanh trục dọc, giả lập bằng cách nén ngang theo chu kỳ. Rẻ hơn nhiều so với
    xoay 3D thật và ở kích cỡ này mắt không phân biệt được. */

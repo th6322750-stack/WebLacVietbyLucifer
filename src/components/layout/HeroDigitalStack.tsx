@@ -48,8 +48,11 @@ const LAYERS: Layer[] = [
   // Sáu vật thể vệ tinh, mỗi cái một nhịp lệch nhau.
   { id: "06_ai_chip_circuitry", x: 13.562, y: 21.5, w: 28.062, nw: 281, nh: 261,
     fx: "dvs-float", vars: { "--dur": "6.4s", "--delay": "-0.8s", "--rise": "14px" } },
+  // PRO V2.1 §48: rise was 12px — double the phone's 6px despite both being Tier B (medallion is
+  // Tier A, lowest; phone+shield are the next tier up, meant to move similarly since they sit at
+  // comparable visual weight either side of the medallion).
   { id: "04_security_shield", x: 15.313, y: 43.7, w: 22.938, nw: 229, nh: 257,
-    fx: "dvs-float", vars: { "--dur": "7.2s", "--delay": "-2.1s", "--rise": "12px" } },
+    fx: "dvs-float", vars: { "--dur": "7.2s", "--delay": "-2.1s", "--rise": "7px" } },
   { id: "07_cloud_upload", x: 67, y: 7.1, w: 30.5, nw: 305, nh: 201,
     fx: "dvs-float", vars: { "--dur": "6.8s", "--delay": "-1.4s", "--rise": "15px" } },
   { id: "08_verified_id_card", x: 74.875, y: 27.95, w: 21.75, nw: 218, nh: 171,
