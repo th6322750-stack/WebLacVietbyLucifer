@@ -1,18 +1,17 @@
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
+import { ShieldOrbit } from "@/components/layout/ShieldOrbit";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { MetricStrip } from "@/components/content/MetricStrip";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
 import { FinalCta } from "@/components/layout/FinalCta";
-import { SupportHeroCta, SupportLeadCta } from "./SupportInteractive";
+import { SupportHeroCta } from "./SupportInteractive";
 import { getFaqsByScope } from "@/content/faqs";
-import { assetPath } from "@/lib/assets";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -22,9 +21,11 @@ export const metadata = pageMetadata({
   path: "/support-mxh",
 });
 
+import { BrandName } from "@/components/ui/BrandMark";
+
 // 4 service cards per approved master (page-05) — one per platform + strategy consulting.
 const supportServices: {
-  brand?: "facebook" | "tiktok" | "meta";
+  brand?: BrandName;
   icon?: IconName;
   title: string;
   description: string;
@@ -64,9 +65,10 @@ const supportServices: {
     ],
   },
   {
-    // Approved master page-05 card 4 shows a gold SHIELD, not a lightbulb — verified by cropping
-    // the exact card at 34x zoom. icon-shield-check is in the pinned icon inventory.
-    icon: "shield-check",
+    // Was a gold shield icon; replaced with the blue verified badge at Lucifer's request, since
+    // this card is about getting an account verified and recovered rather than security in the
+    // abstract.
+    brand: "verified",
     // Title transcribed from the master crop; the previous wording was not the approved text.
     title: "Tư vấn bảo mật & Khôi phục hợp lệ",
     description: "Tư vấn bảo mật và khôi phục quyền sở hữu hợp lệ cho kênh của bạn.",
@@ -108,12 +110,15 @@ const processSteps = [
   { title: "Bàn giao & hướng dẫn", description: "Bàn giao kết quả và hướng dẫn phòng tránh tái diễn." },
 ];
 
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+
 export default function SupportMxhPage() {
   const faqs = getFaqsByScope("support-mxh");
 
   return (
     <>
       <PageHero
+        heroSlot={<ShieldOrbit className="w-full max-w-[640px]" />}
         eyebrow="Support MXH"
         breadcrumbs={
           <Breadcrumbs
@@ -121,9 +126,6 @@ export default function SupportMxhPage() {
             items={[{ label: "Trang chủ", href: "/" }, { label: "Dịch vụ" }, { label: "Hỗ trợ mạng xã hội" }]}
           />
         }
-        // Master page 5 splits the H1 across two lines; at the default h1 size this headline
-        // wraps to four, so the size steps down per the V4 line-wrap allowance.
-        titleClassName="text-h2-mobile lg:text-[32px] lg:leading-[1.14] xl:text-[35px] ultra:text-[42px]"
         // Master page 5 splits the H1: the first line white, the promise line gold.
         title={
           <>
@@ -147,21 +149,23 @@ export default function SupportMxhPage() {
 
       <Section id="support-service-grid">
         <Container>
-          <SectionHeading eyebrow="Dịch vụ" title="Chúng tôi hỗ trợ toàn diện các nền tảng mạng xã hội phổ biến" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Dịch vụ" title="Chúng tôi hỗ trợ toàn diện các nền tảng mạng xã hội phổ biến" align="center" />
+          </ScrollReveal>
           <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {supportServices.map((s) => (
-              <ServiceCard
-                mobileRow
-                key={s.title}
-                bullets={s.bullets}
-                brand={s.brand}
-                icon={s.icon}
-                title={s.title}
-                description={s.description}
-                // Master card CTA reads "Xem chi tiết", not "Nhận tư vấn".
-                ctaLabel="Xem chi tiết"
-                href="/lien-he"
-              />
+            {supportServices.map((s, idx) => (
+              <ScrollReveal key={s.title} direction="up" distance={24} duration={0.7} delay={idx * 120}>
+                <ServiceCard
+                  mobileRow
+                  bullets={s.bullets}
+                  brand={s.brand}
+                  icon={s.icon}
+                  title={s.title}
+                  description={s.description}
+                  ctaLabel="Xem chi tiết"
+                  href="/lien-he"
+                />
+              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -169,14 +173,18 @@ export default function SupportMxhPage() {
 
       <Section id="common-issues-grid" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Sự cố thường gặp" title="Bạn đang gặp phải vấn đề nào?" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Sự cố thường gặp" title="Bạn đang gặp phải vấn đề nào?" align="center" />
+          </ScrollReveal>
           <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-6">
-            {commonIssues.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-2 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-5">
-                <Icon name={item.icon} size="feature" className="text-gold-600" />
-                <p className="mt-1 text-small font-semibold text-ink-950">{item.label}</p>
-                <p className="text-caption leading-snug text-text-secondary">{item.description}</p>
-              </div>
+            {commonIssues.map((item, idx) => (
+              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={idx * 80}>
+                <div className="flex flex-col items-center gap-2 rounded-xl border border-gold-500/20 bg-white p-4 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-md md:p-5">
+                  <Icon name={item.icon} size="feature" className="text-gold-600" />
+                  <p className="mt-1 text-small font-semibold text-ink-950">{item.label}</p>
+                  <p className="text-caption leading-snug text-text-secondary">{item.description}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -184,13 +192,17 @@ export default function SupportMxhPage() {
 
       <Section id="why-lac-viet" tone="dark" texture>
         <Container>
-          <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt Media Agency" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt Media Agency" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
+          </ScrollReveal>
           <div className="mt-8 grid gap-5 md:gap-8 sm:grid-cols-2 lg:grid-cols-5">
-            {whyUs.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-3 text-center">
-                <Icon name={item.icon} size="feature" className="text-gold-300" />
-                <p className="text-body text-white/85">{item.label}</p>
-              </div>
+            {whyUs.map((item, idx) => (
+              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={idx * 100}>
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <Icon name={item.icon} size="feature" className="text-gold-300" />
+                  <p className="text-body text-white/85">{item.label}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -198,60 +210,43 @@ export default function SupportMxhPage() {
 
       <Section id="support-process" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Quy trình" title="5 bước hỗ trợ chuyên nghiệp" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Quy trình" title="5 bước hỗ trợ chuyên nghiệp" align="center" />
+          </ScrollReveal>
           <div className="mt-10">
-            <ProcessSteps steps={processSteps} />
+            <ScrollReveal direction="up" distance={24} duration={0.7} delay={150}>
+              <ProcessSteps steps={processSteps} />
+            </ScrollReveal>
           </div>
-        </Container>
-      </Section>
-
-      <Section id="trust-client-row">
-        <Container>
-          {/* Demo customer count per CONTENT_TRUTH.json demoOnly — tagged in markup; the visible
-              disclosure caption below covers the logo strip itself. */}
-          <p className="text-center text-h4-mobile lg:text-h4-desktop text-ink-950" data-demo-only="true">
-            200+ khách hàng đã được hỗ trợ thành công
-          </p>
-          <div className="relative mx-auto mt-6 h-16 w-full max-w-2xl">
-            <Image
-              src={assetPath("support-client-logo-strip")}
-              alt="Danh sách khách hàng minh hoạ"
-              fill
-              className="object-contain"
-            />
-          </div>
-          <p className="mt-3 text-center text-caption text-text-muted">
-            Hình ảnh minh hoạ V1, không phải danh sách khách hàng đã xác nhận.
-          </p>
         </Container>
       </Section>
 
       <Section id="support-metrics" tone="dark" texture>
         <Container>
-          <MetricStrip
-            onDark
-            metrics={[
-              { value: "200+", label: "Khách hàng đã hỗ trợ", demoOnly: true },
-              { value: "98%", label: "Tỷ lệ khôi phục thành công", demoOnly: true },
-              { value: "24/7", label: "Hỗ trợ liên tục", demoOnly: true },
-              { value: "100%", label: "Bảo mật thông tin", demoOnly: true },
-            ]}
-          />
+          <ScrollReveal direction="up" distance={20} duration={0.7}>
+            <MetricStrip
+              onDark
+              metrics={[
+                { value: "200+", label: "Khách hàng đã hỗ trợ", demoOnly: true },
+                { value: "98%", label: "Tỷ lệ khôi phục thành công", demoOnly: true },
+                { value: "24/7", label: "Hỗ trợ liên tục", demoOnly: true },
+                { value: "100%", label: "Bảo mật thông tin", demoOnly: true },
+              ]}
+            />
+          </ScrollReveal>
         </Container>
       </Section>
 
       <Section id="faq" tone="ivory">
         <Container width="editorial">
-          <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp về dịch vụ support MXH" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp về dịch vụ support MXH" align="center" />
+          </ScrollReveal>
           <div className="mt-10">
-            <FAQAccordion items={faqs} columns={2} />
+            <ScrollReveal direction="up" distance={24} duration={0.7} delay={100}>
+              <FAQAccordion items={faqs} columns={2} />
+            </ScrollReveal>
           </div>
-        </Container>
-      </Section>
-
-      <Section id="support-lead-cta">
-        <Container>
-          <SupportLeadCta />
         </Container>
       </Section>
 

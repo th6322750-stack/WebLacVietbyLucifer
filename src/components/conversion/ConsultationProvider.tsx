@@ -1,11 +1,22 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { useBodyScrollLock, useEscapeClose, useFocusTrap } from "@/lib/a11y-hooks";
 import { track } from "@/lib/analytics";
-import { IconButton } from "@/components/ui/IconButton";
-import { ContactForm } from "./ContactForm";
+import { siteSettings } from "@/lib/site-settings";
+
+/** "Nhận tư vấn" across the whole site — header, every hero, FinalCta, pricing cards — goes
+ * straight to a Zalo chat instead of opening an on-site form.
+ *
+ * Used to open a modal with ContactForm inside. Replaced at Lucifer's instruction: filling in a
+ * form is friction a chat isn't, and the conversation itself is where a lead actually gets
+ * converted, not a form that then waits for a callback. The dedicated /lien-he page keeps its
+ * own embedded ContactForm — that is a page someone chose to visit specifically to leave
+ * details, a different intent from a CTA button mid-scroll.
+ *
+ * The exported shape (`useConsultation().open(sourceComponent, defaultService)`) is unchanged so
+ * none of the nine call sites across the site needed to change — only what `open` DOES changed.
+ */
 
 type ConsultationContextValue = {
   open: (sourceComponent: string, defaultService?: string) => void;
@@ -21,61 +32,21 @@ export function useConsultation() {
 
 export function ConsultationProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const [defaultService, setDefaultService] = useState<string | undefined>(undefined);
-  const dialogRef = useRef<HTMLDivElement>(null);
 
-  const close = useCallback(() => setIsOpen(false), []);
-
-  const openModal = useCallback(
-    (sourceComponent: string, service?: string) => {
-      setDefaultService(service);
-      setIsOpen(true);
+  const openZalo = useCallback(
+    // `defaultService` is part of the shared `open()` shape every call site already uses (it
+    // mattered when a form needed to prefill), but a Zalo redirect has nothing to prefill, so
+    // the second argument is accepted by callers and simply ignored here.
+    (sourceComponent: string) => {
       track({ name: "consultation_open", props: { sourceRoute: pathname, sourceComponent } });
+      // A new tab, not a navigation away: whoever clicked stays on the page they were reading,
+      // the same way the modal never used to lose their place either.
+      window.open(`https://zalo.me/${siteSettings.zalo}`, "_blank", "noopener,noreferrer");
     },
     [pathname],
   );
 
-  useFocusTrap(dialogRef, isOpen);
-  useBodyScrollLock(isOpen);
-  useEscapeClose(isOpen, close);
+  const value = useMemo(() => ({ open: openZalo }), [openZalo]);
 
-  const value = useMemo(() => ({ open: openModal }), [openModal]);
-
-  return (
-    <ConsultationContext.Provider value={value}>
-      {children}
-      {isOpen ? (
-        <div className="fixed inset-0 z-[60] flex items-end justify-center md:items-center" data-state="consultation-modal">
-          <button
-            type="button"
-            aria-label="Đóng"
-            className="absolute inset-0 bg-ink-950/60"
-            onClick={close}
-          />
-          <div
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="consultation-modal-title"
-            tabIndex={-1}
-            className="relative z-10 max-h-[90vh] w-full overflow-y-auto rounded-t-xl bg-white p-6 shadow-lg md:max-w-lg md:rounded-lg md:p-8"
-          >
-            <div className="mb-6 flex items-start justify-between gap-4">
-              <div>
-                <h2 id="consultation-modal-title" className="text-card-h3-mobile lg:text-card-h3-desktop font-heading text-ink-950">
-                  Nhận tư vấn miễn phí
-                </h2>
-                <p className="mt-1 text-small text-text-secondary">
-                  Để lại thông tin, Lạc Việt Media sẽ liên hệ trong ngày làm việc.
-                </p>
-              </div>
-              <IconButton icon="close" label="Đóng" onClick={close} />
-            </div>
-            <ContactForm defaultService={defaultService} />
-          </div>
-        </div>
-      ) : null}
-    </ConsultationContext.Provider>
-  );
+  return <ConsultationContext.Provider value={value}>{children}</ConsultationContext.Provider>;
 }

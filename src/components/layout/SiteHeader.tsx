@@ -18,18 +18,32 @@ export function SiteHeader() {
   const { open } = useConsultation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useFocusTrap(drawerRef, menuOpen);
   useBodyScrollLock(menuOpen);
   useEscapeClose(menuOpen, () => setMenuOpen(false));
 
+  // PRO V2 (2026-08-25): header shrinks + darkens past a small threshold, matching the brief's
+  // "khi scroll: giảm chiều cao, background đậm hơn". Threshold at 24px (not 0) so the very top
+  // of the page — where the header sits over the hero, not page background — never flickers
+  // between states from a 1px scroll jitter.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const isServiceRoute = serviceMenu.some((s) => pathname === s.href || pathname.startsWith(`${s.href}/`));
 
   return (
     <header
       data-state={menuOpen ? "mobile-menu-open" : undefined}
-      className="sticky top-0 z-50 h-16 bg-ink-950/90 backdrop-blur-md lg:h-[76px]"
+      className={`sticky top-0 z-50 backdrop-blur-md transition-[height,background-color] duration-normal ease-standard ${
+        scrolled ? "h-14 bg-ink-950/95 lg:h-16" : "h-16 bg-ink-950/80 lg:h-[76px]"
+      }`}
     >
       <Container className="flex h-full items-center justify-between">
         <Link href="/" className="flex items-center" aria-label="Lạc Việt Media Agency — Trang chủ">
@@ -39,7 +53,7 @@ export function SiteHeader() {
             width={assetSize("lac-viet-logo-horizontal-approved").width}
             height={assetSize("lac-viet-logo-horizontal-approved").height}
             priority
-            className="h-8 w-auto lg:h-10"
+            className={`w-auto transition-[height] duration-normal ease-standard ${scrolled ? "h-7 lg:h-8" : "h-8 lg:h-10"}`}
           />
         </Link>
 
@@ -71,7 +85,7 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-2 lg:flex">
           <Button size="sm" onClick={() => open("site-header")}>
             Nhận tư vấn
           </Button>

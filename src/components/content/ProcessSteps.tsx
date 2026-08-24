@@ -2,32 +2,19 @@ import { Icon } from "@/components/ui/Icon";
 
 export type ProcessStep = { title: string; description: string };
 
-/** Approved process treatment (recovery audit "Global corrections" + per-route sections):
- * a thin CONNECTED HORIZONTAL TIMELINE on desktop — a circular gold-ringed number per step,
- * joined left-to-right by arrow connectors, with a compact title/description beneath. The
- * previous large bordered cards in a 4-up grid were not the approved composition.
- *
- * On mobile the master keeps the sequence compact and vertical, so the connectors flip to a
- * left rail rather than the desktop DOM simply stacking.
- *
- * The step count is driven by the caller (6 on / and /website, 5 on /support-mxh and /lien-he,
- * 4 on /dich-vu-so) — this component never assumes 4. */
+/** Approved process treatment:
+ * a thin CONNECTED HORIZONTAL TIMELINE on desktop with interactive gold-ringed numbers,
+ * joined left-to-right by arrow connectors, with glowing micro-interactions on hover.
+ */
 export function ProcessSteps({ steps, onDark = false }: { steps: ProcessStep[]; onDark?: boolean }) {
-  const numberClass = onDark
-    ? "border-gold-500/40 bg-ink-900 text-gold-300"
-    : "border-gold-500/40 bg-white text-gold-600";
-  const titleClass = onDark ? "text-white" : "text-ink-950";
-  const bodyClass = onDark ? "text-white/70" : "text-text-secondary";
-  const connectorClass = onDark ? "text-white/25" : "text-border";
-
   return (
     <ol data-component="process-timeline" className="flex flex-col gap-6 md:flex-row md:items-start md:gap-0">
       {steps.map((step, i) => (
         <li
           key={step.title}
-          className="relative flex flex-1 gap-4 md:flex-col md:items-center md:gap-3 md:px-2 md:text-center"
+          className="group relative flex flex-1 gap-4 transition-all duration-300 md:flex-col md:items-center md:gap-3 md:px-2 md:text-center"
         >
-          {/* Mobile: vertical rail joining the numbers. Desktop: horizontal arrow connector. */}
+          {/* Mobile: vertical rail joining the numbers */}
           {i < steps.length - 1 ? (
             <span
               aria-hidden="true"
@@ -39,7 +26,11 @@ export function ProcessSteps({ steps, onDark = false }: { steps: ProcessStep[]; 
 
           <span className="relative flex shrink-0 items-start md:w-full md:justify-center">
             <span
-              className={`flex h-10 w-10 items-center justify-center rounded-full border text-step-number font-heading ${numberClass}`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border text-step-number font-heading transition-all duration-300 group-hover:scale-110 ${
+                onDark
+                  ? "border-gold-500/40 bg-ink-900 text-gold-300 shadow-[0_0_15px_rgba(212,175,55,0.15)] group-hover:border-gold-500 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.35)]"
+                  : "border-gold-500/40 bg-white text-gold-700 shadow-sm group-hover:border-gold-500 group-hover:shadow-[0_0_15px_rgba(212,175,55,0.25)]"
+              }`}
             >
               {i + 1}
             </span>
@@ -47,14 +38,22 @@ export function ProcessSteps({ steps, onDark = false }: { steps: ProcessStep[]; 
               <Icon
                 name="arrow-right"
                 size="inline"
-                className={`absolute left-[calc(50%+2rem)] top-1/2 hidden -translate-y-1/2 md:block ${connectorClass}`}
+                className={`absolute left-[calc(50%+2.2rem)] top-1/2 hidden -translate-y-1/2 transition-colors duration-300 group-hover:text-gold-500 md:block ${
+                  onDark ? "text-white/25" : "text-border"
+                }`}
               />
             ) : null}
           </span>
 
-          <div className="md:mt-1">
-            <h3 className={`text-card-h3-mobile lg:text-card-h3-desktop ${titleClass}`}>{step.title}</h3>
-            <p className={`mt-1 text-small ${bodyClass}`}>{step.description}</p>
+          <div className="md:mt-2">
+            <h3
+              className={`font-heading text-card-h3-mobile transition-colors duration-200 group-hover:text-gold-600 lg:text-card-h3-desktop ${
+                onDark ? "text-white" : "text-ink-950"
+              }`}
+            >
+              {step.title}
+            </h3>
+            <p className={`mt-1 text-small ${onDark ? "text-white/70" : "text-text-secondary"}`}>{step.description}</p>
           </div>
         </li>
       ))}

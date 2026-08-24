@@ -20,12 +20,15 @@ export function SectionEyebrow({
 export function SectionHeading({
   eyebrow,
   title,
+  titleClassName,
   description,
   onDark = false,
   align = "left",
 }: {
   eyebrow?: string;
   title: ReactNode;
+  /** Overrides the H2 type size for sections the design sets smaller than the default scale. */
+  titleClassName?: string;
   description?: ReactNode;
   onDark?: boolean;
   align?: "left" | "center";
@@ -34,7 +37,7 @@ export function SectionHeading({
     <div className={align === "center" ? "text-center" : "text-left"}>
       {eyebrow ? <SectionEyebrow onDark={onDark}>{eyebrow}</SectionEyebrow> : null}
       <h2
-        className={`mt-3 text-h2-mobile lg:text-h2-desktop ${
+        className={`mt-3 ${titleClassName ?? "text-h2-mobile lg:text-h2-desktop"} ${
           onDark ? "text-white" : "text-ink-950"
         }`}
       >

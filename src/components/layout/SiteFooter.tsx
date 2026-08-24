@@ -37,8 +37,17 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
   }
 
   return (
-    <footer className="bg-ink-950 pb-8 pt-12 text-white md:pt-16">
-      <Container>
+    // PRO V2 (2026-08-25): footer treated as a brand moment, not just a link dump — a huge,
+    // near-invisible "LẠC VIỆT" watermark sits behind the columns (brief §19). `overflow-hidden`
+    // + `aria-hidden` keep it purely decorative: it never affects layout width or gets announced.
+    <footer className="relative overflow-hidden bg-ink-950 pb-8 pt-12 text-white md:pt-16">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-[0.12em] right-0 select-none whitespace-nowrap font-heading text-[18vw] font-bold leading-none tracking-tight text-white/[0.03] lg:text-[220px]"
+      >
+        LẠC VIỆT
+      </span>
+      <Container className="relative">
         <div className="hidden gap-10 md:grid md:grid-cols-4">
           <BrandColumn />
           <FooterLinkColumn title="Dịch vụ" links={footerLinks.services} />
@@ -61,11 +70,13 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
 
         <SocialRow />
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-6 text-small text-white/70 md:flex-row md:items-center md:justify-between">
+        {/* Gold hairline instead of the old flat white/10 rule — footer §19 asked for a "gold
+            divider" rather than a generic border between the columns and the copyright line. */}
+        <div className="mt-10 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
+        <div className="pt-6 text-small text-white/70">
           <p>
             © {new Date().getFullYear()} {siteSettings.brandName}. Mọi quyền được bảo lưu.
           </p>
-          <p>{siteSettings.slogan}</p>
         </div>
       </Container>
     </footer>
@@ -135,26 +146,45 @@ function FooterAccordionGroup({ title, links }: { title: string; links: readonly
 }
 
 function SocialRow() {
-  const items: { name: Parameters<typeof BrandMark>[0]["name"]; href: string }[] = [
-    { name: "zalo", href: `https://zalo.me/${siteSettings.zalo}` },
-    { name: "telegram", href: `https://t.me/${siteSettings.telegram.replace("@", "")}` },
-    { name: "messenger", href: "https://m.me/" },
+  // `brand` drives the hover ring and tooltip via a CSS custom property, so adding a network
+  // is one row here rather than another block of CSS.
+  const items: {
+    name: Parameters<typeof BrandMark>[0]["name"];
+    label: string;
+    brand: string;
+    href: string;
+  }[] = [
+    { name: "zalo", label: "Zalo", brand: "#0068FF", href: `https://zalo.me/${siteSettings.zalo}` },
+    {
+      name: "telegram",
+      label: "Telegram",
+      brand: "#229ED9",
+      href: `https://t.me/${siteSettings.telegram.replace("@", "")}`,
+    },
+    { name: "messenger", label: "Messenger", brand: "#A334FA", href: "https://m.me/" },
   ];
   return (
-    <div className="mt-10 flex items-center gap-4">
+    <ul className="mt-10 flex list-none items-center gap-4">
       {items.map((item) => (
-        <a
-          key={item.name}
-          href={item.href}
-          target="_blank"
-          rel="noreferrer noopener"
-          aria-label={item.name}
-          onClick={() => track({ name: "contact_channel_click", props: { channel: item.name, sourceRoute: "footer" } })}
-          className="flex min-h-touch min-w-touch items-center justify-center rounded-sm bg-white/10 p-2 hover:bg-white/20"
-        >
-          <BrandMark name={item.name} size={20} />
-        </a>
+        <li key={item.name}>
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label={item.label}
+            onClick={() => track({ name: "contact_channel_click", props: { channel: item.name, sourceRoute: "footer" } })}
+            className="social-icon"
+            style={{ ["--brand" as string]: item.brand }}
+          >
+            {/* aria-hidden: the link already carries the name, so the tooltip would otherwise
+                be announced twice. */}
+            <span className="social-tip" aria-hidden="true">
+              {item.label}
+            </span>
+            <BrandMark name={item.name} size={24} />
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

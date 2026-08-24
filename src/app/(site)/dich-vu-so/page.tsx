@@ -4,6 +4,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { BrandMark, type BrandName } from "@/components/ui/BrandMark";
 import { PageHero } from "@/components/layout/PageHero";
+import { HeroDigitalStack } from "@/components/layout/HeroDigitalStack";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { MetricStrip } from "@/components/content/MetricStrip";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
@@ -76,6 +77,8 @@ const processSteps = [
   { title: "Hỗ trợ sau bán", description: "Đồng hành xử lý khi có phát sinh trong quá trình sử dụng." },
 ];
 
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+
 export default function DigitalServicesPage() {
   const faqs = getFaqsByScope("dich-vu-so");
 
@@ -83,21 +86,30 @@ export default function DigitalServicesPage() {
     <>
       <PageHero
         eyebrow="Dịch vụ số"
-        title="TÀI KHOẢN & DỊCH VỤ SỐ UY TÍN – AN TOÀN – NHANH CHÓNG"
+        // Broken deliberately rather than left to wrap: subject line white, promise line gold,
+        // the same two-line shape every other hero uses.
+        title={
+          <>
+            TÀI KHOẢN & DỊCH VỤ SỐ
+            <br />
+            <span className="text-v5-gold">UY TÍN – AN TOÀN – NHANH CHÓNG</span>
+          </>
+        }
         description="Lạc Việt cung cấp tài khoản AI, App Premium và dịch vụ tiện ích chính hãng, hỗ trợ nhanh tận tình cho cá nhân và doanh nghiệp."
-        imageAssetId="digital-hero-master"
-        imageAlt="Dịch vụ số Lạc Việt Media"
+        heroSlot={<HeroDigitalStack className="w-[86%] max-w-[380px] lg:w-full lg:max-w-[420px]" />}
         cta={<DigitalHeroCta />}
       />
 
       <Section id="service-category-strip">
         <Container>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {categories.map((c) => (
-              <div key={c.label} className="flex flex-col items-center gap-3 rounded-md border border-border bg-white p-4 text-center shadow-sm md:p-6">
-                <Icon name={c.icon} size="feature" className="text-gold-600" />
-                <p className="text-body font-medium text-ink-950">{c.label}</p>
-              </div>
+            {categories.map((c, idx) => (
+              <ScrollReveal key={c.label} direction="up" distance={20} duration={0.6} delay={idx * 100}>
+                <div className="flex flex-col items-center gap-3 rounded-xl border border-gold-500/20 bg-white p-4 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-md md:p-6">
+                  <Icon name={c.icon} size="feature" className="text-gold-600" />
+                  <p className="text-body font-medium text-ink-950">{c.label}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -105,37 +117,55 @@ export default function DigitalServicesPage() {
 
       <Section id="featured-digital-products" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Sản phẩm nổi bật" title="Lựa chọn hàng đầu của khách hàng" align="center" />
-          <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {products.map((p) => (
-              // MASTER PARITY V4: the 390 master keeps these compact — brand mark, name and price
-              // on one row with the feature list suppressed. >= sm is the unchanged desktop card.
-              <div
-                key={p.name}
-                className="rounded-md border border-border bg-white shadow-sm sm:flex sm:flex-col sm:items-center sm:gap-3 sm:p-4 sm:text-center md:p-6"
-              >
-                <div className="flex items-center gap-3 p-3 sm:contents">
-                  <span className="shrink-0 sm:contents">
-                    <BrandMark name={p.brand} size={40} />
-                  </span>
-                  <span className="min-w-0 flex-1 sm:contents">
-                    <h3 className="text-small font-semibold text-ink-950 sm:text-h4-mobile sm:font-normal">{p.name}</h3>
-                    <p className="text-caption font-semibold text-gold-700 sm:hidden">{p.price}</p>
-                  </span>
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading
+              eyebrow="Sản phẩm nổi bật"
+              title="Lựa chọn hàng đầu của khách hàng"
+              align="center"
+              titleClassName="text-h3-mobile lg:text-h3-desktop"
+            />
+          </ScrollReveal>
+          <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {products.map((p, idx) => (
+              <ScrollReveal key={p.name} direction="up" distance={24} duration={0.7} delay={idx * 100}>
+                <div
+                  className="rounded-xl border border-gold-500/20 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg sm:flex sm:flex-col sm:items-center sm:gap-2 sm:p-5 sm:text-center"
+                >
+                  <div className="flex items-center gap-3 p-3 sm:contents">
+                    <span className="shrink-0 sm:contents">
+                      <BrandMark name={p.brand} size={36} />
+                    </span>
+                    <span className="min-w-0 flex-1 sm:contents">
+                      <h3 className="text-small font-semibold text-ink-950 sm:font-heading sm:text-body">{p.name}</h3>
+                      <p className="text-caption font-semibold text-gold-700 sm:hidden">{p.price}</p>
+                    </span>
+                  </div>
+                  <ul className="hidden flex-col gap-1 self-start text-left sm:flex">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex items-start gap-1 text-caption text-text-secondary">
+                        <Icon name="check" size="inline" className="mt-px shrink-0 text-gold-600" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-1 hidden text-small text-text-secondary sm:block">
+                    {(() => {
+                      const m = /^(Từ\s+)?(\S+?)(\/.*)?$/.exec(p.price);
+                      if (!m) return p.price;
+                      return (
+                        <>
+                          {m[1]}
+                          <span className="text-body font-semibold text-gold-700">{m[2]}</span>
+                          {m[3] ? <span> {m[3].replace("/", "/ ")}</span> : null}
+                        </>
+                      );
+                    })()}
+                  </p>
+                  <div className="hidden px-3 pb-3 sm:block sm:p-0 sm:mt-2">
+                    <DigitalProductCta label="Đăng ký ngay" />
+                  </div>
                 </div>
-                <ul className="hidden flex-col gap-1 self-start text-left sm:flex">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-1 text-small text-text-secondary">
-                      <Icon name="check" size="inline" className="mt-px shrink-0 text-gold-600" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-2 hidden text-h4-mobile font-heading text-gold-700 sm:block">{p.price}</p>
-                <div className="hidden px-3 pb-3 sm:block sm:p-0">
-                  <DigitalProductCta label="Đăng ký ngay" />
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
           <p className="mt-6 text-center text-caption text-text-muted">
@@ -146,13 +176,17 @@ export default function DigitalServicesPage() {
 
       <Section id="why-lac-viet" tone="dark">
         <Container>
-          <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt?" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt?" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
+          </ScrollReveal>
           <div className="mt-8 grid gap-5 md:gap-8 sm:grid-cols-2 lg:grid-cols-5">
-            {whyUs.map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-3 text-center">
-                <Icon name={item.icon} size="feature" className="text-gold-300" />
-                <p className="text-body text-white/85">{item.label}</p>
-              </div>
+            {whyUs.map((item, idx) => (
+              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={idx * 100}>
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <Icon name={item.icon} size="feature" className="text-gold-300" />
+                  <p className="text-body text-white/85">{item.label}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -160,34 +194,46 @@ export default function DigitalServicesPage() {
 
       <Section id="purchase-process" tone="ivory">
         <Container>
-          <SectionHeading eyebrow="Quy trình" title="Đơn giản – Nhanh chóng chỉ với 4 bước" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Quy trình" title="Đơn giản – Nhanh chóng chỉ với 4 bước" align="center" />
+          </ScrollReveal>
           <div className="mt-10">
-            <ProcessSteps steps={processSteps} />
+            <ScrollReveal direction="up" distance={24} duration={0.7} delay={150}>
+              <ProcessSteps steps={processSteps} />
+            </ScrollReveal>
           </div>
         </Container>
       </Section>
 
       <Section id="trust-metrics" tone="dark">
         <Container>
-          <MetricStrip
-            onDark
-            metrics={[
-              { value: "200+", label: "Khách hàng tin tưởng", demoOnly: true },
-              { value: "350+", label: "Giao dịch thành công", demoOnly: true },
-              { value: "4+", label: "Năm kinh nghiệm", demoOnly: true },
-              { value: "99%", label: "Khách hàng hài lòng", demoOnly: true },
-            ]}
-          />
+          <ScrollReveal direction="up" distance={20} duration={0.7}>
+            <MetricStrip
+              onDark
+              metrics={[
+                { value: "200+", label: "Khách hàng tin tưởng", demoOnly: true },
+                { value: "350+", label: "Giao dịch thành công", demoOnly: true },
+                { value: "4+", label: "Năm kinh nghiệm", demoOnly: true },
+                { value: "99%", label: "Khách hàng hài lòng", demoOnly: true },
+              ]}
+            />
+          </ScrollReveal>
         </Container>
       </Section>
 
       <Section id="faq">
         <Container>
-          <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp nhanh những thắc mắc phổ biến" align="center" />
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp nhanh những thắc mắc phổ biến" align="center" />
+          </ScrollReveal>
           <div className="mt-8 grid gap-5 md:gap-8 lg:grid-cols-[1fr_320px]">
-            <FAQAccordion items={faqs} columns={2} />
+            <ScrollReveal direction="up" distance={24} duration={0.7} delay={100}>
+              <FAQAccordion items={faqs} columns={2} />
+            </ScrollReveal>
             <div id="support-card">
-              <DigitalSupportCard />
+              <ScrollReveal direction="up" distance={24} duration={0.7} delay={200}>
+                <DigitalSupportCard />
+              </ScrollReveal>
             </div>
           </div>
         </Container>

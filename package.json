@@ -12,6 +12,8 @@
     "evidence": "playwright test --project=evidence"
   },
   "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
+    "lenis": "^1.3.26",
     "next": "15.5.23",
     "react": "19.0.0",
     "react-dom": "19.0.0",

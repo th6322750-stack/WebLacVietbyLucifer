@@ -33,3 +33,14 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# Local database. Holds real customer enquiries, and each machine keeps its own copy — this
+# must never enter git. The schema lives in src/lib/db/schema.ts and rebuilds itself on first
+# connect, so nothing is lost by excluding the file.
+/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Admin-uploaded media — runtime content per machine, not source.
+/public/assets/uploads/

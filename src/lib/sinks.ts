@@ -1,12 +1,18 @@
-import { randomUUID } from "crypto";
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
+import { after } from "next/server";
 import type { Lead, LeadInput, Subscriber, SubscriberInput } from "./types";
 
-// .webby/DATA_BACKEND_CONTRACT.json: provider-agnostic sink abstractions. This default
-// implementation persists to a local JSON file (gitignored, no secrets) so the public
-// form contract (/api/leads, /api/newsletter) never has to change when a real CRM/email
-// provider adapter is swapped in later — only these two functions change.
+/** .webby/DATA_BACKEND_CONTRACT.json: provider-agnostic sink abstractions, so the public form
+ * contract (/api/leads, /api/newsletter) never changes when the backend does — "only these two
+ * functions change".
+ *
+ * This is that swap, twice over now. The original implementation appended to a JSON file under
+ * data/, which cannot work on a read-only serverless filesystem — on Vercel every write failed,
+ * the record was honestly marked `external_sync_status: "failed"`, and the lead was lost. That
+ * became SQLite (data/lacviet.db), which has the same problem for the same reason: Vercel's
+ * filesystem. Records now go to Postgres (Neon), reachable over HTTP instead of a local file, so
+ * the backend can actually live where the app runs. Both earlier implementations are in git
+ * history if either is ever wanted back.
+ */
 export interface LeadSink {
   save(input: LeadInput): Promise<Lead>;
 }
@@ -15,75 +21,30 @@ export interface SubscriberSink {
   save(input: SubscriberInput): Promise<Subscriber>;
 }
 
-const DATA_DIR = path.join(process.cwd(), "data");
-
-async function readJsonArray<T>(file: string): Promise<T[]> {
-  try {
-    const raw = await readFile(file, "utf8");
-    return JSON.parse(raw) as T[];
-  } catch {
-    return [];
-  }
-}
-
-/** Serverless hosts (Vercel/Lambda) give the app a read-only filesystem, so the local-file sink
- * cannot persist there. Rather than returning a 500 and breaking the approved form flow, the
- * write is attempted and its success reported honestly to the caller — a record that could not
- * be persisted is marked `external_sync_status: "failed"` and logged loudly. It is NEVER reported
- * as stored when it was not. A real CRM/email adapter replaces this per DATA_BACKEND_CONTRACT. */
-async function tryAppendJsonArray<T>(file: string, record: T): Promise<boolean> {
-  try {
-    await mkdir(DATA_DIR, { recursive: true });
-    const existing = await readJsonArray<T>(file);
-    existing.push(record);
-    await writeFile(file, JSON.stringify(existing, null, 2), "utf8");
-    return true;
-  } catch (error) {
-    console.warn(
-      `[sinks] Local file persistence unavailable (${path.basename(file)}). ` +
-        "Expected on a read-only serverless filesystem — the record is NOT stored. " +
-        "Configure a real CRM/email adapter before production use.",
-      error instanceof Error ? error.message : error,
-    );
-    return false;
-  }
-}
-
-class LocalFileLeadSink implements LeadSink {
-  private file = path.join(DATA_DIR, "leads.json");
-
+/** Imported lazily so the database client is only pulled in when a form is actually submitted,
+ * and never dragged into a client bundle by a stray import of this module. */
+class DbLeadSink implements LeadSink {
   async save(input: LeadInput): Promise<Lead> {
-    const lead: Lead = {
-      ...input,
-      id: randomUUID(),
-      createdAt: new Date().toISOString(),
-      external_sync_status: "pending",
-      external_id: null,
-    };
-    const persisted = await tryAppendJsonArray(this.file, lead);
-    return persisted ? lead : { ...lead, external_sync_status: "failed" };
+    const { insertLead } = await import("./db/repositories/leads");
+    const lead = await insertLead(input);
+    // `after()`, not a bare unawaited promise: on Vercel the function's execution can be frozen
+    // the moment the response is sent, which would kill a plain fire-and-forget call before the
+    // Sheets/Telegram requests finish. `after()` keeps the instance alive for this specific
+    // callback without making the customer wait for it — the response still returns immediately.
+    after(async () => {
+      const { notifyNewLead } = await import("./leads/notify");
+      await notifyNewLead(lead);
+    });
+    return lead;
   }
 }
 
-class LocalFileSubscriberSink implements SubscriberSink {
-  private file = path.join(DATA_DIR, "subscribers.json");
-
+class DbSubscriberSink implements SubscriberSink {
   async save(input: SubscriberInput): Promise<Subscriber> {
-    const existing = await readJsonArray<Subscriber>(this.file);
-    const already = existing.find((s) => s.email.toLowerCase() === input.email.toLowerCase());
-    if (already) return already;
-
-    const subscriber: Subscriber = {
-      ...input,
-      id: randomUUID(),
-      createdAt: new Date().toISOString(),
-      external_sync_status: "pending",
-      external_id: null,
-    };
-    const persisted = await tryAppendJsonArray(this.file, subscriber);
-    return persisted ? subscriber : { ...subscriber, external_sync_status: "failed" };
+    const { insertSubscriber } = await import("./db/repositories/subscribers");
+    return insertSubscriber(input);
   }
 }
 
-export const leadSink: LeadSink = new LocalFileLeadSink();
-export const subscriberSink: SubscriberSink = new LocalFileSubscriberSink();
+export const leadSink: LeadSink = new DbLeadSink();
+export const subscriberSink: SubscriberSink = new DbSubscriberSink();

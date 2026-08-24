@@ -33,15 +33,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+
 export default async function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  // ASSET_USAGE_MAP.json "/kien-thuc/[slug]" maps the detail header to article-seo-hero-master
-  // and relatedArticles to fixed article-cover-01..03 preview fixtures — only for the approved
-  // page-11 detail fixture (article.hidden). Other articles fall back to their own cover and a
-  // same-category derivation (GD10 re-QA round 3 items 5-6).
   const headerImageId = article.hidden ? "article-seo-hero-master" : article.coverAssetId;
   const related = article.hidden
     ? null
@@ -49,11 +47,6 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
   return (
     <>
-      {/* SEO_CONTRACT.json allows Article structured data only "on factual knowledge articles",
-          and forbids demo preview data becoming factual structured data without verification.
-          Every current fixture's body is a demo reconstruction, so no Article JSON-LD is emitted
-          for them; the helper is retained for future verified editorial content. BreadcrumbList
-          below stays — it describes navigation, not article facts (GD10 re-QA round 5, R5-01). */}
       {article.demoOnly ? null : (
         <script
           type="application/ld+json"
@@ -87,93 +80,106 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
         <Breadcrumbs items={[{ label: "Trang chủ", href: "/" }, { label: "Kiến thức", href: "/kien-thuc" }, { label: article.title }]} />
       </Container>
 
-      {/* RECOVERY V2 (audit §9, master ui-008): the 3-column editorial layout begins
-          immediately after the breadcrumb. There is NO full-width dark/gold chart hero above
-          the article — the title, meta and the purple SEO image all live in the centre column. */}
       <Section id="article-layout">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[220px_1fr_280px]">
             <div id="article-toc">
-              <ArticleTOC sections={article.content} />
+              <ScrollReveal direction="left" distance={16} duration={0.6}>
+                <ArticleTOC sections={article.content} />
+              </ScrollReveal>
             </div>
             <div id="article-body" className="max-w-editorial">
               <header id="article-header">
-                <span className="text-eyebrow uppercase text-gold-700">{article.category}</span>
-                <h1 className="mt-3 text-detail-h1-mobile lg:text-detail-h1-desktop text-ink-950">{article.title}</h1>
-                <div className="mt-4 flex items-center gap-2 text-small text-text-muted">
-                  <span>{article.author}</span>
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
-                  {article.readMinutes ? (
-                    <>
-                      <span aria-hidden="true">·</span>
-                      <span>{article.readMinutes} phút đọc</span>
-                    </>
-                  ) : null}
-                </div>
+                <ScrollReveal direction="down" distance={16} duration={0.5}>
+                  <span className="text-eyebrow uppercase text-gold-700">{article.category}</span>
+                </ScrollReveal>
+                <ScrollReveal direction="up" distance={20} duration={0.6} delay={100}>
+                  <h1 className="mt-3 text-detail-h1-mobile lg:text-detail-h1-desktop text-ink-950">{article.title}</h1>
+                  <div className="mt-4 flex items-center gap-2 text-small text-text-muted">
+                    <span>{article.author}</span>
+                    <span aria-hidden="true">·</span>
+                    <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+                    {article.readMinutes ? (
+                      <>
+                        <span aria-hidden="true">·</span>
+                        <span>{article.readMinutes} phút đọc</span>
+                      </>
+                    ) : null}
+                  </div>
+                </ScrollReveal>
                 {headerImageId ? (
-                  <Image
-                    src={assetPath(headerImageId)}
-                    alt={article.title}
-                    width={assetSize(headerImageId).width}
-                    height={assetSize(headerImageId).height}
-                    priority
-                    sizes="(min-width: 1024px) 640px, 100vw"
-                    className="mt-6 h-auto w-full rounded-lg"
-                  />
+                  <ScrollReveal direction="up" distance={20} duration={0.7} delay={150}>
+                    <div className="overflow-hidden rounded-2xl border border-gold-500/20 shadow-lg">
+                      <Image
+                        src={assetPath(headerImageId)}
+                        alt={article.title}
+                        width={assetSize(headerImageId).width}
+                        height={assetSize(headerImageId).height}
+                        priority
+                        sizes="(min-width: 1024px) 640px, 100vw"
+                        className="mt-6 h-auto w-full transition-transform duration-500 hover:scale-102"
+                      />
+                    </div>
+                  </ScrollReveal>
                 ) : null}
               </header>
 
               <div className="mt-10">
-              {article.content.map((sec) => (
-                <div key={sec.id} className="mb-8 scroll-mt-24">
-                  <h2 id={sec.id} className="text-h3-mobile lg:text-h3-desktop text-ink-950">
-                    {sec.heading}
-                  </h2>
-                  {sec.body.map((p, i) => (
-                    <p key={i} className="mt-3 text-body-lg text-text-secondary">
-                      {p}
-                    </p>
-                  ))}
-                </div>
-              ))}
+                {article.content.map((sec, idx) => (
+                  <ScrollReveal key={sec.id} direction="up" distance={20} duration={0.6} delay={idx * 50}>
+                    <div className="mb-8 scroll-mt-24">
+                      <h2 id={sec.id} className="text-h3-mobile lg:text-h3-desktop font-heading text-ink-950">
+                        {sec.heading}
+                      </h2>
+                      {sec.body.map((p, i) => (
+                        <p key={i} className="mt-3 text-body-lg text-text-secondary leading-relaxed">
+                          {p}
+                        </p>
+                      ))}
+                    </div>
+                  </ScrollReveal>
+                ))}
               </div>
             </div>
             <aside id="related-articles" className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-              {article.hidden ? (
-                <div>
-                  <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
-                  <ul className="mt-3 flex flex-col gap-4">
-                    {seoArticleRelatedPreview.map((p) => (
-                      <li key={p.title}>
-                        <ArticlePreviewCard preview={p} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : related && related.length > 0 ? (
-                <div>
-                  <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
-                  <ul className="mt-3 flex flex-col gap-4">
-                    {related.map((a) => (
-                      <li key={a.slug}>
-                        <Link href={`/kien-thuc/${a.slug}`} className="flex items-center gap-3 group">
-                          {a.coverAssetId ? (
-                            <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-sm">
-                              <Image src={assetPath(a.coverAssetId)} alt={a.title} fill className="object-cover" />
+              <ScrollReveal direction="right" distance={16} duration={0.6} delay={100}>
+                {article.hidden ? (
+                  <div>
+                    <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
+                    <ul className="mt-3 flex flex-col gap-4">
+                      {seoArticleRelatedPreview.map((p) => (
+                        <li key={p.title}>
+                          <ArticlePreviewCard preview={p} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : related && related.length > 0 ? (
+                  <div>
+                    <p className="text-eyebrow uppercase text-gold-700">Bài viết liên quan</p>
+                    <ul className="mt-3 flex flex-col gap-4">
+                      {related.map((a) => (
+                        <li key={a.slug}>
+                          <Link href={`/kien-thuc/${a.slug}`} className="flex items-center gap-3 group">
+                            {a.coverAssetId ? (
+                              <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-md border border-gold-500/20">
+                                <Image src={assetPath(a.coverAssetId)} alt={a.title} fill className="object-cover transition-transform duration-300 group-hover:scale-110" />
+                              </div>
+                            ) : null}
+                            <div>
+                              <p className="line-clamp-2 text-small font-medium text-ink-950 group-hover:text-gold-700">{a.title}</p>
+                              <p className="text-caption text-text-muted">{formatDate(a.publishedAt)}</p>
                             </div>
-                          ) : null}
-                          <div>
-                            <p className="line-clamp-2 text-small font-medium text-ink-950 group-hover:text-gold-700">{a.title}</p>
-                            <p className="text-caption text-text-muted">{formatDate(a.publishedAt)}</p>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                <div className="mt-6">
+                  <ArticleConsultCard category={article.category} />
                 </div>
-              ) : null}
-              <ArticleConsultCard category={article.category} />
+              </ScrollReveal>
             </aside>
           </div>
         </Container>

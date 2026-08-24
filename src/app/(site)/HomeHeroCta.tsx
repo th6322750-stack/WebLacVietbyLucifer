@@ -10,7 +10,7 @@ export function HomeHeroCta() {
       <Button size="lg" onClick={() => open("home-hero")}>
         Nhận tư vấn ngay
       </Button>
-      <Button href="/du-an" size="lg" variant="outline" onDark>
+      <Button href="/website" size="lg" variant="outline" onDark>
         Xem dự án tiêu biểu
       </Button>
     </div>

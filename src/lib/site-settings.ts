@@ -1,5 +1,7 @@
 export const siteSettings = {
   brandName: "Lạc Việt Media Agency",
+  // Deliberately not rendered anywhere (removed from footer, homepage hero, and /gioi-thieu
+  // 2026-08-25 per explicit request). Left as data, not a call to bring it back.
   slogan: "Cần Kiệm Liêm Chính",
   domain: "lacvietmedia.com",
   canonicalOrigin: "https://lacvietmedia.com",
@@ -21,16 +23,19 @@ export const siteSettings = {
 
 // Matches approved V1 header: Trang chủ, Dịch vụ (dropdown), Dự án, Kiến thức,
 // Giới thiệu, Liên hệ — see .webby/visual-master/gd1-v1/pages/page-03..13.
+//
+// "Dịch vụ số" ẩn khỏi menu theo yêu cầu — trang /dich-vu-so vẫn còn nguyên, chỉ không còn lối
+// vào từ menu Dịch vụ hay footer (cả hai đều đọc từ mảng này).
 export const serviceMenu = [
-  { href: "/website", label: "Website doanh nghiệp" },
+  { href: "/website", label: "Thiết kế website" },
   { href: "/support-mxh", label: "Support mạng xã hội" },
-  { href: "/dich-vu-so", label: "Dịch vụ số" },
 ] as const;
 
+// "Dự án" bỏ khỏi menu — gallery giao diện web dồn hết về trang /website (tab "Dịch vụ" >
+// "Thiết kế website"), /du-an giờ chỉ còn redirect sang đó cho link cũ không gãy.
 export const navLinks = [
   { href: "/", label: "Trang chủ" },
   { href: null, label: "Dịch vụ", children: serviceMenu },
-  { href: "/du-an", label: "Dự án" },
   { href: "/kien-thuc", label: "Kiến thức" },
   { href: "/gioi-thieu", label: "Giới thiệu" },
   { href: "/lien-he", label: "Liên hệ" },
@@ -39,7 +44,6 @@ export const navLinks = [
 export const footerLinks = {
   brand: [
     { href: "/gioi-thieu", label: "Giới thiệu" },
-    { href: "/du-an", label: "Dự án" },
     { href: "/kien-thuc", label: "Kiến thức" },
   ],
   services: serviceMenu,

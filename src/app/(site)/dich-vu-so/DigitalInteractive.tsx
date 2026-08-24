@@ -19,7 +19,7 @@ export function DigitalProductCta({ label }: { label: string }) {
     <button
       type="button"
       onClick={() => open("featured-digital-products", "Dịch vụ số / tài khoản")}
-      className="mt-4 inline-flex items-center text-small font-semibold text-gold-700 hover:text-gold-600"
+      className="mt-3 inline-flex w-full items-center justify-center rounded-xs border border-gold-500/60 px-3 py-2 text-caption font-semibold text-gold-700 transition-colors hover:border-gold-600 hover:bg-gold-500/10"
     >
       {label}
     </button>

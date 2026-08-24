@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { siteSettings } from "@/lib/site-settings";
 
+/** Default share thumbnail — dark/gold brand card built from the approved logo lockup, the
+ * real homepage tagline, and the real service list. Every route gets it unless it passes its
+ * own `ogImagePath` (e.g. a future article cover). */
+const DEFAULT_OG_IMAGE = "/assets/v5/brand/og-thumbnail.jpg";
+
 export function pageMetadata({
   title,
   description,
   path,
-  ogImagePath,
+  ogImagePath = DEFAULT_OG_IMAGE,
   noindex,
 }: {
   title: string;
@@ -17,6 +22,7 @@ export function pageMetadata({
   noindex?: boolean;
 }): Metadata {
   const url = `${siteSettings.canonicalOrigin}${path}`;
+  const images = [{ url: ogImagePath, width: 1200, height: 630, alt: siteSettings.brandName }];
   return {
     title,
     description,
@@ -26,7 +32,16 @@ export function pageMetadata({
       title,
       description,
       url,
-      images: ogImagePath ? [{ url: ogImagePath }] : undefined,
+      siteName: siteSettings.brandName,
+      locale: "vi_VN",
+      type: "website",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images,
     },
   };
 }
@@ -39,7 +54,6 @@ export function organizationJsonLd() {
     "@type": "Organization",
     name: siteSettings.brandName,
     url: siteSettings.canonicalOrigin,
-    slogan: siteSettings.slogan,
   };
 }
 

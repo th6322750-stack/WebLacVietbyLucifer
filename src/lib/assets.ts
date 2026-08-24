@@ -7,7 +7,39 @@
 //
 // Master/PDF crops and every V2 recovery crop are REFERENCE_ONLY per V3 rules and are
 // deliberately absent from public/: they must never be served as runtime bytes.
-const ASSET_PATHS: Record<string, string> = {
+export const ASSET_PATHS: Record<string, string> = {
+  // Concept đa ngành /du-an — xem src/content/industry-showcase.ts (nguồn dùng chung).
+  "du-an-industry-11": "/assets/v5/du-an/noi-that-an-gia.webp",
+  "du-an-industry-12": "/assets/v5/du-an/english-master.webp",
+  "du-an-industry-13": "/assets/v5/du-an/nha-khoa-smilecare.webp",
+  "du-an-industry-14": "/assets/v5/du-an/bat-dong-san-homeland-viet.webp",
+  "du-an-industry-15": "/assets/v5/du-an/du-lich-gotravel.webp",
+  "du-an-industry-16": "/assets/v5/du-an/phong-kham-medicare-plus.webp",
+  "du-an-industry-17": "/assets/v5/du-an/techzone-cong-nghe.webp",
+  "du-an-industry-18": "/assets/v5/du-an/nha-hang-food-house.webp",
+  "du-an-industry-19": "/assets/v5/du-an/bella-spa.webp",
+  "du-an-industry-20": "/assets/v5/du-an/eventix-su-kien.webp",
+  "du-an-industry-21": "/assets/v5/du-an/technext-doanh-nghiep-cong-nghe.webp",
+  "du-an-industry-22": "/assets/v5/du-an/lunea-thoi-trang.webp",
+  "du-an-industry-23": "/assets/v5/du-an/gia-an-bat-dong-san.webp",
+  "du-an-industry-24": "/assets/v5/du-an/phuc-an-phong-kham.webp",
+  "du-an-industry-25": "/assets/v5/du-an/edupro-giao-duc-online.webp",
+  "du-an-industry-26": "/assets/v5/du-an/lan-vien-nha-hang.webp",
+  "du-an-industry-27": "/assets/v5/du-an/viettrip-du-lich.webp",
+  "du-an-industry-28": "/assets/v5/du-an/powerzone-fitness-gym.webp",
+  "du-an-industry-29": "/assets/v5/du-an/minh-tri-luat-phap.webp",
+  "du-an-industry-30": "/assets/v5/du-an/lumiere-spa-lam-dep.webp",
+  "du-an-industry-01": "/assets/v5/du-an/noi-that-an-loc.webp",
+  "du-an-industry-02": "/assets/v5/du-an/trung-tam-tieng-anh-englishhub.webp",
+  "du-an-industry-03": "/assets/v5/du-an/phong-gym-ironfit.webp",
+  "du-an-industry-04": "/assets/v5/du-an/resort-blue-sand.webp",
+  "du-an-industry-05": "/assets/v5/du-an/cong-ty-luat-lexpro.webp",
+  "du-an-industry-06": "/assets/v5/du-an/showroom-oto-dien-ev-motors.webp",
+  "du-an-industry-07": "/assets/v5/du-an/nong-san-sach.webp",
+  "du-an-industry-08": "/assets/v5/du-an/nen-tang-tuyen-dung-viec-tot.webp",
+  "du-an-industry-09": "/assets/v5/du-an/nha-thong-minh-smarthome.webp",
+  "du-an-industry-10": "/assets/v5/du-an/ban-ve-su-kien-eventix.webp",
+
   "home-hero-master": "/assets/v3/hero/home-hero-master-4k.png",
   "website-hero-master": "/assets/v3/hero/website-hero-master-4k.png",
   "support-hero-master": "/assets/v3/hero/support-hero-master-4k.png",
@@ -21,7 +53,17 @@ const ASSET_PATHS: Record<string, string> = {
   "project-featured-case-master": "/assets/v3/project/project-featured-case-master.png",
   "support-client-logo-strip": "/assets/v3/shared/support-client-logo-strip-hd.png",
   "social-proof-avatar-strip-approved": "/assets/v3/shared/social-proof-avatar-strip-hd.png",
-  "lac-viet-logo-horizontal-approved": "/assets/v3/brand/lac-viet-logo-horizontal-approved.svg",
+  // V5: replaced the V3 SVG, which was 1,082 bytes of hand-drawn paths plus two <text>
+  // elements that TYPED the wordmark in Noto Serif — so it rendered differently wherever that
+  // font was missing. The new lockup is a real drawn logo. It carries a slight red matte fringe
+  // from background removal, which is invisible at the sizes it is used (the header draws it
+  // ~120px wide from a 1950px source, a 16x downscale); revisit if it is ever shown large.
+  //
+  // Rebuilt from the untouched delivery (kept beside it as lac-viet-logo-horizontal.png): the
+  // mark and the two-line wordmark are split at x=730, the wordmark scaled to 80% and set back
+  // against the mark with a 7% gap, both vertically centred. As delivered the wordmark was 2.19x
+  // the mark's width and read as bloated; it now sits at 1.76x. "MEDIA AGENCY" is retained.
+  "lac-viet-logo-horizontal-approved": "/assets/v5/brand/lac-viet-logo-lockup.png",
   "lac-viet-logo-canonical": "/assets/v3/brand/lac-viet-logo-mark.svg",
   "support-cta-device-shield-approved-crop": "/assets/v3/shared/support-cta-device-shield-fhd.png",
   "digital-cta-phoenix-approved-crop": "/assets/v3/shared/digital-cta-phoenix-fhd.png",
@@ -59,6 +101,32 @@ const ASSET_PATHS: Record<string, string> = {
   "website-project-preview-04": "/assets/v3/project/project-cover-04.png",
   "home-article-preview-04": "/assets/v3/article/article-cover-04.png",
 
+  // V5 NEW DIRECTION — layered hero. ChatGPT delivered the hero as six separate RGBA layers
+  // instead of one flat frame, which is why they can be parallaxed and animated independently.
+  // Verified before landing: all 6 are true RGBA, edges are ~100% soft (the glow lives in the
+  // alpha ramp, not a hard cutout), and no layer carries a dark matte fringe.
+  "v5-customer-avatars": "/assets/v5/hero/hero-customer-avatars.png",
+  "v5-dongson-disc": "/assets/v5/hero/hero-dongson-disc.png",
+  "v5-gold-ribbon": "/assets/v5/hero/hero-gold-ribbon.png",
+  "v5-ground-glow": "/assets/v5/hero/hero-ground-glow.png",
+  "v5-particles": "/assets/v5/hero/hero-particles.png",
+  "v5-phoenix": "/assets/v5/hero/hero-phoenix.png",
+  // Route hero artwork. `support-shield` arrived as RGB glow-on-black with no alpha and a
+  // backdrop that was NOT pure black (edge peak 32/765), so it would have shown as a box on the
+  // #000000 hero. Converted by unpremultiplying — alpha = max(r,g,b), colour divided by it —
+  // which is exact for additive glow art: recompositing over black reproduces the delivered
+  // pixels to within 1/255. Nothing was thresholded, so the glow falloff is intact.
+  "v5-support-shield": "/assets/v5/hero/support-shield.png",
+  // Shield alone, cropped from the UNTOUCHED delivery. The composited version cannot be reused
+  // here: its colour channels were unpremultiplied (colour divided by alpha), which reproduces
+  // the original exactly over black but turns to noise where alpha is low — fine as one flat
+  // layer, unusable once the shield has to stand on its own.
+  "v5-shield-only": "/assets/v5/hero/shield-only-v2.webp",
+
+  // Dải hoa văn trống đồng chạy ngang chân trang, có huy hiệu tròn ở giữa.
+  "v5-drum-band": "/assets/v5/footer/drum-band.webp",
+  "v5-website-devices": "/assets/v5/hero/website-devices.png",
+
   // Demo avatars are unrelated to the V3 raster roles and remain unchanged.
   "demo-avatar-01": "/assets/avatars/demo-avatar-01.webp",
   "demo-avatar-02": "/assets/avatars/demo-avatar-02.webp",
@@ -74,6 +142,38 @@ const ASSET_PATHS: Record<string, string> = {
 /** Native pixel dimensions of each V3 production asset, read from the delivered files.
  * Images render at or below these; nothing is fake-upscaled (V3 quality.noFakeUpscale). */
 export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
+  "du-an-industry-11": { width: 800, height: 450 },
+  "du-an-industry-12": { width: 800, height: 450 },
+  "du-an-industry-13": { width: 800, height: 450 },
+  "du-an-industry-14": { width: 800, height: 450 },
+  "du-an-industry-15": { width: 800, height: 450 },
+  "du-an-industry-16": { width: 800, height: 450 },
+  "du-an-industry-17": { width: 800, height: 450 },
+  "du-an-industry-18": { width: 800, height: 450 },
+  "du-an-industry-19": { width: 800, height: 450 },
+  "du-an-industry-20": { width: 800, height: 450 },
+  "du-an-industry-21": { width: 800, height: 600 },
+  "du-an-industry-22": { width: 800, height: 600 },
+  "du-an-industry-23": { width: 800, height: 600 },
+  "du-an-industry-24": { width: 800, height: 600 },
+  "du-an-industry-25": { width: 800, height: 600 },
+  "du-an-industry-26": { width: 800, height: 600 },
+  "du-an-industry-27": { width: 800, height: 600 },
+  "du-an-industry-28": { width: 800, height: 600 },
+  "du-an-industry-29": { width: 800, height: 600 },
+  "du-an-industry-30": { width: 800, height: 600 },
+
+  "du-an-industry-01": { width: 800, height: 450 },
+  "du-an-industry-02": { width: 800, height: 450 },
+  "du-an-industry-03": { width: 800, height: 450 },
+  "du-an-industry-04": { width: 800, height: 450 },
+  "du-an-industry-05": { width: 800, height: 450 },
+  "du-an-industry-06": { width: 800, height: 450 },
+  "du-an-industry-07": { width: 800, height: 450 },
+  "du-an-industry-08": { width: 800, height: 450 },
+  "du-an-industry-09": { width: 800, height: 450 },
+  "du-an-industry-10": { width: 800, height: 450 },
+
   "home-hero-master": { width: 3840, height: 2160 },
   "website-hero-master": { width: 3840, height: 2160 },
   "support-hero-master": { width: 3840, height: 2160 },
@@ -87,7 +187,7 @@ export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
   "project-featured-case-master": { width: 1920, height: 1080 },
   "support-client-logo-strip": { width: 2400, height: 320 },
   "social-proof-avatar-strip-approved": { width: 1200, height: 240 },
-  "lac-viet-logo-horizontal-approved": { width: 1800, height: 420 },
+  "lac-viet-logo-horizontal-approved": { width: 1724, height: 625 },
   "lac-viet-logo-canonical": { width: 512, height: 512 },
   "support-cta-device-shield-approved-crop": { width: 1920, height: 1080 },
   "digital-cta-phoenix-approved-crop": { width: 1920, height: 1080 },
@@ -124,6 +224,17 @@ export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
   "home-project-preview-04": { width: 1920, height: 1080 },
   "website-project-preview-04": { width: 1920, height: 1080 },
   "home-article-preview-04": { width: 1920, height: 1080 },
+  // V5 layered hero — native sizes read from the delivered files.
+  "v5-customer-avatars": { width: 2172, height: 724 },
+  "v5-dongson-disc": { width: 1254, height: 1254 },
+  "v5-gold-ribbon": { width: 1448, height: 1086 },
+  "v5-ground-glow": { width: 1672, height: 941 },
+  "v5-particles": { width: 1448, height: 1086 },
+  "v5-phoenix": { width: 1448, height: 1086 },
+  "v5-support-shield": { width: 1672, height: 941 },
+  "v5-shield-only": { width: 800, height: 699 },
+  "v5-drum-band": { width: 1672, height: 200 },
+  "v5-website-devices": { width: 1448, height: 1086 },
 };
 
 
@@ -138,14 +249,18 @@ export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
  * COMPOSITION change only — the asset bytes are untouched, nothing is upscaled beyond native,
  * and no pixel is edited. */
 export const ASSET_FOCAL: Record<string, [number, number, number, number]> = {
-  "home-hero-master": [0.637, 0.267, 0.912, 0.748],
-  "website-hero-master": [0.392, 0.23, 0.938, 0.793],
-  "support-hero-master": [0.621, 0.148, 0.983, 0.852],
-  "digital-hero-master": [0.637, 0.281, 0.9, 0.733],
-  "projects-hero-master": [0.667, 0.326, 0.908, 0.741],
-  "knowledge-hero-master": [0.312, 0.326, 0.692, 0.674],
-  "contact-hero-master": [0.646, 0.348, 0.908, 0.8],
-  "about-bird-master": [0.254, 0.287, 0.688, 0.713],
+  // Padded outward from the bright-subject box. The first pass measured only pixels above a
+  // BRIGHT threshold, which caught the phoenix body but not the glow, rings and tail around it —
+  // so the crop sliced ~26% off the top and bottom and the artwork looked chopped. These include
+  // the surrounding composition while still cutting most of the empty 4K field.
+  "home-hero-master": [0.5, 0.06, 1.0, 0.94],
+  "website-hero-master": [0.33, 0.1, 1.0, 0.9],
+  "support-hero-master": [0.52, 0.04, 1.0, 0.96],
+  "digital-hero-master": [0.5, 0.08, 1.0, 0.92],
+  "projects-hero-master": [0.54, 0.14, 1.0, 0.9],
+  "knowledge-hero-master": [0.22, 0.18, 0.78, 0.82],
+  "contact-hero-master": [0.52, 0.14, 1.0, 0.94],
+  "about-bird-master": [0.16, 0.18, 0.78, 0.82],
 };
 
 /** Focal box for an asset, or the full canvas when none is recorded. */

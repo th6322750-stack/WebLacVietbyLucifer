@@ -1,3 +1,5 @@
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+
 export type Metric = { value: string; label: string; demoOnly: boolean };
 
 /** .webby/component-map.json: "demo metrics must not ship as factual claims". Each metric
@@ -12,7 +14,7 @@ export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; on
           <div key={m.label} className="text-center">
             <dt className="sr-only">{m.label}</dt>
             <dd className={`text-metric font-heading ${onDark ? "text-gold-300" : "text-gold-700"}`}>
-              {m.value}
+              <AnimatedCounter value={m.value} />
             </dd>
             <p className={`mt-1 text-small ${onDark ? "text-white/75" : "text-text-secondary"}`}>{m.label}</p>
           </div>

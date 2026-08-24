@@ -10,6 +10,8 @@ export type Service = {
   ctaLabel: string;
   href: string;
   icon: string;
+  /** Full-colour illustration shown instead of the plain line icon, e.g. "/assets/v5/services/x.webp". */
+  iconImage?: string;
   features?: string[];
   priceMode?: PriceMode;
   priceVnd?: number;

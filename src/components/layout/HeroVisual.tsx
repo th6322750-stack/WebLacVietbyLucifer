@@ -15,18 +15,32 @@ export function HeroVisual({
   alt,
   priority = false,
   className = "",
-  sizes = "(min-width: 1024px) 52vw, 78vw",
+  desktopVw = 52,
+  mobileVw = 86,
 }: {
   assetId: string;
   alt: string;
   priority?: boolean;
   className?: string;
-  sizes?: string;
+  /** Width of the CROP (the visible wrapper) as a vw number, per breakpoint. `sizes` is derived
+   * from these and the crop factor — see below. */
+  desktopVw?: number;
+  mobileVw?: number;
 }) {
   const { width, height } = assetSize(assetId);
   const [x0, y0, x1, y1] = assetFocal(assetId);
   const cw = Math.max(x1 - x0, 0.01);
   const ch = Math.max(y1 - y0, 0.01);
+
+  // The <img> is scaled to 1/cw of the wrapper so the crop fills it, which means the element is
+  // far wider than the wrapper (2.76x for the support hero). `sizes` describes the IMG element,
+  // not the wrapper, so passing the wrapper width made Next serve a candidate ~35% too small and
+  // the hero rendered visibly soft. Scale the hint by the same factor, and cap at 100vw since
+  // Next clamps to the device widths anyway.
+  const scale = 1 / cw;
+  const dv = Math.min(Math.round(desktopVw * scale), 100);
+  const mv = Math.min(Math.round(mobileVw * scale), 100);
+  const sizes = `(min-width: 1024px) ${dv}vw, ${mv}vw`;
 
   return (
     <div
@@ -42,7 +56,11 @@ export function HeroVisual({
         height={height}
         priority={priority}
         sizes={sizes}
-        className="absolute max-w-none"
+        // The asset's own backdrop is rgb(6,6,7) while the hero is rgb(11,11,11) — close but not
+        // equal, which is exactly why the image read as a hard rectangular box pasted on the
+        // page. `lighten` keeps the brighter value per channel, so the darker asset field is
+        // replaced by the page background and only the artwork shows. No pixel is edited.
+        className="absolute max-w-none mix-blend-lighten"
         style={{
           width: `${100 / cw}%`,
           height: `${100 / ch}%`,

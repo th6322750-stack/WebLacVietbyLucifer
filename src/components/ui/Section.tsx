@@ -15,7 +15,7 @@ import { assetPath } from "@/lib/assets";
 const DENSITY_CLASS = {
   compact: "py-6 md:py-8",
   band: "py-8 md:py-10",
-  normal: "py-10 md:py-12 xl:py-14",
+  normal: "py-10 md:py-12 xl:py-12",
   roomy: "py-12 md:py-16 xl:py-20",
 } as const;
 

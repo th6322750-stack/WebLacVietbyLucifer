@@ -1,0 +1,58 @@
+/* ── Gold starfield ──────────────────────────────────────────────────────────────────────
+   ONE animated layer, three star sizes mixed inside a single seamless tile.
+
+   Earlier versions used a separate element per star size for parallax. Measured on /website:
+
+     3 drifting layers   33 fps   58ms worst frame
+     2 drifting layers   42 fps   43ms
+     1 drifting layer    57 fps   22ms
+     none                60 fps   19ms
+
+   Each layer costs 10-15fps regardless of what it draws, because every one is a full-width,
+   hero-tall surface the compositor has to rasterise and move. The flip cards on the same page
+   cost nothing by comparison (60 vs 60.1), so the layers were the whole bill.
+
+   Collapsing to one layer keeps every star in motion — the previous compromise left two of the
+   three sizes standing still, which is exactly what looked wrong — and buys back 24fps. The
+   depth now comes from star SIZE and brightness rather than from differing speeds.
+
+   The tile is a raster, not a set of CSS gradients: repeating a bitmap is a blit, while
+   re-evaluating gradients across the band costs real paint time. Stars are drawn wrapping the
+   tile's own edges, so it repeats with no seam, and translating by exactly one tile height
+   loops with no jump. */
+
+.star-a {
+  position: absolute;
+  /* KHÔNG chừa phần thừa phía trên. Bản trước cho lớp cao hơn khung 560px rồi dịch cả lớp
+     xuống; lớp phình lên 1440×1213 và trình duyệt bỏ luôn đường GPU, rơi về vẽ bằng CPU mỗi
+     khung. Đo trên /dich-vu-so: 40.9fps.
+
+     Bản này để lớp đúng bằng khung rồi cho HOA VĂN NỀN chạy thay vì cả lớp. Nền lặp vô hạn nên
+     tự khép kín, không hở mép, và lớp nhỏ lại 45% — đo được 59.8fps.
+
+     Đã thử và loại: thu nhỏ ô gạch (420/340/280/240/200/160px đều ~40fps, không liên quan),
+     will-change, translateZ, backface-visibility, contain:paint — không cái nào ăn thua. */
+  inset: 0;
+  background-image: url("/assets/v5/star-tile.png");
+  background-repeat: repeat;
+  background-size: 560px 560px;
+  animation: star-drift 16s linear infinite;
+}
+
+/* Dịch trọn một chiều cao ô gạch nên vòng lặp khép kín, không thấy điểm nối. */
+@keyframes star-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 560px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star-a { animation: none; }
+}
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 118%, #3a2c0d 0%, #140f04 38%, #000 72%);
+}

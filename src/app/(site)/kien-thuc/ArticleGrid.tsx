@@ -40,7 +40,7 @@ export function ArticleGrid({ articles }: { articles: Article[] }) {
               {/* coverAssetId is optional on Article, and assetPath throws on an unknown id by
                   design — so the thumbnail is conditional rather than assuming one exists. */}
               {a.coverAssetId ? (
-                <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm">
+                <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-sm">
                   <Image src={assetPath(a.coverAssetId)} alt={a.title} fill sizes="80px" className="object-cover" />
                 </div>
               ) : null}

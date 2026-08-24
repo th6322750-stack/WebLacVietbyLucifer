@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "./starfield.css";
 
 @layer base {
   :root {
@@ -55,4 +56,1124 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+/* ── V5 layered hero ─────────────────────────────────────────────────────────────────────────
+   Motion for HeroPhoenix. Each plane drifts on a different period so they never resynchronise
+   into an obvious loop; amplitudes are deliberately small (<=1.5% translate, <=3% scale) so the
+   hero reads as alive rather than animated. All of it is decoration and all of it stops under
+   prefers-reduced-motion. */
+@keyframes hero-breathe {
+  0%, 100% { opacity: .78; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.03); }
+}
+@keyframes hero-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-1.4%); }
+}
+@keyframes hero-shimmer {
+  0%, 100% { opacity: .85; transform: translateY(0) scale(1); }
+  50%      { opacity: 1;   transform: translateY(-.8%) scale(1.012); }
+}
+@keyframes hero-drift {
+  0%, 100% { opacity: .55; transform: translate3d(0, 0, 0); }
+  33%      { opacity: .9;  transform: translate3d(.6%, -1.1%, 0); }
+  66%      { opacity: .7;  transform: translate3d(-.5%, -.5%, 0); }
+}
+
+.hero-fx-glow      { animation: hero-breathe 9s ease-in-out infinite; }
+.hero-fx-disc      { animation: hero-spin 190s linear infinite; opacity: .92; }
+.hero-fx-ribbon    { animation: hero-shimmer 11s ease-in-out infinite; }
+.hero-fx-phoenix   { animation: hero-float 7.5s ease-in-out infinite; }
+.hero-fx-particles { animation: hero-drift 15s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fx-glow,
+  .hero-fx-disc,
+  .hero-fx-ribbon,
+  .hero-fx-phoenix,
+  .hero-fx-particles { animation: none; }
+  /* The keyframes carry the centring transforms for these two, so restore them statically. */
+  .hero-fx-glow { transform: translateX(-50%); opacity: .9; }
+  .hero-fx-disc { transform: translate(-50%, -50%); }
+}
+
+/* Metal-gold headline fill (V5 board, H1 second line).
+   Written as a real class rather than Tailwind arbitrary properties on purpose: the `background`
+   SHORTHAND resets `background-clip`, and Tailwind emitted it after the clip utility, so the
+   gradient painted as a solid bar with invisible glyphs. Using background-image keeps the clip. */
+.text-gold-metal {
+  background-image: linear-gradient(180deg, #FFE9A8 0%, #FFCA4F 46%, #C7A450 78%, #806831 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+/* Any engine without background-clip:text keeps a readable solid gold instead of vanishing. */
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .text-gold-metal {
+    background-image: none;
+    color: #FFCA4F;
+    -webkit-text-fill-color: #FFCA4F;
+  }
+}
+
+/* ── Social icons with hover tooltip ─────────────────────────────────────────────────────
+   Adapted from the reference pattern. Two deliberate departures:
+
+   1. The reference recolours the circle to the brand colour and paints the mark white. Our
+      BrandMark renders the OFFICIAL brand SVG at native colour and must never be recoloured,
+      so the brand colour goes to the lift shadow, the ring and the tooltip instead. Same
+      read, brand assets untouched.
+   2. The reference sets the tooltip white-on-white, invisible until a hover rule repaints it.
+      That breaks the moment a hover state does not apply (touch, forced-colours), so the
+      tooltip here is legible in its own right and only animates in.
+
+   Per-item colour arrives as --brand, replacing the reference's repeated per-network blocks. */
+.social-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 10px 10px rgb(0 0 0 / 0.1);
+  transition: transform .25s cubic-bezier(.68,-.55,.265,1.55), box-shadow .25s ease;
+}
+.social-icon:hover,
+.social-icon:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--brand) 55%, transparent);
+}
+
+.social-tip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  padding: 5px 9px;
+  border-radius: 5px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.3;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: top .3s cubic-bezier(.68,-.55,.265,1.55), opacity .3s ease;
+}
+.social-tip::before {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--brand);
+  transform: translateX(-50%) rotate(45deg);
+}
+.social-icon:hover .social-tip,
+.social-icon:focus-visible .social-tip {
+  top: -42px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-icon,
+  .social-tip { transition: none; }
+  .social-icon:hover,
+  .social-icon:focus-visible { transform: none; }
+}
+
+/* ── Rotating gradient edge for cards ────────────────────────────────────────────────────
+   The supplied pattern, implemented as given. Only the colours change: the reference's
+   #07182E card and blue-to-magenta bar become the brand's white card and gold bar.
+
+   The mechanism, and the part I first got wrong by "improving" it: the card carries a
+   BACKGROUND of its own and the pseudo-elements sit in normal stacking order on top of it.
+   ::before paints the spinning bar over that background, ::after covers all but the rim.
+   So the rim is never bare — where the bar is not currently sweeping, the card's own
+   background colour shows, which is what makes the ring read as a ring at all.
+
+   That is why children need `z-index: 1`: they have to clear ::after. */
+.card-aurora {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #6b571f;
+}
+.card-aurora > * {
+  position: relative;
+  z-index: 1;
+}
+.card-aurora::before {
+  content: "";
+  position: absolute;
+  /* CENTRING IS LOAD-BEARING. The reference gets it for free: its card is a flex container with
+     place-content/place-items:center, so ::before lands in the middle as a flex item. Our card
+     carries real stacked content (`flex flex-col`), so ::before became the FIRST flex item and
+     spun around a point near the top-left instead of the card's centre — the bar then only
+     grazed two edges and never swept the other two. The tell was in the measurements: the top
+     edge showed zero luminance change while the left and bottom swung ~140.
+     Centred explicitly here so the card's own layout is untouched. */
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  /* The reference's 100px bar sits in a 190px card — just over half its width; as a proportion
+     it keeps the same sweep at any card size. Height is 160%, not the reference's 130%: the
+     bar's half-diagonal has to clear the CARD's half-diagonal or the corners never get swept.
+     At 130% the two were within 1px of each other. */
+  /* Active running glowing border beam */
+  width: 140%;
+  height: 140%;
+  background-image: conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 270deg, #C7A450 320deg, #FFE9A8 350deg, #FFCA4F 360deg);
+  animation: rotBGimg 4s linear infinite;
+}
+.card-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 18px;
+  background: #fff;
+}
+@keyframes border-beam-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: border-beam-spin 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-aurora::before,
+  .animate-spin-slow { animation: none; }
+}
+
+/* ── Luxury Liquid Gold Shimmer & Micro FX ────────────────────────────────────────── */
+@keyframes gold-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-gold-shimmer {
+  background-size: 200% auto;
+  animation: gold-shimmer 4s linear infinite;
+}
+
+/* Metallic button sheen effect */
+.btn-gold-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold-shimmer::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.btn-gold-shimmer:hover::after {
+  transform: translateX(100%);
+}
+
+/* Infinite Marquee Keyframes */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right linear infinite;
+}
+
+/* Ambient glow breathing for luxury hero */
+@keyframes ambient-glow {
+  0%, 100% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.hero-ambient-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 550px;
+  height: 350px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(128, 104, 49, 0.08) 50%, transparent 75%);
+  filter: blur(50px);
+  pointer-events: none;
+  animation: ambient-glow 7s ease-in-out infinite;
+}
+
+/* Hide the scrollbar on drag tracks without losing the scrolling itself: the track IS a real
+   overflow container (that is what makes it draggable and swipeable), but a visible bar under
+   a row of cards reads as a mistake. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ── 3D flip card ────────────────────────────────────────────────────────────────────────
+   The supplied pattern, with three corrections it needed to survive real use:
+
+   1. The reference only sets `backface-visibility: hidden` on ONE face. Once flipped, the
+      other face is still facing away with its backface VISIBLE, so it shows through mirrored
+      and both faces z-fight. Both faces need it.
+   2. Hover alone strands touch users and keyboard users on the front — there is no hover on a
+      phone. `:focus-within` and a `[data-flipped]` attribute (set by tap) flip it too.
+   3. The reference puts `pointer-events: none` on the card, which is fine for a static demo but
+      would make the CTA on the back unclickable. Instead the hidden face is made inert, so only
+      whichever face is showing can be interacted with.
+
+   The blurred ground shadow is kept as-is: an ellipse laid flat with rotateX(90deg), which is
+   what stops the card looking like it is pasted on the page rather than standing on it. */
+.flip-scene {
+  position: relative;
+  perspective: 1200px;
+}
+
+/* Absolute, not h-full. `height: 100%` resolves against the parent's HEIGHT, and the scene is
+   sized with min-height — so h-full collapsed to zero and both faces rendered empty while the
+   rotation itself worked perfectly. Filling the scene by inset removes the dependency. */
+.flip-card {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-scene:hover .flip-card,
+.flip-scene:focus-within .flip-card,
+.flip-scene[data-flipped="true"] .flip-card {
+  transform: rotateY(180deg);
+}
+
+.flip-card::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 8%;
+  width: 84%;
+  height: 90px;
+  transform: translateY(58%) rotateX(90deg) scale(0.85);
+  border-radius: 100%;
+  background-color: rgb(0 0 0 / 0.42);
+  filter: blur(26px);
+  z-index: -10;
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-face--back {
+  transform: rotateY(180deg);
+}
+
+/* Only the face currently pointing at the viewer accepts clicks. */
+.flip-scene .flip-face--back { pointer-events: none; }
+.flip-scene:hover .flip-face--front,
+.flip-scene:focus-within .flip-face--front,
+.flip-scene[data-flipped="true"] .flip-face--front { pointer-events: none; }
+.flip-scene:hover .flip-face--back,
+.flip-scene:focus-within .flip-face--back,
+.flip-scene[data-flipped="true"] .flip-face--back { pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card { transition: none; }
+}
+
+/* ── Pop button ──────────────────────────────────────────────────────────────────────────
+   The supplied pattern. The depth is a STACK of hard-edged box-shadows, not a blur: the button
+   sits translated up-left by 4px with a ladder of offset shadows behind it, and on hover it
+   drops into place while the ladder collapses — so it reads as a physical key being pressed.
+
+   Two adaptations. Colours move to the brand (gold fill, ink edge, ivory outline). And the
+   reference nests its rules with `&`, which needs a CSS nesting-capable build — written flat
+   here so it cannot silently no-op depending on how the CSS is processed.
+
+   The dot pattern animates; that stops under prefers-reduced-motion while the button keeps its
+   whole appearance, since the dots are decoration and the shape is not. */
+.btn-pop {
+  --pop-edge: #0B0B0B;
+  --pop-rim: #FCFAF6;
+  --pop-fill: #FFCA4F;
+
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+  border-radius: 9999px;
+  background-color: var(--pop-edge);
+  color: var(--pop-edge);
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 5px;
+  transform: translate(-4px, -4px);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  box-shadow:
+    0.5px 0.5px 0 0 var(--pop-edge), 1px 1px 0 0 var(--pop-edge),
+    1.5px 1.5px 0 0 var(--pop-edge), 2px 2px 0 0 var(--pop-edge),
+    2.5px 2.5px 0 0 var(--pop-edge), 3px 3px 0 0 var(--pop-edge),
+    0 0 0 2px var(--pop-rim), 0.5px 0.5px 0 2px var(--pop-rim),
+    1px 1px 0 2px var(--pop-rim), 1.5px 1.5px 0 2px var(--pop-rim),
+    2px 2px 0 2px var(--pop-rim), 2.5px 2.5px 0 2px var(--pop-rim),
+    3px 3px 0 2px var(--pop-rim), 3.5px 3.5px 0 2px var(--pop-rim),
+    4px 4px 0 2px var(--pop-rim);
+}
+.btn-pop:hover {
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 2px var(--pop-rim);
+}
+.btn-pop:active,
+.btn-pop:focus-visible {
+  outline-color: var(--pop-fill);
+}
+.btn-pop:focus-visible {
+  outline-style: dashed;
+}
+
+.btn-pop-inner {
+  position: relative;
+  pointer-events: none;
+  border-radius: 9999px;
+  background-color: var(--pop-fill);
+  border: 2px solid rgb(255 255 255 / 0.3);
+  overflow: hidden;
+}
+.btn-pop-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(rgb(255 255 255 / 80%) 20%, transparent 20%),
+    radial-gradient(rgb(255 255 255 / 100%) 20%, transparent 20%);
+  background-position: 0 0, 4px 4px;
+  background-size: 8px 8px;
+  mix-blend-mode: hard-light;
+  animation: btn-pop-dots 0.5s infinite linear;
+}
+.btn-pop-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1.25rem;
+  filter: drop-shadow(0 -1px 0 rgb(255 255 255 / 0.25));
+}
+.btn-pop:active .btn-pop-label {
+  transform: translateY(2px);
+}
+
+@keyframes btn-pop-dots {
+  0%   { background-position: 0 0, 4px 4px; }
+  100% { background-position: 8px 0, 12px 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-pop-inner::before { animation: none; }
+}
+
+/* ── Golden Microchip Page Transition Loader ────────────────────────────────────────────── */
+.chip-main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.chip-loader {
+  width: 100%;
+}
+
+.trace-bg {
+  stroke: #2e2617;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+.trace-flow {
+  stroke-width: 1.8;
+  fill: none;
+  stroke-dasharray: 45 380;
+  stroke-dashoffset: 425;
+  filter: drop-shadow(0 0 6px currentColor);
+  animation: chip-flow 2.8s cubic-bezier(0.5, 0, 0.9, 1) infinite;
+}
+
+.trace-flow-2 {
+  stroke-width: 1.8;
+  fill: none;
+  stroke-dasharray: 55 360;
+  stroke-dashoffset: 425;
+  filter: drop-shadow(0 0 8px currentColor);
+  animation: chip-flow 2.2s cubic-bezier(0.4, 0, 0.8, 1) infinite;
+  animation-delay: 0.4s;
+}
+
+.trace-gold {
+  stroke: #e5c058;
+  color: #e5c058;
+}
+
+.trace-gold2 {
+  stroke: #fcd34d;
+  color: #fcd34d;
+}
+
+.trace-gold3 {
+  stroke: #fff2a8;
+  color: #fff2a8;
+}
+
+@keyframes chip-flow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Čip / Microchip */
+.chip-body {
+  rx: 16;
+  ry: 16;
+  fill: #110f0b;
+  stroke: #d4af37;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.4));
+}
+
+/* Text uvnitř čipu */
+.chip-text {
+  font-weight: 800;
+  letter-spacing: 2px;
+  fill: #fcd34d;
+  font-size: 13px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.chip-subtext {
+  font-weight: 600;
+  letter-spacing: 1px;
+  fill: #b3974c;
+  font-size: 8.5px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Piny */
+.chip-pin {
+  stroke: #d4af37;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.6));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-flow,
+  .trace-flow-2 {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+
+/* ── Admin + shop system ─────────────────────────────────────────────────────────────────
+   Three colours: white, navy, black. Refined against two references the owner supplied —
+   nexu-io/open-design's `dashboard` and `stripe` briefs.
+
+   What each contributed, and why it is here rather than being taste:
+
+   dashboard — "use whitespace to separate concerns BEFORE adding borders or shadows", and
+   "favour Primary for CTA emphasis" only. So cards lost their borders: elevation and space do
+   the separating, and navy now appears solely on what is active or clickable.
+
+   stripe — headings are deep navy, not black ("warm, premium, financial-grade"); shadows are
+   multi-layer and BLUE-TINTED (rgba(50,50,93,.25)) so elevation itself reads as brand rather
+   than as grey haze; radii stay conservative at 4-8px with nothing pill-shaped; and financial
+   figures use tabular numerals so digits line up down a column.
+
+   ONE exception, stated rather than hidden: destructive actions keep red. Three colours cannot
+   separate "delete permanently" from "save", and that mis-click is not recoverable. */
+:root {
+  --navy: #0a3a82;
+  --navy-deep: #06265d;
+  --navy-ink: #062354;
+  --navy-soft: #edf4ff;
+  --heading: #08265a;
+  --admin-line: #dce5f2;
+  --admin-muted: #687791;
+  --shadow-1: 0 2px 8px rgb(17 52 99 / 0.07), 0 12px 28px rgb(17 52 99 / 0.035);
+  --shadow-2: 0 14px 34px rgb(17 52 99 / 0.14), 0 3px 10px rgb(17 52 99 / 0.08);
+}
+
+.adm-page {
+  background:
+    radial-gradient(circle at 78% 0%, rgb(216 229 249 / 0.42), transparent 28rem),
+    #f5f8fc;
+}
+.adm-surface { background-color: #fff; box-shadow: var(--shadow-1); }
+.adm-raised { background-color: #f5f8fc; }
+.adm-head { color: var(--heading); }
+.adm-text { color: #12213a; }
+.adm-dim { color: #52617a; }
+.adm-faint { color: #8290a7; }
+.adm-navy { color: var(--navy); }
+.adm-navy-bg { background: linear-gradient(135deg, #0b438f, #082f70); color: #fff; }
+.adm-navy-bg:hover { background: linear-gradient(135deg, #083a82, #05255b); }
+.adm-navy-soft { background-color: var(--navy-soft); color: var(--navy); }
+.adm-navy-line { border-color: #9fc3fa; }
+.adm-lift { transition: box-shadow 180ms ease, transform 180ms ease; }
+.adm-lift:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); }
+.adm-num { font-variant-numeric: tabular-nums; }
+
+.admin-sidebar {
+  background:
+    radial-gradient(circle at 10% 74%, rgb(28 111 211 / 0.34), transparent 27rem),
+    linear-gradient(180deg, #05275f 0%, #073775 49%, #0a468f 100%);
+  box-shadow: 4px 0 0 #e4eaf2, 10px 0 30px rgb(6 35 84 / 0.14);
+}
+.admin-nav-active {
+  background: linear-gradient(100deg, #174e99 0%, #205dad 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.04), 0 8px 18px rgb(3 24 66 / 0.18);
+}
+.admin-topbar { background: rgb(255 255 255 / 0.88); backdrop-filter: blur(18px); }
+.admin-issue-card {
+  background: linear-gradient(135deg, #f04444, #d92337);
+  box-shadow: 0 10px 22px rgb(153 24 40 / 0.28);
+}
+.admin-panel {
+  border: 1px solid var(--admin-line);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.94);
+  box-shadow: var(--shadow-1);
+}
+.admin-hero-panel {
+  position: relative;
+  overflow: hidden;
+  border-color: #bad3f8;
+  background:
+    linear-gradient(115deg, rgb(255 255 255 / 0.98), rgb(246 250 255 / 0.95)),
+    #fff;
+}
+.admin-hero-panel::after {
+  position: absolute;
+  right: -4%;
+  bottom: -70px;
+  width: 70%;
+  height: 170px;
+  border: 1px solid rgb(66 126 205 / 0.16);
+  border-radius: 50%;
+  box-shadow:
+    0 -18px 0 -17px rgb(66 126 205 / 0.14),
+    0 -36px 0 -35px rgb(66 126 205 / 0.12),
+    0 -54px 0 -53px rgb(66 126 205 / 0.1),
+    0 -72px 0 -71px rgb(66 126 205 / 0.08);
+  content: "";
+  pointer-events: none;
+}
+.admin-stat-card {
+  border: 1px solid var(--admin-line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+}
+.admin-icon-bubble {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf4ff;
+  color: #1162d5;
+}
+.admin-icon-bubble[data-tone="amber"] { background: #fff6e7; color: #e79708; }
+.admin-icon-bubble[data-tone="green"] { background: #e9f9f0; color: #0aa765; }
+.admin-icon-bubble[data-tone="red"] { background: #ffeded; color: #eb3e3e; }
+.admin-table { border-collapse: separate; border-spacing: 0; }
+.admin-table thead th {
+  border-bottom: 1px solid var(--admin-line);
+  background: #f9fbfe;
+  color: #74829a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.admin-table tbody td { border-bottom: 1px solid #e7edf5; }
+.admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-table tbody tr { background: #fff; transition: background-color 150ms ease; }
+.admin-table tbody tr:hover { background: #fbfdff; }
+.admin-action {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #d7e0ed;
+  border-radius: 10px;
+  background: #fff;
+  color: #0a326c;
+  padding: 8px 13px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgb(20 54 100 / 0.04);
+  transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+.admin-action:hover { border-color: #9ebce8; background: #f6f9fe; transform: translateY(-1px); }
+.admin-action-primary { border-color: transparent; background: linear-gradient(135deg, #0b438f, #082f70); color: #fff; }
+.admin-action-primary:hover { border-color: transparent; background: linear-gradient(135deg, #083a82, #05255b); }
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.admin-status::before { width: 7px; height: 7px; border-radius: 99px; background: currentColor; content: ""; }
+.admin-status-blue { background: #edf5ff; color: #1162d5; }
+.admin-status-amber { background: #fff6e7; color: #de8d00; }
+.admin-status-green { background: #eaf9f1; color: #069d5d; }
+.admin-status-red { background: #ffeded; color: #e83d3d; }
+.admin-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #eaf2ff;
+  color: #1760c7;
+  font-weight: 700;
+}
+.admin-avatar[data-tone="violet"] { background: #f2eaff; color: #823dde; }
+.admin-avatar[data-tone="green"] { background: #e6f8ef; color: #109b61; }
+.admin-avatar[data-tone="amber"] { background: #fff3df; color: #d68500; }
+.admin-avatar[data-tone="indigo"] { background: #ecedff; color: #4f57cf; }
+
+.shop-shell { min-height: 100vh; background: linear-gradient(180deg, #fff 0, #f5f8fc 45%, #fff 100%); color: #18304f; }
+.shop-header { background: rgb(255 255 255 / 0.94); box-shadow: 0 2px 14px rgb(11 44 90 / 0.08); backdrop-filter: blur(16px); }
+.shop-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 82% 12%, rgb(46 109 198 / 0.55), transparent 18rem),
+    linear-gradient(120deg, #082d68 0%, #0b448d 70%, #0b3572 100%);
+  box-shadow: 0 16px 34px rgb(5 38 88 / 0.16);
+}
+.shop-hero::after {
+  position: absolute;
+  right: 12%;
+  bottom: -100px;
+  width: 58%;
+  height: 210px;
+  border: 1px solid rgb(255 255 255 / 0.13);
+  border-radius: 50%;
+  box-shadow:
+    0 -20px 0 -19px rgb(255 255 255 / 0.1),
+    0 -40px 0 -39px rgb(255 255 255 / 0.08),
+    0 -60px 0 -59px rgb(255 255 255 / 0.06);
+  content: "";
+}
+.shop-card {
+  border: 1px solid #e0e7f0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.shop-card:hover { transform: translateY(-2px); border-color: #b9cdec; box-shadow: var(--shadow-2); }
+
+.tag-0, .tag-1, .tag-2, .tag-3, .tag-4, .tag-5, .tag-6, .tag-7 {
+  background: var(--navy-soft);
+  color: var(--navy);
+}
+
+@media (max-width: 767px) {
+  .admin-panel, .admin-stat-card, .shop-card { border-radius: 11px; }
+  .shop-hero { border-radius: 0; }
+}
+
+/* ── Shield orbit ────────────────────────────────────────────────────────────────────────
+   The supplied pattern. Rings spin, a spark rides each ring, the shield breathes, the icons
+   float on their own offsets, and hovering an icon lifts and lights it.
+
+   Two departures from the reference, both because it was written as a standalone demo:
+
+   1. Every icon in the reference shares one `float` animation, so they all rise and fall in
+      lockstep — which reads as one rigid object, not six independent ones. Each gets its own
+      duration and delay here via inline custom properties.
+   2. The reference has no reduced-motion handling for the SPARKS, only the rings. A bright dot
+      whipping around the screen is exactly what that setting exists to stop.
+
+   Sizing is proportional to the stage, so the whole composition scales as one. */
+.orbit-stage { position: relative; }
+
+.orbit-ring,
+.orbit-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.orbit-ring-a {
+  width: 74%;
+  height: 88%;
+  border: 1px solid rgb(240 180 41 / 0.30);
+  box-shadow: 0 0 26px rgb(240 180 41 / 0.16), inset 0 0 26px rgb(240 180 41 / 0.10);
+  animation: orbit-spin 30s linear infinite;
+}
+.orbit-ring-b {
+  width: 96%;
+  height: 78%;
+  border: 1px dashed rgb(240 180 41 / 0.22);
+  animation: orbit-spin 44s linear infinite reverse;
+}
+
+/* The spark is a dot pinned to the top of an invisible ring; spinning the ring carries it
+   around the path. */
+.orbit-spark::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: #FFE08A;
+  box-shadow: 0 0 16px 5px rgb(255 224 138 / 0.85);
+}
+.orbit-spark-a { width: 74%; height: 88%; animation: orbit-spin 30s linear infinite; }
+.orbit-spark-b { width: 96%; height: 78%; animation: orbit-spin 44s linear infinite reverse; }
+
+@keyframes orbit-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* The reference animates `filter: drop-shadow` on the shield. Filters are repainted every
+   frame, and measured here that cost ~5fps on its own. The scale is kept as a transform (free,
+   composited) and the pulsing glow moved to a sibling layer whose OPACITY animates — opacity is
+   also composited, so the same effect costs nothing per frame. */
+.orbit-shield {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  animation: orbit-breathe 5.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px rgb(240 180 41 / 0.45));
+}
+@keyframes orbit-breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.03); }
+}
+.orbit-glow {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(240 180 41 / 0.35) 0%, transparent 68%);
+  animation: orbit-glow-pulse 5.5s ease-in-out infinite;
+}
+@keyframes orbit-glow-pulse {
+  0%, 100% { opacity: .35; }
+  50%      { opacity: 1; }
+}
+
+.orbit-icon { position: absolute; transform: translate(-50%, -50%); }
+.orbit-float {
+  animation: orbit-float var(--dur, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.orbit-icon img,
+.orbit-icon > .orbit-float > * {
+  filter: drop-shadow(0 0 10px rgb(240 180 41 / 0.45));
+  transition: transform .4s cubic-bezier(.34, 1.5, .64, 1), filter .4s ease;
+}
+.orbit-icon:hover img,
+.orbit-icon:hover > .orbit-float > * {
+  transform: scale(1.16) translateY(-6px);
+  filter: drop-shadow(0 0 30px rgb(255 224 138 / 1)) drop-shadow(0 0 60px rgb(240 180 41 / 0.6));
+}
+@keyframes orbit-float {
+  0%   { transform: translate(0, 0) rotate(0); }
+  25%  { transform: translate(3px, -10px) rotate(1.1deg); }
+  50%  { transform: translate(0, -17px) rotate(0); }
+  75%  { transform: translate(-3px, -8px) rotate(-1.1deg); }
+  100% { transform: translate(0, 0) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring, .orbit-spark, .orbit-shield, .orbit-float, .orbit-glow { animation: none !important; }
+  .orbit-spark::before { display: none; }
+}
+
+/* ── Hero /dich-vu-so: 14 lớp PNG rời ghép lại và tự chuyển động ─────────────────────────
+ *
+ * Bộ lớp do ChatGPT render trên cùng một khung 1600×2000, nên mỗi mảnh được cắt sát viền rồi
+ * đặt lại bằng phần trăm của khung gốc — xếp chồng ra đúng ảnh gốc, nhưng giờ từng mảnh động
+ * riêng được.
+ *
+ * Chỉ animate `transform` và `opacity`: hai thuộc tính này chạy thẳng trên GPU nên thêm lớp
+ * gần như không tốn khung hình. Đo trên /support-mxh trước đây, animate `filter` mất ~5fps.
+ */
+.dvs-stage { position: relative; width: 100%; aspect-ratio: 1600 / 2000; }
+.dvs-layer { position: absolute; display: block; }
+.dvs-layer img { display: block; width: 100%; height: auto; }
+
+/* Trôi lơ lửng. Mỗi mảnh nhận chu kỳ và độ lệch pha riêng qua biến, nếu không sáu vật thể sẽ
+   nhấp nhô đồng loạt và trông như một khối cứng. */
+@keyframes dvs-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, calc(var(--rise, 10px) * -1), 0); }
+}
+.dvs-float { animation: dvs-float var(--dur, 7s) ease-in-out var(--delay, 0s) infinite; }
+
+/* Huy hiệu chim Lạc: nhịp thở, biên độ nhỏ hơn hẳn các mảnh khác vì nó là tâm bố cục. */
+@keyframes dvs-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.022); }
+}
+.dvs-breathe { animation: dvs-breathe 5.5s ease-in-out infinite; }
+
+/* Dải sáng và hạt sáng: sáng dần tối dần, lệch pha nhau để quầng vàng luôn dao động chứ không
+   nhấp nháy thành nhịp đều. */
+@keyframes dvs-shimmer {
+  0%, 100% { opacity: var(--lo, .55); }
+  50%      { opacity: var(--hi, 1); }
+}
+.dvs-shimmer { animation: dvs-shimmer var(--dur, 6s) ease-in-out var(--delay, 0s) infinite; }
+
+/* Khối lập phương vàng: trôi chậm và xoay rất nhẹ. */
+@keyframes dvs-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -14px, 0) rotate(1.2deg); }
+}
+.dvs-drift { animation: dvs-drift 11s ease-in-out infinite; }
+
+/* Kim đồng hồ quét lên rồi giữ, như đồng hồ đo tốc độ khi khởi động. Trục quay đặt tại tâm mặt
+   đồng hồ chứ không phải tâm ảnh kim — hai điểm đó lệch nhau. */
+@keyframes dvs-sweep {
+  0%   { transform: rotate(-52deg); }
+  55%  { transform: rotate(6deg); }
+  70%  { transform: rotate(-4deg); }
+  100% { transform: rotate(0deg); }
+}
+.dvs-needle { transform-origin: 31.4% 78.8%; animation: dvs-sweep 4.5s cubic-bezier(.22,.9,.3,1) infinite; }
+
+/* Quả cầu: xoay quanh trục dọc, giả lập bằng cách nén ngang theo chu kỳ. Rẻ hơn nhiều so với
+   xoay 3D thật và ở kích cỡ này mắt không phân biệt được. */
+@keyframes dvs-spin-y {
+  0%, 100% { transform: scaleX(1); }
+  50%      { transform: scaleX(.94); }
+}
+.dvs-globe { animation: dvs-spin-y 9s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dvs-float, .dvs-breathe, .dvs-shimmer, .dvs-drift, .dvs-needle, .dvs-globe { animation: none; }
+}
+
+/* Ảnh render trên nền đen mà vầng sáng bị cắt cụt ở mép khung: chế độ hoà trộn `screen` biến
+   chỗ cắt đó thành một đường viền chữ nhật mờ. Đo trên ảnh /du-an, cột sát mép phải sáng trung
+   bình 40/255 — thừa đủ để thành vệt.
+
+   Làm mờ dần bốn mép bằng mặt nạ CSS thay vì sửa file: ánh sáng tắt dần ra ngoài đúng như lẽ
+   tự nhiên, và tranh gốc không bị đụng tới. Hai dải chồng nhau theo `intersect` để bo cả bốn
+   phía chứ không chỉ hai. */
+.hero-feather {
+  -webkit-mask-image:
+    linear-gradient(to right,  transparent 0%, #000 6%, #000 94%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image:
+    linear-gradient(to right,  transparent 0%, #000 6%, #000 94%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ── Cảnh Việt Nam ở hero trang chủ (25 lớp) ─────────────────────────────────────────────
+ *
+ * Giữ nguyên cơ chế của bản production bên thiết kế giao. Mọi toạ độ tính theo phần trăm khung
+ * 1672×941, nên `aspect-ratio` là bắt buộc — lệch tỷ lệ là cả cảnh xô nhau.
+ *
+ * ĐÃ BỎ `mix-blend-mode: screen` và các mặt nạ CSS của bản gốc. Cả hai buộc trình duyệt vẽ lại
+ * từng khung thay vì chạy trên GPU, và ở đây có 24 hoạt ảnh chồng lên nhau nên chi phí nhân lên.
+ * Bản gốc chạy độc lập đo được 9.9fps.
+ *
+ * Phép cộng sáng và các mặt nạ giờ nướng sẵn vào kênh alpha của từng file lúc đóng gói: alpha
+ * đặt theo độ sáng điểm ảnh, cộng với vệt cắt ngang và hai vùng khoét tròn. Kết quả nhìn như cũ,
+ * mà lúc chạy không tốn gì.
+ */
+.vn-stage {
+  position: relative;
+  aspect-ratio: 1672 / 941;
+}
+/* Khi khung bọc đã ấn định kích thước thì sân khấu chỉ việc lấp đầy. */
+.vn-stage.h-full { height: 100%; }
+.vn-lw { position: absolute; pointer-events: none; }
+.vn-lw img { display: block; width: 100%; height: 100%; }
+
+
+/* Bóng dưới nước: lật ngược ảnh gốc, mờ dần về phía xa rồi dập dềnh nhẹ. */
+.vn-refl {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(#000 0%, rgb(0 0 0 / .72) 30%, rgb(0 0 0 / .28) 62%, transparent 96%);
+  mask: linear-gradient(#000 0%, rgb(0 0 0 / .72) 30%, rgb(0 0 0 / .28) 62%, transparent 96%);
+}
+.vn-refl img { animation: vnReflWobble 7.5s ease-in-out infinite; }
+@keyframes vnReflWobble {
+  0%, 100% { transform: scale(1, -1); }
+  50%      { transform: scale(1.012, -1) translateY(-2px); }
+}
+
+/* ── Cờ và cột cờ ── */
+/* Cờ phất mạnh hơn hẳn bản gốc.
+ *
+ * Bản gốc chỉ xoay -0.5 tới 0.7 độ trong 6.5 giây — gần như đứng yên. Nếp gấp thì do bộ lọc
+ * nhiễu SVG lo, nhưng bộ lọc ấy phải để TĨNH vì animate nó là thứ đắt nhất trong cả cảnh.
+ *
+ * Nên chuyển động lấy từ `transform`: xoay mạnh hơn, cộng thêm `skewY` để mép trên và mép dưới
+ * lệch pha nhau — đó là thứ tạo cảm giác sóng chạy dọc lá cờ. Bốn mốc thay vì hai để nhịp không
+ * đối xứng, gió thật không thổi đều. Tất cả đều là transform nên chạy trên GPU, không tốn gì. */
+#vn_flag { filter: url(#flagWarp); transform-origin: 0% 45%; animation: vnFlagSway 3.4s ease-in-out infinite; }
+@keyframes vnFlagSway {
+  0%, 100% { transform: rotate(-1.3deg) skewY(.9deg) translateY(0); }
+  27%      { transform: rotate(.6deg) skewY(-1.4deg) translateY(-6px); }
+  52%      { transform: rotate(1.7deg) skewY(1.1deg) translateY(-11px); }
+  76%      { transform: rotate(.1deg) skewY(-.7deg) translateY(-4px); }
+}
+#vn_pole_shaft, #vn_pole_ball { animation: vnPoleSway 3.4s ease-in-out infinite; transform-origin: 50% 100%; }
+#vn_pole_ball { transform-origin: 50% 1200%; }
+@keyframes vnPoleSway {
+  0%, 100% { transform: rotate(-.18deg); }
+  52%      { transform: rotate(.24deg); }
+}
+
+/* ── Chim Lạc trên trống đồng ── */
+#vn_hero { animation: vnHeroFloat 7s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes vnHeroFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-9px) scale(1.006); }
+}
+
+/* ── Hoa sen nở ── */
+#vn_lotusL, #vn_lotusC, #vn_lotusR { animation: vnBloom 4.2s ease-in-out infinite; }
+#vn_lotusC { animation-delay: -1.4s; animation-duration: 4.9s; }
+#vn_lotusR { animation-delay: -2.6s; animation-duration: 5.4s; }
+/* Dùng opacity chứ không phải `filter: brightness` như bản gốc: filter bắt vẽ lại phần tử mỗi
+   khung, còn opacity thì hợp thành thẳng trên GPU. Sen sáng lên nhờ nền tối phía sau. */
+@keyframes vnBloom {
+  0%, 100% { transform: translateY(0) scale(1); opacity: .88; }
+  50%      { transform: translateY(-3px) scale(1.022); opacity: 1; }
+}
+
+/* ── Đèn thành phố, cầu, bản đồ ── */
+/* Đèn thành phố để yên. Bản gốc cho nhấp nháy theo bậc (`steps`), nhìn giật cục như đèn hỏng
+   chứ không giống thành phố về đêm. Các toà nhà vẫn còn nguyên, chỉ không chớp nữa. */
+#vn_bridge { animation: vnBridgePulse 4.6s ease-in-out infinite; }
+@keyframes vnBridgePulse {
+  0%, 100% { opacity: .86; }
+  50%      { opacity: 1; }
+}
+#vn_map { animation: vnMapPulse 3.8s ease-in-out infinite; }
+@keyframes vnMapPulse {
+  0%, 100% { opacity: .74; }
+  50%      { opacity: 1; }
+}
+
+/* ── Dải sáng và hạt trôi ── */
+
+
+#vn_grid, #vn_floor { animation: vnPulseA 8s ease-in-out infinite; }
+#vn_floor { animation-delay: -3s; }
+@keyframes vnPulseA { 0%, 100% { opacity: .63; } 50% { opacity: 1; } }
+
+#vn_haze { animation: vnPulseB 6s ease-in-out infinite; }
+@keyframes vnPulseB { 0%, 100% { opacity: .57; } 50% { opacity: 1; } }
+
+
+#vn_ripple { animation: vnRip 9s ease-in-out infinite; }
+@keyframes vnRip {
+  0%, 100% { opacity: .58; transform: scaleY(1); }
+  50%      { opacity: 1; transform: scaleY(1.035); }
+}
+
+#vn_ringglow, #vn_lotusglow { animation: vnPulseC 5s ease-in-out infinite; }
+#vn_lotusglow { animation-delay: -2s; }
+@keyframes vnPulseC { 0%, 100% { opacity: .53; } 50% { opacity: 1; } }
+
+#vn_sparkle { animation: vnSpk 12s ease-in-out infinite; }
+@keyframes vnSpk { 0%, 100% { opacity: .46; } 50% { opacity: 1; } }
+
+
+@media (prefers-reduced-motion: reduce) {
+  .vn-stage *, .vn-stage *::before { animation: none !important; }
 }

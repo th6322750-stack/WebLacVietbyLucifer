@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Serif, Inter } from "next/font/google";
+import { Noto_Serif, Inter, Playfair_Display } from "next/font/google";
 import { siteSettings } from "@/lib/site-settings";
 import "./globals.css";
 
@@ -12,6 +12,16 @@ const headingFont = Noto_Serif({
   subsets: ["latin", "vietnamese"],
   weight: ["600", "700"],
   variable: "--font-heading",
+  display: "swap",
+});
+
+// V5 direction: the new design board sets headings in Playfair Display. Added alongside the
+// v2 heading face rather than replacing it, so routes still on the old direction keep rendering
+// exactly as approved while the V5 hero opts in via --font-display.
+const displayFont = Playfair_Display({
+  subsets: ["latin", "vietnamese"],
+  weight: ["600", "700", "800", "900"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -34,6 +44,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "vi_VN",
     siteName: siteSettings.brandName,
+    images: [{ url: "/assets/v5/brand/og-thumbnail.jpg", width: 1200, height: 630, alt: siteSettings.brandName }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/assets/v5/brand/og-thumbnail.jpg"],
   },
 };
 
@@ -42,7 +57,7 @@ export const metadata: Metadata = {
 // instead of inheriting the full SiteHeader/SiteFooter from the (site) route group.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" className={`${headingFont.variable} ${bodyFont.variable}`}>
+    <html lang="vi" className={`${headingFont.variable} ${displayFont.variable} ${bodyFont.variable}`}>
       <body>{children}</body>
     </html>
   );

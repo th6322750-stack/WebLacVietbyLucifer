@@ -40,20 +40,47 @@ const config: Config = {
       transparent: "transparent",
       current: "currentColor",
       white: "#FFFFFF",
+      // This project replaces theme.colors wholesale rather than extending it, so Tailwind's
+      // default `black` does not exist here and `bg-black` silently emitted nothing.
+      black: "#000000",
       ink: {
         950: "#0B0B0B",
         900: "#111111",
         800: "#1B1B1B",
       },
+      // PRO V2 depth system (2026-08-25): a 4-level dark scale for NEW cinematic sections
+      // (signature moments, cards on dark, hover states) that want visible separation without
+      // another flat black-on-black block. Additive — `ink-950` keeps its existing dual role
+      // (dark bg AND near-black text-on-light) untouched, so nothing already shipped moves.
+      surface: {
+        0: "#07080A",
+        1: "#0B0D10",
+        2: "#111318",
+        3: "#171A20",
+      },
       ivory: {
         50: "#FCFAF6",
         100: "#F7F2E8",
       },
+      // V5 — sampled from the new design board (see .webby/V5_NEW_DIRECTION_ASSET_BRIEF.md).
+      // The dark here is blue-tinted (#0B0F12) where the v2 ink is neutral (#0B0B0B).
+      v5: {
+        gold: "#FFCA4F",
+        "gold-mid": "#C7A450",
+        "gold-deep": "#806831",
+        page: "#0B0F12",
+        panel: "#050D15",
+        header: "#0D0D0D",
+      },
+      // PRO V2 refinement (2026-08-25): same 4 roles, hex nudged toward the brief's
+      // primary/highlight/deep triad so gold reads as one deliberate family instead of one flat
+      // hue reused everywhere. Every existing gold-300/500/600/700 call site keeps working —
+      // only the underlying value shifted, not the token names.
       gold: {
-        300: "#F0CF73",
-        500: "#D4AF37",
+        300: "#F0C96B",
+        500: "#D8A94E",
         600: "#B8891F",
-        700: "#8A6111",
+        700: "#8C682C",
       },
       text: {
         primary: "#171717",
@@ -103,6 +130,13 @@ const config: Config = {
       xl: "24px",
       pill: "999px",
       full: "9999px",
+      // PRO V2 named scale (2026-08-25) — same underlying sizes as xs/md/xl above, but named for
+      // what they're FOR so a new component picks the right one by role instead of guessing
+      // between four numerically-named options that happen to be close.
+      button: "12px",
+      card: "18px",
+      feature: "24px",
+      hero: "28px",
     },
     boxShadow: {
       sm: "0 4px 16px rgba(18,14,8,.06)",
@@ -113,6 +147,9 @@ const config: Config = {
     },
     fontFamily: {
       heading: ["var(--font-heading)", "Georgia", "Times New Roman", "serif"],
+      // V5 direction display face (the new design board). Separate token from `heading` so the
+      // routes still on the approved v2 typography are untouched.
+      display: ["var(--font-display)", "Georgia", "Times New Roman", "serif"],
       body: [
         "var(--font-body)",
         "Inter",
@@ -127,13 +164,18 @@ const config: Config = {
       // typography.json compatibilityTokens/tailwindTokenMap. Per the authority's
       // tokenEmissionContract this is the UNION, never rebuilt from semanticRoles
       // alone — legacy h3-*/h4-*/body-xl stay until source usage is proven zero.
-      "display-desktop": ["64px", { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600" }],
-      "display-mobile": ["40px", { lineHeight: "1.08", letterSpacing: "-0.015em", fontWeight: "600" }],
+      // PRO V2 (2026-08-25): hero display pushed from 64→72px / 600→700 weight, tracking
+      // tightened to -0.03em — brief's "64-76px / 650-750 / -0.03em" range. h2 nudged 40→44px to
+      // sit clearly between h1 (56) and h3 (28) instead of crowding h1. Every OTHER role
+      // (h1/h3/h4/body/eyebrow/etc.) was already inside the brief's requested range, so left
+      // alone — no value should move just because a brief re-stated a range this file already met.
+      "display-desktop": ["72px", { lineHeight: "1.02", letterSpacing: "-0.03em", fontWeight: "700" }],
+      "display-mobile": ["44px", { lineHeight: "1.06", letterSpacing: "-0.02em", fontWeight: "700" }],
       "h1-desktop": ["56px", { lineHeight: "1.08", letterSpacing: "-0.018em", fontWeight: "700" }],
       "h1-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "700" }],
       "detail-h1-desktop": ["48px", { lineHeight: "1.12", letterSpacing: "-0.015em", fontWeight: "700" }],
       "detail-h1-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "700" }],
-      "h2-desktop": ["40px", { lineHeight: "1.15", letterSpacing: "-0.012em", fontWeight: "700" }],
+      "h2-desktop": ["44px", { lineHeight: "1.15", letterSpacing: "-0.012em", fontWeight: "700" }],
       "h2-mobile": ["32px", { lineHeight: "1.18", letterSpacing: "-0.01em", fontWeight: "700" }],
       "h3-desktop": ["28px", { lineHeight: "1.25", letterSpacing: "-0.01em", fontWeight: "700" }],
       "h3-mobile": ["24px", { lineHeight: "1.28", letterSpacing: "-0.008em", fontWeight: "700" }],
@@ -160,6 +202,29 @@ const config: Config = {
       footer: ["13px", { lineHeight: "1.6", fontWeight: "400" }],
     },
     extend: {
+      // Marquee. The InfiniteMarquee component already referenced `animate-marquee-left` /
+      // `-right`, but neither existed in the theme, so those classes emitted no CSS at all and
+      // the component sat still. This project REPLACES Tailwind's theme rather than extending
+      // it, which makes silent misses like that easy — a class outside the declared set fails
+      // quietly instead of erroring.
+      //
+      // -50% is exact, not approximate: the component renders its children twice, so shifting
+      // by half the track lands the copy precisely where the original started and the loop has
+      // no visible seam.
+      keyframes: {
+        "marquee-left": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "marquee-right": {
+          from: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        "marquee-left": "marquee-left linear infinite",
+        "marquee-right": "marquee-right linear infinite",
+      },
       maxWidth: {
         container: "1280px",
         "container-ultra": "1520px",
@@ -172,17 +237,29 @@ const config: Config = {
       minWidth: {
         touch: "44px",
       },
+      // PRO V2 motion scale (2026-08-25): fast/normal/slow already sat inside the brief's
+      // "micro" tier (150-250ms) — kept as-is. `reveal` and `cinematic` are new tiers for section
+      // entrances and hero-scale moments, which had no dedicated token before (call sites either
+      // reused `slow` or hardcoded a duration inline).
       transitionDuration: {
         fast: "160ms",
         normal: "240ms",
         slow: "360ms",
+        reveal: "650ms",
+        cinematic: "1200ms",
       },
       transitionTimingFunction: {
-        standard: "cubic-bezier(.2,.8,.2,1)",
+        // Brief's requested curve — close to the old one but with a touch more overshoot-free
+        // ease-out, applied going forward. Old value not kept: this is the SAME role (the site's
+        // one general-purpose easing), not a second option to choose between.
+        standard: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
       backgroundImage: {
+        // PRO V2 (2026-08-25): 4-stop metallic sweep per brief (deep→primary→highlight→deep),
+        // reserved for logo/primary-button/premium-divider use only — never applied to running
+        // text, per the brief's own "không áp dụng trên toàn bộ text" note.
         "gold-metallic":
-          "linear-gradient(135deg, #F6D778 0%, #D4AF37 45%, #A97817 100%)",
+          "linear-gradient(135deg, #7B5722 0%, #D6A64A 38%, #FFE19A 68%, #B47B2F 100%)",
         // Base color must be applied separately (e.g. `bg-ink-950 bg-dark-hero`) —
         // `background-image` cannot itself carry a trailing solid-color layer.
         "dark-hero": "radial-gradient(circle at 72% 38%, rgba(212,175,55,.16), transparent 44%)",

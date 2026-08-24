@@ -18,7 +18,10 @@ export function Container({
   children: ReactNode;
 }) {
   return (
-    <Tag className={`mx-auto w-full px-4 md:px-6 xl:px-8 ultra:px-10 ${WIDTH_CLASS[width]} ${className}`}>
+    // PRO V2 (2026-08-25): side padding ramps to the brief's 48-64px band at desktop widths
+    // (was capped at 32/40px, noticeably tighter than "khoảng thở lớn hơn" calls for) — mobile
+    // and tablet steps untouched since those weren't the complaint.
+    <Tag className={`mx-auto w-full px-4 md:px-6 lg:px-10 xl:px-12 ultra:px-16 ${WIDTH_CLASS[width]} ${className}`}>
       {children}
     </Tag>
   );

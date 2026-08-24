@@ -12,8 +12,9 @@ export function ProjectCard({ project }: { project: Project }) {
     <Link
       href={`/du-an/${project.slug}`}
       data-demo-only={project.demoOnly}
+      data-cursor-text="Xem chi tiết"
       onClick={() => track({ name: "project_open", props: { projectSlug: project.slug, demoOnly: project.demoOnly } })}
-      className="group flex flex-col overflow-hidden rounded-md border border-border bg-white shadow-sm transition-[transform,box-shadow,border-color] duration-fast ease-standard hover:-translate-y-[3px] hover:border-gold-300 hover:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-xl border border-gold-500/20 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-xl"
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-ivory-100">
         {project.heroAssetId ? (
@@ -22,22 +23,22 @@ export function ProjectCard({ project }: { project: Project }) {
             alt={project.title}
             fill
             sizes="(min-width: 1024px) 25vw, 50vw"
-            className="object-cover transition-transform duration-normal ease-standard group-hover:scale-[1.02]"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
         ) : null}
-        {/* MASTER PARITY V4: the approved grid card carries NO visible "Dự án mẫu" badge over
-            the image. Demo state stays machine-readable via data-demo-only on the link, which is
-            what CONTENT_TRUTH asks for ("tag it in data"), without redesigning the card. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <span className="inline-flex w-fit items-center rounded-pill bg-ivory-100 px-2.5 py-1 text-caption text-text-secondary">
+        <span className="inline-flex w-fit items-center rounded-pill bg-ivory-100 px-2 py-1 text-caption font-medium text-text-secondary">
           {project.category}
         </span>
-        <h3 className="mt-2 text-card-h3-mobile lg:text-card-h3-desktop text-ink-950">{project.title}</h3>
+        <h3 className="mt-2 font-heading text-card-h3-mobile text-ink-950 transition-colors duration-200 group-hover:text-gold-700 lg:text-card-h3-desktop">
+          {project.title}
+        </h3>
         <p className="mt-2 flex-1 text-small text-text-secondary">{project.summary}</p>
-        <span className="mt-4 inline-flex items-center gap-1 text-small font-semibold text-gold-700">
+        <span className="mt-4 inline-flex items-center gap-1 text-small font-semibold text-gold-700 transition-colors group-hover:text-gold-600">
           Xem chi tiết
-          <Icon name="arrow-right" size="inline" className="transition-transform duration-fast ease-standard group-hover:translate-x-px" />
+          <Icon name="arrow-right" size="inline" className="transition-transform duration-fast ease-standard group-hover:translate-x-1" />
         </span>
       </div>
     </Link>
