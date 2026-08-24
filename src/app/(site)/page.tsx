@@ -20,6 +20,12 @@ import { assetPath, assetSize } from "@/lib/assets";
 import { siteSettings } from "@/lib/site-settings";
 import { pageMetadata, organizationJsonLd } from "@/lib/seo";
 
+// PRO V2.1 mobile hero crop — a sub-rectangle of the same 1672×941 VN scene canvas, computed
+// from the bounding box of exactly the layers HeroVietnamScene keeps when `mobile` (map, flag,
+// pole, pedestal, hero/bird, ringglow, lotusglow, sparkle). Fractions of the full canvas, not
+// pixels, so this stays correct regardless of the rendered size.
+const MOBILE_SCENE_CROP = { x: 0.465, y: 0.12, w: 0.53, h: 0.864 };
+
 export const metadata = pageMetadata({
   title: `${siteSettings.brandName} — Website, Support MXH & Dịch vụ số`,
   description:
@@ -80,7 +86,10 @@ export default function HomePage() {
           <div className="relative z-10 text-white">
             {/* Approved master ui-000: "LẠC VIỆT" white, "MEDIA AGENCY" GOLD on the second line. */}
             <ScrollReveal direction="up" distance={20} duration={0.7} delay={100}>
-              <h1 className="mt-3 text-h2-mobile font-heading uppercase text-white lg:text-[26px] lg:leading-[1.16] xl:text-[29px] ultra:text-[35px]">
+              {/* PRO V2.1: was hard-coded 26/29/35px — the site's own #1 visual anchor rendering
+                  smaller than a card heading. `display` is the token built for exactly this
+                  role (72px desktop / 44px mobile); nothing on the homepage used it before. */}
+              <h1 className="mt-3 text-display-mobile font-heading uppercase text-white lg:text-display-desktop">
                 LẠC VIỆT
                 <br />
                 <span className="text-gold-metal">MEDIA AGENCY</span>
@@ -110,6 +119,32 @@ export default function HomePage() {
             <ScrollReveal direction="up" distance={16} duration={0.7} delay={400}>
               <HomeHeroCta />
             </ScrollReveal>
+
+            {/* PRO V2.1 §11/12: mobile had ZERO hero visual — the whole scene was `hidden
+                lg:block` with nothing standing in for it. This crops into the SAME approved
+                1672×941 composition (no new positions/assets) down to just the monument cluster
+                (map + flag + chim Lạc + pedestal + its glow), which is what survives once
+                skyline/bridge/water-reflection layers are dropped — see HeroVietnamScene's
+                `mobile` filter. Placed after the CTA, before social proof, per the brief. */}
+            <div className="mt-6 lg:hidden" aria-hidden="true">
+              <div
+                className="relative w-full overflow-hidden rounded-2xl"
+                style={{ aspectRatio: `${MOBILE_SCENE_CROP.w * 1672} / ${MOBILE_SCENE_CROP.h * 941}` }}
+              >
+                <div
+                  className="absolute"
+                  style={{
+                    width: `${100 / MOBILE_SCENE_CROP.w}%`,
+                    height: `${100 / MOBILE_SCENE_CROP.h}%`,
+                    left: `${(-MOBILE_SCENE_CROP.x * 100) / MOBILE_SCENE_CROP.w}%`,
+                    top: `${(-MOBILE_SCENE_CROP.y * 100) / MOBILE_SCENE_CROP.h}%`,
+                  }}
+                >
+                  <HeroVietnamScene mobile className="h-full w-full" />
+                </div>
+              </div>
+            </div>
+
             <ScrollReveal direction="up" distance={16} duration={0.7} delay={500}>
               <div className="mt-8 flex items-center gap-3">
                 <Image
@@ -222,7 +257,10 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="work-process" className="hidden lg:block">
+      {/* PRO V2.1: was `hidden lg:block` — the entire process section simply didn't exist for
+          mobile visitors. ProcessSteps already renders a vertical rail + stacked steps below
+          `md:`, so nothing here needed building, only un-hiding. */}
+      <Section id="work-process">
         <Container>
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading eyebrow="Quy trình làm việc" title="Minh bạch – Rõ ràng – Hiệu quả" align="center" />
@@ -235,7 +273,9 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section id="latest-knowledge" className="hidden lg:block">
+      {/* PRO V2.1: was `hidden lg:block` — mobile visitors never saw this section at all. The
+          grid below is already responsive (1 col → sm:2 → lg:4), so un-hiding is the fix. */}
+      <Section id="latest-knowledge">
         <Container>
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <div className="flex flex-wrap items-end justify-between gap-4">

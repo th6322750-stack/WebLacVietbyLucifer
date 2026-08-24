@@ -65,8 +65,12 @@ export function PageHero({
   /** Master pages 7 and 10 show a breadcrumb row inside the dark hero, above the H1. */
   breadcrumbs?: ReactNode;
 }) {
-  const heroClass =
-    "text-h2-mobile uppercase lg:text-[26px] lg:leading-[1.16] xl:text-[29px] ultra:text-[35px]";
+  // PRO V2.1 (2026-08-25): was hard-coded to 26/29/35px at lg/xl/ultra — a hero H1 rendering
+  // SMALLER than this page's own h3 token. The design system already had h1-desktop (56px) for
+  // exactly this role; nothing used it. Back to the semantic token so hero weight actually shows
+  // up; a route whose specific headline wraps badly at 56px gets `titleClassName`, which already
+  // existed as an escape hatch but had never actually been exercised.
+  const heroClass = "text-h1-mobile uppercase lg:text-h1-desktop";
   return (
     <section className="relative overflow-hidden bg-black">
       <StarField />

@@ -191,57 +191,12 @@
   .social-icon:focus-visible { transform: none; }
 }
 
-/* ── Rotating gradient edge for cards ────────────────────────────────────────────────────
-   The supplied pattern, implemented as given. Only the colours change: the reference's
-   #07182E card and blue-to-magenta bar become the brand's white card and gold bar.
-
-   The mechanism, and the part I first got wrong by "improving" it: the card carries a
-   BACKGROUND of its own and the pseudo-elements sit in normal stacking order on top of it.
-   ::before paints the spinning bar over that background, ::after covers all but the rim.
-   So the rim is never bare — where the bar is not currently sweeping, the card's own
-   background colour shows, which is what makes the ring read as a ring at all.
-
-   That is why children need `z-index: 1`: they have to clear ::after. */
-.card-aurora {
-  position: relative;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #6b571f;
-}
-.card-aurora > * {
-  position: relative;
-  z-index: 1;
-}
-.card-aurora::before {
-  content: "";
-  position: absolute;
-  /* CENTRING IS LOAD-BEARING. The reference gets it for free: its card is a flex container with
-     place-content/place-items:center, so ::before lands in the middle as a flex item. Our card
-     carries real stacked content (`flex flex-col`), so ::before became the FIRST flex item and
-     spun around a point near the top-left instead of the card's centre — the bar then only
-     grazed two edges and never swept the other two. The tell was in the measurements: the top
-     edge showed zero luminance change while the left and bottom swung ~140.
-     Centred explicitly here so the card's own layout is untouched. */
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  /* The reference's 100px bar sits in a 190px card — just over half its width; as a proportion
-     it keeps the same sweep at any card size. Height is 160%, not the reference's 130%: the
-     bar's half-diagonal has to clear the CARD's half-diagonal or the corners never get swept.
-     At 130% the two were within 1px of each other. */
-  /* Active running glowing border beam */
-  width: 140%;
-  height: 140%;
-  background-image: conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 270deg, #C7A450 320deg, #FFE9A8 350deg, #FFCA4F 360deg);
-  animation: rotBGimg 4s linear infinite;
-}
-.card-aurora::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  border-radius: 18px;
-  background: #fff;
-}
+/* PRO V2.1 §23-25: removed `.card-aurora` — a first attempt at the same rotating-border-beam
+   effect SpotlightCard now does properly. It had zero usages anywhere in src/ (confirmed by
+   search, not assumed) AND its own animation referenced a keyframe (`rotBGimg`) that was never
+   defined, so even the one card that could have used it would have shown a static gradient, not
+   a spin. Dead code with a broken reference to a class doing the same job elsewhere under a
+   different name — exactly what to remove per the brief, not keep "just in case". */
 @keyframes border-beam-spin {
   from {
     transform: rotate(0deg);
@@ -256,8 +211,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card-aurora::before,
   .animate-spin-slow { animation: none; }
+  .spotlight-tilt { transform: none !important; transition: none !important; }
 }
 
 /* ── Luxury Liquid Gold Shimmer & Micro FX ────────────────────────────────────────── */
@@ -1176,4 +1131,22 @@
 
 @media (prefers-reduced-motion: reduce) {
   .vn-stage *, .vn-stage *::before { animation: none !important; }
+}
+
+/* PRO V2.1 §18-19: SpotlightCard's tilt/glow read from custom properties written directly to
+ * the DOM (see SpotlightCard.tsx) instead of React state, so cursor motion never triggers a
+ * re-render. Defaults (0deg/0px/center) match the card's resting state, so a card that never
+ * receives a mousemove — server-rendered, or a touch tap — never needs JS to look correct. */
+.spotlight-tilt {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+}
+.spotlight-glow {
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), var(--spot-color, rgba(212, 175, 55, 0.12)), transparent 70%);
+}
+/* Touch/no-hover devices: no cursor to tilt toward. The JS-side matchMedia check already skips
+ * writing --rx/--ry there, but a device that fires mousemove without real hover (some hybrid
+ * touchscreens) still gets the same flat card via this alone. */
+@media (hover: none) {
+  .spotlight-tilt { transform: none !important; }
 }

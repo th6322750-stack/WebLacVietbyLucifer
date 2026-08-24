@@ -70,10 +70,21 @@ const LAYERS: Layer[] = [
   { id: "lotusR", x: 89.414, y: 75.664, w: 10.467, h: 15.09, nw: 280, nh: 227, kind: "main" },
 ];
 
-export function HeroVietnamScene({ className = "" }: { className?: string }) {
+// PRO V2.1 §11/12: the mobile crop (see homepage) only has room for the monument cluster, not
+// the full establishing shot. Kept: the layers the brief names explicitly (map, flag, chim Lạc,
+// pedestal + its glow ring, ambient sparkle/lotus-glow). Dropped: skyline, bridge, the two lotus
+// flowers off to either side, and every `refl` layer — reflections only read as "water" next to
+// the bridge/floor they reflect off, which are themselves dropped, so keeping them would just be
+// duplicate ghosts of the bird and pedestal with no visible water to justify them.
+const MOBILE_LAYER_IDS = new Set([
+  "map", "flag", "pole_shaft", "pole_ball", "pedestal", "hero", "ringglow", "lotusglow", "sparkle",
+]);
+
+export function HeroVietnamScene({ className = "", mobile = false }: { className?: string; mobile?: boolean }) {
+  const layers = mobile ? LAYERS.filter((l) => MOBILE_LAYER_IDS.has(l.id)) : LAYERS;
   return (
     <div className={`vn-stage ${className}`}>
-      {LAYERS.map((l) => (
+      {layers.map((l) => (
         <div
           key={l.id}
           id={`w_${l.id}`}

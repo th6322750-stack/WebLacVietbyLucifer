@@ -159,7 +159,13 @@ export default function WebsitePage() {
           <>
             Thiết kế Website
             <br />
-            <span className="text-v5-gold">chuẩn đẹp – hiệu quả</span>
+            {/* PRO V2.1: at the restored h1-desktop size this phrase wrapped mid-word
+                ("CHUẨN ĐẸP – HIỆU" / "QUẢ") instead of at the two-descriptor boundary — an
+                explicit break keeps "hiệu quả" together as its own line at every width. */}
+            <span className="text-v5-gold">
+              chuẩn đẹp –<br />
+              hiệu quả
+            </span>
             <br />
             <span className="text-v5-gold">cho doanh nghiệp</span>
           </>

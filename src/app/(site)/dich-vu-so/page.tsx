@@ -88,9 +88,12 @@ export default function DigitalServicesPage() {
         eyebrow="Dịch vụ số"
         // Broken deliberately rather than left to wrap: subject line white, promise line gold,
         // the same two-line shape every other hero uses.
+        // PRO V2.1: at h1-desktop size this wrapped mid-unit ("TÀI KHOẢN & DỊCH" / "VỤ SỐ") —
+        // break after "&" so "DỊCH VỤ SỐ" stays one line at every width.
         title={
           <>
-            TÀI KHOẢN & DỊCH VỤ SỐ
+            TÀI KHOẢN &<br />
+            DỊCH VỤ SỐ
             <br />
             <span className="text-v5-gold">UY TÍN – AN TOÀN – NHANH CHÓNG</span>
           </>

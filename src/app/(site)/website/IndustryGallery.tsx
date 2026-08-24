@@ -27,7 +27,10 @@ export function IndustryGallery({ items }: { items: IndustryShowcaseItem[] }) {
 
   return (
     <div className="mt-8">
-      <div className="flex flex-wrap justify-center gap-2">
+      {/* PRO V2.1 §38: mobile no longer wraps chips into a centered block — that shrank each
+          chip's tap target as more industries got added. Horizontal scroll keeps every chip at
+          full size; `md:` restores the centered wrap once there's room. */}
+      <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 -mx-4 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0">
         {[ALL, ...industries].map((label) => {
           const isActive = active === label;
           return (
@@ -36,7 +39,7 @@ export function IndustryGallery({ items }: { items: IndustryShowcaseItem[] }) {
               type="button"
               onClick={() => setActive(label)}
               aria-pressed={isActive}
-              className={`rounded-pill px-4 py-2 text-small font-medium transition-colors duration-200 ${
+              className={`shrink-0 whitespace-nowrap rounded-pill px-4 py-2 text-small font-medium transition-colors duration-200 ${
                 isActive
                   ? "bg-gold-metallic text-ink-950"
                   : "border border-gold-500/20 bg-white text-text-secondary hover:border-gold-500/50 hover:text-ink-950"
@@ -48,7 +51,9 @@ export function IndustryGallery({ items }: { items: IndustryShowcaseItem[] }) {
         })}
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+      {/* PRO V2.1 §39: 2-column thumbnails at 360-430px read too small to show an actual website
+          preview — 1 column until `sm` (480px), where there's enough width per card again. */}
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((item) => (
           <IndustryShowcaseCard key={item.slug} item={item} />
         ))}

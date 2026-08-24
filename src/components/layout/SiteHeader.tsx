@@ -39,10 +39,14 @@ export function SiteHeader() {
   const isServiceRoute = serviceMenu.some((s) => pathname === s.href || pathname.startsWith(`${s.href}/`));
 
   return (
+    // PRO V2.1 §14: exact rgba/blur values from the brief, using the `surface-0` token (#07080A
+    // ≈ rgb(7,8,10)) rather than `ink-950` so the header sits on the same depth scale as other
+    // cinematic surfaces. Added the bottom hairline the brief asks for — a header this close in
+    // tone to the hero behind it had no edge to separate from it at all before.
     <header
       data-state={menuOpen ? "mobile-menu-open" : undefined}
-      className={`sticky top-0 z-50 backdrop-blur-md transition-[height,background-color] duration-normal ease-standard ${
-        scrolled ? "h-14 bg-ink-950/95 lg:h-16" : "h-16 bg-ink-950/80 lg:h-[76px]"
+      className={`sticky top-0 z-50 border-b border-white/5 backdrop-blur-lg transition-[height,background-color] duration-normal ease-standard ${
+        scrolled ? "h-14 bg-surface-0/[.94] lg:h-16" : "h-16 bg-surface-0/75 lg:h-[76px]"
       }`}
     >
       <Container className="flex h-full items-center justify-between">
@@ -70,11 +74,15 @@ export function SiteHeader() {
               const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(`${link.href}/`));
               return (
                 <li key={link.href}>
+                  {/* PRO V2.1 §15: underline used to only exist for the active page — every other
+                      link had no hover feedback at all. Now every link carries the same
+                      pseudo-element, resting at `scale-x-0`; hover (or the active state, which
+                      just starts already-scaled) animates it in from the left in 220ms. */}
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`relative py-2 text-nav text-white/90 hover:text-white ${
-                      active ? "font-semibold text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
+                    className={`relative py-2 text-nav text-white/90 transition-colors duration-fast hover:text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:bg-gold-500 after:transition-transform after:duration-[220ms] after:ease-standard ${
+                      active ? "font-semibold text-white after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
                     }`}
                   >
                     {link.label}
@@ -224,8 +232,8 @@ function ServiceDropdown({ active }: { active: boolean }) {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className={`relative flex items-center gap-1 py-2 text-nav text-white/90 hover:text-white ${
-          active ? "font-semibold text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:bg-gold-500" : ""
+        className={`relative flex items-center gap-1 py-2 text-nav text-white/90 transition-colors duration-fast hover:text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:bg-gold-500 after:transition-transform after:duration-[220ms] after:ease-standard ${
+          active ? "font-semibold text-white after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
         }`}
       >
         Dịch vụ
