@@ -87,13 +87,14 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
 function BrandColumn() {
   return (
     <div>
+      {/* PRO V2.2 §23: ~10% larger (40px → 44px) per the brief's mobile footer note. */}
       <Image
         src={assetPath("lac-viet-logo-horizontal-approved")}
         alt={siteSettings.brandName}
         width={assetSize("lac-viet-logo-horizontal-approved").width}
         height={assetSize("lac-viet-logo-horizontal-approved").height}
-        sizes="112px"
-        className="h-10 w-auto"
+        sizes="120px"
+        className="h-[44px] w-auto"
       />
       <p className="mt-4 max-w-xs text-small text-white/75">
         {siteSettings.brandName} — dịch vụ website, hỗ trợ mạng xã hội và tài khoản số cho doanh nghiệp Việt.

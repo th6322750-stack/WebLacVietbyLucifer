@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
 import { PageHero } from "@/components/layout/PageHero";
+import { KnowledgeNetwork } from "@/components/layout/KnowledgeNetwork";
 import { CategoryFilter } from "@/components/content/CategoryFilter";
 import { NewsletterForm } from "@/components/conversion/NewsletterForm";
 import { FinalCta } from "@/components/layout/FinalCta";
@@ -46,6 +47,7 @@ export default async function KnowledgePage({
         eyebrow="Kiến thức"
         title="Kiến thức"
         description="Chia sẻ kiến thức, kinh nghiệm và xu hướng mới nhất trong Digital Marketing, Mạng xã hội, AI và Truyền thông giúp doanh nghiệp bứt phá trong kỷ nguyên số."
+        heroSlot={<KnowledgeNetwork className="hidden lg:block" />}
       />
 
       <Section id="category-filters" compact>
@@ -135,14 +137,26 @@ export default async function KnowledgePage({
         </Container>
       </Section>
 
-      <Section id="newsletter" tone="ivory">
-        <Container width="editorial">
+      {/* PRO V2.2 §8: was a narrow card centered in an "editorial"-width container — read as a
+          box floating alone rather than part of the page. Full-width dark strip instead, copy
+          left / form right, matching the same "band" rhythm FinalCta's `strip` variant already
+          uses elsewhere on the site rather than inventing a new container shape. */}
+      <Section id="newsletter" tone="dark">
+        <Container>
           <ScrollReveal direction="up" distance={24} duration={0.7}>
-            <div className="rounded-2xl border border-gold-500/25 bg-ink-950 p-8 text-center shadow-xl md:p-10">
-              <Icon name="mail" size="feature" className="mx-auto text-gold-300" />
-              <h2 className="mt-4 text-h3-mobile font-heading text-white">Cập nhật kiến thức mới nhất mỗi tuần từ Lạc Việt</h2>
-              <p className="mt-2 text-body text-white/75">Đăng ký để không bỏ lỡ bài viết mới về website, mạng xã hội và công cụ số.</p>
-              <div className="mx-auto mt-6 max-w-md text-left">
+            <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:gap-10 md:text-left">
+              <div className="flex items-center gap-4">
+                <Icon name="mail" size="feature" className="hidden shrink-0 text-gold-300 md:block" />
+                <div>
+                  <h2 className="text-h3-mobile font-heading text-white lg:text-h3-desktop">
+                    Cập nhật kiến thức mới nhất mỗi tuần
+                  </h2>
+                  <p className="mt-2 max-w-md text-body text-white/75">
+                    Đăng ký để không bỏ lỡ bài viết mới về website, mạng xã hội và công cụ số.
+                  </p>
+                </div>
+              </div>
+              <div className="w-full max-w-sm text-left">
                 <NewsletterForm onDark />
               </div>
             </div>

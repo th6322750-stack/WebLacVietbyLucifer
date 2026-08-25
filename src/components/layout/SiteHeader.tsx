@@ -54,10 +54,13 @@ export function SiteHeader() {
     // ≈ rgb(7,8,10)) rather than `ink-950` so the header sits on the same depth scale as other
     // cinematic surfaces. Added the bottom hairline the brief asks for — a header this close in
     // tone to the hero behind it had no edge to separate from it at all before.
+    // PRO V2.2 §10: scrolled opacity bumped .94→.97 — `backdrop-filter` always blends with
+    // whatever's behind it, so even at .94 the header read as "greyish" over lighter body
+    // sections instead of matching the hero's own near-black. Less bleed-through at .97.
     <header
       data-state={menuOpen ? "mobile-menu-open" : undefined}
       className={`sticky top-0 z-50 border-b border-white/5 backdrop-blur-lg transition-[height,background-color] duration-normal ease-standard ${
-        scrolled ? "h-14 bg-surface-0/[.94] lg:h-16" : "h-16 bg-surface-0/75 lg:h-[76px]"
+        scrolled ? "h-14 bg-surface-0/[.97] lg:h-16" : "h-16 bg-surface-0/75 lg:h-[76px]"
       }`}
     >
       <Container className="flex h-full items-center justify-between">
@@ -73,7 +76,14 @@ export function SiteHeader() {
             height={assetSize("lac-viet-logo-horizontal-approved").height}
             priority
             sizes="112px"
-            className={`w-auto transition-[height] duration-normal ease-standard ${scrolled ? "h-7 lg:h-8" : "h-8 lg:h-10"}`}
+            // PRO V2.2 §10: ~10% larger at every state (32/40px → 36/44px unscrolled,
+            // 28/32px → 32/36px scrolled). Arbitrary pixel values, not `h-9`/`h-11` — this
+            // project's spacing scale has no "9" or "11" step, and an off-scale utility here
+            // would silently emit no CSS at all (the exact bug class tailwind.config.ts's own
+            // comments warn about).
+            className={`w-auto transition-[height] duration-normal ease-standard ${
+              scrolled ? "h-[32px] lg:h-[36px]" : "h-[36px] lg:h-[44px]"
+            }`}
           />
         </Link>
 
