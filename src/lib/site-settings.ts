@@ -3,8 +3,11 @@ export const siteSettings = {
   // Deliberately not rendered anywhere (removed from footer, homepage hero, and /gioi-thieu
   // 2026-08-25 per explicit request). Left as data, not a call to bring it back.
   slogan: "Cần Kiệm Liêm Chính",
-  domain: "lacvietmedia.com",
-  canonicalOrigin: "https://lacvietmedia.com",
+  // Real production domain as of 2026-08-24 (lacvietmedia.com never resolved — dead domain
+  // left over from before this one was registered). Sitemap/robots/canonical URLs all derive
+  // from this, so a stale value here was actively pointing crawlers at a domain that's down.
+  domain: "lacviet.media",
+  canonicalOrigin: "https://lacviet.media",
   zalo: "0355636882",
   telegram: "@lucifer_dvmxh",
   // Pending confirmation from Lucifer (CONTENT_TRUTH.json "pending"). Not rendered as a
