@@ -79,6 +79,47 @@ test.describe("mobile navigation drawer", () => {
     await expect(drawer).not.toBeVisible();
     await expect(menuButton).toBeFocused();
   });
+
+  // PRO V2.1: found by hand, not by this suite — `toBeVisible()` alone passed even when the
+  // drawer was squished to 63px tall (header-height) instead of the full viewport, because a
+  // non-zero, non-`display:none` box counts as "visible" regardless of its actual size. Root
+  // cause: `<header>` has `backdrop-blur-*`, and `backdrop-filter` establishes a containing
+  // block for `position: fixed` descendants — same as `transform`/`filter` — so this drawer,
+  // nested inside `<header>` in the JSX, had its `fixed inset-0` resolving against the header's
+  // own box instead of the viewport. Fixed via `createPortal` to `document.body`. These
+  // assertions pin actual geometry and DOM placement so a regression fails loudly instead of
+  // just quietly failing `toBeVisible()`'s very loose bar.
+  test("drawer covers the full viewport and is portaled outside <header>", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Mở menu" }).click();
+
+    const drawer = page.getByRole("dialog", { name: "Menu điều hướng" });
+    const box = await drawer.boundingBox();
+    expect(box, "drawer not rendered").not.toBeNull();
+    expect(box!.height, "drawer collapsed to less than the viewport — likely trapped inside a backdrop-filter containing block again").toBeGreaterThan(800);
+    expect(box!.width).toBeGreaterThan(380);
+
+    const escapesHeader = await drawer.evaluate((el) => !el.closest("header"));
+    expect(escapesHeader, "drawer is still nested inside <header> in the DOM").toBe(true);
+
+    // The actual nav links must be inside that full-size box, not overflowing past what's
+    // visible on screen.
+    const linkBox = await page.getByRole("link", { name: "Liên hệ", exact: true }).boundingBox();
+    expect(linkBox, "'Liên hệ' link not found in drawer").not.toBeNull();
+    expect(linkBox!.y).toBeLessThan(844);
+    expect(linkBox!.y).toBeGreaterThan(0);
+  });
+
+  test("nav link inside the drawer actually navigates", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Mở menu" }).click();
+    const drawer = page.getByRole("dialog", { name: "Menu điều hướng" });
+    await drawer.getByRole("link", { name: "Kiến thức", exact: true }).click();
+    await page.waitForURL("**/kien-thuc");
+    await expect(page).toHaveURL(/\/kien-thuc$/);
+  });
 });
 
 // PRO V2.1: the on-site consultation modal (form → inline "Cảm ơn bạn!" success state) and the

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -113,100 +114,113 @@ export function SiteHeader() {
         />
       </Container>
 
-      {menuOpen ? (
-        <div className="fixed inset-0 z-[70] lg:hidden">
-          <button
-            type="button"
-            aria-label="Đóng menu"
-            className="absolute inset-0 bg-ink-950/70"
-            onClick={() => setMenuOpen(false)}
-          />
-          <div
-            ref={drawerRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu điều hướng"
-            data-state="mobile-menu-open"
-            tabIndex={-1}
-            /* Approved state master: an opaque full-viewport black drawer. It must cover the page
-             * entirely — an earlier partial-width drawer let the Home hero show through, which the
-             * recovery audit flagged. `inset-0` + solid bg is what makes the state screenshot honest. */
-            className="absolute inset-0 flex w-full flex-col overflow-y-auto bg-ink-950 p-6"
-          >
-            <div className="flex items-center justify-between">
-              <Image
-                src={assetPath("lac-viet-logo-horizontal-approved")}
-                alt="Lạc Việt Media Agency"
-                width={assetSize("lac-viet-logo-horizontal-approved").width}
-                height={assetSize("lac-viet-logo-horizontal-approved").height}
-                sizes="90px"
-                className="h-8 w-auto"
+      {/* PRO V2.1 bug fix: `<header>` carries `backdrop-blur-*`, and CSS `backdrop-filter` (like
+          `filter`/`transform`) establishes a containing block for `position: fixed` descendants.
+          This drawer is nested inside `<header>` in the JSX, so its `fixed inset-0` was resolving
+          against the HEADER's own box (64/76px tall) instead of the viewport — the drawer
+          collapsed to header-height, its nav links rendered squished into that sliver, and the
+          real page showed through everywhere below it. `createPortal` mounts this subtree onto
+          `document.body` directly, outside the header's DOM subtree entirely, so its `fixed`
+          positioning has no filtered ancestor to get trapped by. Nothing about the header's own
+          styling changes. */}
+      {menuOpen
+        ? createPortal(
+            <div className="fixed inset-0 z-[70] lg:hidden">
+              <button
+                type="button"
+                aria-label="Đóng menu"
+                className="absolute inset-0 bg-ink-950/70"
+                onClick={() => setMenuOpen(false)}
               />
-              <IconButton icon="close" label="Đóng menu" onDark onClick={() => setMenuOpen(false)} />
-            </div>
-            <nav aria-label="Chính (di động)" className="mt-8 flex-1">
-              <ul className="flex flex-col gap-1">
-                {navLinks.map((link) => {
-                  if (link.href === null) {
-                    return (
-                      <li key={link.label}>
-                        <button
-                          type="button"
-                          aria-expanded={mobileServicesOpen}
-                          onClick={() => setMobileServicesOpen((v) => !v)}
-                          className="flex min-h-touch w-full items-center justify-between rounded-sm px-2 text-body-lg text-white/90 hover:bg-white/5 hover:text-white"
-                        >
-                          {link.label}
-                          <Icon
-                            name="chevron-down"
-                            className={`text-white/40 transition-transform duration-normal ease-standard ${mobileServicesOpen ? "rotate-180" : ""}`}
-                          />
-                        </button>
-                        {mobileServicesOpen ? (
-                          <ul className="flex flex-col gap-1 pl-4">
-                            {link.children.map((child) => (
-                              <li key={child.href}>
-                                <Link
-                                  href={child.href}
-                                  onClick={() => setMenuOpen(false)}
-                                  className="flex min-h-touch items-center rounded-sm px-2 text-body text-white/80 hover:bg-white/5 hover:text-white"
-                                >
-                                  {child.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </li>
-                    );
-                  }
-                  return (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        onClick={() => setMenuOpen(false)}
-                        className="flex min-h-touch items-center justify-between rounded-sm px-2 text-body-lg text-white/90 hover:bg-white/5 hover:text-white"
-                      >
-                        {link.label}
-                        <Icon name="chevron-right" className="text-white/40" />
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-            <Button
-              className="w-full"
-              onClick={() => {
-                setMenuOpen(false);
-                open("mobile-nav-drawer");
-              }}
-            >
-              Nhận tư vấn
-            </Button>
-          </div>
-        </div>
-      ) : null}
+              <div
+                ref={drawerRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Menu điều hướng"
+                data-state="mobile-menu-open"
+                tabIndex={-1}
+                /* Approved state master: an opaque full-viewport black drawer. It must cover the
+                 * page entirely — an earlier partial-width drawer let the Home hero show through,
+                 * which the recovery audit flagged. `inset-0` + solid bg is what makes the state
+                 * screenshot honest. */
+                className="absolute inset-0 flex w-full flex-col overflow-y-auto bg-ink-950 p-6"
+              >
+                <div className="flex items-center justify-between">
+                  <Image
+                    src={assetPath("lac-viet-logo-horizontal-approved")}
+                    alt="Lạc Việt Media Agency"
+                    width={assetSize("lac-viet-logo-horizontal-approved").width}
+                    height={assetSize("lac-viet-logo-horizontal-approved").height}
+                    sizes="90px"
+                    className="h-8 w-auto"
+                  />
+                  <IconButton icon="close" label="Đóng menu" onDark onClick={() => setMenuOpen(false)} />
+                </div>
+                <nav aria-label="Chính (di động)" className="mt-8 flex-1">
+                  <ul className="flex flex-col gap-1">
+                    {navLinks.map((link) => {
+                      if (link.href === null) {
+                        return (
+                          <li key={link.label}>
+                            <button
+                              type="button"
+                              aria-expanded={mobileServicesOpen}
+                              onClick={() => setMobileServicesOpen((v) => !v)}
+                              className="flex min-h-touch w-full items-center justify-between rounded-sm px-2 text-body-lg text-white/90 hover:bg-white/5 hover:text-white"
+                            >
+                              {link.label}
+                              <Icon
+                                name="chevron-down"
+                                className={`text-white/40 transition-transform duration-normal ease-standard ${mobileServicesOpen ? "rotate-180" : ""}`}
+                              />
+                            </button>
+                            {mobileServicesOpen ? (
+                              <ul className="flex flex-col gap-1 pl-4">
+                                {link.children.map((child) => (
+                                  <li key={child.href}>
+                                    <Link
+                                      href={child.href}
+                                      onClick={() => setMenuOpen(false)}
+                                      className="flex min-h-touch items-center rounded-sm px-2 text-body text-white/80 hover:bg-white/5 hover:text-white"
+                                    >
+                                      {child.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : null}
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            onClick={() => setMenuOpen(false)}
+                            className="flex min-h-touch items-center justify-between rounded-sm px-2 text-body-lg text-white/90 hover:bg-white/5 hover:text-white"
+                          >
+                            {link.label}
+                            <Icon name="chevron-right" className="text-white/40" />
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    open("mobile-nav-drawer");
+                  }}
+                >
+                  Nhận tư vấn
+                </Button>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </header>
   );
 }
