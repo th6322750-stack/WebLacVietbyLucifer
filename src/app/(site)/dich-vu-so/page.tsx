@@ -128,43 +128,52 @@ export default function DigitalServicesPage() {
               titleClassName="text-h3-mobile lg:text-h3-desktop"
             />
           </ScrollReveal>
-          <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* PRO V2.2 §7: brand mark bumped 36→48px, price number given real size hierarchy
+              instead of matching the body text, first feature promoted to a small badge chip
+              (real content — not invented — just given visual priority), and mobile finally
+              gets a visible CTA (was `hidden sm:block`, so mobile had no CTA on this card at
+              all). More vertical padding throughout for the "breathing room" the brief asks for. */}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((p, idx) => (
               <ScrollReveal key={p.name} direction="up" distance={24} duration={0.7} delay={idx * 100}>
-                <div
-                  className="rounded-xl border border-gold-500/20 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg sm:flex sm:flex-col sm:items-center sm:gap-2 sm:p-5 sm:text-center"
-                >
-                  <div className="flex items-center gap-3 p-3 sm:contents">
-                    <span className="shrink-0 sm:contents">
-                      <BrandMark name={p.brand} size={36} />
-                    </span>
-                    <span className="min-w-0 flex-1 sm:contents">
-                      <h3 className="text-small font-semibold text-ink-950 sm:font-heading sm:text-body">{p.name}</h3>
-                      <p className="text-caption font-semibold text-gold-700 sm:hidden">{p.price}</p>
-                    </span>
+                <div className="flex h-full flex-col rounded-xl border border-gold-500/20 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-lg sm:items-center sm:p-6 sm:text-center">
+                  <div className="flex w-full items-center gap-3 sm:flex-col sm:gap-3">
+                    <BrandMark name={p.brand} size={48} />
+                    <div className="min-w-0 flex-1 sm:flex-none">
+                      <h3 className="font-heading text-small text-ink-950 sm:mt-1 sm:text-body">{p.name}</h3>
+                      {p.features[0] ? (
+                        <span className="mt-1 inline-flex w-fit items-center rounded-pill bg-ivory-100 px-2 py-0.5 text-caption text-text-secondary">
+                          {p.features[0]}
+                        </span>
+                      ) : null}
+                    </div>
+                    <DigitalProductCta label="Đăng ký ngay" compact className="sm:hidden" />
                   </div>
-                  <ul className="hidden flex-col gap-1 self-start text-left sm:flex">
-                    {p.features.map((f) => (
+
+                  <ul className="mt-4 hidden w-full flex-col gap-1.5 self-start text-left sm:flex">
+                    {p.features.slice(1).map((f) => (
                       <li key={f} className="flex items-start gap-1 text-caption text-text-secondary">
                         <Icon name="check" size="inline" className="mt-px shrink-0 text-gold-600" />
                         {f}
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-1 hidden text-small text-text-secondary sm:block">
+
+                  <p className="mt-3 text-small text-text-secondary sm:mt-4">
                     {(() => {
                       const m = /^(Từ\s+)?(\S+?)(\/.*)?$/.exec(p.price);
                       if (!m) return p.price;
                       return (
                         <>
                           {m[1]}
-                          <span className="text-body font-semibold text-gold-700">{m[2]}</span>
+                          <span className="font-heading text-h4-mobile text-gold-700 sm:text-h4-desktop">{m[2]}</span>
                           {m[3] ? <span> {m[3].replace("/", "/ ")}</span> : null}
                         </>
                       );
                     })()}
                   </p>
-                  <div className="hidden px-3 pb-3 sm:block sm:p-0 sm:mt-2">
+
+                  <div className="mt-3 hidden w-full sm:block">
                     <DigitalProductCta label="Đăng ký ngay" />
                   </div>
                 </div>

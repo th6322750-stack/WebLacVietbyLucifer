@@ -13,13 +13,39 @@ export function DigitalHeroCta() {
   );
 }
 
-export function DigitalProductCta({ label }: { label: string }) {
+/** PRO V2.2 §7: `compact` renders a small round arrow-button instead of the full labeled
+ * button — the mobile product row had NO visible CTA at all before (the full button was
+ * `hidden sm:block`), which is exactly the "CTA rõ hơn" gap the brief calls out. */
+export function DigitalProductCta({
+  label,
+  compact = false,
+  className = "",
+}: {
+  label: string;
+  compact?: boolean;
+  className?: string;
+}) {
   const { open } = useConsultation();
+  const onClick = () => open("featured-digital-products", "Dịch vụ số / tài khoản");
+
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={label}
+        className={`grid size-9 shrink-0 place-items-center rounded-full border border-gold-500/50 text-gold-700 transition-colors hover:border-gold-600 hover:bg-gold-500/10 ${className}`}
+      >
+        <Icon name="arrow-right" size="inline" />
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
-      onClick={() => open("featured-digital-products", "Dịch vụ số / tài khoản")}
-      className="mt-3 inline-flex w-full items-center justify-center rounded-xs border border-gold-500/60 px-3 py-2 text-caption font-semibold text-gold-700 transition-colors hover:border-gold-600 hover:bg-gold-500/10"
+      onClick={onClick}
+      className={`mt-3 inline-flex w-full items-center justify-center rounded-xs border border-gold-500/60 px-3 py-2 text-caption font-semibold text-gold-700 transition-colors hover:border-gold-600 hover:bg-gold-500/10 ${className}`}
     >
       {label}
     </button>

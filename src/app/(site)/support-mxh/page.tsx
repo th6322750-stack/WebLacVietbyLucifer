@@ -21,7 +21,7 @@ export const metadata = pageMetadata({
   path: "/support-mxh",
 });
 
-import { BrandName } from "@/components/ui/BrandMark";
+import { BrandMark, type BrandName } from "@/components/ui/BrandMark";
 
 // 4 service cards per approved master (page-05) — one per platform + strategy consulting.
 const supportServices: {
@@ -146,6 +146,52 @@ export default function SupportMxhPage() {
         imageAlt="Support mạng xã hội Lạc Việt Media"
         cta={<SupportHeroCta />}
       />
+
+      {/* PRO V2.2 §6: a signature section right after the hero so the page doesn't drop straight
+          from ShieldOrbit into a plain card grid — "kéo ngôn ngữ hero xuống body." Deliberately
+          NOT a second orbit (brief explicitly says not to on this page): a static platform row
+          (same 6 real brand marks ShieldOrbit already orbits, just laid flat) plus a condensed
+          5-stage flow strip. The full titled process further down the page already covers this
+          in detail — this is the compact, glanceable version, not a duplicate. */}
+      <Section id="support-network-map" tone="dark" texture>
+        <Container>
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading
+              onDark
+              eyebrow="Mạng lưới hỗ trợ"
+              title="Bảo vệ và hỗ trợ trên các nền tảng bạn đang dùng"
+              align="center"
+            />
+          </ScrollReveal>
+          <ScrollReveal direction="up" distance={20} duration={0.7} delay={100}>
+            <ul className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              {(["facebook", "tiktok", "meta", "messenger", "youtube", "zalo"] as const).map((brand) => (
+                <li
+                  key={brand}
+                  className="flex items-center gap-2 rounded-pill border border-white/10 bg-white/[0.04] px-4 py-2"
+                >
+                  <BrandMark name={brand} size={20} />
+                  <span className="text-small capitalize text-white/80">{brand}</span>
+                </li>
+              ))}
+            </ul>
+          </ScrollReveal>
+          <ScrollReveal direction="up" distance={20} duration={0.7} delay={200}>
+            <ol className="mt-10 flex flex-wrap items-center justify-center gap-x-2 gap-y-3">
+              {["Nhận yêu cầu", "Xác minh", "Xử lý", "Bảo vệ", "Bàn giao"].map((stage, idx, arr) => (
+                <li key={stage} className="flex items-center gap-2">
+                  <span className="rounded-pill border border-gold-500/30 bg-gold-500/10 px-3 py-1.5 text-caption font-semibold uppercase tracking-wide text-gold-300">
+                    {String(idx + 1).padStart(2, "0")} · {stage}
+                  </span>
+                  {idx < arr.length - 1 ? (
+                    <Icon name="chevron-right" size="inline" className="text-white/30" aria-hidden="true" />
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+          </ScrollReveal>
+        </Container>
+      </Section>
 
       <Section id="support-service-grid">
         <Container>

@@ -3,6 +3,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
 import { PageHero } from "@/components/layout/PageHero";
+import { ConsultationNetwork } from "@/components/layout/ConsultationNetwork";
 import { ContactChannelCard } from "@/components/conversion/ContactChannelCard";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
@@ -45,8 +46,10 @@ export default function ContactPage() {
           </>
         }
         description="Chúng tôi luôn sẵn sàng lắng nghe và tư vấn giải pháp phù hợp nhất cho mục tiêu của bạn."
-        imageAssetId="contact-hero-master"
-        imageAlt="Liên hệ Lạc Việt Media"
+        // PRO V2.2 §9: `imageAssetId` never actually rendered anything — PageHero's visual slot
+        // only checks `heroSlot`/`heroImage`, not this prop (see its own comment) — so the right
+        // column was silently empty on desktop this whole time. `heroSlot` is the real hook.
+        heroSlot={<ConsultationNetwork className="hidden lg:block" />}
         proofItems={[
           { icon: "clock", title: "Phản hồi nhanh", note: "Trong 30 phút" },
           { icon: "messages-square", title: "Tư vấn miễn phí", note: "Giải pháp phù hợp" },
