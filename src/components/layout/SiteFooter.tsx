@@ -10,11 +10,15 @@ import { Icon } from "@/components/ui/Icon";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { track } from "@/lib/analytics";
 
-const GROUPS = [
-  { key: "brand" as const, title: "Lạc Việt" },
-  { key: "services" as const, title: "Dịch vụ" },
-  { key: "contact" as const, title: "Liên hệ" },
-];
+// PRO V2.1: was missing a "Khám phá" (footerLinks.brand — Giới thiệu, Kiến thức) entry entirely,
+// and the accordion below mapped every non-"services" key to `footerLinks.contact` — so even
+// adding one here without fixing that mapping would have silently rendered the wrong links.
+// Each group now carries its own `links` directly instead of being looked up by key.
+const MOBILE_GROUPS = [
+  { key: "discover", title: "Khám phá", links: footerLinks.brand },
+  { key: "services", title: "Dịch vụ", links: footerLinks.services },
+  { key: "contact", title: "Liên hệ", links: footerLinks.contact },
+] as const;
 
 export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
   if (minimal) {
@@ -26,6 +30,7 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
             alt="Lạc Việt Media Agency"
             width={assetSize("lac-viet-logo-horizontal-approved").width}
             height={assetSize("lac-viet-logo-horizontal-approved").height}
+            sizes="90px"
             className="h-8 w-auto"
           />
           <p>
@@ -51,19 +56,15 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
         <div className="hidden gap-10 md:grid md:grid-cols-4">
           <BrandColumn />
           <FooterLinkColumn title="Dịch vụ" links={footerLinks.services} />
-          <FooterLinkColumn title="Liên kết" links={footerLinks.brand} />
+          <FooterLinkColumn title="Khám phá" links={footerLinks.brand} />
           <FooterLinkColumn title="Liên hệ" links={footerLinks.contact} />
         </div>
 
         <div className="flex flex-col gap-2 md:hidden">
           <BrandColumn />
           <div className="mt-4 flex flex-col divide-y divide-white/10 border-y border-white/10">
-            {GROUPS.filter((g) => g.key !== "brand").map((g) => (
-              <FooterAccordionGroup
-                key={g.key}
-                title={g.title}
-                links={g.key === "services" ? footerLinks.services : footerLinks.contact}
-              />
+            {MOBILE_GROUPS.map((g) => (
+              <FooterAccordionGroup key={g.key} title={g.title} links={g.links} />
             ))}
           </div>
         </div>
@@ -91,6 +92,7 @@ function BrandColumn() {
         alt={siteSettings.brandName}
         width={assetSize("lac-viet-logo-horizontal-approved").width}
         height={assetSize("lac-viet-logo-horizontal-approved").height}
+        sizes="112px"
         className="h-10 w-auto"
       />
       <p className="mt-4 max-w-xs text-small text-white/75">

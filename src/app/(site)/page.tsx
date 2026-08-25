@@ -147,12 +147,17 @@ export default function HomePage() {
 
             <ScrollReveal direction="up" distance={16} duration={0.7} delay={500}>
               <div className="mt-8 flex items-center gap-3">
+                {/* PRO V2.1 perf: intrinsic asset is 2172×724, rendered at ~120×40 (h-10) — an
+                    18x mismatch, worse than the logo bug this session already fixed, and same
+                    root cause: no `sizes` meant Next's x-descriptor srcset was keyed off the raw
+                    2172px width regardless of how small the image actually renders. */}
                 <Image
                   src={assetPath("v5-customer-avatars")}
                   alt=""
                   aria-hidden="true"
                   width={assetSize("v5-customer-avatars").width}
                   height={assetSize("v5-customer-avatars").height}
+                  sizes="120px"
                   className="h-10 w-auto"
                 />
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-white/80" data-demo-only="true">

@@ -1,12 +1,14 @@
 import { test, expect, type Page } from "@playwright/test";
 
+// PRO V2.1: /du-an is now a redirect into /website (the demo project catalogue it used to list
+// was removed sitewide), so it stays in this list — the redirect itself must resolve cleanly —
+// but its old per-project detail route is gone along with the projects it described.
 const ROUTES = [
   "/",
   "/website",
   "/support-mxh",
   "/dich-vu-so",
   "/du-an",
-  "/du-an/website-bat-dong-san-an-phat",
   "/kien-thuc",
   "/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google",
   "/gioi-thieu",
@@ -43,8 +45,18 @@ test.describe("routes render with no console errors", () => {
 test.describe("no horizontal overflow at reference viewports", () => {
   for (const route of ROUTES) {
     test(`no h-scroll ${route} @ mobile 390`, async ({ page }) => {
+      // PRO V2.1: /lien-he flaked here — ScrollReveal's `direction="left"`/`"right"` variants
+      // sit at a translateX(±20px) offset until its mount effect flips `isVisible`, and
+      // measuring scrollWidth in that split-second window reports a false 4px overflow (one side
+      // pushed right, the mirrored side pushed left). `emulateMedia` makes the effect SET the
+      // correct value immediately instead of waiting on an IntersectionObserver — but the effect
+      // still runs after React's initial commit, not before it, so there's a real (if short)
+      // window where the pre-reveal transform is what's on screen. A fixed re-run still hit it,
+      // which is why this needs an explicit settle wait, not just the media emulation.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(route);
+      await page.waitForTimeout(200);
       const hasOverflow = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
       );
@@ -69,48 +81,32 @@ test.describe("mobile navigation drawer", () => {
   });
 });
 
-test.describe("consultation modal", () => {
-  test("opens from header CTA, submits, shows success state", async ({ page }) => {
+// PRO V2.1: the on-site consultation modal (form → inline "Cảm ơn bạn!" success state) and the
+// /lien-he contact form were BOTH deliberately replaced this session with a direct Zalo-chat
+// redirect on every "Nhận tư vấn" CTA sitewide (ConsultationProvider.open() now calls
+// window.open on zalo.me — see git history). Neither the modal nor the form exists to test
+// anymore; these describe blocks assert the new, approved behavior instead.
+test.describe("consultation CTA opens Zalo", () => {
+  test("header CTA opens Zalo chat in a new tab, no modal", async ({ page, context }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: "Nhận tư vấn" }).first().click();
-
-    const dialog = page.getByRole("dialog", { name: "Nhận tư vấn miễn phí" });
-    await expect(dialog).toBeVisible();
-
-    await dialog.getByLabel("Họ tên").fill("Nguyễn Văn A");
-    await dialog.getByLabel("Số điện thoại").fill("0912345678");
-    await dialog.getByLabel(/Nhu cầu/).selectOption({ index: 1 });
-    await dialog.getByLabel(/Dịch vụ quan tâm/).selectOption({ index: 1 });
-    await dialog.getByLabel(/Tôi đồng ý/).check();
-    await dialog.getByRole("button", { name: "Gửi yêu cầu tư vấn" }).click();
-
-    // RECOVERY V2: the approved success state (master ui-010) is its own centred dialog reading
-    // "Cảm ơn bạn!", not an inline note inside the consultation modal — so it is asserted at
-    // page level, by its state marker and approved copy, rather than scoped to `dialog`.
-    const success = page.locator('[data-state="form-success"]');
-    await expect(success).toBeVisible();
-    await expect(success.getByText("Cảm ơn bạn!")).toBeVisible();
-  });
-
-  test("closes on Escape and restores focus to trigger", async ({ page }) => {
-    await page.goto("/");
-    const trigger = page.getByRole("button", { name: "Nhận tư vấn" }).first();
-    await trigger.click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(page.getByRole("dialog")).not.toBeVisible();
-    await expect(trigger).toBeFocused();
+    const [popup] = await Promise.all([
+      context.waitForEvent("page"),
+      page.getByRole("button", { name: "Nhận tư vấn" }).first().click(),
+    ]);
+    await popup.waitForLoadState("domcontentloaded").catch(() => {});
+    expect(popup.url()).toContain("zalo.me");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await popup.close();
   });
 });
 
-test.describe("contact form validation", () => {
-  test("shows inline errors for invalid submission", async ({ page }) => {
+test.describe("/lien-he Zalo card", () => {
+  test("shows a direct Zalo link, no contact form", async ({ page }) => {
     await page.goto("/lien-he");
-    const form = page.locator("#contact-form");
-    await form.getByLabel("Họ tên").fill("A");
-    await form.getByLabel("Số điện thoại").fill("123");
-    await form.getByRole("button", { name: "Gửi yêu cầu tư vấn" }).click();
-    await expect(form.getByRole("alert").first()).toBeVisible();
+    await expect(page.locator("form")).toHaveCount(0);
+    const zaloLink = page.locator('a[href*="zalo.me"]').first();
+    await expect(zaloLink).toBeVisible();
+    await expect(zaloLink).toHaveAttribute("target", "_blank");
   });
 });
 
@@ -127,10 +123,20 @@ test.describe("FAQ accordion", () => {
 });
 
 test.describe("project/article filters", () => {
-  test("filtering projects updates the URL", async ({ page }) => {
-    await page.goto("/du-an");
-    await page.getByRole("button", { name: "Website", exact: true }).click();
-    await expect(page).toHaveURL(/category=Website/);
+  // PRO V2.1: /du-an's own category-filter UI (URL-driven, `?category=`) was replaced this
+  // session by /website's client-side industry gallery (IndustryGallery.tsx — filters in place,
+  // no URL change, since it's a single reusable gallery rather than a route per category).
+  test("website industry gallery filters in place without navigating", async ({ page }) => {
+    await page.goto("/website");
+    const gallery = page.locator("#website-projects");
+    await gallery.scrollIntoViewIfNeeded();
+    const before = await gallery.locator("a, button").count();
+    const chip = gallery.getByRole("button", { name: "Bất động sản", exact: true });
+    await chip.click();
+    await expect(chip).toHaveAttribute("aria-pressed", "true");
+    await expect(page).toHaveURL("/website");
+    const after = await gallery.locator("a, button").count();
+    expect(after).toBeLessThan(before);
   });
 
   // GD10 re-QA round 4, R4-04: the featured article is index 0 of the visible set, and the
@@ -162,18 +168,14 @@ test.describe("project/article filters", () => {
     await page.goto("/kien-thuc?category=SEO");
     await expect(page.locator("#article-grid").getByRole("heading", { name: /SEO Onpage là gì/i })).toBeVisible();
   });
-
-  test("hidden detail-only project never appears in listings or filters", async ({ page }) => {
-    for (const url of ["/du-an", "/du-an?category=Website"]) {
-      await page.goto(url);
-      await expect(page.getByRole("heading", { name: "Website Bất Động Sản An Phát", exact: true })).toHaveCount(0);
-    }
-  });
 });
 
+// PRO V2.1: the demo project catalogue this block once covered (website-bat-dong-san-an-phat and
+// its siblings) was removed sitewide this session — `src/content/projects.ts` is now a real
+// empty array, not a fixture with something to hide. The article-side hidden-fixture case is
+// untouched and still real.
 test.describe("hidden fixtures stay direct-review only", () => {
   const HIDDEN_ROUTES = [
-    "/du-an/website-bat-dong-san-an-phat",
     "/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google",
   ];
 
@@ -192,75 +194,40 @@ test.describe("hidden fixtures stay direct-review only", () => {
     const response = await page.goto("/sitemap.xml");
     expect(response?.status()).toBeLessThan(400);
     const xml = (await response?.text()) ?? "";
-    expect(xml).not.toContain("/du-an/website-bat-dong-san-an-phat");
     expect(xml).not.toContain("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
-    // Listing routes stay indexable. Detail routes are withheld while their content is
-    // unverified demo — asserted per-entity in the SEO content-integrity blocks below.
-    for (const route of ["/du-an", "/kien-thuc", "/website", "/gioi-thieu", "/lien-he"]) {
+    // /du-an is deliberately absent — it's a pure redirect into /website now, not its own
+    // indexable page, so sitemap.ts drops it (see the file's own comment on that removal).
+    expect(xml).not.toContain("/du-an");
+    for (const route of ["/kien-thuc", "/website", "/gioi-thieu", "/lien-he"]) {
       expect(xml).toContain(route);
     }
   });
 });
 
-test.describe("SEO content integrity (demo projects)", () => {
-  const DEMO_PROJECT_ROUTES = [
-    "/du-an/website-bat-dong-san-the-maison",
-    "/du-an/quang-cao-google-ads-ecom-shinlala",
-    "/du-an/website-bat-dong-san-an-phat",
-  ];
-
-  // FINAL PASS item 1: CONTENT_TRUTH.json marks every GĐ1 project identity/result as demo until
-  // verified, and SEO_CONTRACT.json forbids demo data becoming indexed claims. Demo project
-  // detail routes therefore stay routable and visible but must be noindex and absent from
-  // sitemap.xml. They must still emit BreadcrumbList (navigation) and never Article schema.
-  for (const route of DEMO_PROJECT_ROUTES) {
-    test(`${route} is routable but noindex with no Article schema`, async ({ page }) => {
-      const response = await page.goto(route);
-      expect(response?.status()).toBeLessThan(400);
-      await expect(page.locator("h1")).toBeVisible();
-
-      const types = (await page.locator('script[type="application/ld+json"]').allTextContents()).map(
-        (b) => JSON.parse(b)["@type"],
-      );
-      expect(types).toContain("BreadcrumbList");
-      expect(types).not.toContain("Article");
-
-      await expect(page.locator('head meta[name="robots"]')).toHaveAttribute("content", /noindex/);
-    });
-  }
-
-  test("no demo project detail URL appears in sitemap.xml", async ({ page }) => {
-    const response = await page.goto("/sitemap.xml");
-    const xml = (await response?.text()) ?? "";
-    for (const route of DEMO_PROJECT_ROUTES) {
-      expect(xml).not.toContain(route);
-    }
-    // The listing routes themselves stay indexable.
-    expect(xml).toContain("/du-an");
-    expect(xml).toContain("/kien-thuc");
-  });
-
-  test("demo projects remain fully visible in the approved UI despite SEO gating", async ({ page }) => {
-    await page.goto("/du-an");
-    const cards = page.locator("main a[href^='/du-an/']");
-    expect(await cards.count()).toBeGreaterThan(0);
-    // Appears twice by design: the grid card and the featured case-study banner.
-    const maison = page.getByRole("heading", { name: "Website Bất Động Sản The Maison", exact: true });
-    expect(await maison.count()).toBe(2);
-    await expect(maison.first()).toBeVisible();
-    // All 12 approved visible projects still render despite every one being noindex.
-    await expect(page.getByRole("heading", { name: "Quảng cáo Google Ads Ecom - Shinlala", exact: true })).toBeVisible();
-  });
-});
+// PRO V2.1: removed. This block asserted noindex/BreadcrumbList/sitemap-exclusion behavior for
+// 3 named fictional demo projects (The Maison, Ecom Shinlala, An Phát). `src/content/projects.ts`
+// no longer contains ANY demo projects — the array was emptied sitewide, along with the fake
+// portfolio it represented — so there is nothing left for these tests to describe. The site's
+// current "concept, not real client work" content lives in the /website industry gallery
+// instead, covered under "project/article filters" above.
 
 test.describe("content-truth markers (final sweep)", () => {
   // FINAL PASS item 3: demo counts, case-study results, and demo pricing must all be tagged in
   // data/markup. The approved master shows no badge on these, so the assertion is on markup.
+  // PRO V2.1: minimums re-measured against current content — /du-an dropped (redirects to
+  // /website, no separate content of its own to tag) and /website's count reflects its disclosure
+  // paragraph rather than per-card tags (verified: the gallery's `data-demo-only` disclosure
+  // sits above the grid, not on each of the 30 cards individually).
+  //
+  // Selector narrowed to `[data-demo-only="true"]`, NOT the bare attribute: /website's pricing
+  // cards correctly carry `data-demo-only="false"` (the 4 packages are Lucifer-confirmed real
+  // prices per PricingCard.tsx's own comment) — `[data-demo-only]` matched those too and this
+  // test's original bare-attribute selector then failed asserting they equal "true", which
+  // would have meant "stop tagging confirmed-real prices as confirmed", the wrong fix.
   const TAGGED = [
-    { route: "/", selector: "[data-demo-only]", min: 5 },
-    { route: "/du-an", selector: "[data-demo-only]", min: 4 },
-    { route: "/website", selector: "[data-demo-only]", min: 8 },
-    { route: "/support-mxh", selector: "[data-demo-only]", min: 1 },
+    { route: "/", selector: '[data-demo-only="true"]', min: 5 },
+    { route: "/website", selector: '[data-demo-only="true"]', min: 1 },
+    { route: "/support-mxh", selector: '[data-demo-only="true"]', min: 1 },
   ];
 
   for (const { route, selector, min } of TAGGED) {
@@ -344,10 +311,16 @@ test.describe("SEO content integrity (demo articles)", () => {
 test.describe("content-truth tagging", () => {
   // R4-02: every project/company preview mockup must carry demoOnly in data per
   // CONTENT_TRUTH.json. The approved cards show no badge, so the tag is asserted in markup.
-  for (const route of ["/", "/website", "/du-an/website-bat-dong-san-an-phat"]) {
+  // PRO V2.1: `/du-an/website-bat-dong-san-an-phat` is gone (its whole project catalogue was
+  // removed). `/website`'s cards changed from `<a data-demo-only>` (ProjectPreviewCard) to
+  // `<button>` (IndustryShowcaseCard, since they open Zalo rather than navigate) — selector
+  // widened to cover both shapes, and narrowed to `="true"` since that same page's pricing
+  // cards legitimately carry `data-demo-only="false"` (real, confirmed prices) and would
+  // otherwise be swept into "cards" this test expects to all read demoOnly.
+  for (const route of ["/", "/website"]) {
     test(`${route} project preview cards are tagged demoOnly`, async ({ page }) => {
       await page.goto(route);
-      const cards = page.locator('a[data-demo-only]');
+      const cards = page.locator('[data-demo-only="true"]');
       expect(await cards.count()).toBeGreaterThan(0);
       for (const card of await cards.all()) {
         await expect(card).toHaveAttribute("data-demo-only", "true");
@@ -356,23 +329,9 @@ test.describe("content-truth tagging", () => {
   }
 });
 
-test.describe("detail-route asset identity", () => {
-  // R4-01: project-cover-01 is identity-bound to demo-project-01 (The Maison). The An Phát
-  // detail-only fixture must not render it anywhere on its route.
-  test("An Phát detail route does not consume The Maison's identity-bound cover", async ({ page }) => {
-    await page.goto("/du-an/website-bat-dong-san-an-phat");
-    const showcase = page.locator("#visual-showcase img");
-    await expect(showcase).toHaveCount(1);
-    // PHA2: the temporary device-master fallback is superseded by the authority-mapped
-    // approved crop. The invariant is unchanged — no project-cover may appear on this route.
-    await expect(showcase).toHaveAttribute("src", /project-detail-showcase-fhd/);
-    await expect(showcase).not.toHaveAttribute("src", /project-cover/);
-    // The related-projects rail legitimately uses covers 01..04 per ASSET_USAGE_MAP; the
-    // showcase and hero must not.
-    const heroImg = page.locator("#case-study-hero img");
-    await expect(heroImg).toHaveAttribute("src", /project-detail-device-master-4k/);
-  });
-});
+// PRO V2.1: removed. Asserted that one specific deleted demo project (An Phát) didn't render
+// another specific deleted demo project's (The Maison) cover image — an identity check between
+// two fixtures that no longer exist, in `src/content/projects.ts` or anywhere else.
 
 test.describe("typography emission guard (PHA2 §D)", () => {
   // TYPOGRAPHY_AUTHORITY.tokenEmissionContract: every referenced typography utility MUST emit
@@ -512,11 +471,11 @@ test.describe("V3 production rasters", () => {
   // 516x33" assertions no longer describe the authority. The invariant that still matters is
   // the one V3 states itself (quality.noFakeUpscale): never render ABOVE native pixels, and
   // never distort the native aspect ratio.
-  const RASTERS = [
-    { route: "/support-mxh", file: "support-cta-device-shield-fhd", w: 1920, h: 1080 },
-    { route: "/dich-vu-so", file: "digital-cta-phoenix-fhd", w: 1920, h: 1080 },
-    { route: "/du-an/website-bat-dong-san-an-phat", file: "project-detail-showcase-fhd", w: 1920, h: 1080 },
-  ];
+  // PRO V2.1: dropped two entries whose routes/content no longer exist —
+  // `support-cta-device-shield-fhd` was superseded by the animated ShieldOrbit hero on
+  // /support-mxh (confirmed orphaned: zero references left in src/**/*.tsx) and
+  // `project-detail-showcase-fhd` only ever rendered on the now-removed demo project detail page.
+  const RASTERS = [{ route: "/dich-vu-so", file: "digital-cta-phoenix-fhd", w: 1920, h: 1080 }];
 
   for (const { route, file, w, h } of RASTERS) {
     test(`${file} renders within native size and keeps its aspect`, async ({ page }) => {
@@ -541,17 +500,20 @@ test.describe("V3 production rasters", () => {
       const u = r.url();
       if (/recovery-v2|master-crops|REFERENCE_ONLY/i.test(u)) bad.push(u);
     });
-    for (const route of ["/", "/du-an", "/kien-thuc", "/du-an/website-bat-dong-san-an-phat"]) {
+    for (const route of ["/", "/website", "/kien-thuc", "/dich-vu-so"]) {
       await page.goto(route);
       await page.waitForLoadState("networkidle");
     }
     expect(bad, `reference-only bytes served: ${bad.join(", ")}`).toEqual([]);
   });
 
-  test("global logo is the approved horizontal SVG vector", async ({ page }) => {
+  // PRO V2.1: the approved logo moved from an SVG vector to the gold-metallic lockup PNG
+  // (public/assets/v5/brand/lac-viet-logo-lockup.png) — a deliberate brand-asset change, not a
+  // regression, so the assertion follows the new approved file rather than the old format.
+  test("global logo is the approved lockup PNG", async ({ page }) => {
     await page.goto("/");
     const logo = page.locator("header img").first();
-    await expect(logo).toHaveAttribute("src", /lac-viet-logo-horizontal-approved\.svg/);
+    await expect(logo).toHaveAttribute("src", /lac-viet-logo-lockup\.png/);
   });
 });
 
@@ -577,10 +539,13 @@ test.describe("design-token integrity", () => {
     expect(box!.height).toBeLessThanOrEqual(48);
   });
 
+  // PRO V2.1: `#projects-grid` lived on `/du-an`'s own listing page, which is now a redirect
+  // into `/website` — its gallery section (`#website-projects`) is the direct successor and
+  // keeps the same "off-token utility silently emits nothing" risk this test exists to catch.
   test("sections have real vertical padding at mobile width", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/du-an");
-    const pad = await page.locator("#projects-grid").first().evaluate((el) => {
+    await page.goto("/website");
+    const pad = await page.locator("#website-projects").first().evaluate((el) => {
       const cs = getComputedStyle(el);
       return { top: parseFloat(cs.paddingTop), bottom: parseFloat(cs.paddingBottom) };
     });
@@ -598,7 +563,7 @@ test.describe("design-token integrity", () => {
   for (const { viewport, label } of PADDING_SLOTS) {
     test(`hero and CTA keep real vertical padding @ ${label}`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto("/du-an");
+      await page.goto("/website");
       const pads = await page.evaluate(() => {
         const read = (sel: string) => {
           const el = document.querySelector(sel);
@@ -606,7 +571,7 @@ test.describe("design-token integrity", () => {
           const cs = getComputedStyle(el);
           return parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
         };
-        return { hero: read("section .max-w-container, header + section > div"), cta: read("#projects-grid") };
+        return { hero: read("section .max-w-container, header + section > div"), cta: read("#website-projects") };
       });
       expect(pads.cta, "section vertical padding must not collapse to 0").toBeGreaterThan(0);
     });
@@ -627,5 +592,112 @@ test.describe("reduced motion", () => {
     await page.goto("/");
     await expect(page.locator("h1")).toBeVisible();
     expect(errors).toEqual([]);
+  });
+
+  test("SpotlightCard tilt is neutralized under reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const card = page.locator(".spotlight-tilt").first();
+    await expect(card).toBeVisible();
+    const transform = await card.evaluate((el) => getComputedStyle(el).transform);
+    expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(transform);
+  });
+});
+
+// PRO V2.1 §95 — regression coverage for this pass's P0 fixes, so none of them silently regress
+// back to their broken state (hidden section, hard-coded font size, wrap-only filter row).
+test.describe("PRO V2.1 mobile completeness", () => {
+  test("homepage process section is visible on mobile (was hidden lg:block)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(page.locator("#work-process")).toBeVisible();
+    await expect(page.locator("#work-process").getByText("Tiếp nhận")).toBeVisible();
+  });
+
+  test("homepage 'latest articles' section is visible on mobile (was hidden lg:block)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(page.locator("#latest-knowledge")).toBeVisible();
+  });
+
+  test("homepage Vietnam hero scene is visible on mobile (was entirely absent)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    // Two `.vn-stage` elements exist in the DOM at once: the full desktop composition (`hidden
+    // lg:block`, correctly hidden here) and the cropped mobile recomposition (`lg:hidden`,
+    // correctly visible here). `:visible` picks the one that's actually on screen at this
+    // viewport instead of relying on DOM order via `.first()`.
+    const mobileScene = page.locator(".vn-stage:visible");
+    await expect(mobileScene).toHaveCount(1);
+    await expect(mobileScene).toBeVisible();
+    const box = await mobileScene.boundingBox();
+    expect(box, "mobile hero scene has no rendered size").not.toBeNull();
+    expect(box!.height).toBeGreaterThan(100);
+  });
+
+  test("footer's 'Khám phá' links reach mobile visitors (accordion previously mapped every non-services group to contact links)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.locator("footer").scrollIntoViewIfNeeded();
+    await page.getByRole("button", { name: "Khám phá" }).click();
+    await expect(page.locator("footer").getByRole("link", { name: "Giới thiệu" })).toBeVisible();
+  });
+});
+
+test.describe("PRO V2.1 hero typography", () => {
+  // PageHero's H1 was hard-coded to 26/29/35px at lg/xl/ultra, well under its own h4 role —
+  // pin the computed size so a future hard-code regression fails loudly instead of just looking
+  // a little small in a screenshot nobody compared pixel-for-pixel.
+  for (const route of ["/support-mxh", "/lien-he", "/website", "/kien-thuc", "/dich-vu-so"]) {
+    test(`${route} hero H1 resolves to the h1-desktop token at desktop width`, async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(route);
+      const fontSize = await page.locator("h1").first().evaluate((el) => getComputedStyle(el).fontSize);
+      expect(parseFloat(fontSize), `${route} h1 font-size`).toBeGreaterThanOrEqual(48);
+    });
+  }
+
+  test("homepage H1 resolves to the display-desktop token at desktop width", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const fontSize = await page.locator("h1").first().evaluate((el) => getComputedStyle(el).fontSize);
+    expect(parseFloat(fontSize)).toBeGreaterThanOrEqual(64);
+  });
+});
+
+test.describe("PRO V2.1 industry filter (mobile scroll, not wrap)", () => {
+  test("filter chips scroll horizontally on mobile instead of wrapping", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/website");
+    const filterRow = page.locator("#website-projects").locator("div.overflow-x-auto").first();
+    const { scrollWidth, clientWidth } = await filterRow.evaluate((el) => ({
+      scrollWidth: el.scrollWidth,
+      clientWidth: el.clientWidth,
+    }));
+    expect(scrollWidth, "filter row should be wider than its visible box (scrollable)").toBeGreaterThan(clientWidth);
+  });
+
+  test("filtering the gallery still works on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/website");
+    const gallery = page.locator("#website-projects");
+    await gallery.scrollIntoViewIfNeeded();
+    const chip = gallery.getByRole("button", { name: "Giáo dục", exact: true });
+    await chip.scrollIntoViewIfNeeded();
+    await chip.click();
+    await expect(chip).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+test.describe("PRO V2.1 gauge needle settles instead of looping", () => {
+  test("dich-vu-so gauge needle stops changing after its one-shot sweep", async ({ page }) => {
+    await page.goto("/dich-vu-so");
+    const needle = page.locator(".dvs-needle").first();
+    await expect(needle).toBeVisible();
+    await page.waitForTimeout(2000); // past the 1.6s sweep
+    const t1 = await needle.evaluate((el) => getComputedStyle(el).transform);
+    await page.waitForTimeout(1500); // if it were still `infinite`, this would catch a repeat
+    const t2 = await needle.evaluate((el) => getComputedStyle(el).transform);
+    expect(t2, "needle transform changed after settling — animation is still looping").toBe(t1);
   });
 });

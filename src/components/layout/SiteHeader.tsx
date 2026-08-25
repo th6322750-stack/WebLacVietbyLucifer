@@ -51,12 +51,17 @@ export function SiteHeader() {
     >
       <Container className="flex h-full items-center justify-between">
         <Link href="/" className="flex items-center" aria-label="Lạc Việt Media Agency — Trang chủ">
+          {/* PRO V2.1 §74/perf: no `sizes` here meant Next assumed up to 100vw and Lighthouse
+              caught the browser fetching the 1920px srcset candidate for a logo rendered at
+              ~110px tall — ~300KB wasted on every page load, sitewide, and flagged as the LCP
+              bottleneck since this is the header's own priority image. */}
           <Image
             src={assetPath("lac-viet-logo-horizontal-approved")}
             alt="Lạc Việt Media Agency"
             width={assetSize("lac-viet-logo-horizontal-approved").width}
             height={assetSize("lac-viet-logo-horizontal-approved").height}
             priority
+            sizes="112px"
             className={`w-auto transition-[height] duration-normal ease-standard ${scrolled ? "h-7 lg:h-8" : "h-8 lg:h-10"}`}
           />
         </Link>
@@ -134,6 +139,7 @@ export function SiteHeader() {
                 alt="Lạc Việt Media Agency"
                 width={assetSize("lac-viet-logo-horizontal-approved").width}
                 height={assetSize("lac-viet-logo-horizontal-approved").height}
+                sizes="90px"
                 className="h-8 w-auto"
               />
               <IconButton icon="close" label="Đóng menu" onDark onClick={() => setMenuOpen(false)} />

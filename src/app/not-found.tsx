@@ -28,6 +28,7 @@ export default function NotFound() {
               width={assetSize("lac-viet-logo-horizontal-approved").width}
               height={assetSize("lac-viet-logo-horizontal-approved").height}
               priority
+              sizes="112px"
               className="h-8 w-auto lg:h-10"
             />
           </Link>

@@ -104,7 +104,12 @@ export function HeroVietnamScene({ className = "", mobile = false }: { className
             alt={l.alt ?? ""}
             width={l.nw}
             height={l.nh}
-            priority={l.id === "hero" || l.id === "flag" || l.id === "pedestal"}
+            // PRO V2.1 perf: Lighthouse's actual LCP-element trace named `sparkle` (not hero/
+            // flag/pedestal) — it's a near-full-canvas overlay (w:100%, h:96%), so by sheer
+            // painted area Chrome picks it as "largest contentful paint" even though it's a
+            // decorative fx layer. Left lazy, that made the whole hero's LCP wait behind a
+            // deferred fetch. Added to priority based on that measurement, not a guess.
+            priority={l.id === "hero" || l.id === "flag" || l.id === "pedestal" || l.id === "sparkle"}
             sizes="100vw"
             style={l.blur ? { filter: `blur(${l.blur}px)` } : undefined}
           />

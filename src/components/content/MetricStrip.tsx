@@ -10,8 +10,14 @@ export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; on
   return (
     <div>
       <dl className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        {/* PRO V2.1: was missing `data-demo-only` on the per-metric wrapper — PageHero's metric
+            row already tags each one this way, but this component only showed the AGGREGATE
+            disclosure paragraph below, with nothing machine-checkable on the numbers themselves.
+            Real gap surfaced by re-running the test suite after /support-mxh's old trust-row
+            section (which did carry the tag) was removed earlier this session — its metrics
+            stayed exactly as unverified as before, just with no way to assert that anymore. */}
         {metrics.map((m) => (
-          <div key={m.label} className="text-center">
+          <div key={m.label} data-demo-only={m.demoOnly} className="text-center">
             <dt className="sr-only">{m.label}</dt>
             <dd className={`text-metric font-heading ${onDark ? "text-gold-300" : "text-gold-700"}`}>
               <AnimatedCounter value={m.value} />

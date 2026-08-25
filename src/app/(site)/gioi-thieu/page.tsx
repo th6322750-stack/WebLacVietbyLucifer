@@ -50,8 +50,11 @@ export default function AboutPage() {
             <ScrollReveal direction="down" distance={16} duration={0.6}>
               <p className="text-eyebrow uppercase text-v5-gold">{siteSettings.brandName}</p>
             </ScrollReveal>
+            {/* PRO V2.1 §4: same hard-coded-to-26px bug as PageHero.tsx, just in this page's own
+                hand-rolled hero instead of the shared component — missed in the first P0 pass
+                because it never calls <PageHero>. */}
             <ScrollReveal direction="up" distance={20} duration={0.7} delay={100}>
-              <h1 className="mt-3 text-h2-mobile font-heading uppercase text-white lg:text-[26px] lg:leading-[1.16] xl:text-[29px] ultra:text-[35px]">
+              <h1 className="mt-3 text-h1-mobile font-heading uppercase text-white lg:text-h1-desktop">
                 Giải pháp số được xây dựng bằng
                 <br />
                 <span className="text-v5-gold">sự tận tâm và minh bạch</span>
@@ -83,18 +86,22 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <Section id="service-ecosystem" tone="ivory">
+      {/* PRO V2.1 §50/51: storytelling flow — hero → brand statement → story → philosophy →
+          capability → CTA. Was hero+philosophy, then capability, then story LAST — the story of
+          the name came after the reader already saw the full service list, so it read as an
+          afterthought instead of the thing everything else stands on. The statement below is the
+          existing brand-story fact (Lạc Việt = cultural origin) condensed into one line, not a
+          new claim; §51 says use the chim Lạc/trống đồng motif as the visual story rather than
+          adding another card grid, so this is typography + the existing dark/gold treatment,
+          nothing new to build. */}
+      <Section id="brand-statement" tone="dark" density="band">
         <Container>
-          <ScrollReveal direction="up" distance={20} duration={0.6}>
-            <SectionHeading eyebrow="Hệ sinh thái dịch vụ" title="Chúng tôi cung cấp giải pháp toàn diện cho cá nhân & doanh nghiệp" align="center" />
+          <ScrollReveal direction="up" distance={12} duration={0.7}>
+            <p className="mx-auto max-w-editorial text-center font-heading text-h3-mobile leading-snug text-white/90 lg:text-h3-desktop">
+              Tên gọi mang cội nguồn Lạc Việt.{" "}
+              <span className="text-gold-300">Cách làm việc mang tinh thần hôm nay.</span>
+            </p>
           </ScrollReveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {ecosystem.map((s, idx) => (
-              <ScrollReveal key={s.title} direction="up" distance={24} duration={0.7} delay={idx * 100}>
-                <ServiceCard mobileRow icon={s.icon} title={s.title} description={s.description} ctaLabel="Xem chi tiết" href={s.href} />
-              </ScrollReveal>
-            ))}
-          </div>
         </Container>
       </Section>
 
@@ -108,6 +115,21 @@ export default function AboutPage() {
               gọn gàng và dễ tiếp cận cho doanh nghiệp hôm nay.
             </p>
           </ScrollReveal>
+        </Container>
+      </Section>
+
+      <Section id="service-ecosystem" tone="ivory">
+        <Container>
+          <ScrollReveal direction="up" distance={20} duration={0.6}>
+            <SectionHeading eyebrow="Năng lực" title="Chúng tôi cung cấp giải pháp toàn diện cho cá nhân & doanh nghiệp" align="center" />
+          </ScrollReveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {ecosystem.map((s, idx) => (
+              <ScrollReveal key={s.title} direction="up" distance={24} duration={0.7} delay={idx * 100}>
+                <ServiceCard mobileRow icon={s.icon} title={s.title} description={s.description} ctaLabel="Xem chi tiết" href={s.href} />
+              </ScrollReveal>
+            ))}
+          </div>
         </Container>
       </Section>
 
