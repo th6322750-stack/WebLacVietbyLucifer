@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -16,7 +15,6 @@ import { HomeHeroCta } from "./HomeHeroCta";
 import { HeroVietnamScene } from "@/components/layout/HeroVietnamScene";
 import { services } from "@/content/services";
 import { homeProjectShowcase, homeArticleShowcase } from "@/content/route-fixtures";
-import { assetPath, assetSize } from "@/lib/assets";
 import { siteSettings } from "@/lib/site-settings";
 import { pageMetadata, organizationJsonLd } from "@/lib/seo";
 
@@ -144,31 +142,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-            <ScrollReveal direction="up" distance={16} duration={0.7} delay={500}>
-              <div className="mt-8 flex items-center gap-3">
-                {/* PRO V2.1 perf: intrinsic asset is 2172×724, rendered at ~120×40 (h-10) — an
-                    18x mismatch, worse than the logo bug this session already fixed, and same
-                    root cause: no `sizes` meant Next's x-descriptor srcset was keyed off the raw
-                    2172px width regardless of how small the image actually renders. */}
-                <Image
-                  src={assetPath("v5-customer-avatars")}
-                  alt=""
-                  aria-hidden="true"
-                  width={assetSize("v5-customer-avatars").width}
-                  height={assetSize("v5-customer-avatars").height}
-                  sizes="120px"
-                  className="h-10 w-auto"
-                />
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-white/80" data-demo-only="true">
-                  <span>200+ khách hàng đã tin tưởng Lạc Việt</span>
-                  <span className="flex items-center gap-1 text-v5-gold">
-                    <Icon name="star" size="inline" />
-                    4.9/5 <span className="text-white/50">(minh hoạ)</span>
-                  </span>
-                </div>
-              </div>
-            </ScrollReveal>
           </div>
 
           <div className="hidden lg:block" aria-hidden="true" />
