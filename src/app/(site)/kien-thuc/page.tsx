@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
 import { KnowledgeNetwork } from "@/components/layout/KnowledgeNetwork";
 import { CategoryFilter } from "@/components/content/CategoryFilter";
@@ -45,6 +46,7 @@ export default async function KnowledgePage({
     <>
       <PageHero
         eyebrow="Kiến thức"
+        breadcrumbs={<Breadcrumbs onDark items={[{ label: "Trang chủ", href: "/" }, { label: "Kiến thức" }]} />}
         title="Kiến thức"
         description="Chia sẻ kiến thức, kinh nghiệm và xu hướng mới nhất trong Digital Marketing, Mạng xã hội, AI và Truyền thông giúp doanh nghiệp bứt phá trong kỷ nguyên số."
         heroSlot={<KnowledgeNetwork className="hidden lg:block" />}

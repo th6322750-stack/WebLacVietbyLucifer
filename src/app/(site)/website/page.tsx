@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
@@ -155,6 +156,12 @@ export default function WebsitePage() {
           flipX: true,
         }}
         eyebrow="Dịch vụ / Website"
+        breadcrumbs={
+          <Breadcrumbs
+            onDark
+            items={[{ label: "Trang chủ", href: "/" }, { label: "Dịch vụ" }, { label: "Thiết kế website" }]}
+          />
+        }
         title={
           <>
             Thiết kế Website

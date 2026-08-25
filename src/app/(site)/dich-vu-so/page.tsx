@@ -3,6 +3,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { BrandMark, type BrandName } from "@/components/ui/BrandMark";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
 import { HeroDigitalStack } from "@/components/layout/HeroDigitalStack";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
@@ -86,6 +87,7 @@ export default function DigitalServicesPage() {
     <>
       <PageHero
         eyebrow="Dịch vụ số"
+        breadcrumbs={<Breadcrumbs onDark items={[{ label: "Trang chủ", href: "/" }, { label: "Dịch vụ số" }]} />}
         // Broken deliberately rather than left to wrap: subject line white, promise line gold,
         // the same two-line shape every other hero uses.
         // PRO V2.1: at h1-desktop size this wrapped mid-unit ("TÀI KHOẢN & DỊCH" / "VỤ SỐ") —

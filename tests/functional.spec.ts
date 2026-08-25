@@ -42,26 +42,38 @@ test.describe("routes render with no console errors", () => {
   });
 });
 
+// PRO V2.2 §24-25: full responsive matrix, not just the one mobile width this used to cover.
+// 360 is the narrowest real Android width still in play; 1920 is the widest reference desktop.
+const REFERENCE_VIEWPORTS = [
+  { width: 360, height: 740, label: "360" },
+  { width: 768, height: 1024, label: "768" },
+  { width: 1024, height: 768, label: "1024" },
+  { width: 1440, height: 900, label: "1440" },
+  { width: 1920, height: 1080, label: "1920" },
+];
+
 test.describe("no horizontal overflow at reference viewports", () => {
   for (const route of ROUTES) {
-    test(`no h-scroll ${route} @ mobile 390`, async ({ page }) => {
-      // PRO V2.1: /lien-he flaked here — ScrollReveal's `direction="left"`/`"right"` variants
-      // sit at a translateX(±20px) offset until its mount effect flips `isVisible`, and
-      // measuring scrollWidth in that split-second window reports a false 4px overflow (one side
-      // pushed right, the mirrored side pushed left). `emulateMedia` makes the effect SET the
-      // correct value immediately instead of waiting on an IntersectionObserver — but the effect
-      // still runs after React's initial commit, not before it, so there's a real (if short)
-      // window where the pre-reveal transform is what's on screen. A fixed re-run still hit it,
-      // which is why this needs an explicit settle wait, not just the media emulation.
-      await page.emulateMedia({ reducedMotion: "reduce" });
-      await page.setViewportSize({ width: 390, height: 844 });
-      await page.goto(route);
-      await page.waitForTimeout(200);
-      const hasOverflow = await page.evaluate(
-        () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-      );
-      expect(hasOverflow, `${route} has horizontal overflow on mobile`).toBe(false);
-    });
+    for (const vp of REFERENCE_VIEWPORTS) {
+      test(`no h-scroll ${route} @ ${vp.label}`, async ({ page }) => {
+        // PRO V2.1: /lien-he flaked here — ScrollReveal's `direction="left"`/`"right"` variants
+        // sit at a translateX(±20px) offset until its mount effect flips `isVisible`, and
+        // measuring scrollWidth in that split-second window reports a false 4px overflow (one side
+        // pushed right, the mirrored side pushed left). `emulateMedia` makes the effect SET the
+        // correct value immediately instead of waiting on an IntersectionObserver — but the effect
+        // still runs after React's initial commit, not before it, so there's a real (if short)
+        // window where the pre-reveal transform is what's on screen. A fixed re-run still hit it,
+        // which is why this needs an explicit settle wait, not just the media emulation.
+        await page.emulateMedia({ reducedMotion: "reduce" });
+        await page.setViewportSize({ width: vp.width, height: vp.height });
+        await page.goto(route);
+        await page.waitForTimeout(200);
+        const hasOverflow = await page.evaluate(
+          () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+        );
+        expect(hasOverflow, `${route} has horizontal overflow @ ${vp.label}`).toBe(false);
+      });
+    }
   }
 });
 
@@ -740,5 +752,40 @@ test.describe("PRO V2.1 gauge needle settles instead of looping", () => {
     await page.waitForTimeout(1500); // if it were still `infinite`, this would catch a repeat
     const t2 = await needle.evaluate((el) => getComputedStyle(el).transform);
     expect(t2, "needle transform changed after settling — animation is still looping").toBe(t1);
+  });
+});
+
+test.describe("PRO V2.2 sticky mobile CTA", () => {
+  test("stays off-screen until the visitor scrolls past the hero, then docks at the bottom", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/website");
+    const bar = page.getByTestId("sticky-mobile-cta");
+    await expect(bar).toBeAttached();
+
+    const beforeBox = await bar.boundingBox();
+    expect(beforeBox?.y, "sticky CTA should be translated off-screen before scrolling").toBeGreaterThanOrEqual(844);
+
+    await page.evaluate(() => window.scrollTo(0, 900));
+    await page.waitForTimeout(400); // rAF-driven visibility toggle + CSS transition
+    const afterBox = await bar.boundingBox();
+    expect(afterBox?.y, "sticky CTA should dock flush with the bottom of the viewport after scrolling").toBeLessThan(844);
+  });
+
+  test("is hidden on the homepage above the desktop breakpoint", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    // getByRole would silently drop this element from its matches at this breakpoint (display:none
+    // is excluded from the accessible tree), which previously let this assertion pass against the
+    // wrong button entirely — getByTestId targets the sticky bar's own wrapper unambiguously.
+    const bar = page.getByTestId("sticky-mobile-cta");
+    await expect(bar).toBeHidden();
+  });
+
+  test("does not duplicate on /lien-he, which already leads with its own Zalo CTA", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/lien-he");
+    await page.evaluate(() => window.scrollTo(0, 900));
+    await page.waitForTimeout(300);
+    await expect(page.getByTestId("sticky-mobile-cta"), "/lien-he should not render the sticky mobile CTA bar").toHaveCount(0);
   });
 });

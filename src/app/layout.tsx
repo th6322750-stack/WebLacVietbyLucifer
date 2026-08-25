@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Serif, Inter, Playfair_Display } from "next/font/google";
 import { siteSettings } from "@/lib/site-settings";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 // Typography v2 (.webby/TYPOGRAPHY_AUTHORITY.json, revision pha1-typography-v2).
@@ -58,7 +59,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" className={`${headingFont.variable} ${displayFont.variable} ${bodyFont.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <GoogleAnalytics />
+      </body>
     </html>
   );
 }

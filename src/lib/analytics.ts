@@ -13,9 +13,16 @@ export type AnalyticsEvent =
   | { name: "article_open"; props: { articleSlug: string; category: string } }
   | { name: "filter_change"; props: { route: string; filter: string } };
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 /**
- * Provider-agnostic analytics sink. Swap the console emitter for a real provider later
- * without touching call sites — every call site already only passes the fixed event shape.
+ * Provider-agnostic analytics sink. `window.gtag` only exists once GoogleAnalytics has loaded
+ * gtag.js — inert until `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set, so this is a no-op everywhere
+ * today. Every call site already only passes the fixed event shape from ANALYTICS_CONTRACT.json.
  */
 export function track(event: AnalyticsEvent): void {
   if (typeof window === "undefined") return;
@@ -23,4 +30,5 @@ export function track(event: AnalyticsEvent): void {
     console.debug("[analytics]", event.name, event.props);
   }
   window.dispatchEvent(new CustomEvent("lacviet:analytics", { detail: event }));
+  window.gtag?.("event", event.name, event.props);
 }

@@ -61,7 +61,7 @@ export function PageHero({
   /** MASTER PARITY V4: several hero masters (e.g. /lien-he) show a row of icon proof items
    * under the copy — "Phản hồi nhanh / Trong 30 phút" and so on — which the runtime was missing
    * entirely. Distinct from `metrics`, which is the numeric strip used on /du-an. */
-  proofItems?: { icon: IconName; title: string; note: string }[];
+  proofItems?: { icon: IconName; title: string; note: string; demoOnly?: boolean }[];
   /** Master pages 7 and 10 show a breadcrumb row inside the dark hero, above the H1. */
   breadcrumbs?: ReactNode;
 }) {
@@ -91,23 +91,33 @@ export function PageHero({
             <p className="mt-5 max-w-editorial text-body-lg text-white/80">{description}</p>
           </ScrollReveal>
           {proofItems && proofItems.length > 0 ? (
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {proofItems.map((item, idx) => (
-                <ScrollReveal key={item.title} direction="up" distance={16} duration={0.6} delay={200 + idx * 80}>
-                  <div
-                    className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 transition-colors duration-300 hover:border-gold-500/30 hover:bg-white/[0.07]"
-                  >
-                    <span className="grid size-8 shrink-0 place-items-center rounded-lg border border-v5-gold/30 bg-v5-gold/15">
-                      <Icon name={item.icon} size="default" className="text-v5-gold" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-small font-semibold text-white">{item.title}</p>
-                      <p className="mt-0 text-caption text-white/60">{item.note}</p>
+            <>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {proofItems.map((item, idx) => (
+                  <ScrollReveal key={item.title} direction="up" distance={16} duration={0.6} delay={200 + idx * 80}>
+                    <div
+                      data-demo-only={item.demoOnly}
+                      className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 transition-colors duration-300 hover:border-gold-500/30 hover:bg-white/[0.07]"
+                    >
+                      <span className="grid size-8 shrink-0 place-items-center rounded-lg border border-v5-gold/30 bg-v5-gold/15">
+                        <Icon name={item.icon} size="default" className="text-v5-gold" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-small font-semibold text-white">{item.title}</p>
+                        <p className="mt-0 text-caption text-white/60">{item.note}</p>
+                      </div>
                     </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+              {/* Same convention as MetricStrip: a number that's aspirational rather than a
+                  guaranteed fact ("có lúc nhanh lúc chậm" per the business owner) stays on
+                  display, but with the same disclosure every other demo figure on the site
+                  carries — never presented as an unqualified commitment. */}
+              {proofItems.some((item) => item.demoOnly) ? (
+                <p className="mt-3 text-caption text-white/45">Số liệu minh hoạ, chưa phải cam kết chính thức.</p>
+              ) : null}
+            </>
           ) : null}
           {cta ? (
             <ScrollReveal direction="up" distance={16} duration={0.6} delay={300}>

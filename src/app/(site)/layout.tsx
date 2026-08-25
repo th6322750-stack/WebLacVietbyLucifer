@@ -1,6 +1,7 @@
 import { ConsultationProvider } from "@/components/conversion/ConsultationProvider";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { StickyMobileCta } from "@/components/layout/StickyMobileCta";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { MagneticCursor } from "@/components/ui/MagneticCursor";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
@@ -20,6 +21,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main-content">{children}</main>
         <SiteFooter />
+        <StickyMobileCta />
       </SmoothScrollProvider>
     </ConsultationProvider>
   );

@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
 import { ConsultationNetwork } from "@/components/layout/ConsultationNetwork";
 import { ContactChannelCard } from "@/components/conversion/ContactChannelCard";
@@ -38,6 +39,7 @@ export default function ContactPage() {
       <PageHero
         heroRole="heroDisplay"
         eyebrow="Liên hệ – Nhận tư vấn"
+        breadcrumbs={<Breadcrumbs onDark items={[{ label: "Trang chủ", href: "/" }, { label: "Liên hệ" }]} />}
         title={
           <>
             LẠC VIỆT
@@ -51,7 +53,9 @@ export default function ContactPage() {
         // column was silently empty on desktop this whole time. `heroSlot` is the real hook.
         heroSlot={<ConsultationNetwork className="hidden lg:block" />}
         proofItems={[
-          { icon: "clock", title: "Phản hồi nhanh", note: "Trong 30 phút" },
+          // "30 phút" is aspirational, not a guaranteed SLA (confirmed with Lucifer — response
+          // time varies) — demoOnly so it stays on display without reading as a hard commitment.
+          { icon: "clock", title: "Phản hồi nhanh", note: "Trong 30 phút", demoOnly: true },
           { icon: "messages-square", title: "Tư vấn miễn phí", note: "Giải pháp phù hợp" },
           { icon: "lock-keyhole", title: "Bảo mật thông tin", note: "Cam kết tuyệt đối" },
         ]}
