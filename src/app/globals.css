@@ -1157,3 +1157,12 @@
 @media (hover: none) {
   .spotlight-tilt { transform: none !important; }
 }
+
+/* PRO V2.2 §15: IndustryShowcaseCard's "XEM" cursor badge, same CSS-variable pattern as
+ * `.spotlight-glow` above — position comes from `--mx`/`--my` written directly to the DOM node,
+ * visibility comes from `group-hover:opacity-100` in the component's own Tailwind classes, not
+ * from JS state. */
+.cursor-badge {
+  left: var(--mx, 50%);
+  top: var(--my, 50%);
+}

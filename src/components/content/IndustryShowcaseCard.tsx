@@ -1,23 +1,39 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 import Image from "next/image";
 import type { IndustryShowcaseItem } from "@/content/industry-showcase";
 import { useConsultation } from "@/components/conversion/ConsultationProvider";
 
 /** Ảnh giao diện web theo ngành — không dẫn tới trang chi tiết dự án, vì đây không phải case
  * study có kết quả thật để kể. Bấm vào mở thẳng Zalo, đúng như mọi CTA "Nhận tư vấn" khác trên
- * site (xem ConsultationProvider). */
+ * site (xem ConsultationProvider).
+ *
+ * PRO V2.2 §15: cursor-follow "XEM" badge — was a `useState` written on every `mousemove`,
+ * re-rendering this component per pixel of cursor travel. Rewritten to match SpotlightCard's
+ * pattern: position writes straight to a CSS custom property on the DOM node (rAF-coalesced),
+ * and the badge's own opacity comes from `group-hover` in CSS, not JS state. Zero re-renders
+ * from pointer movement. */
 export function IndustryShowcaseCard({ item }: { item: IndustryShowcaseItem }) {
   const { open } = useConsultation();
-  // PRO V2 (2026-08-25): cursor-follow "XEM" badge on desktop hover (brief §35). Pointer position
-  // is tracked only while the mouse is over the image, so the badge never renders (and this
-  // component never re-renders on every mousemove) anywhere else on the page.
-  const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  }, []);
 
   const handleMove = (e: MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const el = frameRef.current;
+    if (!el) return;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${clientX - rect.left}px`);
+      el.style.setProperty("--my", `${clientY - rect.top}px`);
+    });
   };
 
   return (
@@ -27,9 +43,9 @@ export function IndustryShowcaseCard({ item }: { item: IndustryShowcaseItem }) {
       className="group flex w-full flex-col overflow-hidden rounded-xl border border-gold-500/20 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-xl"
     >
       <div
+        ref={frameRef}
         className="relative aspect-[16/9] w-full overflow-hidden bg-ivory-100 lg:cursor-none"
         onMouseMove={handleMove}
-        onMouseLeave={() => setCursor(null)}
       >
         <Image
           src={item.imagePath}
@@ -38,15 +54,12 @@ export function IndustryShowcaseCard({ item }: { item: IndustryShowcaseItem }) {
           sizes="(min-width: 1024px) 25vw, 50vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        {cursor ? (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute hidden h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-ink-950/85 text-caption font-semibold uppercase tracking-wide text-gold-300 backdrop-blur-sm lg:flex"
-            style={{ left: cursor.x, top: cursor.y }}
-          >
-            Xem
-          </span>
-        ) : null}
+        <span
+          aria-hidden="true"
+          className="cursor-badge pointer-events-none absolute hidden h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-ink-950/85 text-caption font-semibold uppercase tracking-wide text-gold-300 opacity-0 backdrop-blur-sm transition-opacity duration-150 lg:flex lg:group-hover:opacity-100"
+        >
+          Xem
+        </span>
       </div>
       <div className="flex flex-col p-4">
         <span className="inline-flex w-fit items-center rounded-pill bg-ivory-100 px-2 py-1 text-caption font-medium text-text-secondary">

@@ -18,9 +18,19 @@ export function SiteHeader() {
   const pathname = usePathname();
   const { open } = useConsultation();
   const [menuOpen, setMenuOpen] = useState(false);
+  // PRO V2.2 §11: the drawer used to mount/unmount instantly with `menuOpen` itself, which
+  // meant no exit transition was possible — there was nothing left in the DOM to fade out by
+  // the time a "closing" animation would run. `everOpened` keeps it mounted (invisible, inert)
+  // after the first open so `menuOpen` can drive a real opacity/transform transition instead.
+  const [everOpened, setEverOpened] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  const openMenu = () => {
+    setEverOpened(true);
+    setMenuOpen(true);
+  };
 
   useFocusTrap(drawerRef, menuOpen);
   useBodyScrollLock(menuOpen);
@@ -110,7 +120,7 @@ export function SiteHeader() {
           label="Mở menu"
           onDark
           className="lg:hidden"
-          onClick={() => setMenuOpen(true)}
+          onClick={openMenu}
         />
       </Container>
 
@@ -123,13 +133,23 @@ export function SiteHeader() {
           `document.body` directly, outside the header's DOM subtree entirely, so its `fixed`
           positioning has no filtered ancestor to get trapped by. Nothing about the header's own
           styling changes. */}
-      {menuOpen
+      {everOpened
         ? createPortal(
-            <div className="fixed inset-0 z-[70] lg:hidden">
+            // PRO V2.2 §11: stays mounted after first open (see `everOpened`) so `menuOpen` can
+            // drive a real 200ms fade/slide instead of an instant mount/unmount with nothing to
+            // transition. `motion-reduce:` collapses both to 0ms — reduced-motion users get the
+            // same instant show/hide as before, nothing new to opt out of.
+            <div
+              className={`fixed inset-0 z-[70] lg:hidden ${menuOpen ? "" : "pointer-events-none"}`}
+              aria-hidden={!menuOpen}
+            >
               <button
                 type="button"
+                tabIndex={menuOpen ? 0 : -1}
                 aria-label="Đóng menu"
-                className="absolute inset-0 bg-ink-950/70"
+                className={`absolute inset-0 bg-ink-950/70 transition-opacity duration-200 motion-reduce:duration-0 ${
+                  menuOpen ? "opacity-100" : "opacity-0"
+                }`}
                 onClick={() => setMenuOpen(false)}
               />
               <div
@@ -143,7 +163,9 @@ export function SiteHeader() {
                  * page entirely — an earlier partial-width drawer let the Home hero show through,
                  * which the recovery audit flagged. `inset-0` + solid bg is what makes the state
                  * screenshot honest. */
-                className="absolute inset-0 flex w-full flex-col overflow-y-auto bg-ink-950 p-6"
+                className={`absolute inset-0 flex w-full flex-col overflow-y-auto bg-ink-950 p-6 transition-[opacity,transform] duration-200 ease-out motion-reduce:duration-0 ${
+                  menuOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                }`}
               >
                 <div className="flex items-center justify-between">
                   <Image

@@ -1,6 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+
+// PRO V2.2 §17: the reduced-motion check ran in a plain `useEffect`, which fires AFTER the
+// browser paints — so a reduced-motion user's very first frame was still the pre-reveal
+// transformed/transparent state, correcting itself only once the effect ran (confirmed as a
+// real, if brief, window earlier this session via a flaky overflow test). `useLayoutEffect` runs
+// synchronously before paint, so the correction lands before anything is shown on screen. SSR
+// has no layout to run it against, so this falls back to `useEffect` there — `typeof window`
+// is only ever `undefined` during that server pass, never on the client.
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -24,7 +33,7 @@ export function ScrollReveal({
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     // Respect reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setIsVisible(true);

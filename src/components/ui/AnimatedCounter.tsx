@@ -31,6 +31,15 @@ export function AnimatedCounter({ value, duration = 1600, className = "" }: Anim
         const entry = entries[0];
         if (entry && entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
+
+          // PRO V2.2 §18: the one motion primitive in the codebase that didn't check this —
+          // ScrollReveal, SpotlightCard, and every hero scene all do. Reduced-motion users get
+          // the final value immediately, no count-up.
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            setDisplayValue(value);
+            return;
+          }
+
           const startTime = performance.now();
 
           const updateCount = (currentTime: number) => {
