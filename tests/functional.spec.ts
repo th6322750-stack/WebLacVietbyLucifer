@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, devices, type Page } from "@playwright/test";
 
 // PRO V2.1: /du-an is now a redirect into /website (the demo project catalogue it used to list
 // was removed sitewide), so it stays in this list — the redirect itself must resolve cleanly —
@@ -561,12 +561,14 @@ test.describe("V3 production rasters", () => {
   });
 
   // PRO V2.1: the approved logo moved from an SVG vector to the gold-metallic lockup PNG
-  // (public/assets/v5/brand/lac-viet-logo-lockup.png) — a deliberate brand-asset change, not a
-  // regression, so the assertion follows the new approved file rather than the old format.
-  test("global logo is the approved lockup PNG", async ({ page }) => {
+  // (public/assets/v5/brand/lac-viet-logo-horizontal.png) — a deliberate brand-asset change,
+  // not a regression, so the assertion follows the new approved file. Switched back to the
+  // untouched delivery on 2026-09-02: the rebuilt lockup clipped the bird's beak against its
+  // top-left edge, visible at header size.
+  test("global logo is the approved delivery PNG", async ({ page }) => {
     await page.goto("/");
     const logo = page.locator("header img").first();
-    await expect(logo).toHaveAttribute("src", /lac-viet-logo-lockup\.png/);
+    await expect(logo).toHaveAttribute("src", /lac-viet-logo-horizontal\.png/);
   });
 });
 
@@ -788,4 +790,35 @@ test.describe("PRO V2.2 sticky mobile CTA", () => {
     await page.waitForTimeout(300);
     await expect(page.getByTestId("sticky-mobile-cta"), "/lien-he should not render the sticky mobile CTA bar").toHaveCount(0);
   });
+});
+
+// PRO V2.2 (2026-09-02): the bare-viewport overflow suite above does not reproduce real
+// mobile layout, so this asks the same question under genuine device emulation.
+//
+// It asserts on ACTUAL SCROLLABILITY, not on scrollWidth. A reported 4px overflow on
+// /lien-he turned out to be exactly that: scrollWidth does report 4px extra, because a
+// ScrollReveal direction="right" element below the fold sits at translateX(20px) until it
+// reveals -- but the page cannot be swiped sideways, before or after any attempted fix. The
+// number was an artifact with no user-facing consequence, and asserting on it would fail a
+// page that behaves correctly. What a visitor can actually do is the thing worth guarding.
+test.describe("PRO V2.2 no sideways swipe under real device emulation", () => {
+  for (const name of ["iPhone 12", "Pixel 5"] as const) {
+    for (const route of ["/", "/lien-he", "/website", "/dich-vu-so"]) {
+      test(`${route} cannot be swiped sideways on ${name}`, async ({ browser }) => {
+        const ctx = await browser.newContext({ ...devices[name] });
+        const page = await ctx.newPage();
+        await page.goto(route);
+        await page.waitForTimeout(600);
+        const moved = await page.evaluate(() => {
+          const before = window.scrollX;
+          window.scrollTo(300, 0);
+          const after = window.scrollX;
+          window.scrollTo(0, 0);
+          return after - before;
+        });
+        await ctx.close();
+        expect(moved, `${route} scrolled ${moved}px sideways on ${name}`).toBe(0);
+      });
+    }
+  }
 });
