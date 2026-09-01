@@ -30,7 +30,7 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
             alt="Lạc Việt Media Agency"
             width={assetSize("lac-viet-logo-horizontal-approved").width}
             height={assetSize("lac-viet-logo-horizontal-approved").height}
-            sizes="90px"
+            sizes="96px"
             className="h-8 w-auto"
           />
           <p>

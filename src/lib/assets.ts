@@ -59,11 +59,12 @@ export const ASSET_PATHS: Record<string, string> = {
   // from background removal, which is invisible at the sizes it is used (the header draws it
   // ~120px wide from a 1950px source, a 16x downscale); revisit if it is ever shown large.
   //
-  // Rebuilt from the untouched delivery (kept beside it as lac-viet-logo-horizontal.png): the
-  // mark and the two-line wordmark are split at x=730, the wordmark scaled to 80% and set back
-  // against the mark with a 7% gap, both vertically centred. As delivered the wordmark was 2.19x
-  // the mark's width and read as bloated; it now sits at 1.76x. "MEDIA AGENCY" is retained.
-  "lac-viet-logo-horizontal-approved": "/assets/v5/brand/lac-viet-logo-lockup.png",
+  // Back to the untouched delivery (2172x724) at Lucifer's instruction, 2026-09-02. The
+  // rebuilt lockup that used to sit here re-composited the mark and wordmark, and in doing so
+  // clipped the bird's beak against the top-left edge — visible at header size. The delivery
+  // keeps the full mark with its own margins. lac-viet-logo-lockup.png is kept beside it
+  // rather than deleted, so the recomposition is still recoverable.
+  "lac-viet-logo-horizontal-approved": "/assets/v5/brand/lac-viet-logo-horizontal.png",
   "lac-viet-logo-canonical": "/assets/v3/brand/lac-viet-logo-mark.svg",
   "support-cta-device-shield-approved-crop": "/assets/v3/shared/support-cta-device-shield-fhd.png",
   "digital-cta-phoenix-approved-crop": "/assets/v3/shared/digital-cta-phoenix-fhd.png",
@@ -187,7 +188,7 @@ export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
   "project-featured-case-master": { width: 1920, height: 1080 },
   "support-client-logo-strip": { width: 2400, height: 320 },
   "social-proof-avatar-strip-approved": { width: 1200, height: 240 },
-  "lac-viet-logo-horizontal-approved": { width: 1724, height: 625 },
+  "lac-viet-logo-horizontal-approved": { width: 2172, height: 724 },
   "lac-viet-logo-canonical": { width: 512, height: 512 },
   "support-cta-device-shield-approved-crop": { width: 1920, height: 1080 },
   "digital-cta-phoenix-approved-crop": { width: 1920, height: 1080 },

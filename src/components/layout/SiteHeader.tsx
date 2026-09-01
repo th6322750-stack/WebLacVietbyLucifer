@@ -75,7 +75,7 @@ export function SiteHeader() {
             width={assetSize("lac-viet-logo-horizontal-approved").width}
             height={assetSize("lac-viet-logo-horizontal-approved").height}
             priority
-            sizes="112px"
+            sizes="132px"
             // PRO V2.2 §10: ~10% larger at every state (32/40px → 36/44px unscrolled,
             // 28/32px → 32/36px scrolled). Arbitrary pixel values, not `h-9`/`h-11` — this
             // project's spacing scale has no "9" or "11" step, and an off-scale utility here
@@ -183,7 +183,7 @@ export function SiteHeader() {
                     alt="Lạc Việt Media Agency"
                     width={assetSize("lac-viet-logo-horizontal-approved").width}
                     height={assetSize("lac-viet-logo-horizontal-approved").height}
-                    sizes="90px"
+                    sizes="96px"
                     className="h-8 w-auto"
                   />
                   <IconButton icon="close" label="Đóng menu" onDark onClick={() => setMenuOpen(false)} />
