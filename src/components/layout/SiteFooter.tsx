@@ -164,7 +164,10 @@ function SocialRow() {
       brand: "#229ED9",
       href: `https://t.me/${siteSettings.telegram.replace("@", "")}`,
     },
-    { name: "messenger", label: "Messenger", brand: "#A334FA", href: "https://m.me/" },
+    // Messenger intentionally absent: there is no Page username yet, and the placeholder
+    // `https://m.me/` opened Messenger's own homepage rather than a conversation with Lac Viet.
+    // /lien-he already shows this channel as "Sap cap nhat"; a live-looking icon here that goes
+    // nowhere is worse than no icon. Restore with the real URL once the Page exists.
   ];
   return (
     <ul className="mt-10 flex list-none items-center gap-4">

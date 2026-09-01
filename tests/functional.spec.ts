@@ -312,15 +312,23 @@ test.describe("content-truth markers (final sweep)", () => {
 });
 
 test.describe("SEO content integrity (demo articles)", () => {
+  // Still demo. seo-onpage-la-gi was promoted out of this list on 2026-09-02 when its body was
+  // rewritten as real editorial copy — see REAL_ARTICLE_ROUTES below. The invariant is unchanged
+  // and still enforced here: unverified content stays out of search.
   const DEMO_ARTICLE_ROUTES = [
     "/kien-thuc/ai-trong-marketing-2024-xu-huong-ung-dung-va-co-hoi-cho-doanh-nghiep",
-    "/kien-thuc/seo-onpage-la-gi-15-yeu-to-quan-trong-can-toi-uu",
     "/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google",
   ];
 
+  // Articles with real, substantive bodies: indexable, in the sitemap, carrying Article JSON-LD.
+  const REAL_ARTICLE_ROUTES = [
+    "/kien-thuc/checklist-20-diem-quan-trong-khi-thiet-ke-website-doanh-nghiep",
+    "/kien-thuc/seo-onpage-la-gi-15-yeu-to-quan-trong-can-toi-uu",
+    "/kien-thuc/7-cach-tang-follow-tiktok-thuc-chat-va-ben-vung-2024",
+  ];
+
   // R5-01: SEO_CONTRACT.json allows Article structured data only on factual knowledge articles
-  // and forbids demo preview data becoming factual structured data. Every current article body
-  // is a demo reconstruction, so no route may emit Article JSON-LD.
+  // and forbids demo preview data becoming factual structured data.
   for (const route of DEMO_ARTICLE_ROUTES) {
     test(`${route} emits no Article JSON-LD and is noindex`, async ({ page }) => {
       const response = await page.goto(route);
@@ -336,21 +344,43 @@ test.describe("SEO content integrity (demo articles)", () => {
     });
   }
 
-  test("no demo article detail URL appears in sitemap.xml", async ({ page }) => {
+  // The mirror of the rule above: content that IS verified must actually reach search, or the
+  // work of writing it is wasted. Guards against a future change quietly re-demoting them.
+  for (const route of REAL_ARTICLE_ROUTES) {
+    test(`${route} is indexable and emits Article JSON-LD`, async ({ page }) => {
+      const response = await page.goto(route);
+      expect(response?.status()).toBeLessThan(400);
+
+      const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+      const types = blocks.map((b) => JSON.parse(b)["@type"]);
+      expect(types, "real article is missing Article structured data").toContain("Article");
+
+      await expect(page.locator('head meta[name="robots"]')).toHaveCount(0);
+    });
+  }
+
+  test("demo articles stay out of sitemap.xml, real ones appear in it", async ({ page }) => {
     const response = await page.goto("/sitemap.xml");
     const xml = (await response?.text()) ?? "";
     for (const route of DEMO_ARTICLE_ROUTES) {
-      expect(xml).not.toContain(route);
+      expect(xml, `demo article leaked into the sitemap: ${route}`).not.toContain(route);
+    }
+    for (const route of REAL_ARTICLE_ROUTES) {
+      expect(xml, `real article missing from the sitemap: ${route}`).toContain(route);
     }
   });
 
   test("article cards and related-article previews carry demo truth in markup", async ({ page }) => {
+    // Mixed listing now: demo cards must be tagged true, real ones false. Asserting "every card
+    // is true" would have quietly started passing for the wrong reason once a real card existed.
     await page.goto("/kien-thuc");
-    const cards = page.locator('#article-grid a[data-demo-only]');
+    const cards = page.locator("#article-grid a[data-demo-only]");
     expect(await cards.count()).toBeGreaterThan(0);
-    for (const card of await cards.all()) {
-      await expect(card).toHaveAttribute("data-demo-only", "true");
-    }
+    const flags = await cards.evaluateAll((els) =>
+      els.map((el) => el.getAttribute("data-demo-only")),
+    );
+    expect(flags.every((f) => f === "true" || f === "false")).toBe(true);
+    expect(flags, "no real article is being surfaced in the listing").toContain("false");
 
     await page.goto("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
     const previews = page.locator('#related-articles a[data-demo-only]');

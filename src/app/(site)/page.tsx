@@ -191,8 +191,9 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* Dự án mẫu đã xoá — mảng trống, nên cả section tự ẩn cho tới khi có dự án thật để chèn
-          vào homeProjectShowcase, thay vì hiện một tiêu đề với thanh cuộn trống phía dưới. */}
+      {/* Section tự ẩn khi homeProjectShowcase rỗng, thay vì hiện tiêu đề với thanh cuộn trống.
+          Hiện mảng KHÔNG rỗng: 10 concept theo lĩnh vực, tất cả demoOnly — comment cũ ở đây nói
+          mảng đã trống và không còn đúng từ lâu (bắt được trong QA trước ra mắt 2026-09-02). */}
       {homeProjectShowcase.length > 0 ? (
         <Section id="featured-projects" tone="ivory">
           <Container>
