@@ -45,13 +45,14 @@ export const navLinks = [
   { href: "/", label: "Trang chủ" },
   { href: null, label: "Dịch vụ", children: serviceMenu },
   { href: "/kien-thuc", label: "Kiến thức" },
-  { href: "/gioi-thieu", label: "Giới thiệu" },
   { href: "/lien-he", label: "Liên hệ" },
 ] as const;
 
+// "Giới thiệu" ẩn khỏi menu, footer và sitemap theo yêu cầu (2026-09-02). Route
+// /gioi-thieu vẫn sống để link cũ hoặc kết quả tìm kiếm đã có không bị 404, nhưng trang
+// mang noindex nên sẽ rụng dần khỏi Google. Thêm lại vào cả 3 chỗ khi muốn mở lại.
 export const footerLinks = {
   brand: [
-    { href: "/gioi-thieu", label: "Giới thiệu" },
     { href: "/kien-thuc", label: "Kiến thức" },
   ],
   services: serviceMenu,

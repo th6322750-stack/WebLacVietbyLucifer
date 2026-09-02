@@ -11,10 +11,14 @@ import { siteSettings } from "@/lib/site-settings";
 import { assetPath, assetSize } from "@/lib/assets";
 import { pageMetadata, organizationJsonLd } from "@/lib/seo";
 
+// Ẩn khỏi menu, footer và sitemap (2026-09-02). Route giữ nguyên để link đã phát tán hoặc
+// kết quả tìm kiếm cũ không rơi vào 404; `noindex` để trang rụng dần khỏi Google thay vì
+// vẫn kéo khách vào một trang không còn được dẫn tới từ đâu trong site.
 export const metadata = pageMetadata({
   title: "Giới thiệu",
   description: `Tìm hiểu về ${siteSettings.brandName} — đối tác số toàn diện cho doanh nghiệp Việt Nam.`,
   path: "/gioi-thieu",
+  noindex: true,
 });
 
 // 3 principles per approved master (page-09): Liêm + Chính are one combined item, not two.

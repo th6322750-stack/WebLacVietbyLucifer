@@ -267,7 +267,12 @@ test.describe("hidden fixtures stay direct-review only", () => {
     // /du-an is deliberately absent — it's a pure redirect into /website now, not its own
     // indexable page, so sitemap.ts drops it (see the file's own comment on that removal).
     expect(xml).not.toContain("/du-an");
-    for (const route of ["/kien-thuc", "/website", "/gioi-thieu", "/lien-he"]) {
+    // /gioi-thieu was hidden on 2026-09-02 — pulled from the menu, the footer and this sitemap
+    // at the same time. Advertising a page that the site itself no longer links to would just
+    // route search traffic into a dead corner, so its absence here is the point, not an
+    // oversight. The route still resolves and carries noindex.
+    expect(xml).not.toContain("/gioi-thieu");
+    for (const route of ["/kien-thuc", "/website", "/lien-he"]) {
       expect(xml).toContain(route);
     }
   });
@@ -741,7 +746,13 @@ test.describe("PRO V2.1 mobile completeness", () => {
     await page.goto("/");
     await page.locator("footer").scrollIntoViewIfNeeded();
     await page.getByRole("button", { name: "Khám phá" }).click();
-    await expect(page.locator("footer").getByRole("link", { name: "Giới thiệu" })).toBeVisible();
+    // Was asserting on "Giới thiệu", which was only ever the example this group happened to
+    // contain; that page was hidden on 2026-09-02. The regression being guarded is the mapping
+    // itself, so assert the group shows its OWN link and not the contact group's — which is
+    // what the accordion used to fall back to for every non-services group.
+    const footer = page.locator("footer");
+    await expect(footer.getByRole("link", { name: "Kiến thức" })).toBeVisible();
+    await expect(footer.getByRole("link", { name: "Liên hệ tư vấn" })).toBeHidden();
   });
 });
 
@@ -867,4 +878,30 @@ test.describe("PRO V2.2 no sideways swipe under real device emulation", () => {
       });
     }
   }
+});
+
+// Hiding a page has two halves that can drift apart: it must stop being advertised, and it must
+// keep working for anyone who already has the link. Asserting only the first would let the route
+// 404 unnoticed; asserting only the second would let it creep back into the menu.
+test.describe("hidden /gioi-thieu", () => {
+  test("is absent from the menu and the footer", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator('header a[href="/gioi-thieu"]')).toHaveCount(0);
+    await expect(page.locator('footer a[href="/gioi-thieu"]')).toHaveCount(0);
+  });
+
+  test("is absent from the mobile drawer too", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await page.getByRole("button", { name: "Mở menu" }).click();
+    const drawer = page.getByRole("dialog", { name: "Menu điều hướng" });
+    await expect(drawer.locator('a[href="/gioi-thieu"]')).toHaveCount(0);
+  });
+
+  test("still resolves for anyone holding the link, and is noindex", async ({ page }) => {
+    const response = await page.goto("/gioi-thieu");
+    expect(response?.status(), "hidden must not mean broken").toBe(200);
+    await expect(page.locator("h1")).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  });
 });

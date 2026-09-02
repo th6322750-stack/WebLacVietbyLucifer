@@ -9,7 +9,8 @@ const STATIC_ROUTES = [
   "/support-mxh",
   "/dich-vu-so",
   "/kien-thuc",
-  "/gioi-thieu",
+  // "/gioi-thieu" bo khoi sitemap 2026-09-02 cung luc an khoi menu: quang ba mot trang minh
+  // dang giau di thi mau thuan — Google van se gui khach vao do. Trang cung mang noindex.
   "/lien-he",
 ];
 
