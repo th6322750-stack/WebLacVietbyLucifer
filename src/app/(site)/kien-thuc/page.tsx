@@ -23,8 +23,14 @@ export const metadata = pageMetadata({
 });
 
 // Fixed order per approved master (page-08) — not derived from article insertion order.
-const categories = ["Website", "TikTok", "Facebook", "AI", "SEO", "Marketing"];
+const CATEGORY_ORDER = ["Website", "TikTok", "Facebook", "AI", "SEO", "Marketing"];
 const visibleArticles = getVisibleArticles();
+
+// Order stays as approved; the list is narrowed to categories that actually have a visible
+// article. Hiding the thin drafts on 2026-09-02 left Facebook, AI and Marketing with none, and
+// a chip that leads to an empty page is worse than an absent chip — the visitor has done
+// nothing wrong and still gets nothing back. Chips return on their own as articles land.
+const categories = CATEGORY_ORDER.filter((c) => visibleArticles.some((a) => a.category === c));
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
@@ -128,16 +134,22 @@ export default async function KnowledgePage({
         </Section>
       ) : null}
 
-      <Section id="article-grid">
-        <Container>
-          <ScrollReveal direction="up" distance={20} duration={0.6}>
-            <SectionHeading eyebrow="Bài viết mới nhất" title="Kiến thức mới cập nhật" />
-          </ScrollReveal>
-          <div className="mt-8">
-            <ArticleGrid articles={grid} />
-          </div>
-        </Container>
-      </Section>
+      {/* Guarded 2026-09-02: the featured block already consumes the first three articles, so
+          with a small library `grid` is empty and this rendered a heading above blank space.
+          Hiding the whole section is the right failure mode -- an empty "Kiến thức mới cập nhật"
+          reads as a broken page, while its absence reads as nothing at all. */}
+      {grid.length > 0 ? (
+        <Section id="article-grid">
+          <Container>
+            <ScrollReveal direction="up" distance={20} duration={0.6}>
+              <SectionHeading eyebrow="Bài viết mới nhất" title="Kiến thức mới cập nhật" />
+            </ScrollReveal>
+            <div className="mt-8">
+              <ArticleGrid articles={grid} />
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* PRO V2.2 §8: was a narrow card centered in an "editorial"-width container — read as a
           box floating alone rather than part of the page. Full-width dark strip instead, copy

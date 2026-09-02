@@ -4,9 +4,13 @@ export type Metric = { value: string; label: string; demoOnly: boolean };
 
 /** .webby/component-map.json: "demo metrics must not ship as factual claims". Each metric
  * carries its own demoOnly flag in the data model (not just a UI-level disclaimer string)
- * so a future production data source can flip it to false once numbers are verified. */
+ * so a future production data source can flip it to false once numbers are verified.
+ *
+ * The flag no longer drives a visible disclosure (removed 2026-09-02 at Lucifer's
+ * instruction); it survives as `data-demo-only` on each metric, which is what the
+ * content-truth tests assert against and what tells the team which numbers still need
+ * verifying. `hasDemoMetric` went with the paragraph it used to gate. */
 export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; onDark?: boolean }) {
-  const hasDemoMetric = metrics.some((m) => m.demoOnly);
   return (
     <div>
       <dl className="grid grid-cols-2 gap-6 md:grid-cols-4">
@@ -26,11 +30,11 @@ export function MetricStrip({ metrics, onDark = false }: { metrics: Metric[]; on
           </div>
         ))}
       </dl>
-      {hasDemoMetric ? (
-        <p className={`mt-4 text-center text-caption ${onDark ? "text-white/50" : "text-text-muted"}`}>
-          Số liệu minh hoạ, chưa phải dữ liệu thực tế được xác nhận.
-        </p>
-      ) : null}
+      {/* Visible "số liệu minh hoạ" disclosure removed 2026-09-02 at Lucifer's instruction: the
+          figures stay on display without a hedge in front of customers. `demoOnly` is still
+          carried in the data and emitted as `data-demo-only` in markup, so the team keeps an
+          internal record of which numbers are not yet verified, and the truth tests still pin
+          them. Re-enable this paragraph, or clear the flags, once the figures are confirmed. */}
     </div>
   );
 }

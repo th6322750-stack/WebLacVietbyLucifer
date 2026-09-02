@@ -110,13 +110,8 @@ export function PageHero({
                   </ScrollReveal>
                 ))}
               </div>
-              {/* Same convention as MetricStrip: a number that's aspirational rather than a
-                  guaranteed fact ("có lúc nhanh lúc chậm" per the business owner) stays on
-                  display, but with the same disclosure every other demo figure on the site
-                  carries — never presented as an unqualified commitment. */}
-              {proofItems.some((item) => item.demoOnly) ? (
-                <p className="mt-3 text-caption text-white/45">Số liệu minh hoạ, chưa phải cam kết chính thức.</p>
-              ) : null}
+              {/* Disclosure removed 2026-09-02 alongside MetricStrip's — same instruction, same
+                  reasoning. `demoOnly` still rides in the data and in `data-demo-only`. */}
             </>
           ) : null}
           {cta ? (

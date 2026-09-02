@@ -194,14 +194,30 @@ test.describe("project/article filters", () => {
 
   // GD10 re-QA round 4, R4-04: the featured article is index 0 of the visible set, and the
   // featured section is hidden while a filter is active — so filtering must run over the FULL
-  // visible set, not visibleArticles.slice(1), or the featured article vanishes from its own
-  // category. Two AI articles exist; both must be present under ?category=AI.
-  test("AI category filter keeps the featured AI article in the results", async ({ page }) => {
-    await page.goto("/kien-thuc?category=AI");
+  // visible set, not visibleArticles.slice(1), or an article vanishes from its own category.
+  // Was written against ?category=AI; those two AI pieces were thin drafts and were hidden on
+  // 2026-09-02, so the category no longer exists. SEO now carries the same shape: one of its
+  // articles is the featured one, so it proves the same thing.
+  test("category filter keeps the featured article in its own category results", async ({ page }) => {
+    await page.goto("/kien-thuc?category=SEO");
     const grid = page.locator("#article-grid");
-    await expect(grid.getByRole("heading", { name: /AI trong Marketing 2024/i })).toBeVisible();
-    await expect(grid.getByRole("heading", { name: /công cụ AI hỗ trợ marketing/i })).toBeVisible();
+    await expect(grid.getByRole("heading", { name: /SEO Onpage là gì/i })).toBeVisible();
     await expect(page.locator("#featured-article")).toHaveCount(0);
+  });
+
+  // Hiding the thin drafts left three categories with nothing behind them. A chip that leads to
+  // an empty page is a dead end the visitor did nothing to deserve, so the chip list is derived
+  // from articles that actually exist.
+  test("category chips only offer categories that have an article", async ({ page }) => {
+    await page.goto("/kien-thuc");
+    const chips = await page.locator("#category-filters a, #category-filters button").allTextContents();
+    const offered = chips.map((c) => c.trim()).filter(Boolean);
+    for (const label of offered) {
+      if (label === "Tất cả") continue;
+      await page.goto(`/kien-thuc?category=${encodeURIComponent(label)}`);
+      const count = await page.locator('a[href^="/kien-thuc/"]').count();
+      expect(count, `category chip "${label}" leads to an empty page`).toBeGreaterThan(0);
+    }
   });
 
   test("category filter excludes other categories", async ({ page }) => {
@@ -371,16 +387,16 @@ test.describe("SEO content integrity (demo articles)", () => {
   });
 
   test("article cards and related-article previews carry demo truth in markup", async ({ page }) => {
-    // Mixed listing now: demo cards must be tagged true, real ones false. Asserting "every card
-    // is true" would have quietly started passing for the wrong reason once a real card existed.
+    // The thin drafts were hidden on 2026-09-02, so the listing is now real articles only and
+    // #article-grid does not render at all when the featured block consumes them. What still
+    // has to hold is the invariant underneath: no card anywhere in the listing may be tagged
+    // demo. Asserting on grid cards specifically would just be asserting the section exists.
     await page.goto("/kien-thuc");
-    const cards = page.locator("#article-grid a[data-demo-only]");
-    expect(await cards.count()).toBeGreaterThan(0);
-    const flags = await cards.evaluateAll((els) =>
+    const listingCards = page.locator('a[href^="/kien-thuc/"][data-demo-only]');
+    const flags = await listingCards.evaluateAll((els) =>
       els.map((el) => el.getAttribute("data-demo-only")),
     );
-    expect(flags.every((f) => f === "true" || f === "false")).toBe(true);
-    expect(flags, "no real article is being surfaced in the listing").toContain("false");
+    expect(flags, "a demo article is being surfaced in the public listing").not.toContain("true");
 
     await page.goto("/kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google");
     const previews = page.locator('#related-articles a[data-demo-only]');

@@ -21,6 +21,10 @@ export const articles: Article[] = [
     publishedAt: "2026-08-28",
     author: "Lạc Việt Media Agency",
     demoOnly: true,
+    // Tạm ẩn 2026-09-02 trước khi ra mắt: nội dung mới ~80-270 từ trong khi
+    // readMinutes ghi 5-8 phút, nên khách bấm vào sẽ hụt. Giữ nguyên bản nháp trong repo
+    // để viết tiếp; bỏ dòng này khi bài đã đủ dài và readMinutes tính lại theo số từ thật.
+    hidden: true,
     coverAssetId: "article-cover-01",
     readMinutes: 6,
     content: [
@@ -214,6 +218,10 @@ export const articles: Article[] = [
     publishedAt: "2026-07-22",
     author: "Lạc Việt Media Agency",
     demoOnly: true,
+    // Tạm ẩn 2026-09-02 trước khi ra mắt: nội dung mới ~80-270 từ trong khi
+    // readMinutes ghi 5-8 phút, nên khách bấm vào sẽ hụt. Giữ nguyên bản nháp trong repo
+    // để viết tiếp; bỏ dòng này khi bài đã đủ dài và readMinutes tính lại theo số từ thật.
+    hidden: true,
     coverAssetId: "article-cover-04",
     readMinutes: 5,
     content: [
@@ -367,6 +375,10 @@ export const articles: Article[] = [
     publishedAt: "2026-07-01",
     author: "Lạc Việt Media Agency",
     demoOnly: true,
+    // Tạm ẩn 2026-09-02 trước khi ra mắt: nội dung mới ~80-270 từ trong khi
+    // readMinutes ghi 5-8 phút, nên khách bấm vào sẽ hụt. Giữ nguyên bản nháp trong repo
+    // để viết tiếp; bỏ dòng này khi bài đã đủ dài và readMinutes tính lại theo số từ thật.
+    hidden: true,
     coverAssetId: "article-cover-06",
     readMinutes: 6,
     content: [
@@ -390,6 +402,10 @@ export const articles: Article[] = [
     publishedAt: "2026-06-12",
     author: "Lạc Việt Media Agency",
     demoOnly: true,
+    // Tạm ẩn 2026-09-02 trước khi ra mắt: nội dung mới ~80-270 từ trong khi
+    // readMinutes ghi 5-8 phút, nên khách bấm vào sẽ hụt. Giữ nguyên bản nháp trong repo
+    // để viết tiếp; bỏ dòng này khi bài đã đủ dài và readMinutes tính lại theo số từ thật.
+    hidden: true,
     coverAssetId: "article-cover-07",
     readMinutes: 6,
     content: [
