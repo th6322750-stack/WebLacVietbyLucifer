@@ -1,0 +1,46 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/.next-dev/
+/out/
+
+# production
+/build
+
+# testing
+/playwright-report/
+/test-results/
+/blob-report/
+
+# local env
+.env*.local
+.env
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# local data store (leads/newsletter) - not committed
+/data/leads.json
+/data/subscribers.json
+
+.vercel
+.env*
+
+# Local database. Holds real customer enquiries, and each machine keeps its own copy — this
+# must never enter git. The schema lives in src/lib/db/schema.ts and rebuilds itself on first
+# connect, so nothing is lost by excluding the file.
+/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Admin-uploaded media — runtime content per machine, not source.
+/public/assets/uploads/

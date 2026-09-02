@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 2,
+  "revision": "pha1-typography-v2",
+  "status": "AUTHORITY_ONLY_NOT_IMPLEMENTED",
+  "rule": "Claude implements only after user typography approval; no font substitution, token deletion, or per-component guessing.",
+  "authorityFiles": [
+    ".webby/TYPOGRAPHY_AUTHORITY.json",
+    ".webby/TYPOGRAPHY_ROUTE_MATRIX.json",
+    ".webby/typography.json",
+    ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf"
+  ],
+  "fontFamilies": {
+    "heading": {"family":"Noto Serif","weights":[600,700]},
+    "bodyUI": {"family":"Inter","weights":[400,500,600,700]}
+  },
+  "globalCodeTargets": {
+    "src/app/layout.tsx": "Replace Noto_Serif_Display + Be_Vietnam_Pro with Noto_Serif + Inter via next/font/google; expose --font-heading and --font-body; subsets latin + vietnamese; display swap.",
+    "tailwind.config.ts": "Map font-heading/body to the CSS variables. DO NOT rebuild fontSize from semanticRoles alone. Emit the full token union defined by TYPOGRAPHY_AUTHORITY.tokenEmissionContract and typography.json.tailwindTokenMap, including caption and compatibility tokens h3/h4/body-xl until same-commit source migration is complete.",
+    "src/app/globals.css": "body resolves to font-body; heading elements resolve to font-heading. Do not add ad-hoc route family overrides."
+  },
+  "componentRoleMap": {
+    "src/components/layout/SiteHeader.tsx": ["nav","button"],
+    "src/components/layout/PageHero.tsx": ["heroDisplay","heroH1","detailH1","eyebrow","bodyLG"],
+    "src/components/layout/FinalCta.tsx": ["sectionH2","body","button"],
+    "src/components/layout/SiteFooter.tsx": ["footer","small"],
+    "src/components/ui/SectionHeading.tsx": ["sectionH2","eyebrow","body"],
+    "src/components/ui/Button.tsx": ["button"],
+    "src/components/ui/Breadcrumbs.tsx": ["breadcrumb"],
+    "src/components/ui/Chip.tsx": ["chip"],
+    "src/components/content/ProjectCard.tsx": ["cardH3","small","body"],
+    "src/components/content/ProjectPreviewCard.tsx": ["cardH3","small","body"],
+    "src/components/content/ArticleCard.tsx": ["cardH3","articleMeta","body"],
+    "src/components/content/ArticlePreviewCard.tsx": ["cardH3","articleMeta","body"],
+    "src/components/content/ServiceCard.tsx": ["cardH3","body"],
+    "src/components/content/PricingCard.tsx": ["cardH3","price","body","button"],
+    "src/components/content/MetricStrip.tsx": ["metric","small"],
+    "src/components/content/FAQAccordion.tsx": ["body","button"],
+    "src/components/content/ArticleTOC.tsx": ["small","body"],
+    "src/components/content/CategoryFilter.tsx": ["chip"],
+    "src/components/content/TestimonialCard.tsx": ["body","small","caption"],
+    "src/components/content/ProcessSteps.tsx": ["stepNumber","cardH3","small"],
+    "src/components/conversion/ContactForm.tsx": ["formLabel","formControl","cardH3","body","small","button"],
+    "src/components/conversion/NewsletterForm.tsx": ["formLabel","formControl","caption","small","body","button"],
+    "src/components/conversion/ConsultationProvider.tsx": ["cardH3","small"],
+    "src/components/conversion/ContactChannelCard.tsx": ["small","body"]
+  },
+  "roleDisposition": {
+    "bodyXL": {
+      "status": "RESERVED_COMPATIBILITY_TOKEN_NOT_ORPHAN",
+      "action": "Preserve generated text-body-xl utility even if no componentRoleMap entry currently consumes it. It may only be removed after a repo-wide zero-usage proof in the same commit."
+    },
+    "formLabel": {"status":"MAPPED","components":["src/components/conversion/ContactForm.tsx","src/components/conversion/NewsletterForm.tsx"]},
+    "formControl": {"status":"MAPPED","components":["src/components/conversion/ContactForm.tsx","src/components/conversion/NewsletterForm.tsx"]},
+    "caption": {"status":"MAPPED_AND_GLOBAL_GUARDED","knownComponents":["src/components/conversion/NewsletterForm.tsx","src/components/content/TestimonialCard.tsx"],"rule":"All existing text-caption source usages remain caption even if not individually enumerated here; token-emission guard is authoritative."}
+  },
+  "cardSizingDecision": {
+    "structuralH3": {"desktop":28,"mobile":24,"use":"true structural level-3 headings outside compact cards"},
+    "cardH3": {"desktop":22,"mobile":20,"use":"project/article/service/pricing/process compact card titles"},
+    "legacyH4": "Intentional alias of cardH3 during migration. Existing text-h4-* classes must continue to emit CSS until migrated."
+  },
+  "routeHeroMap": {
+    "/": {"role":"heroDisplay","weight":600,"case":"uppercase"},
+    "/website": {"role":"heroH1","weight":700},
+    "/support-mxh": {"role":"heroH1","weight":700},
+    "/dich-vu-so": {"role":"heroH1","weight":700},
+    "/du-an": {"role":"heroH1","weight":700},
+    "/kien-thuc": {"role":"heroH1","weight":700},
+    "/gioi-thieu": {"role":"heroH1","weight":700},
+    "/du-an/[slug]": {"role":"detailH1","weight":700},
+    "/kien-thuc/[slug]": {"role":"detailH1","weight":700},
+    "/lien-he": {"role":"heroDisplay","weight":600,"case":"uppercase"},
+    "/404": {"role":"detailH1","weight":700}
+  },
+  "qa": {
+    "viewports": [1440,390],
+    "fontReadyGate": "await document.fonts.ready",
+    "computedFamilyHeading": "Noto Serif",
+    "computedFamilyBodyUI": "Inter",
+    "lineBreakDriftIsBlocker": true,
+    "syntheticWeightForbidden": true,
+    "fallbackAtVisualQaForbidden": true,
+    "typographyUtilityEmissionGuard": {
+      "required": true,
+      "minimumExplicitRegression": ["text-caption","text-h4-mobile","text-h4-desktop","text-body-xl"],
+      "rule": "A referenced typography utility with no emitted CSS is a hard failure even when typecheck/lint/build otherwise pass."
+    }
+  }
+}

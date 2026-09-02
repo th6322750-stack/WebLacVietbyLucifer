@@ -1,0 +1,775 @@
+{
+  "note": "Produced with ChatGPT's exact locked sourceCrop rectangles from RECOVERY_ASSET_MANIFEST_V2.json against the SHA-256-verified frozen ui-000..ui-010 bundle. Claude selected no crop and altered no pixel. The authority manifest was NOT modified; actual hashes are recorded here for reconciliation.",
+  "sourceBundleVerified": true,
+  "sourceFilesVerified": "11/11",
+  "produced": 45,
+  "declaredHashMatches": 1,
+  "declaredHashMismatches": 44,
+  "assets": [
+    {
+      "id": "lac-viet-logo-horizontal-approved",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        28,
+        12,
+        150,
+        55
+      ],
+      "nativeWidth": 122,
+      "nativeHeight": 43,
+      "runtimeDestination": "public/assets/recovery-v2/brand/lac-viet-logo-horizontal-approved.png",
+      "declaredPixelSha256RGB": "c0f3d8ba20515939397716548ff21528378a48fc0660042b6c8ebad9227492c0",
+      "actualPixelSha256RGB": "c0f3d8ba20515939397716548ff21528378a48fc0660042b6c8ebad9227492c0",
+      "declaredHashMatches": true
+    },
+    {
+      "id": "home-project-preview-01",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        43,
+        674,
+        202,
+        760
+      ],
+      "nativeWidth": 159,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/home/project/home-project-preview-01.png",
+      "declaredPixelSha256RGB": "df7964656dba5a4a1ac97c0b6aca3d7e034641b2b6c6d52a67fab49423057490",
+      "actualPixelSha256RGB": "1d7ee14a5180ca1e30c904f82d8189249b456d70b2a746bba1d6bf4760c82cf2",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-project-preview-02",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        214,
+        674,
+        373,
+        760
+      ],
+      "nativeWidth": 159,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/home/project/home-project-preview-02.png",
+      "declaredPixelSha256RGB": "94ac11f2ea43dcadf16a0bb8333b81501dca425f16c7d9c679ecf270f79610bd",
+      "actualPixelSha256RGB": "4dd64a17e67dca30339ba47b7d28ad0483d117b0945a3b7293a7a2c32915c03d",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-project-preview-03",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        386,
+        674,
+        545,
+        760
+      ],
+      "nativeWidth": 159,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/home/project/home-project-preview-03.png",
+      "declaredPixelSha256RGB": "1c8360b3991d9477295790cb822641de4ff8e6bcbcd362f449d5fc8b6c3ff110",
+      "actualPixelSha256RGB": "71615f8a9653410e3830c26f36044ef248c310e4b3d54518c3909ae570647367",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-project-preview-04",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        558,
+        674,
+        723,
+        760
+      ],
+      "nativeWidth": 165,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/home/project/home-project-preview-04.png",
+      "declaredPixelSha256RGB": "68b40b9c6bdce3c157e52b41cc36296a1c2f0fb72aa727f794b3bce9d7e44671",
+      "actualPixelSha256RGB": "aeffb454ab60a7da5713c1084c7194c537d9c8a74e454448c21656be2ff270c2",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-article-preview-01",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        43,
+        1244,
+        204,
+        1310
+      ],
+      "nativeWidth": 161,
+      "nativeHeight": 66,
+      "runtimeDestination": "public/assets/recovery-v2/home/article/home-article-preview-01.png",
+      "declaredPixelSha256RGB": "09a35789d8930fcfbc4bdbcccd1769f840cdf392072208f99203bd8bbd78b81b",
+      "actualPixelSha256RGB": "8019c183f39a0b660a6ab9f53068ac6232da2b9be0ece13f5a7783a7b541974e",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-article-preview-02",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        215,
+        1244,
+        376,
+        1310
+      ],
+      "nativeWidth": 161,
+      "nativeHeight": 66,
+      "runtimeDestination": "public/assets/recovery-v2/home/article/home-article-preview-02.png",
+      "declaredPixelSha256RGB": "77d4207bd0e1f4a5ae7643272066659736181068285673a494de3c6f2903accc",
+      "actualPixelSha256RGB": "d34d878a6d73d071a0f6fc6c38686a204a9c54ea47b6568958bca9e76e9d478b",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-article-preview-03",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        388,
+        1244,
+        549,
+        1310
+      ],
+      "nativeWidth": 161,
+      "nativeHeight": 66,
+      "runtimeDestination": "public/assets/recovery-v2/home/article/home-article-preview-03.png",
+      "declaredPixelSha256RGB": "5e1909ee49c6caf8fa0e3f6be06593f2d3c43fae48abc4c5038a09e8f0eaa7c1",
+      "actualPixelSha256RGB": "5c2da87b2418516701df826397e921630d50bb8c1fb6bf1adefd9241c75d9631",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-article-preview-04",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        560,
+        1244,
+        721,
+        1310
+      ],
+      "nativeWidth": 161,
+      "nativeHeight": 66,
+      "runtimeDestination": "public/assets/recovery-v2/home/article/home-article-preview-04.png",
+      "declaredPixelSha256RGB": "fd5108c9d1ff0b749434f9a5a0cd23abbfd53e7020ee69b3c7c7ceafc402793d",
+      "actualPixelSha256RGB": "211a454b8ef6b5c36e7da9d052e3e66464b4675951cb5923fb2528a5b3204b69",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "social-proof-avatar-strip-approved",
+      "action": "ADD",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        46,
+        346,
+        109,
+        372
+      ],
+      "nativeWidth": 63,
+      "nativeHeight": 26,
+      "runtimeDestination": "public/assets/recovery-v2/social-proof/social-proof-avatar-strip-approved.png",
+      "declaredPixelSha256RGB": "4f1813225ca1857730f47f62723f3ff13659ec3661462c0e2edb71cf68a08e69",
+      "actualPixelSha256RGB": "5e1f1baa0a0665d9e3a35df60b362628a8ad407c328146b7ed99a6bccae0c104",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "website-project-preview-01",
+      "action": "ADD",
+      "sourceFile": "ui-001.png",
+      "sourceCrop": [
+        30,
+        997,
+        176,
+        1065
+      ],
+      "nativeWidth": 146,
+      "nativeHeight": 68,
+      "runtimeDestination": "public/assets/recovery-v2/website/project/website-project-preview-01.png",
+      "declaredPixelSha256RGB": "e0499c8a81e6fa069186c9c99e03b694b0781c8cd3465497e467e8c51d10cd5b",
+      "actualPixelSha256RGB": "5232287a1a77742b3533f4d9c4b23be0c69a29a6c3b515f3710157964e3a218c",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "website-project-preview-02",
+      "action": "ADD",
+      "sourceFile": "ui-001.png",
+      "sourceCrop": [
+        186,
+        997,
+        331,
+        1065
+      ],
+      "nativeWidth": 145,
+      "nativeHeight": 68,
+      "runtimeDestination": "public/assets/recovery-v2/website/project/website-project-preview-02.png",
+      "declaredPixelSha256RGB": "b7a24c7c3185491033a159332f43fd83d23b30c3e67dc19300a9227407347e11",
+      "actualPixelSha256RGB": "2886359137daffe88830997dea009e2b7fc6f2fcd16d8c157146f820f7f5b99a",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "website-project-preview-03",
+      "action": "ADD",
+      "sourceFile": "ui-001.png",
+      "sourceCrop": [
+        341,
+        997,
+        487,
+        1065
+      ],
+      "nativeWidth": 146,
+      "nativeHeight": 68,
+      "runtimeDestination": "public/assets/recovery-v2/website/project/website-project-preview-03.png",
+      "declaredPixelSha256RGB": "f33968a7200f0e72914222746631b0b0ce3b489457f9615385033fcdef4231b3",
+      "actualPixelSha256RGB": "c93ee923dffeac5d4efbd929981c76cb104cc5b4d98857d890e72e424839a89b",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "website-project-preview-04",
+      "action": "ADD",
+      "sourceFile": "ui-001.png",
+      "sourceCrop": [
+        497,
+        997,
+        643,
+        1065
+      ],
+      "nativeWidth": 146,
+      "nativeHeight": 68,
+      "runtimeDestination": "public/assets/recovery-v2/website/project/website-project-preview-04.png",
+      "declaredPixelSha256RGB": "4018126306cb702b3bb4d3ee76cb0e18c2d34635439ee022461573b09ef37d74",
+      "actualPixelSha256RGB": "c5edcd97fc5f659d858b764bc18163ee9ff7add0447812f67741aca4e81d246f",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-featured-case-master",
+      "action": "ADD",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        35,
+        1163,
+        270,
+        1295
+      ],
+      "nativeWidth": 235,
+      "nativeHeight": 132,
+      "runtimeDestination": "public/assets/recovery-v2/projects/project-featured-case-master.png",
+      "declaredPixelSha256RGB": "ab7b2fd30172f7f424a7a8b33b12020fa655c300fac5b3d4cde8286234c71470",
+      "actualPixelSha256RGB": "c112640a34757cbed86205e2eb9b7d9ab2789fd95e1a0c62d364b4cd741c8bac",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "home-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-000.png",
+      "sourceCrop": [
+        400,
+        55,
+        790,
+        375
+      ],
+      "nativeWidth": 390,
+      "nativeHeight": 320,
+      "runtimeDestination": "public/assets/recovery-v2/hero/home-hero-master.png",
+      "declaredPixelSha256RGB": "7ac0e3cbfe994af884e120827b6c50299348802f945724e0a3a7a232ad5535b6",
+      "actualPixelSha256RGB": "8661b72a6b407e6f2bfb9064e5f7a661fc549a2453f6b27fffa74e69f6c40bc2",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "website-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-001.png",
+      "sourceCrop": [
+        337,
+        88,
+        644,
+        279
+      ],
+      "nativeWidth": 307,
+      "nativeHeight": 191,
+      "runtimeDestination": "public/assets/recovery-v2/hero/website-hero-master.png",
+      "declaredPixelSha256RGB": "4f29a2703913016401781b20620404f0dcd1a113f315855488faf6d61322c20e",
+      "actualPixelSha256RGB": "21d8cad4d8c88d8c8706b6fd602e9ba1a1a950523992fa6855cebb6f1ecf3efb",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "support-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-002.png",
+      "sourceCrop": [
+        399,
+        74,
+        650,
+        292
+      ],
+      "nativeWidth": 251,
+      "nativeHeight": 218,
+      "runtimeDestination": "public/assets/recovery-v2/hero/support-hero-master.png",
+      "declaredPixelSha256RGB": "d3984b380f89a90f053a64b5fe3796966558982423092c3364ad331b5ba97ea1",
+      "actualPixelSha256RGB": "8364720af548deff7c881e0c82ed34de537809f008dc292180602441e6fdf54a",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "support-client-logo-strip",
+      "action": "REPLACE",
+      "sourceFile": "ui-002.png",
+      "sourceCrop": [
+        48,
+        1050,
+        632,
+        1085
+      ],
+      "nativeWidth": 584,
+      "nativeHeight": 35,
+      "runtimeDestination": "public/assets/recovery-v2/client-logos/support-client-logo-strip.png",
+      "declaredPixelSha256RGB": "58dbb7755adf1bfe148254e90ddc1e21ef065000092089f4d46dc72d315dd5a0",
+      "actualPixelSha256RGB": "ff8062f742b59ef89d143b87efa343b5f7618e50919dd4e750c01bfcd0364c45",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "digital-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-003.png",
+      "sourceCrop": [
+        408,
+        63,
+        633,
+        301
+      ],
+      "nativeWidth": 225,
+      "nativeHeight": 238,
+      "runtimeDestination": "public/assets/recovery-v2/hero/digital-hero-master.png",
+      "declaredPixelSha256RGB": "5d9bf8c1bd5bad087ab8a760e8869433452492af3629ddaa6261212b61bef17f",
+      "actualPixelSha256RGB": "3c1630665de779d84cf3b38aa3d3b13228804576376b032208e2f236bb19085a",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "projects-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        414,
+        63,
+        650,
+        275
+      ],
+      "nativeWidth": 236,
+      "nativeHeight": 212,
+      "runtimeDestination": "public/assets/recovery-v2/hero/projects-hero-master.png",
+      "declaredPixelSha256RGB": "89aa1f4d13fd1c236ca9ed83c093491cd80fa9810e784eef62de90256b266f5d",
+      "actualPixelSha256RGB": "8f1a30dffba942ed5553897296985ea48d6faaa875a31eea034ad7d597266475",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-01",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        33,
+        355,
+        184,
+        441
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-01.png",
+      "declaredPixelSha256RGB": "98ed35e3a76e5a3d0deae8d05543145587207091057436668ea8dc2a4dddf48b",
+      "actualPixelSha256RGB": "2e4ea213883e0134dcfe5b5a6c03ecd39ecc77f50c721d14b0920e789e75b36a",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-02",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        198,
+        355,
+        349,
+        441
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-02.png",
+      "declaredPixelSha256RGB": "bffbd7626130516a3640beec03cfb20af25bb212f4b32cd3d8db00d49862a01b",
+      "actualPixelSha256RGB": "c79ddf4eb4e17fa8a19cf7ea57cdb265b44502c659f1f91a28510df8c7956e81",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-03",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        364,
+        355,
+        515,
+        441
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-03.png",
+      "declaredPixelSha256RGB": "8d17cbf3c71986fdcf1a92f42db66a09af7cc194ef325b441a77ce0c5555a653",
+      "actualPixelSha256RGB": "e1d94748909bd8d679e214ecab5f5449af5cbfe67bd1a53d39d49ea1571a09bd",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-04",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        529,
+        355,
+        680,
+        441
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 86,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-04.png",
+      "declaredPixelSha256RGB": "8fd93719edda600009ff8fa2e4c5e90397524b3b17a35cb0176d37a20a8b09dc",
+      "actualPixelSha256RGB": "481c6163e9935ba3c5bc4602f8d25855ccb9059678d0041f992b7c96acb700a7",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-05",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        33,
+        600,
+        184,
+        691
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 91,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-05.png",
+      "declaredPixelSha256RGB": "ca7174a7483005d0927cce11f2103e3ab0c67700b1e7e20f8f91bb1d339dd740",
+      "actualPixelSha256RGB": "9f32dc123b7d78c3953f2aee00902fa63c746a6d82a9f0b7050e07f0b0e06006",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-06",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        198,
+        600,
+        349,
+        691
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 91,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-06.png",
+      "declaredPixelSha256RGB": "bdb7bab5f99459ac5efb50739cf809ad84729861147a210954e1d1de86868986",
+      "actualPixelSha256RGB": "d0b94e3264eb354dbc61f4a199fe686866f7184416a65ea333a94269a12a9c5e",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-07",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        364,
+        600,
+        515,
+        691
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 91,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-07.png",
+      "declaredPixelSha256RGB": "e6731ef013e980214ee4041a3066f3448223fb1488a99b7e2e0942989a19ba9c",
+      "actualPixelSha256RGB": "0adbc9854564e5b73939c9520afff13068a459104d2e44221a8ff7f33741f9b0",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-08",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        529,
+        600,
+        680,
+        691
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 91,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-08.png",
+      "declaredPixelSha256RGB": "2ec4bd9348a6cf19fdba01462188844c49cd0c1d04c09a5729583b81cc85787c",
+      "actualPixelSha256RGB": "419cdc1ce500b020be569ca3a8f7c5366f8ee7f0592f5c88394766a73990b0bb",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-09",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        33,
+        850,
+        184,
+        940
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 90,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-09.png",
+      "declaredPixelSha256RGB": "242775be30d18be46fa270b2b9d81343f59f9807f43daaf42d46dc0cc62dc0e4",
+      "actualPixelSha256RGB": "11008f6400e399ab7f12a1175a5241bca8affbc13ebe08f6cd15286f9670f0c6",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-10",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        198,
+        850,
+        349,
+        940
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 90,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-10.png",
+      "declaredPixelSha256RGB": "4fb229f8dc9c8e296cd408438aa09b3ba1e497347e4d89f38b6e3c1750ba6bd7",
+      "actualPixelSha256RGB": "e9eec290fb96e9fe60a8c6ce3bd4fd0fead8b3c098eea756e741cfded37dd1eb",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-11",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        364,
+        850,
+        515,
+        940
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 90,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-11.png",
+      "declaredPixelSha256RGB": "76631085551217394c877f9defac6603de33a6cc53514b64e9da2783df435b27",
+      "actualPixelSha256RGB": "5149dc7779a68a39062220601ab67d027144e49702131decf83c177233303ebc",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-cover-12",
+      "action": "REPLACE",
+      "sourceFile": "ui-004.png",
+      "sourceCrop": [
+        529,
+        850,
+        680,
+        940
+      ],
+      "nativeWidth": 151,
+      "nativeHeight": 90,
+      "runtimeDestination": "public/assets/recovery-v2/project/project-cover-12.png",
+      "declaredPixelSha256RGB": "a4f5549263597031448b627e5820303ca8bd38b99f5b20a4475af92021438c85",
+      "actualPixelSha256RGB": "e72a0eeb8ff7c8318eed8250cf282087f98b63f94b10f5d37db25cf476f91108",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "knowledge-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        349,
+        83,
+        674,
+        278
+      ],
+      "nativeWidth": 325,
+      "nativeHeight": 195,
+      "runtimeDestination": "public/assets/recovery-v2/hero/knowledge-hero-master.png",
+      "declaredPixelSha256RGB": "0930b7c15d0a48e0f163b4ff818bd08a9b8df9dc4ea3f4d1b84e302eab5ac496",
+      "actualPixelSha256RGB": "36d299735d0cfe13e9201c9a64d08ee9e2d94b88e2933b19ec2fcb145a2c43ea",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-01",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        40,
+        408,
+        285,
+        603
+      ],
+      "nativeWidth": 245,
+      "nativeHeight": 195,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-01.png",
+      "declaredPixelSha256RGB": "e037983b14a80c659062d6a4a56ec96323d1ac818f22d659b39c3befbaab7490",
+      "actualPixelSha256RGB": "71aca1304d04151e377c42528169510c36e2026abaed3fc33ac92dc35c130bfb",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-02",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        41,
+        676,
+        235,
+        791
+      ],
+      "nativeWidth": 194,
+      "nativeHeight": 115,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-02.png",
+      "declaredPixelSha256RGB": "01f9637b357898f234bef384a56d2d2c6248fb4584a43fdc2aec8fe83e5f7479",
+      "actualPixelSha256RGB": "51d1695ca492d8be6bd6953594bf5f3ca39ca657d4ecf22f7f5152f86287ffa9",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-03",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        247,
+        676,
+        441,
+        791
+      ],
+      "nativeWidth": 194,
+      "nativeHeight": 115,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-03.png",
+      "declaredPixelSha256RGB": "c746980790b21461777f698f76627fe699b21abaf8ff7ccbf449023ca30970e4",
+      "actualPixelSha256RGB": "39dced18ea7c6af31d3699c9238bac675fbda926afc963d52302155452c656de",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-04",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        454,
+        676,
+        649,
+        791
+      ],
+      "nativeWidth": 195,
+      "nativeHeight": 115,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-04.png",
+      "declaredPixelSha256RGB": "0b10fef8043e4cead0f51d5e5dd7c92f095c0dbce737faccc09b7a0ac0e5dd1e",
+      "actualPixelSha256RGB": "7f0d012acfbcd1a345d4e02f8aaf69cdb767311d9379a197571aa813a44077c0",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-05",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        41,
+        958,
+        235,
+        1074
+      ],
+      "nativeWidth": 194,
+      "nativeHeight": 116,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-05.png",
+      "declaredPixelSha256RGB": "cae7233f044955e3cf2374010ab95596901669113980816076637c371796df88",
+      "actualPixelSha256RGB": "9912c4eb376f6a80b7100f2e2f3c6f2a9fc59d4643c6686ff1d64e99e312e6ed",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-06",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        247,
+        958,
+        441,
+        1074
+      ],
+      "nativeWidth": 194,
+      "nativeHeight": 116,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-06.png",
+      "declaredPixelSha256RGB": "37a80c92478a5f2a25b81ef2c5d9a30f54d23e9c10c8318f62952b95785f2706",
+      "actualPixelSha256RGB": "8d85597377d29f5eeb4ba0730191398d07e679187a05f7dab1867e50838686aa",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-cover-07",
+      "action": "REPLACE",
+      "sourceFile": "ui-005.png",
+      "sourceCrop": [
+        454,
+        958,
+        649,
+        1074
+      ],
+      "nativeWidth": 195,
+      "nativeHeight": 116,
+      "runtimeDestination": "public/assets/recovery-v2/article/article-cover-07.png",
+      "declaredPixelSha256RGB": "fd5bf6d2c1b6fd0aa4ba1c7f8deee18a758773fdcc5be151e5ffdf56f233600e",
+      "actualPixelSha256RGB": "c761363b781185b27accddfd62cef0fa65488713ff32ee35e7e2ff606a797255",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "about-bird-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-006.png",
+      "sourceCrop": [
+        338,
+        101,
+        535,
+        286
+      ],
+      "nativeWidth": 197,
+      "nativeHeight": 185,
+      "runtimeDestination": "public/assets/recovery-v2/detail/about-bird-master.png",
+      "declaredPixelSha256RGB": "39ab40262d9ec8a22c279356503b6307e9485991304c06f7e47fc0bcaff3be59",
+      "actualPixelSha256RGB": "5cbf243ccbf2a1323ae915741ae76ff4d79c8f636c154689f3ee7c1fbf5fdd5a",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "project-detail-device-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-007.png",
+      "sourceCrop": [
+        295,
+        100,
+        550,
+        285
+      ],
+      "nativeWidth": 255,
+      "nativeHeight": 185,
+      "runtimeDestination": "public/assets/recovery-v2/detail/project-detail-device-master.png",
+      "declaredPixelSha256RGB": "2cd339f4228d28805e8fc3af9cd391e022f1b0557b579ffb55a5b3f30285a40d",
+      "actualPixelSha256RGB": "d67a91693ff9832df3345401f915a59c28bf3ff1d4494107e292bb39bf01dd89",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "article-seo-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-008.png",
+      "sourceCrop": [
+        171,
+        195,
+        409,
+        319
+      ],
+      "nativeWidth": 238,
+      "nativeHeight": 124,
+      "runtimeDestination": "public/assets/recovery-v2/detail/article-seo-hero-master.png",
+      "declaredPixelSha256RGB": "329cbed70bdf8bde72a70832ad1bb1f27a0d2b72786410ea10675bfe73b602ea",
+      "actualPixelSha256RGB": "6f894912fdb561daabdcfcde5e9cd3ffcb7828afd8c7ee05ec00f443345112cf",
+      "declaredHashMatches": false
+    },
+    {
+      "id": "contact-hero-master",
+      "action": "REPLACE",
+      "sourceFile": "ui-009.png",
+      "sourceCrop": [
+        405,
+        67,
+        638,
+        290
+      ],
+      "nativeWidth": 233,
+      "nativeHeight": 223,
+      "runtimeDestination": "public/assets/recovery-v2/hero/contact-hero-master.png",
+      "declaredPixelSha256RGB": "ee487dcfc793c2acdf2de1e59f67499750ac25669d526c45c7f633591a7d5391",
+      "actualPixelSha256RGB": "31d2a4333993f2495f83613b024c0e9ee469901a6a811ab105c225f145df86c8",
+      "declaredHashMatches": false
+    }
+  ]
+}

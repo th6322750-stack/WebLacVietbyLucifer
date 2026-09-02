@@ -1,0 +1,24 @@
+{
+  "revision": "pha1-typography-v1",
+  "authority": "ChatGPT Design Authority",
+  "status": "READY_FOR_USER_TYPOGRAPHY_APPROVAL",
+  "implementationAllowed": false,
+  "gate": "DO NOT HAND TO CLAUDE UNTIL USER APPROVES TYPOGRAPHY",
+  "approvedVisualSource": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "decision": {
+    "heading": "Noto Serif 600/700",
+    "bodyUi": "Inter 400/500/600/700",
+    "deprecated": ["Noto Serif Display", "Be Vietnam Pro"]
+  },
+  "routeCount": 11,
+  "referenceViewports": [1440, 390],
+  "qaRequirements": [
+    "await document.fonts.ready before screenshot capture",
+    "computed heading font must resolve to Noto Serif",
+    "computed body/UI font must resolve to Inter",
+    "line-break drift versus approved master is a blocker",
+    "no synthetic weights or ad-hoc component font substitutions"
+  ],
+  "authorityCommitBeforeReceipt": "9cd20d0804a39459c0930348b21e8f51d41b39d5",
+  "note": "The master is flattened raster, so this freezes the best visual implementation match, not unverifiable original font provenance."
+}
