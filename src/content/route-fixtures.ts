@@ -90,7 +90,16 @@ export const relatedProjectPreview: ProjectPreview[] = [];
 // `demoOnly` is required and pinned to literal `true` for the same reason as ProjectPreview
 // above. Round 4 left these untagged pending a scope decision; ChatGPT re-QA round 5 (R5-01)
 // resolved it: tag the article previews AND the main Article dataset in one consistent pass.
-export type ArticlePreview = { title: string; publishedAt: string; coverAssetId: string; demoOnly: true };
+/** `slug` present = a real article record backs this card, so it deep-links. Absent = the card
+ * is decorative and can only point at the listing. `demoOnly` widened from the literal `true`
+ * on 2026-09-02, when the homepage started surfacing real articles here. */
+export type ArticlePreview = {
+  title: string;
+  publishedAt: string;
+  coverAssetId: string;
+  demoOnly: boolean;
+  slug?: string;
+};
 
 export const seoArticleRelatedPreview: ArticlePreview[] = [
   { title: "Cách tối ưu tốc độ website đúng cách", publishedAt: "2026-06-10", coverAssetId: "article-cover-01", demoOnly: true },

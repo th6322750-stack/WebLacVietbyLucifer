@@ -14,7 +14,8 @@ import { StarField } from "@/components/layout/StarField";
 import { HomeHeroCta } from "./HomeHeroCta";
 import { HeroVietnamScene } from "@/components/layout/HeroVietnamScene";
 import { services } from "@/content/services";
-import { homeProjectShowcase, homeArticleShowcase } from "@/content/route-fixtures";
+import { homeProjectShowcase } from "@/content/route-fixtures";
+import { getVisibleArticles } from "@/content/articles";
 import { siteSettings } from "@/lib/site-settings";
 import { pageMetadata, organizationJsonLd } from "@/lib/seo";
 
@@ -48,6 +49,23 @@ const heroFeatures: { icon: "target" | "shield-check" | "users"; title: string; 
 ];
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+
+// Homepage article cards come from the real published set, newest first, capped at three so
+// the row stays balanced. Mapped into ArticlePreview rather than passed raw: the card only
+// needs these fields, and carrying `slug` is what lets it deep-link to the piece itself.
+// coverAssetId is optional on Article but required by the card, which renders an image —
+// so an article without one is filtered out rather than cast past the type. A cover-less
+// card would render an empty image box, which is worse than one fewer card.
+const homeArticles = getVisibleArticles()
+  .filter((a): a is typeof a & { coverAssetId: string } => Boolean(a.coverAssetId))
+  .slice(0, 3)
+  .map((a) => ({
+    title: a.title,
+    publishedAt: a.publishedAt,
+    coverAssetId: a.coverAssetId,
+    demoOnly: a.demoOnly ?? false,
+    slug: a.slug,
+  }));
 
 export default function HomePage() {
   return (
@@ -198,13 +216,22 @@ export default function HomePage() {
         <Section id="featured-projects" tone="ivory">
           <Container>
             <ScrollReveal direction="up" distance={20} duration={0.6}>
+              {/* Relabelled 2026-09-02. These ten entries are all `demoOnly` concepts, but the
+                  heading called them "dự án tiêu biểu" and the only marker that they were not
+                  delivered client work was a hidden `data-demo-only` attribute. A visitor
+                  reading the page had no way to tell. Wording now matches the disclosure
+                  /website already carries for the same content. */}
               <div className="flex flex-wrap items-end justify-between gap-4">
-                <SectionHeading eyebrow="Dự án" title="Một số dự án tiêu biểu" />
+                <SectionHeading eyebrow="Concept đa ngành" title="Một số concept giao diện theo lĩnh vực" />
                 <Button href="/website" variant="outline">
-                  Xem tất cả dự án
+                  Xem tất cả concept
                   <Icon name="arrow-right" size="inline" />
                 </Button>
               </div>
+              <p className="mt-3 max-w-editorial text-small text-text-muted" data-demo-only="true">
+                Concept minh hoạ phong cách thiết kế theo từng ngành, không phải dự án đã triển
+                khai cho khách hàng cụ thể.
+              </p>
             </ScrollReveal>
             {/* Drifts on its own, and can be grabbed and flung to skim ahead. ScrollReveal is
                 dropped here — its per-card entrance transform fights the track, and the cards are
@@ -265,9 +292,14 @@ export default function HomePage() {
               </Button>
             </div>
           </ScrollReveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {homeArticleShowcase.map((a, idx) => (
-              <ScrollReveal key={a.title} direction="up" distance={24} duration={0.7} delay={idx * 120}>
+          {/* Was homeArticleShowcase: four hard-coded captions, three of which named articles
+              that do not exist, every card linking to the listing rather than a piece. Clicking
+              a headline landed the visitor somewhere that did not contain it. Now built from the
+              real published articles, deep-linked, and the section disappears if there are none
+              rather than advertising an empty library. */}
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {homeArticles.map((a, idx) => (
+              <ScrollReveal key={a.slug} direction="up" distance={24} duration={0.7} delay={idx * 120}>
                 <ArticlePreviewCard preview={a} variant="card" />
               </ScrollReveal>
             ))}

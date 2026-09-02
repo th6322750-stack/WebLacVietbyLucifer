@@ -4,8 +4,10 @@ import type { ArticlePreview } from "@/content/route-fixtures";
 import { assetPath } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
 
-/** Decorative article preview — see route-fixtures.ts. Links to the general knowledge listing
- * rather than a specific article page (no full article record backs these captions).
+/** Article preview — see route-fixtures.ts. Deep-links when the preview carries a `slug`;
+ * falls back to the listing for decorative captions with no article record behind them.
+ * Before 2026-09-02 every card fell back, which meant clicking a headline landed the visitor
+ * on a listing that did not contain it.
  *
  * `rail` is the compact 80x48 thumbnail row used in the /kien-thuc/[slug] sticky rail.
  * `card` is the approved Home "Kiến thức mới nhất" composition: image on top, then title and
@@ -20,7 +22,7 @@ export function ArticlePreviewCard({
   if (variant === "card") {
     return (
       <Link
-        href="/kien-thuc"
+        href={preview.slug ? `/kien-thuc/${preview.slug}` : "/kien-thuc"}
         data-demo-only={preview.demoOnly}
         className="group flex flex-col overflow-hidden rounded-md border border-border bg-white shadow-sm"
       >
@@ -45,7 +47,7 @@ export function ArticlePreviewCard({
 
   return (
     <Link
-      href="/kien-thuc"
+      href={preview.slug ? `/kien-thuc/${preview.slug}` : "/kien-thuc"}
       // See ArticleCard — demo state in markup, no visual badge (R5-01 point 3).
       data-demo-only={preview.demoOnly}
       className="flex items-center gap-3 group"
