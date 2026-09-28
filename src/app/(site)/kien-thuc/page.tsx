@@ -6,7 +6,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
-import { KnowledgeNetwork } from "@/components/layout/KnowledgeNetwork";
+import { PageSignatureAsset } from "@/components/layout/PageSignatureAsset";
+import { PageJumpNav } from "@/components/layout/PageJumpNav";
 import { CategoryFilter } from "@/components/content/CategoryFilter";
 import { NewsletterForm } from "@/components/conversion/NewsletterForm";
 import { FinalCta } from "@/components/layout/FinalCta";
@@ -14,10 +15,11 @@ import { ArticleGrid } from "./ArticleGrid";
 import { getVisibleArticles } from "@/content/articles";
 import { assetPath } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = pageMetadata({
-  title: "Kiến thức",
+  title: "Kiến thức website, SEO & marketing | Lạc Việt Media",
   description: "Bài viết chia sẻ kiến thức về website, mạng xã hội và công cụ số cho doanh nghiệp.",
   path: "/kien-thuc",
 });
@@ -50,12 +52,33 @@ export default async function KnowledgePage({
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Trang chủ", path: "/" },
+          { name: "Kiến thức", path: "/kien-thuc" },
+        ])}
+      />
       <PageHero
         eyebrow="Kiến thức"
         breadcrumbs={<Breadcrumbs onDark items={[{ label: "Trang chủ", href: "/" }, { label: "Kiến thức" }]} />}
         title="Kiến thức"
         description="Chia sẻ kiến thức, kinh nghiệm và xu hướng mới nhất trong Digital Marketing, Mạng xã hội, AI và Truyền thông giúp doanh nghiệp bứt phá trong kỷ nguyên số."
-        heroSlot={<KnowledgeNetwork className="hidden lg:block" />}
+        heroSlot={
+          <PageSignatureAsset
+            assetId="v7-page-knowledge"
+            priority
+            className="mx-auto w-[220px] lg:w-[360px]"
+          />
+        }
+      />
+
+      <PageJumpNav
+        items={[
+          { href: "#category-filters", label: "Chủ đề" },
+          ...(active === "all" ? [{ href: "#featured-article", label: "Nổi bật" }] : []),
+          ...(grid.length > 0 ? [{ href: "#article-grid", label: "Mới nhất" }] : []),
+          { href: "#newsletter", label: "Nhận bài mới" },
+        ]}
       />
 
       <Section id="category-filters" compact>
@@ -155,23 +178,26 @@ export default async function KnowledgePage({
           box floating alone rather than part of the page. Full-width dark strip instead, copy
           left / form right, matching the same "band" rhythm FinalCta's `strip` variant already
           uses elsewhere on the site rather than inventing a new container shape. */}
-      <Section id="newsletter" tone="dark">
+      {/* UI V6 §6.10: đổi từ dark sang ivory. Trước đây Newsletter tối → Final CTA tối →
+          footer tối là ba khối tối liên tiếp, đọc thành một mảng đen dài không có mép, và
+          Final CTA mất hẳn sức nhấn vì nó không còn khác gì thứ ngay trên nó. */}
+      <Section id="newsletter" tone="ivory">
         <Container>
           <ScrollReveal direction="up" distance={24} duration={0.7}>
             <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:gap-10 md:text-left">
               <div className="flex items-center gap-4">
-                <Icon name="mail" size="feature" className="hidden shrink-0 text-gold-300 md:block" />
+                <Icon name="mail" size="feature" className="hidden shrink-0 text-gold-600 md:block" />
                 <div>
-                  <h2 className="text-h3-mobile font-heading text-white lg:text-h3-desktop">
+                  <h2 className="text-h3-mobile font-heading text-ink-950 lg:text-h3-desktop">
                     Cập nhật kiến thức mới nhất mỗi tuần
                   </h2>
-                  <p className="mt-2 max-w-md text-body text-white/75">
+                  <p className="mt-2 max-w-md text-body text-text-secondary">
                     Đăng ký để không bỏ lỡ bài viết mới về website, mạng xã hội và công cụ số.
                   </p>
                 </div>
               </div>
               <div className="w-full max-w-sm text-left">
-                <NewsletterForm onDark />
+                <NewsletterForm />
               </div>
             </div>
           </ScrollReveal>

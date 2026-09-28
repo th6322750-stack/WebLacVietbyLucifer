@@ -4,6 +4,7 @@ import { LeadTable } from "./LeadTable";
 import { FilterBar } from "./FilterBar";
 import { ExportLeadsButton } from "./ExportLeadsButton";
 import { Icon } from "@/components/ui/Icon";
+import { AdminDataUnavailable } from "@/components/admin/AdminDataUnavailable";
 
 export const metadata: Metadata = { title: "Đơn liên hệ" };
 export const dynamic = "force-dynamic";
@@ -18,7 +19,13 @@ export default async function LeadsPage({
   const sp = await searchParams;
   const status = STATUSES.includes(sp.status as LeadStatus) ? (sp.status as LeadStatus) : undefined;
   const q = sp.q?.trim() || undefined;
-  const [leads, counts] = await Promise.all([listLeads({ status, q }), countLeadsByStatus()]);
+  let leads: Awaited<ReturnType<typeof listLeads>>;
+  let counts: Awaited<ReturnType<typeof countLeadsByStatus>>;
+  try {
+    [leads, counts] = await Promise.all([listLeads({ status, q }), countLeadsByStatus()]);
+  } catch {
+    return <AdminDataUnavailable title="Chưa thể tải đơn liên hệ" />;
+  }
 
   return (
     <div className="space-y-4">

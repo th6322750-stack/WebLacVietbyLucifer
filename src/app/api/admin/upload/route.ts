@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { isSignedIn } from "@/lib/admin/auth";
 import { one, all, run } from "@/lib/db/client";
+import { uploadAdapter } from "@/lib/uploads/adapter";
 
 /** Image upload for the admin.
  *
- * Files land in public/assets/uploads and are recorded in the `assets` table, so the picker can
+ * Files are handed to an upload adapter and recorded in the `assets` table, so the picker can
  * list what has already been uploaded instead of the admin having to remember filenames.
+ *
+ * Việc ghi tệp đã chuyển sang `src/lib/uploads/adapter.ts`. Route này không còn biết tệp nằm ở
+ * đâu — đó là điều kiện để đổi sang kho lưu trữ ngoài (bắt buộc trên Vercel; xem chú thích
+ * BLOCKER trong adapter) mà không phải sửa lại phần kiểm tra chữ ký và khử trùng lặp ở đây.
  *
  * The stored name is the file's SHA-256 plus its real extension. That gives deduplication for
  * free — uploading the same picture twice reuses one file — and means a user-supplied filename
@@ -26,8 +29,6 @@ const SIGNATURES: { ext: string; mime: string; test: (b: Buffer) => boolean }[] 
   { ext: "gif", mime: "image/gif", test: (b) => b.subarray(0, 3).toString("ascii") === "GIF" },
   { ext: "avif", mime: "image/avif", test: (b) => b.subarray(4, 8).toString("ascii") === "ftyp" && b.subarray(8, 12).toString("ascii").startsWith("avif") },
 ];
-
-const UPLOAD_DIR = path.join(process.cwd(), "public", "assets", "uploads");
 
 export async function POST(req: Request) {
   if (!(await isSignedIn())) {
@@ -61,22 +62,38 @@ export async function POST(req: Request) {
   }
 
   const sha = createHash("sha256").update(buf).digest("hex");
-  const filename = `${sha}.${sig.ext}`;
-  const publicPath = `/assets/uploads/${filename}`;
+  const key = `${sha}.${sig.ext}`;
 
-  const existing = await one<{ id: string }>("SELECT id FROM assets WHERE sha256 = ?", [sha]);
+  const existing = await one<{ id: string; path: string }>(
+    "SELECT id, path FROM assets WHERE sha256 = ?",
+    [sha],
+  );
+  // Tệp đã có: trả lại đúng đường dẫn đã lưu chứ không dựng lại đường dẫn theo quy ước cũ. Nếu
+  // sau này đổi sang kho ngoài, những tệp cũ vẫn còn ở đường dẫn cũ và vẫn phải dùng được.
+  if (existing) {
+    return NextResponse.json({ ok: true, path: existing.path, reused: true });
+  }
 
-  if (!existing) {
-    await mkdir(UPLOAD_DIR, { recursive: true });
-    await writeFile(path.join(UPLOAD_DIR, filename), buf);
-    await run(
-      `INSERT INTO assets (id,path,width,height,has_alpha,kind,alt,sha256,uploaded_at)
-       VALUES (?,?,NULL,NULL,NULL,?,?,?,?)`,
-      [publicPath, publicPath, sig.mime, file.name.slice(0, 200), sha, new Date().toISOString()],
+  let stored;
+  try {
+    stored = await uploadAdapter().put(key, buf, sig.mime);
+  } catch (err) {
+    // Ghi thất bại phải dừng ở đây. Ghi vào bảng `assets` một dòng trỏ tới tệp không tồn tại là
+    // cách tạo ra ảnh vỡ trên trang công khai mà không ai biết cho tới khi khách nhìn thấy.
+    console.error("upload adapter write failed", err);
+    return NextResponse.json(
+      { ok: false, error: "Không lưu được tệp. Kiểm tra cấu hình kho lưu trữ." },
+      { status: 500 },
     );
   }
 
-  return NextResponse.json({ ok: true, path: publicPath, reused: Boolean(existing) });
+  await run(
+    `INSERT INTO assets (id,path,width,height,has_alpha,kind,alt,sha256,uploaded_at)
+     VALUES (?,?,NULL,NULL,NULL,?,?,?,?)`,
+    [stored.url, stored.url, sig.mime, file.name.slice(0, 200), sha, new Date().toISOString()],
+  );
+
+  return NextResponse.json({ ok: true, path: stored.url, reused: false });
 }
 
 export async function GET() {

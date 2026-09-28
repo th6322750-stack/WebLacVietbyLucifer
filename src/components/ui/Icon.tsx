@@ -33,6 +33,8 @@ export type IconName =
   | "clock"
   | "calendar"
   | "target"
+  | "trending-up"
+  | "server"
   | "mail"
   | "phone"
   | "map-pin"

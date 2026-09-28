@@ -12,6 +12,8 @@ const EMPTY: Partial<ArticleRow> = {
   title: "",
   category: "",
   excerpt: "",
+  seoTitle: "",
+  seoDescription: "",
   content: [],
   author: "Lạc Việt Media",
   demoOnly: true,
@@ -50,6 +52,11 @@ export function ArticleManager({ initial }: { initial: ArticleRow[] }) {
   }
   const categoryNames = [...new Set(initial.map((article) => article.category).filter(Boolean))];
   const published = initial.filter((article) => article.published).length;
+  const seoReady = initial.filter((article) => {
+    const titleLength = (article.seoTitle ?? "").trim().length;
+    const descriptionLength = (article.seoDescription ?? "").trim().length;
+    return titleLength >= 25 && titleLength <= 70 && descriptionLength >= 70 && descriptionLength <= 170;
+  }).length;
   const shown = initial.filter((article) => {
     const matchesQuery = !query || `${article.title} ${article.slug}`.toLowerCase().includes(query.toLowerCase());
     const matchesCategory = category === "all" || article.category === category;
@@ -76,13 +83,14 @@ export function ArticleManager({ initial }: { initial: ArticleRow[] }) {
         </button>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
         {[
           { label: "Tổng bài viết", value: initial.length, detail: "Bài viết đã tạo", icon: "sparkles" as const, tone: "blue" },
           { label: "Đã xuất bản", value: published, detail: `${initial.length ? Math.round((published / initial.length) * 100) : 0}% bài viết`, icon: "send" as const, tone: "green" },
           { label: "Bản nháp", value: initial.length - published, detail: "Chưa xuất bản", icon: "clock" as const, tone: "blue" },
           { label: "Mục nội dung", value: initial.reduce((sum, article) => sum + article.content.length, 0), detail: "Tổng số phân mục", icon: "target" as const, tone: "blue" },
           { label: "Chủ đề", value: categoryNames.length, detail: "Danh mục nội dung", icon: "star" as const, tone: "amber" },
+          { label: "SEO đủ", value: seoReady, detail: "Title + description đạt ngưỡng", icon: "search" as const, tone: "green" },
         ].map((stat) => (
           <article key={stat.label} className="admin-stat-card flex min-h-[108px] items-center gap-4 p-4">
             <span className="admin-icon-bubble" data-tone={stat.tone === "blue" ? undefined : stat.tone}><Icon name={stat.icon} size="card" /></span>
@@ -138,6 +146,7 @@ export function ArticleManager({ initial }: { initial: ArticleRow[] }) {
                 <th className="px-5 py-4">Tiêu đề bài viết</th>
                 <th className="px-5 py-4">Chuyên mục</th>
                 <th className="px-5 py-4">Ngày xuất bản</th>
+                <th className="px-5 py-4">SEO</th>
                 <th className="px-5 py-4">Trạng thái</th>
                 <th className="px-5 py-4 text-right">Thao tác</th>
               </tr>
@@ -160,6 +169,14 @@ export function ArticleManager({ initial }: { initial: ArticleRow[] }) {
                     <span className="rounded-full bg-[#edf4ff] px-3 py-1 text-[10px] font-medium text-[#1760c7]">{a.category}</span>
                   </td>
                   <td className="whitespace-nowrap px-5 py-4 text-[#617089]">{a.publishedAt}</td>
+                  <td className="px-5 py-4">
+                    {(() => {
+                      const titleLength = (a.seoTitle ?? "").trim().length;
+                      const descriptionLength = (a.seoDescription ?? "").trim().length;
+                      const ready = titleLength >= 25 && titleLength <= 70 && descriptionLength >= 70 && descriptionLength <= 170;
+                      return <span className={`admin-status ${ready ? "admin-status-green" : "admin-status-amber"}`} title={`SEO title ${titleLength}/70 · description ${descriptionLength}/170`}>{ready ? "SEO đủ" : "Thiếu SEO"}</span>;
+                    })()}
+                  </td>
                   <td className="px-5 py-4">
                     <StatusPill on={a.published} onLabel="Hiển thị" offLabel="Bản nháp" />
                   </td>
@@ -290,6 +307,31 @@ function ArticleForm({
             onChange={(e) => set("excerpt", e.target.value)}
             className={INPUT}
           />{" "}
+        </Field>{" "}
+        <Field label="SEO title" hint="25–70 ký tự">
+          <div className="relative">
+            <input
+              value={f.seoTitle ?? ""}
+              maxLength={70}
+              onChange={(e) => set("seoTitle", e.target.value)}
+              placeholder="Để trống để dùng tiêu đề bài viết"
+              className={`${INPUT} pr-16`}
+            />
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[#8a96a8]">{(f.seoTitle ?? "").length}/70</span>
+          </div>
+        </Field>{" "}
+        <Field label="SEO description" hint="70–170 ký tự">
+          <div className="relative">
+            <textarea
+              rows={2}
+              value={f.seoDescription ?? ""}
+              maxLength={170}
+              onChange={(e) => set("seoDescription", e.target.value)}
+              placeholder="Mô tả ngắn đúng ý định tìm kiếm"
+              className={`${INPUT} pr-16`}
+            />
+            <span className="pointer-events-none absolute bottom-2 right-3 text-[10px] text-[#8a96a8]">{(f.seoDescription ?? "").length}/170</span>
+          </div>
         </Field>{" "}
       </div>{" "}
       <div className="mt-6 border-t border border-black/10 pt-5">

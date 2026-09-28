@@ -15,6 +15,10 @@ function hydrate(r: DbRow): ArticleRow {
     publishedAt: String(r.published_at),
     author: String(r.author),
     demoOnly: toBool(r.demo_only),
+    coverAssetId: typeof r.cover_asset_id === "string" ? r.cover_asset_id : undefined,
+    readMinutes: r.read_minutes == null ? undefined : Number(r.read_minutes),
+    seoTitle: typeof r.seo_title === "string" ? r.seo_title : undefined,
+    seoDescription: typeof r.seo_description === "string" ? r.seo_description : undefined,
     published: toBool(r.published),
     sortOrder: Number(r.sort_order),
     updatedAt: String(r.updated_at),
@@ -42,10 +46,11 @@ export async function upsertArticle(a: Partial<ArticleRow> & { slug: string }): 
   if (existing) {
     await run(
       `UPDATE articles SET title=?,category=?,excerpt=?,content=?,published_at=?,author=?,
-         demo_only=?,published=?,sort_order=?,updated_at=? WHERE slug=?`,
+         demo_only=?,cover_asset_id=?,read_minutes=?,seo_title=?,seo_description=?,published=?,sort_order=?,updated_at=? WHERE slug=?`,
       [
         m.title, m.category, m.excerpt, toJson(m.content), m.publishedAt, m.author,
-        fromBool(m.demoOnly), fromBool(m.published ?? true), m.sortOrder ?? 0, now, a.slug,
+        fromBool(m.demoOnly), m.coverAssetId ?? null, m.readMinutes ?? null, m.seoTitle?.trim() || null,
+        m.seoDescription?.trim() || null, fromBool(m.published ?? true), m.sortOrder ?? 0, now, a.slug,
       ],
     );
     return;
@@ -53,12 +58,13 @@ export async function upsertArticle(a: Partial<ArticleRow> & { slug: string }): 
 
   await run(
     `INSERT INTO articles (slug,title,category,excerpt,content,published_at,author,demo_only,
-       published,sort_order,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+       cover_asset_id,read_minutes,seo_title,seo_description,published,sort_order,created_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     [
       a.slug, m.title ?? "", m.category ?? "", m.excerpt ?? "", toJson(m.content ?? []),
       m.publishedAt ?? now.slice(0, 10), m.author ?? "Lạc Việt Media",
-      fromBool(m.demoOnly ?? true), fromBool(m.published ?? true), m.sortOrder ?? 999, now, now,
+      fromBool(m.demoOnly ?? true), m.coverAssetId ?? null, m.readMinutes ?? null, m.seoTitle?.trim() || null,
+      m.seoDescription?.trim() || null, fromBool(m.published ?? true), m.sortOrder ?? 999, now, now,
     ],
   );
 }

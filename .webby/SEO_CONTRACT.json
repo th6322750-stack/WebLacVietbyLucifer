@@ -1,1 +1,32 @@
-{"revision":"gd3-hardening-v1","language":"vi","canonicalOrigin":"https://lacvietmedia.com","must":["unique title and meta description for indexable routes","canonical URLs","sitemap.xml","robots.txt","Open Graph metadata","semantic heading hierarchy","descriptive internal links","meaningful image alt text","HTTP 404 for not-found route"],"structuredData":{"allowed":["Organization/ProfessionalService only with verified factual fields","BreadcrumbList on detail routes","Article on factual knowledge articles","WebSite where appropriate"],"forbidden":["fake Review/AggregateRating","invented awards/client counts/ratings","schema inconsistent with visible content"]},"contentIntegrity":"Demo preview data must not become factual structured data or indexed claims without verification."}
+{
+  "revision": "phuong-an-2026-09-07",
+  "language": "vi",
+  "canonicalOrigin": "https://www.lacviet.media",
+  "must": [
+    "unique title and meta description for indexable routes",
+    "canonical URLs",
+    "sitemap.xml",
+    "robots.txt",
+    "Open Graph metadata",
+    "semantic heading hierarchy",
+    "descriptive internal links",
+    "meaningful image alt text",
+    "HTTP 404 for not-found route"
+  ],
+  "structuredData": {
+    "allowed": [
+      "Organization/ProfessionalService only with verified factual fields",
+      "BreadcrumbList on detail routes",
+      "Article on factual knowledge articles",
+      "WebSite where appropriate"
+    ],
+    "forbidden": [
+      "fake Review/AggregateRating",
+      "invented awards/client counts/ratings",
+      "schema inconsistent with visible content",
+      "Product/Review/AggregateRating trên trang concept giao diện — concept là minh hoạ thiết kế, không phải sản phẩm mua được, và không có đánh giá thật nào để công bố"
+    ]
+  },
+  "contentIntegrity": "Demo preview data must not become factual structured data or indexed claims without verification. Việc thực thi nằm ở src/lib/content-truth.ts: chỉ 'verified' và 'system-derived' hiện mặc định, 'demo' cần disclosure hiển thị, 'unverified' không bao giờ hiện. Route redirect (/du-an, /du-an/[slug]) không được đưa vào sitemap.",
+  "canonicalOriginNote": "lacvietmedia.com chưa bao giờ phân giải — tên miền cũ còn sót lại từ trước khi đăng ký tên miền hiện tại. Phải là dạng WWW: apex 308-redirect sang www, nên lấy apex làm canonical là trỏ mọi canonical/sitemap/OG vào một redirect thay vì vào bản 200."
+}

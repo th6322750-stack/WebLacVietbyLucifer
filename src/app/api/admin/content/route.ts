@@ -55,6 +55,22 @@ export async function POST(req: Request) {
           { status: 400 },
         );
       }
+      if (kind === "article") {
+        const seoTitle = data.seoTitle;
+        const seoDescription = data.seoDescription;
+        if (seoTitle !== undefined && typeof seoTitle !== "string") {
+          return NextResponse.json({ ok: false, error: "SEO title không hợp lệ." }, { status: 400 });
+        }
+        if (seoDescription !== undefined && typeof seoDescription !== "string") {
+          return NextResponse.json({ ok: false, error: "SEO description không hợp lệ." }, { status: 400 });
+        }
+        if (typeof seoTitle === "string" && seoTitle.length > 70) {
+          return NextResponse.json({ ok: false, error: "SEO title tối đa 70 ký tự." }, { status: 400 });
+        }
+        if (typeof seoDescription === "string" && seoDescription.length > 170) {
+          return NextResponse.json({ ok: false, error: "SEO description tối đa 170 ký tự." }, { status: 400 });
+        }
+      }
       if (kind === "project") await upsertProject(data as never);
       else await upsertArticle(data as never);
     }
@@ -65,6 +81,7 @@ export async function POST(req: Request) {
       revalidatePath(p);
     }
     revalidatePath(kind === "project" ? "/du-an/[slug]" : "/kien-thuc/[slug]", "page");
+    if (kind === "article") revalidatePath("/sitemap.xml");
 
     return NextResponse.json({ ok: true });
   } catch (err) {

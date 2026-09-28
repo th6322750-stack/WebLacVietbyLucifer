@@ -5,10 +5,13 @@ import type { IndustryShowcaseItem } from "@/content/industry-showcase";
 import { IndustryShowcaseCard } from "@/components/content/IndustryShowcaseCard";
 
 const ALL = "Tất cả";
-// PRO V2.2 §2: mobile no longer renders all 30 at once — that read as an endless scroll. Same
-// batch size on every breakpoint (simpler than a resize-aware split, and 9 already sits in
-// brief's "8-12 initial" range while filling a clean 3-column row on desktop).
+// PRO V2.2 §2: mobile no longer renders all 30 at once — that read as an endless scroll.
+//
+// UI V6 §6.4: chín thẻ vẫn quá dài ở 390px — mỗi thẻ có ảnh 16:9, nên chín thẻ là khoảng
+// 3.000px trước khi khách chạm được CTA. Desktop giữ 9 (đủ ba hàng ba cột); mobile chỉ 4 rồi
+// tới nút xem thêm. Bốn thẻ vượt ngưỡng 9 chỉ bị ẩn bằng class ở khổ nhỏ, vẫn nằm trong HTML.
 const BATCH_SIZE = 9;
+const MOBILE_INITIAL = 4;
 
 /** Lưới concept giao diện web lọc theo ngành — bấm chip để lọc, bấm ảnh mở Zalo (xem
  * IndustryShowcaseCard). Danh sách chip tự sinh từ `industry` có trong dữ liệu, không hard-code,
@@ -28,6 +31,10 @@ export function IndustryGallery({ items }: { items: IndustryShowcaseItem[] }) {
 
   const [active, setActive] = useState(ALL);
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  // Tách riêng khỏi `visibleCount`: ở mobile các thẻ vượt ngưỡng vẫn được render nhưng ẩn bằng
+  // class, nên chỉ tăng `visibleCount` sẽ không gỡ được lớp ẩn đó — nút sẽ bấm mà không có gì
+  // xảy ra ở đúng khổ màn hình mà nó tồn tại để phục vụ.
+  const [mobileExpanded, setMobileExpanded] = useState(false);
   const filtered = active === ALL ? items : items.filter((item) => item.industry === active);
   const visible = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
@@ -35,6 +42,7 @@ export function IndustryGallery({ items }: { items: IndustryShowcaseItem[] }) {
   const selectFilter = (label: string) => {
     setActive(label);
     setVisibleCount(BATCH_SIZE); // PRO V2.2 §2: changing filter resets to the first batch.
+    setMobileExpanded(false);
   };
 
   return (
@@ -82,16 +90,27 @@ export function IndustryGallery({ items }: { items: IndustryShowcaseItem[] }) {
           to 4 (wide desktop) exactly as the fixed breakpoints did — this is the same responsive
           behavior, just also correct when the result count is small. */}
       <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(280px,340px))] justify-center gap-4 md:gap-5">
-        {visible.map((item) => (
-          <IndustryShowcaseCard key={item.slug} item={item} />
+        {visible.map((item, index) => (
+          <div
+            key={item.slug}
+            className={!mobileExpanded && index >= MOBILE_INITIAL ? "hidden md:block" : undefined}
+          >
+            <IndustryShowcaseCard item={item} />
+          </div>
         ))}
       </div>
 
-      {hasMore ? (
-        <div className="mt-8 flex justify-center">
+      {/* Nút phục vụ hai việc khác nhau: ở mobile nó gỡ lớp ẩn, ở desktop nó nạp thêm lô. Khi
+          desktop đã hết thẻ mà mobile vẫn còn thẻ đang ẩn, nút chỉ hiện ở mobile. */}
+      {hasMore || (!mobileExpanded && filtered.length > MOBILE_INITIAL) ? (
+        <div className={`mt-8 flex justify-center ${hasMore ? "" : "md:hidden"}`}>
           <button
             type="button"
-            onClick={() => setVisibleCount((c) => c + 6)}
+            aria-expanded={mobileExpanded}
+            onClick={() => {
+              setMobileExpanded(true);
+              setVisibleCount((c) => c + 6);
+            }}
             className="rounded-pill border border-gold-500/30 bg-white px-6 py-3 text-small font-semibold text-gold-700 transition-colors duration-200 hover:border-gold-500/60 hover:bg-ivory-100"
           >
             Xem thêm giao diện

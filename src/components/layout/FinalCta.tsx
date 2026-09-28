@@ -11,7 +11,10 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 export function FinalCta({
   eyebrow,
   title = "Sẵn sàng nâng tầm hiện diện số của bạn?",
-  description = "Để lại thông tin, đội ngũ Lạc Việt Media sẽ liên hệ tư vấn giải pháp phù hợp trong ngày làm việc.",
+  // PHUONG_AN §6.11: the button opens a Zalo chat, so "để lại thông tin ... sẽ liên hệ" described
+  // a flow that does not exist — nothing is left anywhere and nobody calls back. Copy now matches
+  // what the click actually does.
+  description = "Nhắn Zalo để trao đổi nhu cầu và nhận phương án phù hợp.",
   sourceComponent,
   defaultService,
   decorated = false,
@@ -58,6 +61,9 @@ export function FinalCta({
   const { open } = useConsultation();
   return (
     <section
+      // StickyMobileCta quan sát thuộc tính này để tự ẩn khi CTA cuối trang vào khung nhìn —
+      // hai nút cùng mở Zalo chồng lên nhau là thứ khách thấy ở cuối MỌI trang trước đây.
+      data-final-cta="true"
       className={`${tone === "ivory" ? "bg-ivory-100" : "bg-ink-950"} ${
         variant === "strip" ? "py-8 md:py-10" : "py-10 md:py-12"
       } ${decorated || glow ? "relative overflow-hidden" : ""} ${glow ? "bg-dark-hero" : ""}`}

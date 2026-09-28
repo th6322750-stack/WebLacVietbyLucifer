@@ -10,6 +10,10 @@
 
   html {
     scroll-behavior: smooth;
+    /* ScrollReveal can briefly translate a left-entering panel outside the viewport while it
+       settles. Clip that visual overshoot so a narrow device never gains a phantom horizontal
+       scrollbar during the first frame. */
+    overflow-x: clip;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -28,6 +32,7 @@
 
   body {
     @apply bg-ivory-50 text-text-primary font-body antialiased;
+    overflow-x: clip;
   }
 
   h1,
@@ -644,6 +649,14 @@
 .adm-lift { transition: box-shadow 180ms ease, transform 180ms ease; }
 .adm-lift:hover { box-shadow: var(--shadow-2); transform: translateY(-2px); }
 .adm-num { font-variant-numeric: tabular-nums; }
+.adm-page :where(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid rgb(35 105 194 / 0.38);
+  outline-offset: 2px;
+}
+.adm-page :where(input, textarea, select):focus {
+  border-color: #8db6ef;
+  box-shadow: 0 0 0 3px rgb(141 182 239 / 0.18);
+}
 
 .admin-sidebar {
   background:
@@ -659,6 +672,10 @@
 .admin-issue-card {
   background: linear-gradient(135deg, #f04444, #d92337);
   box-shadow: 0 10px 22px rgb(153 24 40 / 0.28);
+}
+.admin-ok-card {
+  background: linear-gradient(135deg, #16885c, #0d6d4a);
+  box-shadow: 0 10px 22px rgb(10 122 79 / 0.22);
 }
 .admin-panel {
   border: 1px solid var(--admin-line);
@@ -1165,4 +1182,41 @@
 .cursor-badge {
   left: var(--mx, 50%);
   top: var(--my, 50%);
+}
+
+/* ── UI V6: service signature object ────────────────────────────────────────────────────────
+ *
+ * Chỉ animate `transform` và `opacity`. `filter` bị loại có chủ ý: quầng sáng ở đây rộng vài
+ * trăm px, và animate `filter` buộc trình duyệt vẽ lại toàn bộ vùng đó mỗi khung hình — tốn
+ * hơn hẳn so với đổi opacity của một lớp đã sẵn sàng trên compositor.
+ *
+ * `will-change` cố tình KHÔNG khai báo: hai animation này chạy vô thời hạn và giữ một lớp
+ * compositor thường trú cho mỗi trang dịch vụ, đổi lấy một hiệu ứng gần như không thấy.
+ */
+.v6-signature-glow {
+  background: radial-gradient(circle at 50% 45%, rgba(216, 169, 78, 0.18), transparent 62%);
+  animation: v6-glow-breathe 9s ease-in-out infinite;
+}
+
+.v6-signature-float {
+  animation: v6-object-float 7s ease-in-out infinite;
+}
+
+@keyframes v6-glow-breathe {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 1; }
+}
+
+@keyframes v6-object-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+/* Reduced motion phải dừng HẲN, không phải rút ngắn. Người bật cờ này thường vì chuyển động
+   gây chóng mặt — một vòng lặp 7 giây rút xuống 1 giây vẫn là một vòng lặp. */
+@media (prefers-reduced-motion: reduce) {
+  .v6-signature-glow,
+  .v6-signature-float {
+    animation: none;
+  }
 }

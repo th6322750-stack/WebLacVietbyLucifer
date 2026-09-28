@@ -4,19 +4,28 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { assetPath, assetSize } from "@/lib/assets";
-import { footerLinks, siteSettings } from "@/lib/site-settings";
+import { siteSettings } from "@/lib/site-settings";
+import { footerNav } from "@/lib/navigation";
+import { zaloUrl } from "@/lib/zalo";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { track } from "@/lib/analytics";
 
+// Cột dịch vụ sinh từ service registry qua `footerNav()`, cùng nguồn với header — publish một
+// dịch vụ là một lần sửa dữ liệu, không phải ba lần sửa ba file.
+//
 // PRO V2.1: was missing a "Khám phá" (footerLinks.brand — Giới thiệu, Kiến thức) entry entirely,
 // and the accordion below mapped every non-"services" key to `footerLinks.contact` — so even
 // adding one here without fixing that mapping would have silently rendered the wrong links.
 // Each group now carries its own `links` directly instead of being looked up by key.
+const footerLinks = footerNav();
+
 const MOBILE_GROUPS = [
   { key: "discover", title: "Khám phá", links: footerLinks.brand },
   { key: "services", title: "Dịch vụ", links: footerLinks.services },
+  { key: "support", title: "Hướng dẫn & hỗ trợ", links: footerLinks.support },
+  { key: "policies", title: "Chính sách", links: footerLinks.policies },
   { key: "contact", title: "Liên hệ", links: footerLinks.contact },
 ] as const;
 
@@ -53,10 +62,12 @@ export function SiteFooter({ minimal = false }: { minimal?: boolean }) {
         LẠC VIỆT
       </span>
       <Container className="relative">
-        <div className="hidden gap-10 md:grid md:grid-cols-4">
+        <div className="hidden gap-8 md:grid md:grid-cols-3 xl:grid-cols-6 lg:gap-10">
           <BrandColumn />
           <FooterLinkColumn title="Dịch vụ" links={footerLinks.services} />
           <FooterLinkColumn title="Khám phá" links={footerLinks.brand} />
+          <FooterLinkColumn title="Hướng dẫn & hỗ trợ" links={footerLinks.support} />
+          <FooterLinkColumn title="Chính sách" links={footerLinks.policies} />
           <FooterLinkColumn title="Liên hệ" links={footerLinks.contact} />
         </div>
 
@@ -157,7 +168,7 @@ function SocialRow() {
     brand: string;
     href: string;
   }[] = [
-    { name: "zalo", label: "Zalo", brand: "#0068FF", href: `https://zalo.me/${siteSettings.zalo}` },
+    { name: "zalo", label: "Zalo", brand: "#0068FF", href: zaloUrl() },
     {
       name: "telegram",
       label: "Telegram",

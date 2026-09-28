@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { countLeadsByStatus, listLeads, type LeadStatus } from "@/lib/db/repositories/leads";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { AdminDataUnavailable } from "@/components/admin/AdminDataUnavailable";
+import { AdminSeoHealth } from "@/components/admin/AdminSeoHealth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,14 +11,12 @@ const KPI: {
   label: string;
   icon: IconName;
   tone: "blue" | "amber" | "green" | "red";
-  trend: string;
-  up: boolean;
 }[] = [
-  { key: "total", label: "Tổng đơn liên hệ", icon: "users", tone: "blue", trend: "12% so với tuần trước", up: true },
-  { key: "new", label: "Đơn mới cần xử lý", icon: "sparkles", tone: "blue", trend: "8% so với tuần trước", up: false },
-  { key: "contacted", label: "Đang tư vấn", icon: "messages-square", tone: "amber", trend: "5% so với tuần trước", up: true },
-  { key: "won", label: "Chốt thành công", icon: "circle-check", tone: "green", trend: "18% so với tuần trước", up: true },
-  { key: "lost", label: "Không thành công", icon: "circle-alert", tone: "red", trend: "3% so với tuần trước", up: false },
+  { key: "total", label: "Tổng đơn liên hệ", icon: "users", tone: "blue" },
+  { key: "new", label: "Đơn mới cần xử lý", icon: "sparkles", tone: "blue" },
+  { key: "contacted", label: "Đang tư vấn", icon: "messages-square", tone: "amber" },
+  { key: "won", label: "Chốt thành công", icon: "circle-check", tone: "green" },
+  { key: "lost", label: "Không thành công", icon: "circle-alert", tone: "red" },
 ];
 
 const STATUS: Record<LeadStatus, { label: string; className: string }> = {
@@ -45,7 +45,13 @@ function initials(name: string) {
 }
 
 export default async function AdminHome() {
-  const [counts, recent] = await Promise.all([countLeadsByStatus(), listLeads({ limit: 6 })]);
+  let counts: Record<"total" | LeadStatus, number>;
+  let recent: Awaited<ReturnType<typeof listLeads>>;
+  try {
+    [counts, recent] = await Promise.all([countLeadsByStatus(), listLeads({ limit: 6 })]);
+  } catch {
+    return <div className="space-y-5"><AdminDataUnavailable title="Chưa có dữ liệu tổng quan" /><AdminSeoHealth /></div>;
+  }
 
   return (
     <div className="space-y-5">
@@ -78,10 +84,7 @@ export default async function AdminHome() {
             <div className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.025em] text-[#617089]">{item.label}</p>
               <p className="adm-num mt-1 font-heading text-[25px] font-bold leading-none text-[#0b2858]">{counts[item.key]}</p>
-              <p className={`mt-3 text-[10px] ${item.up ? "text-emerald-600" : "text-red-500"}`}>
-                <span className="mr-1 font-bold">{item.up ? "↑" : "↓"}</span>
-                <span className="text-[#74829a]">{item.trend}</span>
-              </p>
+              <p className="mt-3 text-[10px] text-[#74829a]">Số liệu thực từ hệ thống</p>
             </div>
           </article>
         ))}
@@ -154,6 +157,8 @@ export default async function AdminHome() {
           </div>
         )}
       </section>
+
+      <AdminSeoHealth />
     </div>
   );
 }

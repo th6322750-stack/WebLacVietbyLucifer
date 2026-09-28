@@ -44,3 +44,11 @@ next-env.d.ts
 
 # Admin-uploaded media — runtime content per machine, not source.
 /public/assets/uploads/
+
+# Local design exports, browser evidence and alternate build directories.
+/.next-*/
+/.playwright-cli/
+/output/
+/tmp/
+/maxweb-screenshots/
+*.log

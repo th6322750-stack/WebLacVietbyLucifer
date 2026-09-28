@@ -58,9 +58,9 @@ export function PageHero({
    * where needed to match approved master" — /support-mxh has a long headline that wraps to four
    * lines at the default h1 size where the master shows two. */
   titleClassName?: string;
-  /** MASTER PARITY V4: several hero masters (e.g. /lien-he) show a row of icon proof items
-   * under the copy — "Phản hồi nhanh / Trong 30 phút" and so on — which the runtime was missing
-   * entirely. Distinct from `metrics`, which is the numeric strip used on /du-an. */
+  /** MASTER PARITY V4: several hero masters show a row of icon proof items under the copy.
+   * Keep these as capability/channel notes, not unverified response-time or ranking promises.
+   * Distinct from `metrics`, which is the numeric strip used on /du-an. */
   proofItems?: { icon: IconName; title: string; note: string; demoOnly?: boolean }[];
   /** Master pages 7 and 10 show a breadcrumb row inside the dark hero, above the H1. */
   breadcrumbs?: ReactNode;

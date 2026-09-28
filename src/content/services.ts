@@ -1,5 +1,10 @@
 import type { Service } from "@/lib/types";
 
+// NGUỒN SEED CHO DATABASE, không còn là nguồn hiển thị. Giao diện (trang chủ, hub, menu, footer)
+// đọc từ `src/content/service-registry.ts`. File này giữ lại vì `src/lib/db/migrate.ts` dùng nó
+// để seed bảng services; khi repository layer thay thế được seed, file này nên biến mất hẳn
+// thay vì tồn tại song song như một nguồn sự thật thứ hai.
+
 // Demo pricing per .webby/CONTENT_TRUTH.json — priceMode "contact" until Lucifer verifies
 // current production offers; DESIGN_SYSTEM.md 17: do not invent real prices.
 export const services: Service[] = [
@@ -44,12 +49,19 @@ export const services: Service[] = [
     category: "Dịch vụ số",
     title: "Dịch vụ số / tài khoản",
     summary:
-      "Cung cấp và hỗ trợ các tài khoản, công cụ số phổ biến: ChatGPT, Microsoft 365, Canva Pro và nhiều nền tảng khác.",
+      "Tư vấn và hỗ trợ các công cụ số phổ biến phục vụ vận hành: ChatGPT, Microsoft 365, Canva Pro và nhiều nền tảng khác.",
     ctaLabel: "Xem dịch vụ số",
     href: "/dich-vu-so",
     icon: "package",
     iconImage: "/assets/v5/services/dich-vu-so.webp",
-    features: ["Tài khoản chính hãng/ủy quyền", "Hướng dẫn sử dụng", "Hỗ trợ trong thời gian sử dụng"],
+    // "Tài khoản chính hãng/ủy quyền" đã bị gỡ (PHUONG_AN §6.3): đó là một tuyên bố về quan hệ
+    // với nhà cung cấp — chính hãng, được uỷ quyền — mà repo không có bất kỳ bằng chứng nào, và
+    // là loại câu có hệ quả pháp lý nếu sai. Thay bằng mô tả đúng việc thực sự làm.
+    features: [
+      "Tư vấn công cụ phù hợp nhu cầu",
+      "Hướng dẫn sử dụng",
+      "Hỗ trợ trong thời gian sử dụng",
+    ],
     priceMode: "contact",
   },
 ];

@@ -1,1 +1,94 @@
-{"revision":"gd3-hardening-v1","source":".webby/ROUTE_IMPLEMENTATION_MAP.json","routes":[{"path":"/","masterPage":3,"primaryCTA":"Nhận tư vấn"},{"path":"/website","masterPage":4,"primaryCTA":"Nhận tư vấn"},{"path":"/support-mxh","masterPage":5,"primaryCTA":"Gửi yêu cầu hỗ trợ"},{"path":"/dich-vu-so","masterPage":6,"primaryCTA":"Nhận tư vấn"},{"path":"/du-an","masterPage":7,"primaryCTA":"Nhận tư vấn"},{"path":"/kien-thuc","masterPage":8,"primaryCTA":"Nhận tư vấn"},{"path":"/gioi-thieu","masterPage":9,"primaryCTA":"Nhận tư vấn"},{"path":"/du-an/[slug]","masterPage":10,"primaryCTA":"Nhận tư vấn"},{"path":"/kien-thuc/[slug]","masterPage":11,"primaryCTA":"Nhận tư vấn"},{"path":"/lien-he","masterPage":12,"primaryCTA":"Gửi thông tin nhận tư vấn"},{"path":"/404","masterPage":13,"primaryCTA":"Quay về trang chủ"}]}
+{
+  "revision": "phuong-an-2026-09-07",
+  "source": ".webby/ROUTE_IMPLEMENTATION_MAP.json",
+  "routes": [
+    {
+      "path": "/",
+      "masterPage": 3,
+      "primaryCTA": "Nhận tư vấn"
+    },
+    {
+      "path": "/website",
+      "masterPage": 4,
+      "primaryCTA": "Nhận tư vấn"
+    },
+    {
+      "path": "/support-mxh",
+      "masterPage": 5,
+      "primaryCTA": "Gửi yêu cầu hỗ trợ"
+    },
+    {
+      "path": "/dich-vu-so",
+      "masterPage": 6,
+      "primaryCTA": "Nhận tư vấn"
+    },
+    {
+      "path": "/du-an",
+      "masterPage": 7,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Redirect sang /website/concept. Không nằm trong sitemap."
+    },
+    {
+      "path": "/kien-thuc",
+      "masterPage": 8,
+      "primaryCTA": "Nhận tư vấn"
+    },
+    {
+      "path": "/gioi-thieu",
+      "masterPage": 9,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Mở lại menu/footer/sitemap trong parity Maxweb ngày 2026-09-10; nội dung chỉ dùng dữ liệu Lạc Việt đã có."
+    },
+    {
+      "path": "/du-an/[slug]",
+      "masterPage": 10,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Redirect sang /website/concept/[slug] khi slug khớp, ngược lại về gallery."
+    },
+    {
+      "path": "/kien-thuc/[slug]",
+      "masterPage": 11,
+      "primaryCTA": "Nhận tư vấn"
+    },
+    {
+      "path": "/lien-he",
+      "masterPage": 12,
+      "primaryCTA": "Gửi thông tin nhận tư vấn"
+    },
+    {
+      "path": "/404",
+      "masterPage": 13,
+      "primaryCTA": "Quay về trang chủ"
+    },
+    {
+      "path": "/dich-vu",
+      "masterPage": null,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Hub dịch vụ mới, sinh từ service-registry. Không có master GĐ1 tương ứng."
+    },
+    {
+      "path": "/dich-vu/[slug]",
+      "masterPage": null,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Template chung cho dịch vụ không có landing riêng. Publish 2026-09-08: google-business-profile, quang-cao-da-kenh, seo-tong-the, nhan-dien-thuong-hieu, domain-hosting-email."
+    },
+    {
+      "path": "/website/concept",
+      "masterPage": null,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Gallery concept đầy đủ, lọc bằng URL ?industry=. Kế thừa vai trò của /du-an cũ."
+    },
+    {
+      "path": "/website/concept/[slug]",
+      "masterPage": null,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Chi tiết concept. Không phát Product/Review/AggregateRating."
+    },
+    {
+      "path": "/support-mxh/[slug]",
+      "masterPage": null,
+      "primaryCTA": "Nhận tư vấn",
+      "note": "Chi tiết từng nhóm support. Section 'Phạm vi không bao gồm' là bắt buộc."
+    }
+  ]
+}

@@ -91,25 +91,32 @@ export const faqs: FAQ[] = [
   },
 
   // /dich-vu-so — 4 questions per approved master (page-06).
+  //
+  // Ba câu trả lời đầu đã được viết lại (PHUONG_AN §7.4). Bản cũ hứa ba thứ mà repo không có
+  // bằng chứng nào và trang cũng không thực hiện được: tài khoản "chính hãng hoặc được uỷ quyền
+  // hợp lệ" (tuyên bố quan hệ với nhà cung cấp), giao "trong vòng vài giờ sau khi xác nhận
+  // thanh toán" (một SLA, kèm một luồng thanh toán không tồn tại trên site), và "mỗi gói đều có
+  // thời hạn bảo hành tương ứng" (cam kết bảo hành không ai vận hành). FAQ là nơi khách đọc kỹ
+  // nhất trước khi quyết định, nên đây đúng là chỗ ít được phép phóng đại nhất.
   {
     id: "digital-tai-khoan-chinh-hang",
     scope: "dich-vu-so",
-    question: "Tài khoản có chính hãng không?",
-    answer: "Các gói cung cấp đều là tài khoản chính hãng hoặc được uỷ quyền hợp lệ, kèm hướng dẫn sử dụng rõ ràng.",
+    question: "Tài khoản được cung cấp như thế nào?",
+    answer: "Mỗi nhu cầu được trao đổi trực tiếp qua Zalo để thống nhất phạm vi, hình thức cung cấp và chi phí trước khi triển khai.",
     order: 1,
   },
   {
     id: "digital-thoi-gian-giao",
     scope: "dich-vu-so",
-    question: "Thời gian giao tài khoản mất bao lâu?",
-    answer: "Hầu hết tài khoản được giao trong vòng vài giờ sau khi xác nhận thanh toán.",
+    question: "Thời gian bàn giao mất bao lâu?",
+    answer: "Thời gian bàn giao phụ thuộc vào từng công cụ và phạm vi sử dụng, được thống nhất cụ thể khi trao đổi qua Zalo.",
     order: 2,
   },
   {
     id: "digital-tai-khoan-bao-hanh",
     scope: "dich-vu-so",
-    question: "Tài khoản có được bảo hành không?",
-    answer: "Có. Mỗi gói đều có thời hạn bảo hành tương ứng, được hỗ trợ nếu phát sinh lỗi trong thời gian sử dụng.",
+    question: "Nếu tài khoản phát sinh vấn đề thì xử lý ra sao?",
+    answer: "Phạm vi và thời gian hỗ trợ được thống nhất trong quá trình trao đổi, trước khi bạn quyết định sử dụng dịch vụ.",
     order: 3,
   },
   {

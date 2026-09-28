@@ -4,82 +4,26 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
+import { PageJumpNav } from "@/components/layout/PageJumpNav";
 import { ShieldOrbit } from "@/components/layout/ShieldOrbit";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
-import { MetricStrip } from "@/components/content/MetricStrip";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { SupportHeroCta } from "./SupportInteractive";
 import { getFaqsByScope } from "@/content/faqs";
-import { pageMetadata } from "@/lib/seo";
+import { visibleSupportServices } from "@/content/support-services";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = pageMetadata({
-  title: "Support mạng xã hội",
+  title: "Support mạng xã hội | Lạc Việt Media",
   description:
     "Hỗ trợ vận hành, khắc phục sự cố và phát triển kênh Facebook, TikTok, YouTube cho doanh nghiệp.",
   path: "/support-mxh",
 });
 
-import { BrandMark, type BrandName } from "@/components/ui/BrandMark";
-
-// 4 service cards per approved master (page-05) — one per platform + strategy consulting.
-const supportServices: {
-  brand?: BrandName;
-  icon?: IconName;
-  title: string;
-  description: string;
-  bullets: string[];
-}[] = [
-  {
-    brand: "facebook",
-    title: "Facebook Support",
-    description: "Khắc phục lỗi trang, tài khoản quảng cáo bị hạn chế hoặc khoá.",
-    bullets: [
-      "Khôi phục tài khoản cá nhân",
-      "Khôi phục Fanpage bị khóa",
-      "Gỡ hạn chế, checkpoint",
-      "Hỗ trợ vấn đề đăng nhập",
-    ],
-  },
-  {
-    brand: "tiktok",
-    title: "TikTok Support",
-    description: "Xử lý sự cố tài khoản, video bị hạn chế hiển thị.",
-    bullets: [
-      "Khôi phục tài khoản TikTok",
-      "Mở khóa tài khoản bị cấm",
-      "Gỡ hạn chế tương tác",
-      "Hỗ trợ vấn đề đăng nhập",
-    ],
-  },
-  {
-    brand: "meta",
-    title: "Meta Business / Ads Support",
-    description: "Quản lý và khắc phục sự cố Meta Business Suite, tài khoản quảng cáo.",
-    bullets: [
-      "Khôi phục Trình quản lý BM",
-      "Gỡ hạn chế tài khoản quảng cáo",
-      "Xác minh doanh nghiệp",
-      "Hỗ trợ thanh toán & hoá đơn",
-    ],
-  },
-  {
-    // Was a gold shield icon; replaced with the blue verified badge at Lucifer's request, since
-    // this card is about getting an account verified and recovered rather than security in the
-    // abstract.
-    brand: "verified",
-    // Title transcribed from the master crop; the previous wording was not the approved text.
-    title: "Tư vấn bảo mật & Khôi phục hợp lệ",
-    description: "Tư vấn bảo mật và khôi phục quyền sở hữu hợp lệ cho kênh của bạn.",
-    bullets: [
-      "Tư vấn bảo mật tài khoản",
-      "Hướng dẫn lấy lại quyền sở hữu",
-      "Bảo vệ kênh trước rủi ro",
-      "Đào tạo & hướng dẫn sử dụng",
-    ],
-  },
-];
+import { BrandMark } from "@/components/ui/BrandMark";
 
 // 6 issues per approved master. Labels and the supporting line are transcribed from the master
 // crop — the previous labels were paraphrases and the description line was missing.
@@ -117,6 +61,12 @@ export default function SupportMxhPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Trang chủ", path: "/" },
+          { name: "Support mạng xã hội", path: "/support-mxh" },
+        ])}
+      />
       <PageHero
         heroSlot={<ShieldOrbit className="w-full max-w-[640px]" />}
         eyebrow="Support MXH"
@@ -138,13 +88,23 @@ export default function SupportMxhPage() {
         proofItems={[
           { icon: "badge-check", title: "Xử lý chính chủ", note: "Theo quan hệ trực tiếp" },
           { icon: "clock", title: "Theo quy trình", note: "Làm việc với hệ thống chính thức" },
-          { icon: "lock-keyhole", title: "Bảo mật tuyệt đối", note: "Không lưu mật khẩu" },
-          { icon: "target", title: "Tỉ lệ thành công cao", note: "Tối ưu thời gian & chi phí" },
+          { icon: "lock-keyhole", title: "Bảo mật thông tin", note: "Không lưu mật khẩu" },
+          { icon: "target", title: "Minh bạch phạm vi", note: "Nêu rõ điều kiện xử lý" },
         ]}
         description="Hỗ trợ Facebook, TikTok, Business & Ads theo quy trình chính thống. Đồng hành cùng bạn khắc phục và phát triển kênh bền vững."
         imageAssetId="support-hero-master"
         imageAlt="Support mạng xã hội Lạc Việt Media"
         cta={<SupportHeroCta />}
+      />
+
+      <PageJumpNav
+        items={[
+          { href: "#support-network-map", label: "Mạng lưới" },
+          { href: "#support-service-grid", label: "Dịch vụ" },
+          { href: "#common-issues-grid", label: "Sự cố thường gặp" },
+          { href: "#support-process", label: "Quy trình" },
+          { href: "#faq", label: "Câu hỏi" },
+        ]}
       />
 
       {/* PRO V2.2 §6: a signature section right after the hero so the page doesn't drop straight
@@ -198,18 +158,21 @@ export default function SupportMxhPage() {
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading eyebrow="Dịch vụ" title="Chúng tôi hỗ trợ toàn diện các nền tảng mạng xã hội phổ biến" align="center" />
           </ScrollReveal>
+          {/* CTA "Xem chi tiết" trước đây trỏ về /lien-he — nút nói một đằng, đi một nẻo. Giờ
+              mỗi nhóm có trang riêng ở /support-mxh/[slug], nơi ghi rõ cả phạm vi lẫn giới hạn
+              của dịch vụ. */}
           <div className="mt-8 grid gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {supportServices.map((s, idx) => (
-              <ScrollReveal key={s.title} direction="up" distance={24} duration={0.7} delay={idx * 120}>
+            {visibleSupportServices().map((service, idx) => (
+              <ScrollReveal key={service.slug} direction="up" distance={24} duration={0.7} delay={idx * 120}>
                 <ServiceCard
                   mobileRow
-                  bullets={s.bullets}
-                  brand={s.brand}
-                  icon={s.icon}
-                  title={s.title}
-                  description={s.description}
+                  bullets={service.bullets}
+                  brand={service.brand}
+                  icon={service.icon}
+                  title={service.title}
+                  description={service.description}
                   ctaLabel="Xem chi tiết"
-                  href="/lien-he"
+                  href={`/support-mxh/${service.slug}`}
                 />
               </ScrollReveal>
             ))}
@@ -222,12 +185,14 @@ export default function SupportMxhPage() {
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading eyebrow="Sự cố thường gặp" title="Bạn đang gặp phải vấn đề nào?" align="center" />
           </ScrollReveal>
-          <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-6">
+          {/* §6.5: giữ 2 cột ở mobile, chỉ rút khoảng cách nội bộ — padding và gap nhỏ hơn,
+              body text KHÔNG giảm (§7 cấm hạ dưới 16px để ép vừa chiều cao). */}
+          <div className="mt-6 grid grid-cols-2 gap-3 md:mt-8 md:grid-cols-3 md:gap-6 lg:grid-cols-6">
             {commonIssues.map((item, idx) => (
-              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={idx * 80}>
-                <div className="flex flex-col items-center gap-2 rounded-xl border border-gold-500/20 bg-white p-4 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/40 hover:shadow-md md:p-5">
-                  <Icon name={item.icon} size="feature" className="text-gold-600" />
-                  <p className="mt-1 text-small font-semibold text-ink-950">{item.label}</p>
+              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={Math.min(idx, 3) * 80}>
+                <div className="flex h-full flex-col items-center gap-1.5 rounded-xl border border-gold-500/20 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:border-gold-500/40 hover:shadow-md md:p-5 md:hover:-translate-y-1">
+                  <Icon name={item.icon} size="card" className="text-gold-600" />
+                  <p className="text-small font-semibold text-ink-950">{item.label}</p>
                   <p className="text-caption leading-snug text-text-secondary">{item.description}</p>
                 </div>
               </ScrollReveal>
@@ -241,10 +206,14 @@ export default function SupportMxhPage() {
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading onDark eyebrow="Vì sao chọn Lạc Việt Media Agency" title="Nhanh – Rõ ràng – Hỗ trợ tận tâm" align="center" />
           </ScrollReveal>
-          <div className="mt-8 grid gap-5 md:gap-8 sm:grid-cols-2 lg:grid-cols-5">
+          {/* Divider row thay cho năm ô rời: năm nhãn ngắn dàn đều trên một hàng rộng để lại
+              quá nhiều khoảng trống giữa các mục, và ở mobile chúng thành năm dòng đơn độc. */}
+          {/* Mobile 2 cột (mục thứ năm trọn hàng cuối) thay vì năm hàng đơn độc — năm nhãn ngắn
+              xếp dọc chiếm hơn 700px cho khoảng 60 chữ. */}
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 lg:grid-cols-5 lg:gap-0">
             {whyUs.map((item, idx) => (
-              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={idx * 100}>
-                <div className="flex flex-col items-center gap-3 text-center">
+              <ScrollReveal key={item.label} direction="up" distance={20} duration={0.6} delay={Math.min(idx, 3) * 100} className={idx === 4 ? "col-span-2 lg:col-span-1" : undefined}>
+                <div className="flex h-full flex-col items-center gap-2 text-center lg:border-l lg:border-white/10 lg:px-4 lg:first:border-l-0">
                   <Icon name={item.icon} size="feature" className="text-gold-300" />
                   <p className="text-body text-white/85">{item.label}</p>
                 </div>
@@ -267,23 +236,15 @@ export default function SupportMxhPage() {
         </Container>
       </Section>
 
-      <Section id="support-metrics" tone="dark" texture>
-        <Container>
-          <ScrollReveal direction="up" distance={20} duration={0.7}>
-            <MetricStrip
-              onDark
-              metrics={[
-                { value: "200+", label: "Khách hàng đã hỗ trợ", demoOnly: true },
-                { value: "98%", label: "Tỷ lệ khôi phục thành công", demoOnly: true },
-                { value: "24/7", label: "Hỗ trợ liên tục", demoOnly: true },
-                { value: "100%", label: "Bảo mật thông tin", demoOnly: true },
-              ]}
-            />
-          </ScrollReveal>
-        </Container>
-      </Section>
+      {/* Dải "support-metrics" đã bị gỡ (PHUONG_AN §6.7): 200+ khách hàng / 98% tỷ lệ khôi phục
+          / 24/7 hỗ trợ / 100% bảo mật. Cả bốn đều tự khai `demoOnly` trong chính dữ liệu của
+          nó. Hai con số giữa còn nguy hiểm hơn phần còn lại: "98% tỷ lệ khôi phục thành công"
+          là cam kết kết quả cho một việc mà quyết định cuối cùng thuộc về Meta/TikTok chứ không
+          thuộc về Lạc Việt, và "100% bảo mật" thì không ai trên đời cam kết được. */}
 
-      <Section id="faq" tone="ivory">
+      {/* Process phía trên đã là ivory; hai section ivory liền nhau đọc thành một khối dài
+          không có mép. Đổi sang nền sáng để tách nhịp. */}
+      <Section id="faq">
         <Container width="editorial">
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading eyebrow="Câu hỏi thường gặp" title="Giải đáp về dịch vụ support MXH" align="center" />

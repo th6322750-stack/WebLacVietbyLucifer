@@ -29,32 +29,7 @@ export const siteSettings = {
   ],
 } as const;
 
-// Matches approved V1 header: Trang chủ, Dịch vụ (dropdown), Dự án, Kiến thức,
-// Giới thiệu, Liên hệ — see .webby/visual-master/gd1-v1/pages/page-03..13.
-//
-// "Dịch vụ số" ẩn khỏi menu theo yêu cầu — trang /dich-vu-so vẫn còn nguyên, chỉ không còn lối
-// vào từ menu Dịch vụ hay footer (cả hai đều đọc từ mảng này).
-export const serviceMenu = [
-  { href: "/website", label: "Thiết kế website" },
-  { href: "/support-mxh", label: "Support mạng xã hội" },
-] as const;
-
-// "Dự án" bỏ khỏi menu — gallery giao diện web dồn hết về trang /website (tab "Dịch vụ" >
-// "Thiết kế website"), /du-an giờ chỉ còn redirect sang đó cho link cũ không gãy.
-export const navLinks = [
-  { href: "/", label: "Trang chủ" },
-  { href: null, label: "Dịch vụ", children: serviceMenu },
-  { href: "/kien-thuc", label: "Kiến thức" },
-  { href: "/lien-he", label: "Liên hệ" },
-] as const;
-
-// "Giới thiệu" ẩn khỏi menu, footer và sitemap theo yêu cầu (2026-09-02). Route
-// /gioi-thieu vẫn sống để link cũ hoặc kết quả tìm kiếm đã có không bị 404, nhưng trang
-// mang noindex nên sẽ rụng dần khỏi Google. Thêm lại vào cả 3 chỗ khi muốn mở lại.
-export const footerLinks = {
-  brand: [
-    { href: "/kien-thuc", label: "Kiến thức" },
-  ],
-  services: serviceMenu,
-  contact: [{ href: "/lien-he", label: "Liên hệ tư vấn" }],
-} as const;
+// Điều hướng đã chuyển sang `src/lib/navigation.ts`, sinh từ `src/content/service-registry.ts`.
+// Ba mảng `serviceMenu` / `navLinks` / `footerLinks` viết tay từng nằm ở đây đã bị bỏ hẳn thay
+// vì để lại: giữ chúng nghĩa là giữ một nguồn sự thật thứ hai về "dịch vụ nào đang mở bán",
+// và nguồn thứ hai luôn là nguồn bị quên cập nhật.

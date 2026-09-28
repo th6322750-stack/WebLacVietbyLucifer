@@ -2,12 +2,16 @@
 
 import { useEffect, useRef, type MouseEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { IndustryShowcaseItem } from "@/content/industry-showcase";
-import { useConsultation } from "@/components/conversion/ConsultationProvider";
+import { claimAttrsFor } from "@/lib/content-truth";
 
-/** Ảnh giao diện web theo ngành — không dẫn tới trang chi tiết dự án, vì đây không phải case
- * study có kết quả thật để kể. Bấm vào mở thẳng Zalo, đúng như mọi CTA "Nhận tư vấn" khác trên
- * site (xem ConsultationProvider).
+/** Ảnh giao diện web theo ngành.
+ *
+ * PHUONG_AN §6.6: thẻ giờ dẫn tới trang chi tiết concept thay vì mở thẳng Zalo. Mở chat ngay khi
+ * bấm vào một tấm ảnh là bắt khách cam kết trước khi họ kịp xem — trang chi tiết cho họ xem đủ
+ * rồi mới quyết định, và CTA Zalo nằm ở cuối trang đó. Vẫn không phải case study: nhãn "Concept
+ * minh hoạ" đi kèm ở cả thẻ lẫn trang chi tiết.
  *
  * PRO V2.2 §15: cursor-follow "XEM" badge — was a `useState` written on every `mousemove`,
  * re-rendering this component per pixel of cursor travel. Rewritten to match SpotlightCard's
@@ -15,7 +19,6 @@ import { useConsultation } from "@/components/conversion/ConsultationProvider";
  * and the badge's own opacity comes from `group-hover` in CSS, not JS state. Zero re-renders
  * from pointer movement. */
 export function IndustryShowcaseCard({ item }: { item: IndustryShowcaseItem }) {
-  const { open } = useConsultation();
   const frameRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
 
@@ -37,9 +40,9 @@ export function IndustryShowcaseCard({ item }: { item: IndustryShowcaseItem }) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={() => open("industry-showcase", item.title)}
+    <Link
+      href={`/website/concept/${item.slug}`}
+      {...claimAttrsFor("demo")}
       className="group flex w-full flex-col overflow-hidden rounded-xl border border-gold-500/20 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-xl"
     >
       <div
@@ -62,13 +65,23 @@ export function IndustryShowcaseCard({ item }: { item: IndustryShowcaseItem }) {
         </span>
       </div>
       <div className="flex flex-col p-4">
-        <span className="inline-flex w-fit items-center rounded-pill bg-ivory-100 px-2 py-1 text-caption font-medium text-text-secondary">
-          {item.industry}
-        </span>
+        {/* Nhãn hiển thị, không phải data-attribute ẩn. Cách duy nhất để khách biết tấm ảnh này
+            là concept chứ không phải dự án đã bàn giao là đọc được nó bằng mắt. */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex w-fit items-center rounded-pill bg-ivory-100 px-2 py-1 text-caption font-medium text-text-secondary">
+            {item.industry}
+          </span>
+          <span className="inline-flex w-fit items-center rounded-pill border border-gold-500/30 px-2 py-1 text-caption font-medium text-gold-700">
+            Concept minh hoạ
+          </span>
+        </div>
         <span className="mt-2 font-heading text-card-h3-mobile text-ink-950 transition-colors duration-200 group-hover:text-gold-700">
           {item.title}
         </span>
+        <span className="mt-3 inline-flex items-center gap-1 text-small font-semibold text-gold-700">
+          Xem chi tiết
+        </span>
       </div>
-    </button>
+    </Link>
   );
 }

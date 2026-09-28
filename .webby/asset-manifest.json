@@ -4401,5 +4401,571 @@
         "split, redraw or recompose individual marks as a new identity authority"
       ]
     }
-  ]
+  ],
+  "v6ServiceSignatures": {
+    "addedAt": "2026-09-08",
+    "renderedBy": "ChatGPT",
+    "integratedBy": "Claude",
+    "rule": "Render tối đa 560px, object-contain. Hero có thể priority; mọi lần dùng khác phải lazy.",
+    "assets": [
+      {
+        "id": "v6-service-google-business-profile",
+        "path": "/assets/v6/service-signatures/service-google-business-profile.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "sha256": "c574a6ca28c2f7f6df6f4d18e4ba589a7c6795eeef5a68c2cb21094ddf8e5f46",
+        "source": "ChatGPT ImageGen, 2026-09-08",
+        "authority": "ASSET_BOARD_UI_V6_2026-09-08.md",
+        "usedBy": "/dich-vu/google-business-profile",
+        "note": "Chỉ dùng một lần ở hero của đúng service. Không crop, không recolor, không đặt chữ lên."
+      },
+      {
+        "id": "v6-service-omnichannel-ads",
+        "path": "/assets/v6/service-signatures/service-omnichannel-ads.png",
+        "width": 1350,
+        "height": 1165,
+        "pixelFormat": "RGBA",
+        "sha256": "d500c5f3c2856633e6549dc6b9b36dc0ea79429d0e37484df0c766265e86eb10",
+        "source": "ChatGPT ImageGen, 2026-09-08",
+        "authority": "ASSET_BOARD_UI_V6_2026-09-08.md",
+        "usedBy": "/dich-vu/quang-cao-da-kenh",
+        "note": "Chỉ dùng một lần ở hero của đúng service. Không crop, không recolor, không đặt chữ lên."
+      },
+      {
+        "id": "v6-service-seo-content",
+        "path": "/assets/v6/service-signatures/service-seo-content.png",
+        "width": 1310,
+        "height": 1200,
+        "pixelFormat": "RGBA",
+        "sha256": "5cb744484acbe18d8e4057162ea4faf0855701c22984d4c03239b2aa9b4c6bd4",
+        "source": "ChatGPT ImageGen, 2026-09-08",
+        "authority": "ASSET_BOARD_UI_V6_2026-09-08.md",
+        "usedBy": "/dich-vu/seo-tong-the",
+        "note": "Chỉ dùng một lần ở hero của đúng service. Không crop, không recolor, không đặt chữ lên."
+      },
+      {
+        "id": "v6-service-brand-identity",
+        "path": "/assets/v6/service-signatures/service-brand-identity.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "sha256": "3e8fade756a7c7efe78dcd3e128f676c9397f9bcec26299a29a14dc3e97f602b",
+        "source": "ChatGPT ImageGen, 2026-09-08",
+        "authority": "ASSET_BOARD_UI_V6_2026-09-08.md",
+        "usedBy": "/dich-vu/nhan-dien-thuong-hieu",
+        "note": "Chỉ dùng một lần ở hero của đúng service. Không crop, không recolor, không đặt chữ lên."
+      },
+      {
+        "id": "v6-service-domain-hosting-email",
+        "path": "/assets/v6/service-signatures/service-domain-hosting-email.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "sha256": "fb32e9f49e03cafb12566bede2ce156e196bc0bba298acd43a03d032b97bde47",
+        "source": "ChatGPT ImageGen, 2026-09-08",
+        "authority": "ASSET_BOARD_UI_V6_2026-09-08.md",
+        "usedBy": "/dich-vu/domain-hosting-email",
+        "note": "Chỉ dùng một lần ở hero của đúng service. Không crop, không recolor, không đặt chữ lên."
+      }
+    ]
+  },
+  "v7UiRefinement": {
+    "addedAt": "2026-09-09",
+    "renderedBy": "ChatGPT",
+    "integratedBy": "Claude",
+    "authority": "ASSET_BOARD_UI_V7_2026-09-09.md",
+    "verifiedOnIntegration": "SHA-256, byte count, dimension va pixel mode cua ca 10 file da doi chieu voi asset board truoc khi dang ky. 10/10 khop.",
+    "rule": "Moi ID dung dung mot vi tri; khong dung cheo giua cac slug. Render toi da 560px CSS, object-contain, alt=\"\" + aria-hidden.",
+    "exception": "v7-page-about-values la RGB nen den (khong phai RGBA) — chi dung tren nen den kem mix-blend-lighten.",
+    "assets": [
+      {
+        "id": "v7-home-service-website",
+        "path": "/assets/v7/home-service-cards/home-service-website.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1001077,
+        "sha256": "b684cf189d0e4640c11d5058f8a4a0fc23a929ff857d1941d87eab7567fb9933",
+        "usedBy": "card “Thiết kế website” tại /"
+      },
+      {
+        "id": "v7-home-service-support",
+        "path": "/assets/v7/home-service-cards/home-service-support.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1074565,
+        "sha256": "c05d6e435cc01ea5ea040e2e461d0f1febf3058b1daf0503fb3f7f36ac7d909f",
+        "usedBy": "card “Support mạng xã hội” tại /"
+      },
+      {
+        "id": "v7-home-service-digital",
+        "path": "/assets/v7/home-service-cards/home-service-digital.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 873551,
+        "sha256": "f76a141250ec05f947f11819269d94378866334120d52817d2d088f19ea32359",
+        "usedBy": "card “Dịch vụ số” tại /"
+      },
+      {
+        "id": "v7-support-facebook",
+        "path": "/assets/v7/support-signatures/support-facebook-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1291758,
+        "sha256": "49512faabe091e8d393baa7dea304b44c6a4a4332ff791a3535708d478bdcc55",
+        "usedBy": "/support-mxh/facebook"
+      },
+      {
+        "id": "v7-support-tiktok",
+        "path": "/assets/v7/support-signatures/support-tiktok-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1235318,
+        "sha256": "ddfb4948ce95ca962ad4987cc4c9bca88d2ab8317c524059501c2176cdb76d52",
+        "usedBy": "/support-mxh/tiktok"
+      },
+      {
+        "id": "v7-support-meta-business",
+        "path": "/assets/v7/support-signatures/support-meta-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1128676,
+        "sha256": "6ab3faa948ae3a7582a616e09336046b57cc742cc622d25ca5c214166e1e00ec",
+        "usedBy": "/support-mxh/meta-business"
+      },
+      {
+        "id": "v7-support-verified",
+        "path": "/assets/v7/support-signatures/support-verified-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1584868,
+        "sha256": "d8a90109b8be2894c18ec9901e28531bdce162272a2bfad36a967d9ae90468f5",
+        "usedBy": "/support-mxh/bao-mat-khoi-phuc"
+      },
+      {
+        "id": "v7-page-knowledge",
+        "path": "/assets/v7/page-signatures/knowledge-hub-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1253181,
+        "sha256": "6d29997b315e4ed94c370259e97ad2fab78f3b9974020e64faced4a9a34ed803",
+        "usedBy": "hero /kien-thuc"
+      },
+      {
+        "id": "v7-page-contact",
+        "path": "/assets/v7/page-signatures/contact-consultation-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1164458,
+        "sha256": "5dfb64c3a23f60721065a94bf9930a4fe67057447ec9c3de09fb7fef74a270d2",
+        "usedBy": "hero /lien-he"
+      },
+      {
+        "id": "v7-page-about-values",
+        "path": "/assets/v7/page-signatures/about-values-signature.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGB, nền đen",
+        "bytes": 821758,
+        "sha256": "c590b5604e6673dce980b576a316b851bb7ee2c54b0d8773df64ed0ddd173041",
+        "usedBy": "hero /gioi-thieu"
+      }
+    ]
+  },
+  "v8ServiceDepth": {
+    "addedAt": "2026-09-09",
+    "renderedBy": "ChatGPT",
+    "integratedBy": "ChatGPT",
+    "authority": "ASSET_BOARD_UI_V8_2026-09-09.md",
+    "verifiedOnIntegration": "SHA-256, byte count, dimension va pixel mode cua ca 6 file da doi chieu truoc khi dang ky. 6/6 khop.",
+    "rule": "Moi ID dung dung mot service detail family; khong dung cheo giua cac slug. Render object-contain, alt=\"\" + aria-hidden.",
+    "assets": [
+      {
+        "id": "v8-service-website-real-estate",
+        "path": "/assets/v8/service-signatures/service-website-real-estate.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1301428,
+        "sha256": "7ba8dfe530821d10e56c5d37cb7622410bdf09adaca445257ac8a2ed6d293eeb",
+        "usedBy": "/dich-vu/website-bat-dong-san"
+      },
+      {
+        "id": "v8-service-seo-google-maps",
+        "path": "/assets/v8/service-signatures/service-seo-google-maps.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1769790,
+        "sha256": "5cdffc8b94d7e3fa61625b067b3cabca38b4352b9b638e57df7bfbd1c6e4e66f",
+        "usedBy": "/dich-vu/seo-google-maps"
+      },
+      {
+        "id": "v8-service-google-ads",
+        "path": "/assets/v8/service-signatures/service-google-ads.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1457335,
+        "sha256": "9a419f262377a2ccf21f234c4636c46db14f14a6ec2b93456959f38b1c36cc01",
+        "usedBy": "/dich-vu/quang-cao-google-ads"
+      },
+      {
+        "id": "v8-service-facebook-ads",
+        "path": "/assets/v8/service-signatures/service-facebook-ads.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1343176,
+        "sha256": "1bd12bb12ab2e4338e22d3b6c19c98cfb1e4cf763820a8eb5d6c84263f1752f8",
+        "usedBy": "/dich-vu/quang-cao-facebook-ads"
+      },
+      {
+        "id": "v8-service-zalo-ads",
+        "path": "/assets/v8/service-signatures/service-zalo-ads.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1491605,
+        "sha256": "fd9ca16ee0f00866a2f696d3bde3dda8f45dbd94cffebe7fc335db1dac91427f",
+        "usedBy": "/dich-vu/quang-cao-zalo-ads"
+      },
+      {
+        "id": "v8-service-real-estate-marketing",
+        "path": "/assets/v8/service-signatures/service-real-estate-marketing.png",
+        "width": 1254,
+        "height": 1254,
+        "pixelFormat": "RGBA",
+        "bytes": 1564028,
+        "sha256": "131530e263fc92c38888f946d4d0d64df9b05734acdd816939f3c843324ec331",
+        "usedBy": "/dich-vu/marketing-bat-dong-san"
+      }
+    ]
+  },
+  "v9GenericDepth": {
+    "addedAt": "2026-09-09",
+    "renderedBy": "ChatGPT",
+    "authority": "BAO_CAO_QA_CHATGPT_2026-09-08.md#v9",
+    "rule": "Nam generic service cu dung existing V6 signature dung route, bo sung depth data theo pageFamily; khong tao asset moi hay dung asset cheo.",
+    "routes": [
+      { "path": "/dich-vu/google-business-profile", "pageFamily": "local-presence", "visualAssetId": "v6-service-google-business-profile" },
+      { "path": "/dich-vu/quang-cao-da-kenh", "pageFamily": "paid-media", "visualAssetId": "v6-service-omnichannel-ads" },
+      { "path": "/dich-vu/seo-tong-the", "pageFamily": "seo-content", "visualAssetId": "v6-service-seo-content" },
+      { "path": "/dich-vu/nhan-dien-thuong-hieu", "pageFamily": "brand-system", "visualAssetId": "v6-service-brand-identity" },
+      { "path": "/dich-vu/domain-hosting-email", "pageFamily": "infrastructure", "visualAssetId": "v6-service-domain-hosting-email" }
+    ]
+  },
+  "v10EditorialDepth": {
+    "addedAt": "2026-09-09",
+    "renderedBy": "ChatGPT",
+    "authority": "User request 2026-09-09",
+    "verifiedOnIntegration": "5/5 PNG 1254x1254, RGBA, SHA-256 and byte count recorded after background cleanup.",
+    "rule": "Supplemental illustration appears only in #hinh-thuc of its matching generic service; no cross-slug reuse.",
+    "assets": [
+      { "id": "v9-service-google-business-profile", "path": "/assets/v9/service-depth/service-google-business-profile.png", "width": 1254, "height": 1254, "pixelFormat": "RGBA", "bytes": 2741980, "sha256": "41CF7480E2B8B38C36D701D348D1524DF614D4A2D42F5A27DD8E0F4FB582D536", "usedBy": "/dich-vu/google-business-profile#hinh-thuc" },
+      { "id": "v9-service-omnichannel-ads", "path": "/assets/v9/service-depth/service-omnichannel-ads.png", "width": 1254, "height": 1254, "pixelFormat": "RGBA", "bytes": 3166411, "sha256": "8ED4A5DC9271CF597BE05048A6175ABD184FDC050CF6A12864AADE66330244D9", "usedBy": "/dich-vu/quang-cao-da-kenh#hinh-thuc" },
+      { "id": "v9-service-seo-content", "path": "/assets/v9/service-depth/service-seo-content.png", "width": 1254, "height": 1254, "pixelFormat": "RGBA", "bytes": 3267042, "sha256": "E8E4CD36844520D4AA6D323D83A2FFBE8AC8F7BBFB77F657ECDAE9A39AC0E2FC", "usedBy": "/dich-vu/seo-tong-the#hinh-thuc" },
+      { "id": "v9-service-brand-identity", "path": "/assets/v9/service-depth/service-brand-identity.png", "width": 1254, "height": 1254, "pixelFormat": "RGBA", "bytes": 3001093, "sha256": "50DFFBA56C5F9356D7B4EADBAC86F165A37C8AEB2D1416EAFED069FCEF20BC4C", "usedBy": "/dich-vu/nhan-dien-thuong-hieu#hinh-thuc" },
+      { "id": "v9-service-domain-hosting-email", "path": "/assets/v9/service-depth/service-domain-hosting-email.png", "width": 1254, "height": 1254, "pixelFormat": "RGBA", "bytes": 3212527, "sha256": "0FD9E28583AB0D77D7FE9B160EA59B2315352D3867C1A27B3B49B11400659AC3", "usedBy": "/dich-vu/domain-hosting-email#hinh-thuc" }
+    ]
+  },
+  "v11PortfolioSignatureLayers": {
+    "addedAt": "2026-09-12",
+    "renderedBy": "ChatGPT imagegen",
+    "integratedBy": "ChatGPT",
+    "authority": "User request 2026-09-12",
+    "verifiedOnIntegration": "3/3 WebP co alpha, kich thuoc va SHA-256 duoc ghi lai sau khi toi uu.",
+    "rule": "Asset khong chua chu hay logo gia; duoc dung lam layer trang tri, khong che noi dung va khong thay the identity board goc.",
+    "assets": [
+      {
+        "id": "v11-portfolio-heritage-constellation",
+        "path": "/assets/portfolio-2026/heritage-constellation-v5.webp",
+        "width": 1536,
+        "height": 1024,
+        "pixelFormat": "RGBA",
+        "bytes": 419496,
+        "sha256": "ae573796a6964f9a605e0712e698956121a5688d6e33dd2138ea182017b64fe1",
+        "usedBy": "/du-an/preview scenes 02, 05, 18"
+      },
+      {
+        "id": "v11-portfolio-craft-ephemera",
+        "path": "/assets/portfolio-2026/craft-ephemera-v5.webp",
+        "width": 1536,
+        "height": 1024,
+        "pixelFormat": "RGBA",
+        "bytes": 350850,
+        "sha256": "0bf34dca7a638a5efa60533f55f9cbb0b8073f6701694e85ba78375f0630cda1",
+        "usedBy": "/du-an/preview scenes 03, 06, 14, 16"
+      },
+      {
+        "id": "v11-portfolio-case-objects",
+        "path": "/assets/portfolio-2026/case-objects-v5.webp",
+        "width": 1942,
+        "height": 809,
+        "pixelFormat": "RGBA",
+        "bytes": 311846,
+        "sha256": "0363669ed34d739ae2a2901b132e587c29ddac463247cfac1b2fe5705484e681",
+        "usedBy": "/du-an/preview scene 07"
+      }
+    ]
+  },
+  "v12PortfolioCaseRelics": {
+    "addedAt": "2026-09-12",
+    "renderedBy": "ChatGPT (derived non-destructively from v11 case-object master)",
+    "integratedBy": "ChatGPT",
+    "authority": "User request 2026-09-12",
+    "verifiedOnIntegration": "3/3 WebP RGBA; native dimensions, bytes and SHA-256 recorded after lossless alpha crop and WebP optimization.",
+    "rule": "Each relic is reserved for its matching case study only; no cross-case reuse and no text or logo embedded in the bitmap.",
+    "assets": [
+      {
+        "id": "v12-portfolio-case-tea-object",
+        "path": "/assets/portfolio-2026/case-tea-object-v6.webp",
+        "width": 520,
+        "height": 623,
+        "pixelFormat": "RGBA",
+        "bytes": 106672,
+        "sha256": "ae979ebcc7d1ff1bff33781e45150b4b73ea4dd02e91079fe9ed18b0ffd022d0",
+        "usedBy": "/du-an/preview scene 09"
+      },
+      {
+        "id": "v12-portfolio-case-light-object",
+        "path": "/assets/portfolio-2026/case-light-object-v6.webp",
+        "width": 587,
+        "height": 619,
+        "pixelFormat": "RGBA",
+        "bytes": 90100,
+        "sha256": "324178c94b2fdd6c668c11f059d907de730217535b1a47d2b385e8627fd1ed7a",
+        "usedBy": "/du-an/preview scene 11"
+      },
+      {
+        "id": "v12-portfolio-case-spa-object",
+        "path": "/assets/portfolio-2026/case-spa-object-v6.webp",
+        "width": 572,
+        "height": 544,
+        "pixelFormat": "RGBA",
+        "bytes": 115776,
+        "sha256": "4e1b45f95aa727bf48a58f4c26a10380d6b0b4a4bc7f3101e5b9ef8a69ddfc00",
+        "usedBy": "/du-an/preview scene 13"
+      }
+    ]
+  },
+  "v13PortfolioEditorialLayers": {
+    "addedAt": "2026-09-12",
+    "renderedBy": "ChatGPT imagegen",
+    "integratedBy": "ChatGPT",
+    "authority": "User request 2026-09-12",
+    "verifiedOnIntegration": "4/4 WebP RGBA; alpha preserved and native dimensions, bytes and SHA-256 recorded after trim and optimization.",
+    "rule": "Each generated layer belongs to one narrative family; no embedded text, fake logo or cross-case reuse. Layers remain decorative and cannot cover content controls.",
+    "assets": [
+      {
+        "id": "v13-portfolio-tea-atmosphere",
+        "path": "/assets/portfolio-2026/tea-atmosphere-v7.webp",
+        "width": 1495,
+        "height": 854,
+        "pixelFormat": "RGBA",
+        "bytes": 316788,
+        "sha256": "b3fae7d438f805199982e1730799e3252c512836f6e326a4a6f347913113276f",
+        "usedBy": "/du-an/preview scenes 08, 09"
+      },
+      {
+        "id": "v13-portfolio-light-atelier",
+        "path": "/assets/portfolio-2026/light-atelier-v7.webp",
+        "width": 1384,
+        "height": 945,
+        "pixelFormat": "RGBA",
+        "bytes": 239238,
+        "sha256": "50e81ecaee96b3c0cfa1f4c61fd0b8c71d29396838c0e7649c45490932201bfa",
+        "usedBy": "/du-an/preview scenes 10, 11"
+      },
+      {
+        "id": "v13-portfolio-spa-ritual",
+        "path": "/assets/portfolio-2026/spa-ritual-v7.webp",
+        "width": 1677,
+        "height": 779,
+        "pixelFormat": "RGBA",
+        "bytes": 397334,
+        "sha256": "a86f57163ef0176ea4339d8c8b43076b06b0614f414f7fb1bda1fb297a1ad0f6",
+        "usedBy": "/du-an/preview scenes 12, 13"
+      },
+      {
+        "id": "v13-portfolio-handoff-system",
+        "path": "/assets/portfolio-2026/handoff-system-v7.webp",
+        "width": 1452,
+        "height": 1024,
+        "pixelFormat": "RGBA",
+        "bytes": 264272,
+        "sha256": "ef7245fc8cd789afb41e107ec2e1331a231dfe2ce1b3bd3acda69f1f71b35627",
+        "usedBy": "/du-an/preview scene 16"
+      }
+    ]
+  },
+  "v14PortfolioSignatureLayers": {
+    "addedAt": "2026-09-12",
+    "renderedBy": "ChatGPT imagegen",
+    "integratedBy": "ChatGPT",
+    "authority": "User request 2026-09-12",
+    "verifiedOnIntegration": "4/4 WebP RGBA; generated alpha verified and native dimensions, bytes and SHA-256 recorded after WebP optimization.",
+    "rule": "Physical signature layers are tied to their narrative chapter, stay below readable content, and contain no embedded copy or brand mark.",
+    "assets": [
+      {
+        "id": "v14-portfolio-editorial-tools",
+        "path": "/assets/portfolio-2026/editorial-tools-v8.webp",
+        "width": 1586,
+        "height": 992,
+        "pixelFormat": "RGBA",
+        "bytes": 250488,
+        "sha256": "7afa7cec317383e46315a23aaeafd906d0463dadf726622c499803db69db235f",
+        "usedBy": "/du-an/preview scenes 02, 03"
+      },
+      {
+        "id": "v14-portfolio-process-thread",
+        "path": "/assets/portfolio-2026/process-thread-v8.webp",
+        "width": 1774,
+        "height": 887,
+        "pixelFormat": "RGBA",
+        "bytes": 294338,
+        "sha256": "12b4fed50c69fdb91120068d07ad67b1301adf320536ce92b3cc6f5279c34112",
+        "usedBy": "/du-an/preview scene 06"
+      },
+      {
+        "id": "v14-portfolio-gesture-sculpture",
+        "path": "/assets/portfolio-2026/gesture-sculpture-v8.webp",
+        "width": 1024,
+        "height": 1536,
+        "pixelFormat": "RGBA",
+        "bytes": 247286,
+        "sha256": "5718d978111f61a558de1489ebf3b3bc8104c2c0b4836380cc433ef7d2780537",
+        "usedBy": "/du-an/preview scene 15"
+      },
+      {
+        "id": "v14-portfolio-promise-seal",
+        "path": "/assets/portfolio-2026/promise-seal-v8.webp",
+        "width": 1363,
+        "height": 1154,
+        "pixelFormat": "RGBA",
+        "bytes": 396308,
+        "sha256": "5f84f17904f891783fd7dd80969b5d54349a64e1a7171db72b0d0859252771ae",
+        "usedBy": "/du-an/preview scene 17"
+      }
+    ]
+  },
+  "v15PortfolioApplicationLayers": {
+    "addedAt": "2026-09-12",
+    "renderedBy": "ChatGPT imagegen",
+    "integratedBy": "ChatGPT",
+    "authority": "User review of /du-an/preview scenes 09, 11, 13 and 15",
+    "verifiedOnIntegration": "4/4 WebP RGBA with non-opaque alpha; native dimensions, bytes and SHA-256 recorded after WebP optimization.",
+    "rule": "Each application page receives its own material vocabulary; layers remain decorative, text-free and below readable content and primary mockups.",
+    "assets": [
+      {
+        "id": "v15-portfolio-tea-material-collage",
+        "path": "/assets/portfolio-2026/tea-material-collage-v9.webp",
+        "width": 1512,
+        "height": 1040,
+        "pixelFormat": "RGBA",
+        "bytes": 259186,
+        "sha256": "66b39de7e57a4901493c6cdda276cfa7d89bc45fd73a8d3b755f987312b261c9",
+        "usedBy": "/du-an/preview scene 09"
+      },
+      {
+        "id": "v15-portfolio-light-optical-sculpture",
+        "path": "/assets/portfolio-2026/light-optical-sculpture-v9.webp",
+        "width": 1513,
+        "height": 1040,
+        "pixelFormat": "RGBA",
+        "bytes": 203568,
+        "sha256": "344484a0469fd9a03cac805b8dc39eb7a8560ec38e75fce9de74efcc39a32b9d",
+        "usedBy": "/du-an/preview scene 11"
+      },
+      {
+        "id": "v15-portfolio-spa-ritual-still-life",
+        "path": "/assets/portfolio-2026/spa-ritual-cutout-v9-clean.webp",
+        "width": 1512,
+        "height": 1040,
+        "pixelFormat": "RGBA",
+        "bytes": 136748,
+        "sha256": "76df523af659372ca9b4f818275da8abce02eb7312179230820668a23603fdf1",
+        "usedBy": "/du-an/preview scene 13"
+      },
+      {
+        "id": "v15-portfolio-mobile-touch-choreography",
+        "path": "/assets/portfolio-2026/mobile-touch-choreography-v9.webp",
+        "width": 1024,
+        "height": 1536,
+        "pixelFormat": "RGBA",
+        "bytes": 243012,
+        "sha256": "bd7edfb9fbc0351d4f0d47f675c5c1d24a68fa05ef67ce6f9cdb82c183502ebb",
+        "usedBy": "/du-an/preview scene 15"
+      }
+    ]
+  },
+  "v16PortfolioPhysicalForegrounds": {
+    "addedAt": "2026-09-12",
+    "renderedBy": "ChatGPT imagegen (built-in mode)",
+    "integratedBy": "ChatGPT",
+    "authority": "User review requesting real component assets across the remaining sparse portfolio pages",
+    "verifiedOnIntegration": "5/5 optimized WebP files preserve a non-opaque alpha channel; dimensions, bytes and SHA-256 recorded after trim.",
+    "rule": "Each physical foreground is reserved for its matching chapter, contains no readable text or logo, and stays below primary content.",
+    "assets": [
+      {
+        "id": "v16-portfolio-index-kit",
+        "path": "/assets/portfolio-2026/index-kit-v10.webp",
+        "width": 1721,
+        "height": 728,
+        "pixelFormat": "RGBA",
+        "bytes": 328860,
+        "sha256": "07d9709867bd6efd42ef2410013166df063ef597d76f8758781f4b0f9639d9fe",
+        "usedBy": "/du-an/preview scene 02"
+      },
+      {
+        "id": "v16-portfolio-manifesto-punctuation",
+        "path": "/assets/portfolio-2026/manifesto-punctuation-v10.webp",
+        "width": 947,
+        "height": 1524,
+        "pixelFormat": "RGBA",
+        "bytes": 381864,
+        "sha256": "1b12dd9d543c264aa4d34df2cf695b391b136406f783dd823077a81afef29091",
+        "usedBy": "/du-an/preview scene 03"
+      },
+      {
+        "id": "v16-portfolio-capability-instruments",
+        "path": "/assets/portfolio-2026/capability-instruments-v10.webp",
+        "width": 1148,
+        "height": 1113,
+        "pixelFormat": "RGBA",
+        "bytes": 345242,
+        "sha256": "c7d27d017bb985baa318f1cace5dd2fe84f6427ba75ffd09498bb2495ec52414",
+        "usedBy": "/du-an/preview scene 05"
+      },
+      {
+        "id": "v16-portfolio-spa-water-ritual",
+        "path": "/assets/portfolio-2026/spa-water-ritual-v10.webp",
+        "width": 1304,
+        "height": 789,
+        "pixelFormat": "RGBA",
+        "bytes": 279454,
+        "sha256": "eced9fc92c288cec0ddbd525e3091fd904e6a7ac068bedad500780852be0a138",
+        "usedBy": "/du-an/preview scene 12"
+      },
+      {
+        "id": "v16-portfolio-promise-mechanism",
+        "path": "/assets/portfolio-2026/promise-mechanism-v10.webp",
+        "width": 568,
+        "height": 1536,
+        "pixelFormat": "RGBA",
+        "bytes": 286566,
+        "sha256": "360912b5fbae106bc3d1adca985fb641359853921271c71a9132a0e0539e24f7",
+        "usedBy": "/du-an/preview scene 17"
+      }
+    ]
+  }
 }

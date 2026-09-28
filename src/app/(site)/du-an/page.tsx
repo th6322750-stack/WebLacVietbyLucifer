@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
 
-/** "Dự án" gộp về /website theo yêu cầu (2026-08-24): gallery giao diện web giờ sống trong tab
- * "Dịch vụ" > "Thiết kế website" thay vì một mục riêng trên menu chính. Trang này giữ lại làm
- * lối chuyển hướng — link cũ, bookmark cũ, hay kết quả tìm kiếm cũ trỏ tới /du-an vẫn tới đúng
- * chỗ thay vì gặp trang 404. */
+/** "Dự án" gộp về gallery concept theo PHUONG_AN §5.
+ *
+ * Trước đây trỏ về `/website`; giờ có route gallery riêng nên đưa thẳng tới đó — link cũ,
+ * bookmark cũ và kết quả tìm kiếm cũ tới đúng nội dung thay vì phải tự tìm tiếp một cấp nữa.
+ * Giữ redirect thay vì xoá route: 404 một URL đã từng được index là mất traffic không cần thiết.
+ */
 export default function ProjectsPage() {
-  redirect("/website");
+  redirect("/website/concept");
 }

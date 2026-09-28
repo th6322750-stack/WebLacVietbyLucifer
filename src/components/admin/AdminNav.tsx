@@ -18,6 +18,8 @@ const PRIMARY: NavItem[] = [
   { href: "/admin/don-hang", label: "Đơn liên hệ", icon: "headset" },
   { href: "/admin/du-an", label: "Dự án & Portfolio", icon: "briefcase" },
   { href: "/admin/bai-viet", label: "Bài viết & Kiến thức", icon: "sparkles" },
+  { href: "/admin/seo", label: "SEO & Sitemap", icon: "search" },
+  { href: "/admin/xac-minh", label: "Xác minh & xuất bản", icon: "badge-check" },
 ];
 
 const GROUPS: { label: string; items: NavItem[] }[] = [
@@ -27,6 +29,8 @@ const GROUPS: { label: string; items: NavItem[] }[] = [
     items: [
       { href: "/admin/du-an", label: "Dự án", icon: "briefcase", trackActive: false },
       { href: "/admin/bai-viet", label: "Bài viết", icon: "sparkles", trackActive: false },
+      { href: "/admin/seo", label: "SEO & Sitemap", icon: "search", trackActive: false },
+      { href: "/admin/xac-minh", label: "Xác minh", icon: "badge-check", trackActive: false },
     ],
   },
 ];

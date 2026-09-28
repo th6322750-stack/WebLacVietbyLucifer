@@ -18,7 +18,7 @@ export const metadata = {
  * ivory-page-with-black-title treatment was not the approved authority. */
 export default function NotFound() {
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-ink-950">
       <header className="flex h-16 items-center bg-ink-950 lg:h-[76px]">
         <Container>
           <Link href="/" aria-label={`${siteSettings.brandName} — Trang chủ`}>
@@ -35,7 +35,7 @@ export default function NotFound() {
         </Container>
       </header>
 
-      <main id="main-content" data-state="404" className="relative isolate bg-ink-950">
+      <main id="main-content" data-state="404" className="relative isolate flex-1 bg-ink-950">
         {/* Subtle dark texture behind the state, as in the approved panel. Decorative only. */}
         <div
           aria-hidden="true"
@@ -59,6 +59,6 @@ export default function NotFound() {
       </main>
 
       <SiteFooter minimal />
-    </>
+    </div>
   );
 }

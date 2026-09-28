@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { track } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -17,6 +18,7 @@ export function NewsletterForm({ onDark = false }: { onDark?: boolean }) {
     const form = new FormData(e.currentTarget);
     setStatus("submitting");
     setError(null);
+    track({ name: "newsletter_submit_start", props: { sourceRoute: pathname } });
 
     try {
       const res = await fetch("/api/newsletter", {
@@ -32,12 +34,15 @@ export function NewsletterForm({ onDark = false }: { onDark?: boolean }) {
       if (!res.ok) {
         setStatus("error");
         setError(data.error ?? "Không thể đăng ký.");
+        track({ name: "newsletter_submit_error", props: { sourceRoute: pathname, errorClass: `http_${res.status}` } });
         return;
       }
       setStatus("success");
+      track({ name: "newsletter_submit_success", props: { sourceRoute: pathname } });
     } catch {
       setStatus("error");
       setError("Không thể kết nối, vui lòng thử lại.");
+      track({ name: "newsletter_submit_error", props: { sourceRoute: pathname, errorClass: "network" } });
     }
   }
 

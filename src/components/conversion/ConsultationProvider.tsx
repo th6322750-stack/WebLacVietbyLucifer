@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { track } from "@/lib/analytics";
-import { siteSettings } from "@/lib/site-settings";
+import { zaloUrl } from "@/lib/zalo";
 
 /** "Nhận tư vấn" across the whole site — header, every hero, FinalCta, pricing cards — goes
  * straight to a Zalo chat instead of opening an on-site form.
@@ -18,8 +18,19 @@ import { siteSettings } from "@/lib/site-settings";
  * none of the nine call sites across the site needed to change — only what `open` DOES changed.
  */
 
+/** Extra context attached to a conversion. Internal identifiers only — no PII ever. */
+export type ConsultationIntent = {
+  service?: string;
+  packageId?: string;
+  conceptSlug?: string;
+  need?: string;
+};
+
 type ConsultationContextValue = {
-  open: (sourceComponent: string, defaultService?: string) => void;
+  /** The second argument used to be `defaultService` back when a form could be prefilled. It is
+   *  kept positional so the existing call sites still compile, but it now flows into analytics
+   *  as `packageId` rather than being dropped. Newer call sites pass a full intent object. */
+  open: (sourceComponent: string, intent?: string | ConsultationIntent) => void;
 };
 
 const ConsultationContext = createContext<ConsultationContextValue | null>(null);
@@ -34,14 +45,18 @@ export function ConsultationProvider({ children }: { children: React.ReactNode }
   const pathname = usePathname();
 
   const openZalo = useCallback(
-    // `defaultService` is part of the shared `open()` shape every call site already uses (it
-    // mattered when a form needed to prefill), but a Zalo redirect has nothing to prefill, so
-    // the second argument is accepted by callers and simply ignored here.
-    (sourceComponent: string) => {
-      track({ name: "consultation_open", props: { sourceRoute: pathname, sourceComponent } });
+    (sourceComponent: string, intent?: string | ConsultationIntent) => {
+      // A bare string is the legacy `defaultService` argument. It was previously discarded; it
+      // is the package name at every call site that passes one, so it lands as `packageId`.
+      const resolved: ConsultationIntent =
+        typeof intent === "string" ? { packageId: intent } : intent ?? {};
+      track({
+        name: "consultation_open",
+        props: { sourceRoute: pathname, sourceComponent, ...resolved },
+      });
       // A new tab, not a navigation away: whoever clicked stays on the page they were reading,
       // the same way the modal never used to lose their place either.
-      window.open(`https://zalo.me/${siteSettings.zalo}`, "_blank", "noopener,noreferrer");
+      window.open(zaloUrl(), "_blank", "noopener,noreferrer");
     },
     [pathname],
   );

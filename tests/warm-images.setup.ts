@@ -9,7 +9,11 @@ import { test } from "@playwright/test";
  * cold-cache contention. Requesting the heavy routes once, serially, populates the optimizer
  * cache so the real suite measures the product instead of the transcoder. */
 test("warm the image optimizer cache", async ({ page }) => {
-  test.setTimeout(300_000);
+  // V7 adds ten 1254px PNGs to the same cold production cache. On Windows, warming the existing
+  // 4K V3 masters plus the new V7 variants can legitimately cross five minutes on the first run;
+  // that is optimizer work, not a navigation failure. Keep a bounded ten-minute ceiling while
+  // each individual navigation retains its stricter two-minute cap.
+  test.setTimeout(600_000);
   const heavy = [
     "/",
     "/du-an",

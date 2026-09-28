@@ -37,6 +37,9 @@ export function LoginForm() {
  return (
  <form onSubmit={submit} className="mt-6 flex flex-col gap-3">
  <input
+ id="admin-password"
+ aria-label="Mật khẩu"
+ name="password"
  type="password"
  value={password}
  autoFocus

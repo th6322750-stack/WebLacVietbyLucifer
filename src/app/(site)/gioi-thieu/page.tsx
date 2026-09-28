@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { StarField } from "@/components/layout/StarField";
+import { PageSignatureAsset } from "@/components/layout/PageSignatureAsset";
+import { PageJumpNav } from "@/components/layout/PageJumpNav";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -8,17 +9,16 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { ServiceCard } from "@/components/content/ServiceCard";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { siteSettings } from "@/lib/site-settings";
-import { assetPath, assetSize } from "@/lib/assets";
-import { pageMetadata, organizationJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata, organizationJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
-// Ẩn khỏi menu, footer và sitemap (2026-09-02). Route giữ nguyên để link đã phát tán hoặc
-// kết quả tìm kiếm cũ không rơi vào 404; `noindex` để trang rụng dần khỏi Google thay vì
-// vẫn kéo khách vào một trang không còn được dẫn tới từ đâu trong site.
+// Trang giới thiệu được mở lại trong điều hướng để tương đương điểm vào Profile/Giới thiệu của
+// Maxweb. Nội dung chỉ dùng các nguyên tắc và năng lực đã có trong repo, không thêm mốc thời gian,
+// số khách hàng hay giải thưởng chưa được xác minh.
 export const metadata = pageMetadata({
-  title: "Giới thiệu",
+  title: "Giới thiệu Lạc Việt Media Agency",
   description: `Tìm hiểu về ${siteSettings.brandName} — đối tác số toàn diện cho doanh nghiệp Việt Nam.`,
   path: "/gioi-thieu",
-  noindex: true,
 });
 
 // 3 principles per approved master (page-09): Liêm + Chính are one combined item, not two.
@@ -75,7 +75,13 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 export default function AboutPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
+      <JsonLd data={organizationJsonLd()} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Trang chủ", path: "/" },
+          { name: "Giới thiệu", path: "/gioi-thieu" },
+        ])}
+      />
 
       <Container className="py-4">
         <Breadcrumbs items={[{ label: "Trang chủ", href: "/" }, { label: "Giới thiệu" }]} />
@@ -115,21 +121,23 @@ export default function AboutPage() {
                 rather than shrunk — at hero scale it added nothing on narrow screens the way it
                 does here, and the brief's own examples call for "one light, intentional
                 composition," not a second copy scaled down. */}
+            {/* V7 §6: thay composition logo/ring dựng bằng CSS bằng vật thể signature. Board
+                cấm hiện đồng thời cả hai, nên ba vòng tròn và logo mờ 40% ở đây đã bị bỏ hẳn.
+
+                `blendOnBlack`: file này là RGB nền đen — ngoại lệ duy nhất của bộ V7 — nên đặt
+                thẳng lên hero vẫn thấy một hình vuông đen hơi khác tông. `mix-blend-lighten`
+                làm nền ảnh tan vào nền trang, cùng cách `HeroVisual` đã xử lý. Chỉ đúng vì
+                hero này thực sự là `bg-black`.
+
+                Vẫn ẩn dưới `lg` như bố cục cũ: ở khổ nhỏ chữ đã chiếm gần hết bề ngang, và
+                thêm 340px ảnh chỉ làm trang mobile dài lại. */}
             <div className="hidden lg:flex lg:items-center lg:justify-center" aria-hidden="true">
               <ScrollReveal direction="up" distance={16} duration={0.8} delay={250}>
-                <div className="relative flex h-[320px] w-[320px] items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border border-v5-gold/10" />
-                  <div className="absolute inset-10 rounded-full border border-v5-gold/15" />
-                  <div className="absolute inset-20 rounded-full border border-v5-gold/20" />
-                  <Image
-                    src={assetPath("lac-viet-logo-canonical")}
-                    alt=""
-                    width={assetSize("lac-viet-logo-canonical").width}
-                    height={assetSize("lac-viet-logo-canonical").height}
-                    className="h-36 w-36 opacity-40"
-                  />
-                  <span className="absolute -bottom-1 h-px w-40 bg-gradient-to-r from-transparent via-v5-gold/50 to-transparent" />
-                </div>
+                <PageSignatureAsset
+                  assetId="v7-page-about-values"
+                  blendOnBlack
+                  className="w-[320px] rounded-2xl"
+                />
               </ScrollReveal>
             </div>
           </Container>
@@ -151,6 +159,15 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+
+      <PageJumpNav
+        items={[
+          { href: "#principles", label: "Giá trị" },
+          { href: "#brand-story", label: "Câu chuyện" },
+          { href: "#brand-journey", label: "Hành trình" },
+          { href: "#service-ecosystem", label: "Năng lực" },
+        ]}
+      />
 
       {/* PRO V2.1 §50/51: storytelling flow — hero → brand statement → story → philosophy →
           capability → CTA. Was hero+philosophy, then capability, then story LAST — the story of
@@ -187,35 +204,47 @@ export default function AboutPage() {
       {/* PRO V2.2 §3: "brand journey" — a timeline structure without inventing dates. Desktop
           alternates left/right along a center spine; mobile collapses to a single left-aligned
           rail (§3 explicitly allows either alternating or single-column, mobile stays single). */}
-      <Section id="brand-journey">
-        <Container width="editorial">
+      {/* UI V6 §6.13: năm mốc trước đây dàn đều trên cả bề ngang trang, mỗi mốc là một cột
+          hẹp có rất nhiều khoảng trắng quanh nó — trông như trang thiếu nội dung chứ không
+          phải như một hành trình. Gom vào một panel có connector, và vì repo không có mốc thời
+          gian thật nào nên vẫn không có năm tháng nào được bịa ra. */}
+      <Section id="brand-journey" tone="ivory">
+        <Container>
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading eyebrow="Hành trình" title="Từ cội nguồn đến hôm nay" align="center" />
           </ScrollReveal>
-          <ol className="relative mt-12 flex flex-col gap-10 before:absolute before:left-[7px] before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-border md:before:left-1/2">
-            {journey.map((step, idx) => {
-              const alignRight = idx % 2 === 1;
-              return (
-                <ScrollReveal key={step.stage} direction="up" distance={16} duration={0.6} delay={idx * 80}>
-                  <li
-                    className={`relative pl-8 md:w-1/2 md:pl-0 ${
-                      alignRight ? "md:ml-auto md:pl-12 md:text-left" : "md:pr-12 md:text-right"
-                    }`}
-                  >
-                    <span
-                      className={`absolute left-0 top-1.5 size-4 rounded-full border-2 border-gold-500 bg-ivory-50 md:top-1.5 ${
-                        alignRight ? "md:-left-2" : "md:-right-2 md:left-auto"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    <p className="text-caption font-semibold uppercase tracking-wide text-gold-700">{step.stage}</p>
-                    <p className="mt-1 font-heading text-card-h3-mobile text-ink-950">{step.title}</p>
-                    <p className="mt-1 text-small text-text-secondary">{step.description}</p>
+          <div className="mt-8 rounded-2xl border border-gold-500/20 bg-white p-6 shadow-sm lg:p-8">
+            <ol className="grid list-none gap-0 divide-y divide-border lg:grid-cols-5 lg:divide-x lg:divide-y-0">
+              {journey.map((stage, index) => (
+                <ScrollReveal
+                  key={stage.stage}
+                  direction="up"
+                  distance={20}
+                  duration={0.6}
+                  delay={Math.min(index, 3) * 90}
+                >
+                  <li className="flex h-full gap-4 py-5 first:pt-0 last:pb-0 lg:flex-col lg:gap-2 lg:px-5 lg:py-0 lg:first:pl-0 lg:last:pr-0">
+                    <span className="flex flex-col items-center lg:flex-row lg:items-center lg:gap-2">
+                      <span className="grid size-8 shrink-0 place-items-center rounded-full border border-gold-500/30 bg-ivory-50 font-heading text-caption tabular-nums text-gold-700">
+                        {index + 1}
+                      </span>
+                      {/* Connector chỉ ở mobile — desktop đã có divider dọc giữa các cột. */}
+                      <span aria-hidden="true" className="mt-1 w-px flex-1 bg-border lg:hidden" />
+                    </span>
+                    <div className="min-w-0 pb-1">
+                      <p className="text-eyebrow uppercase tracking-[0.12em] text-gold-700">
+                        {stage.stage}
+                      </p>
+                      <p className="mt-1 font-heading text-card-h3-mobile text-ink-950">
+                        {stage.title}
+                      </p>
+                      <p className="mt-1 text-small text-text-secondary">{stage.description}</p>
+                    </div>
                   </li>
                 </ScrollReveal>
-              );
-            })}
-          </ol>
+              ))}
+            </ol>
+          </div>
         </Container>
       </Section>
 

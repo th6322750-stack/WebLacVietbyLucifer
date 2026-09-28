@@ -5,6 +5,8 @@ import { StickyMobileCta } from "@/components/layout/StickyMobileCta";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { MagneticCursor } from "@/components/ui/MagneticCursor";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { BackToTopButton } from "@/components/layout/BackToTopButton";
+import { FloatingContactRail } from "@/components/layout/FloatingContactRail";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,6 +23,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main-content">{children}</main>
         <SiteFooter />
+        <BackToTopButton />
+        <FloatingContactRail />
         <StickyMobileCta />
       </SmoothScrollProvider>
     </ConsultationProvider>

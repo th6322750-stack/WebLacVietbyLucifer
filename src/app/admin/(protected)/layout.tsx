@@ -3,10 +3,20 @@ import { redirect } from "next/navigation";
 import { AUTH_BYPASSED, isSignedIn } from "@/lib/admin/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { SignOutButton } from "@/components/admin/SignOutButton";
+import { AdminQuickSearch } from "@/components/admin/AdminQuickSearch";
 import { Icon } from "@/components/ui/Icon";
+import { countLeadsByStatus } from "@/lib/db/repositories/leads";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   if (!(await isSignedIn())) redirect("/admin/dang-nhap");
+
+  let newLeadCount = 0;
+  try {
+    newLeadCount = (await countLeadsByStatus()).new;
+  } catch {
+    // Keep the admin shell usable when local development has no DATABASE_URL yet. The page
+    // itself renders an explicit data-unavailable state instead of a blank 500 error.
+  }
 
   return (
     <div className="adm-page adm-text min-h-screen">
@@ -45,10 +55,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
           <Link
             href="/admin/don-hang?status=new"
-            className="admin-issue-card mt-3 flex min-h-12 items-center gap-3 rounded-xl px-4 text-[12px] font-semibold text-white"
+            className={`${newLeadCount > 0 ? "admin-issue-card" : "admin-ok-card"} mt-3 flex min-h-12 items-center gap-3 rounded-xl px-4 text-[12px] font-semibold text-white`}
           >
-            <Icon name="shield-check" size="inline" />
-            <span className="flex-1">4 vấn đề cần xử lý</span>
+            <Icon name={newLeadCount > 0 ? "shield-check" : "circle-check"} size="inline" />
+            <span className="flex-1">{newLeadCount > 0 ? `${newLeadCount} đơn mới cần xử lý` : "Không có đơn mới"}</span>
             <Icon name="chevron-right" size="inline" />
           </Link>
         </div>
@@ -62,13 +72,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <span className="size-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_6px_rgba(16,185,129,.10)]" />
               Hệ thống hoạt động ổn định
             </div>
-            <div className="ml-auto hidden w-[250px] items-center rounded-xl border border-[#dfe6f0] bg-[#f8fafe] px-4 py-2.5 text-[#7b89a1] xl:flex">
-              <input aria-label="Tìm kiếm nhanh" placeholder="Tìm kiếm nhanh..." className="min-w-0 flex-1 bg-transparent text-[12px] outline-none placeholder:text-[#94a0b4]" />
-              <Icon name="search" size="inline" />
+            <div className="ml-auto">
+              <AdminQuickSearch />
             </div>
             <Link href="/admin/don-hang?status=new" className="relative grid size-10 place-items-center rounded-xl border border-[#e1e8f1] bg-white text-[#103974] shadow-sm" aria-label="Thông báo">
               <Icon name="circle-alert" size="inline" />
-              <span className="absolute -right-1 -top-1 grid size-[18px] place-items-center rounded-full bg-red-500 text-[9px] font-bold text-white">4</span>
+              {newLeadCount > 0 ? <span className="absolute -right-1 -top-1 grid size-[18px] place-items-center rounded-full bg-red-500 text-[9px] font-bold text-white">{newLeadCount}</span> : null}
             </Link>
             <span className="grid size-10 place-items-center rounded-full border border-[#e1e8f1] bg-[#f7f9fc] text-sm font-semibold text-[#15386d]">N</span>
           </div>

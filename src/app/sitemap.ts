@@ -1,17 +1,25 @@
 import type { MetadataRoute } from "next";
 import { siteSettings } from "@/lib/site-settings";
-import { getIndexableProjects } from "@/content/projects";
 import { getIndexableArticles } from "@/content/articles";
+import { genericServiceSlugs } from "@/content/service-registry";
+import { industryShowcase } from "@/content/industry-showcase";
+import { supportServiceSlugs } from "@/content/support-services";
 
+// Route tĩnh. `/dich-vu-so` ẩn khỏi MENU nhưng vẫn publish và vẫn có lối vào từ trang chủ và
+// hub /dich-vu, nên nó thuộc về sitemap. `/gioi-thieu` được mở lại cùng điều hướng parity và
+// trở thành route indexable; các trang chính sách khung vẫn noindex cho tới khi owner duyệt.
 const STATIC_ROUTES = [
   "/",
+  "/dich-vu",
   "/website",
+  "/website/concept",
   "/support-mxh",
   "/dich-vu-so",
   "/kien-thuc",
-  // "/gioi-thieu" bo khoi sitemap 2026-09-02 cung luc an khoi menu: quang ba mot trang minh
-  // dang giau di thi mau thuan — Google van se gui khach vao do. Trang cung mang noindex.
+  "/gioi-thieu",
+  "/ho-so-nang-luc",
   "/lien-he",
+  "/quy-trinh-lam-viec-tai-maxweb",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -20,21 +28,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${origin}${path}`,
     lastModified: new Date(),
   }));
-  // Detail routes are advertised for indexing only when they are neither direct-review-only
-  // fixtures nor unverified demo content: SEO_CONTRACT.json forbids demo preview data becoming
-  // indexed claims, and CONTENT_TRUTH.json marks every GĐ1 project/article identity as demo
-  // until verified. Both lists are therefore empty by design today and populate themselves as
-  // soon as content is verified and flipped to demoOnly: false. The listing routes (/du-an,
-  // /kien-thuc) stay in STATIC_ROUTES above — only the unverified detail URLs are withheld, and
-  // those routes additionally carry noindex in their own metadata.
-  const projectEntries = getIndexableProjects().map((p) => ({
-    url: `${origin}/du-an/${p.slug}`,
+
+  // Dịch vụ dùng template chung. Danh sách lấy từ registry nên một dịch vụ được publish là tự
+  // vào sitemap, và một dịch vụ bị gỡ publish (hoặc bị loại theo chính sách) tự rơi ra.
+  const serviceEntries = genericServiceSlugs().map((slug) => ({
+    url: `${origin}/dich-vu/${slug}`,
     lastModified: new Date(),
   }));
+
+  // Từng nhóm support MXH giờ có trang riêng, mỗi trang trả lời một truy vấn cụ thể ("khôi
+  // phục fanpage bị khoá") thay vì dồn hết vào một landing.
+  const supportEntries = supportServiceSlugs().map((slug) => ({
+    url: `${origin}/support-mxh/${slug}`,
+    lastModified: new Date(),
+  }));
+
+  // Concept giao diện: đây là nội dung minh hoạ thật sự tồn tại và có ích khi tìm kiếm ("mẫu
+  // website nhà hàng"), khác hẳn với các "dự án" cũ vốn là danh tính khách hàng chưa xác minh.
+  // Trang chi tiết concept không mang schema Product/Review nào nên không có claim nào để sai.
+  const conceptEntries = industryShowcase.map((concept) => ({
+    url: `${origin}/website/concept/${concept.slug}`,
+    lastModified: new Date(),
+  }));
+
+  // `/du-an/*` đã chuyển thành redirect sang concept — không đưa URL redirect vào sitemap.
   const articleEntries = getIndexableArticles().map((a) => ({
     url: `${origin}/kien-thuc/${a.slug}`,
     lastModified: new Date(a.publishedAt),
   }));
 
-  return [...staticEntries, ...projectEntries, ...articleEntries];
+  return [
+    ...staticEntries,
+    ...serviceEntries,
+    ...supportEntries,
+    ...conceptEntries,
+    ...articleEntries,
+  ];
 }

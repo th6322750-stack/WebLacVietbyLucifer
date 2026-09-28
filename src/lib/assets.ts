@@ -8,6 +8,46 @@
 // Master/PDF crops and every V2 recovery crop are REFERENCE_ONLY per V3 rules and are
 // deliberately absent from public/: they must never be served as runtime bytes.
 export const ASSET_PATHS: Record<string, string> = {
+  // UI V9 — editorial depth illustrations for the five generic service families.
+  // Generated as one coherent black/champagne set for the shared detail template.
+  "v9-service-google-business-profile": "/assets/v9/service-depth/service-google-business-profile.png",
+  "v9-service-omnichannel-ads": "/assets/v9/service-depth/service-omnichannel-ads.png",
+  "v9-service-seo-content": "/assets/v9/service-depth/service-seo-content.png",
+  "v9-service-brand-identity": "/assets/v9/service-depth/service-brand-identity.png",
+  "v9-service-domain-hosting-email": "/assets/v9/service-depth/service-domain-hosting-email.png",
+  // UI V8 — service-depth signatures rendered by ChatGPT 2026-09-09.
+  "v8-service-website-real-estate": "/assets/v8/service-signatures/service-website-real-estate.png",
+  "v8-service-seo-google-maps": "/assets/v8/service-signatures/service-seo-google-maps.png",
+  "v8-service-google-ads": "/assets/v8/service-signatures/service-google-ads.png",
+  "v8-service-facebook-ads": "/assets/v8/service-signatures/service-facebook-ads.png",
+  "v8-service-zalo-ads": "/assets/v8/service-signatures/service-zalo-ads.png",
+  "v8-service-real-estate-marketing": "/assets/v8/service-signatures/service-real-estate-marketing.png",
+  // UI V7 — ChatGPT render, ASSET_BOARD_UI_V7_2026-09-09.md.
+  // Cả 10 file đã đối chiếu SHA-256, byte count, dimension (1254x1254) và pixel mode với asset
+  // board TRƯỚC khi đăng ký ở đây. Mỗi ID dùng ĐÚNG một chỗ; board cấm dùng chéo giữa các slug.
+  //
+  // `v7-page-about-values` là ngoại lệ duy nhất về mode: RGB nền đen có chủ đích, không phải
+  // RGBA. Nó chỉ dùng được trên nền đen kèm blend — xem `PageSignatureAsset`.
+  "v7-home-service-website": "/assets/v7/home-service-cards/home-service-website.png",
+  "v7-home-service-support": "/assets/v7/home-service-cards/home-service-support.png",
+  "v7-home-service-digital": "/assets/v7/home-service-cards/home-service-digital.png",
+  "v7-support-facebook": "/assets/v7/support-signatures/support-facebook-signature.png",
+  "v7-support-tiktok": "/assets/v7/support-signatures/support-tiktok-signature.png",
+  "v7-support-meta-business": "/assets/v7/support-signatures/support-meta-signature.png",
+  "v7-support-verified": "/assets/v7/support-signatures/support-verified-signature.png",
+  "v7-page-knowledge": "/assets/v7/page-signatures/knowledge-hub-signature.png",
+  "v7-page-contact": "/assets/v7/page-signatures/contact-consultation-signature.png",
+  "v7-page-about-values": "/assets/v7/page-signatures/about-values-signature.png",
+
+  // UI V6 — service signature objects (ChatGPT render, ASSET_BOARD_UI_V6_2026-09-08.md).
+  // Năm file PNG RGBA thật; hash/kích thước đã đối chiếu với asset board trước khi đăng ký.
+  // Mỗi asset chỉ dùng MỘT lần, ở hero của đúng service tương ứng — không thu nhỏ thành icon.
+  "v6-service-google-business-profile": "/assets/v6/service-signatures/service-google-business-profile.png",
+  "v6-service-omnichannel-ads": "/assets/v6/service-signatures/service-omnichannel-ads.png",
+  "v6-service-seo-content": "/assets/v6/service-signatures/service-seo-content.png",
+  "v6-service-brand-identity": "/assets/v6/service-signatures/service-brand-identity.png",
+  "v6-service-domain-hosting-email": "/assets/v6/service-signatures/service-domain-hosting-email.png",
+
   // Concept đa ngành /du-an — xem src/content/industry-showcase.ts (nguồn dùng chung).
   "du-an-industry-11": "/assets/v5/du-an/noi-that-an-gia.webp",
   "du-an-industry-12": "/assets/v5/du-an/english-master.webp",
@@ -143,6 +183,38 @@ export const ASSET_PATHS: Record<string, string> = {
 /** Native pixel dimensions of each V3 production asset, read from the delivered files.
  * Images render at or below these; nothing is fake-upscaled (V3 quality.noFakeUpscale). */
 export const ASSET_SIZE: Record<string, { width: number; height: number }> = {
+  // V9 — five supplemental depth illustrations, native 1254x1254.
+  "v9-service-google-business-profile": { width: 1254, height: 1254 },
+  "v9-service-omnichannel-ads": { width: 1254, height: 1254 },
+  "v9-service-seo-content": { width: 1254, height: 1254 },
+  "v9-service-brand-identity": { width: 1254, height: 1254 },
+  "v9-service-domain-hosting-email": { width: 1254, height: 1254 },
+  // V8 — service-depth signatures, all 1254x1254 RGBA.
+  "v8-service-website-real-estate": { width: 1254, height: 1254 },
+  "v8-service-seo-google-maps": { width: 1254, height: 1254 },
+  "v8-service-google-ads": { width: 1254, height: 1254 },
+  "v8-service-facebook-ads": { width: 1254, height: 1254 },
+  "v8-service-zalo-ads": { width: 1254, height: 1254 },
+  "v8-service-real-estate-marketing": { width: 1254, height: 1254 },
+  // V7 — toàn bộ 1254x1254, đọc từ header PNG và khớp asset board.
+  "v7-home-service-website": { width: 1254, height: 1254 },
+  "v7-home-service-support": { width: 1254, height: 1254 },
+  "v7-home-service-digital": { width: 1254, height: 1254 },
+  "v7-support-facebook": { width: 1254, height: 1254 },
+  "v7-support-tiktok": { width: 1254, height: 1254 },
+  "v7-support-meta-business": { width: 1254, height: 1254 },
+  "v7-support-verified": { width: 1254, height: 1254 },
+  "v7-page-knowledge": { width: 1254, height: 1254 },
+  "v7-page-contact": { width: 1254, height: 1254 },
+  "v7-page-about-values": { width: 1254, height: 1254 },
+
+  // V6 — kích thước native đọc thẳng từ header PNG, không phải từ tài liệu.
+  "v6-service-google-business-profile": { width: 1254, height: 1254 },
+  "v6-service-omnichannel-ads": { width: 1350, height: 1165 },
+  "v6-service-seo-content": { width: 1310, height: 1200 },
+  "v6-service-brand-identity": { width: 1254, height: 1254 },
+  "v6-service-domain-hosting-email": { width: 1254, height: 1254 },
+
   "du-an-industry-11": { width: 800, height: 450 },
   "du-an-industry-12": { width: 800, height: 450 },
   "du-an-industry-13": { width: 800, height: 450 },

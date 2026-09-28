@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Icon } from "@/components/ui/Icon";
 
 /** A track that drifts on its own and can also be grabbed and flung.
  *
@@ -12,6 +13,15 @@ import { useCallback, useEffect, useRef } from "react";
  * Children are rendered twice. When the position passes the halfway mark it is rolled back by
  * exactly half the track, landing on an identical frame, so the loop is seamless in both
  * directions and never runs out of runway however hard it is flung.
+ *
+ * PHUONG_AN §6.6 / WCAG 2.2 AA (2.5.7 Dragging Movements): drag cannot be the only way to reach
+ * the rest of the track. Prev/Next buttons give a single-pointer path and, being real buttons,
+ * a keyboard one for free. The track itself is focusable and scrolls with arrow keys, which is
+ * what a screen-reader user reaching it by Tab will try first.
+ *
+ * Auto-drift pauses on hover, on focus anywhere inside, and while dragging — an element that
+ * keeps sliding out from under the pointer is unusable, and one that keeps moving while a
+ * keyboard user is reading it is worse.
  */
 export function DragScroller({
   children,
@@ -20,13 +30,29 @@ export function DragScroller({
    * two: about four and a half seconds per card, readable without feeling stalled. */
   speed = 70,
   className = "",
+  label = "Danh sách cuộn ngang",
 }: {
   children: React.ReactNode;
   speed?: number;
   className?: string;
+  /** Names the scrollable region for assistive tech. */
+  label?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = useRef({ active: false, startX: 0, startScroll: 0, moved: false });
+  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
+  pausedRef.current = paused;
+
+  /** One "page" of the track. Falls back to the visible width so it works before layout settles
+   *  and for any child size, rather than assuming a fixed card width. */
+  const step = useCallback((direction: 1 | -1) => {
+    const el = ref.current;
+    if (!el) return;
+    const first = el.firstElementChild?.firstElementChild as HTMLElement | null;
+    const distance = first?.offsetWidth ? first.offsetWidth + 24 : el.clientWidth * 0.8;
+    el.scrollBy({ left: distance * direction, behavior: "smooth" });
+  }, []);
 
   /** Roll the position back into the first copy. Runs after every move, auto or manual. */
   const wrap = useCallback((el: HTMLDivElement) => {
@@ -48,7 +74,7 @@ export function DragScroller({
     const tick = (now: number) => {
       const dt = Math.min(now - last, 100) / 1000; // clamped so a backgrounded tab cannot jump
       last = now;
-      if (!drag.current.active && !reduced) el.scrollLeft += speed * dt;
+      if (!drag.current.active && !reduced && !pausedRef.current) el.scrollLeft += speed * dt;
       wrap(el);
       raf = requestAnimationFrame(tick);
     };
@@ -112,12 +138,46 @@ export function DragScroller({
 
   return (
     <div
-      ref={ref}
-      className={`no-scrollbar flex cursor-grab select-none overflow-x-auto overscroll-x-contain active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] ${className}`}
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
+      }}
     >
-      <div className="flex shrink-0 items-stretch gap-6 pr-6">{children}</div>
-      <div className="flex shrink-0 items-stretch gap-6 pr-6" aria-hidden="true">
-        {children}
+      <div
+        ref={ref}
+        tabIndex={0}
+        role="group"
+        aria-label={label}
+        className={`no-scrollbar flex cursor-grab select-none overflow-x-auto overscroll-x-contain rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-gold-500/60 active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] ${className}`}
+      >
+        <div className="flex shrink-0 items-stretch gap-6 pr-6">{children}</div>
+        <div className="flex shrink-0 items-stretch gap-6 pr-6" aria-hidden="true">
+          {children}
+        </div>
+      </div>
+
+      {/* 44px minimum per the repo's own touch-target budget, which is above the WCAG 2.2
+          24x24 floor. Positioned outside the mask so they never fade with the track edges. */}
+      <div className="mt-4 flex justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => step(-1)}
+          aria-label="Xem các mục trước"
+          className="grid min-h-touch min-w-touch place-items-center rounded-full border border-gold-500/30 bg-white text-gold-700 transition-colors duration-normal ease-standard hover:border-gold-500/60 hover:bg-gold-500/10"
+        >
+          <Icon name="arrow-left" size="default" />
+        </button>
+        <button
+          type="button"
+          onClick={() => step(1)}
+          aria-label="Xem các mục tiếp theo"
+          className="grid min-h-touch min-w-touch place-items-center rounded-full border border-gold-500/30 bg-white text-gold-700 transition-colors duration-normal ease-standard hover:border-gold-500/60 hover:bg-gold-500/10"
+        >
+          <Icon name="arrow-right" size="default" />
+        </button>
       </div>
     </div>
   );

@@ -104,5 +104,5 @@ export async function reorderProjects(slugs: string[]): Promise<void> {
 export function resolveProjectLink(p: { demoUrl?: string }, zalo: string): { href: string; isDemo: boolean } {
   const demo = p.demoUrl?.trim();
   if (demo) return { href: demo, isDemo: true };
-  return { href: `https://zalo.me/${zalo}`, isDemo: false };
+  return { href: `https://zalo.me/${zalo}`, isDemo: false }; // số truyền vào từ DB, không phải siteSettings
 }

@@ -32,6 +32,42 @@ const nextConfig: NextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  // Preserve safe Maxweb bookmarks and campaign links while keeping one canonical Lạc Việt
+  // destination for each capability. Policy-sensitive and unsafe catalogue URLs are deliberately
+  // absent here; they must not become reachable through a redirect by accident.
+  async redirects() {
+    return [
+      { source: "/profile-maxweb", destination: "/gioi-thieu", permanent: false },
+      { source: "/content-quang-cao-facebook", destination: "/kien-thuc", permanent: false },
+      {
+        source: "/quang-cao-google-map-nganh-bat-dong-san",
+        destination: "/dich-vu/quang-cao-google-ads",
+        permanent: false,
+      },
+      { source: "/tieu-chi-xep-hang-google-maps", destination: "/kien-thuc", permanent: false },
+      {
+        source: "/bo-tu-khoa-google-ads-bat-dong-san-de-ra-chuyen-doi",
+        destination: "/kien-thuc",
+        permanent: false,
+      },
+      // The reference site has many category/product pages; the current catalogue intentionally
+      // presents them as truth-labelled concepts, so all old variants land on that gallery.
+      { source: "/danh-muc-website-:category", destination: "/website/concept", permanent: false },
+      { source: "/thiet-ke-website-:category", destination: "/website/concept", permanent: false },
+      { source: "/website-:category", destination: "/website/concept", permanent: false },
+      { source: "/san-pham-website-:category", destination: "/website/concept", permanent: false },
+      // News category pages are represented by the single filterable knowledge hub.
+      { source: "/tin-tuc-:category", destination: "/kien-thuc", permanent: false },
+      { source: "/chinh-sach-thanh-toan", destination: "/chinh-sach/thanh-toan", permanent: false },
+      { source: "/thanh-toan", destination: "/chinh-sach/thanh-toan", permanent: false },
+      { source: "/chinh-sach-van-chuyen-va-giao-nhan", destination: "/chinh-sach/van-chuyen-va-giao-nhan", permanent: false },
+      { source: "/chinh-sach-bao-mat-thong-tin", destination: "/chinh-sach/bao-mat-thong-tin", permanent: false },
+      { source: "/chinh-sach-xu-ly-khieu-nai", destination: "/chinh-sach/xu-ly-khieu-nai", permanent: false },
+      { source: "/chinh-sach-bao-hanh", destination: "/chinh-sach/bao-hanh", permanent: false },
+      { source: "/chinh-sach-doi-tra-va-hoan-tien", destination: "/chinh-sach/doi-tra-va-hoan-tien", permanent: false },
+      { source: "/huong-dan-thanh-toan", destination: "/chinh-sach/thanh-toan", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

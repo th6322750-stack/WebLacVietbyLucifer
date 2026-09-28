@@ -10,7 +10,50 @@ export type IndustryShowcaseItem = {
   industry: string;
   title: string;
   imagePath: string;
+  /** PHUONG_AN §7.3: extra fields the concept detail page renders when present. Every one is
+   *  optional and its section disappears when absent — a concept with only an image still
+   *  produces a complete-looking page rather than a skeleton with empty headings. */
+  summary?: string;
+  suitableFor?: string[];
+  modules?: string[];
+  gallery?: string[];
+  /** A real, reachable preview URL. Absent means the "Xem demo" button is not rendered at all;
+   *  it must never fall back to `href="#"`. */
+  demoUrl?: string | null;
 };
+
+/** Fixed, non-negotiable: these are design concepts, never delivered client work. Kept as a
+ *  literal so it cannot drift per-page, and so a reviewer greps one string to audit every
+ *  surface that shows a concept. */
+export const CONCEPT_DISCLOSURE =
+  "Concept minh hoạ phong cách thiết kế theo từng ngành, không phải dự án đã triển khai cho khách hàng cụ thể.";
+
+/** Truth state shared by every concept. Demo content is allowed in production precisely because
+ *  the disclosure above ships with it — see `isProductionVisible`. */
+export const CONCEPT_TRUTH = {
+  published: true,
+  claimState: "demo" as const,
+  disclosure: CONCEPT_DISCLOSURE,
+};
+
+/** Concepts grouped by industry, in first-seen order, for the gallery filter. */
+export function conceptIndustries(): string[] {
+  return [...new Set(industryShowcase.map((c) => c.industry))];
+}
+
+export function findConcept(slug: string): IndustryShowcaseItem | undefined {
+  return industryShowcase.find((c) => c.slug === slug);
+}
+
+/** Other concepts in the same industry, falling back to any others so the related strip is never
+ *  empty on a one-of-a-kind industry. */
+export function relatedConcepts(slug: string, limit = 3): IndustryShowcaseItem[] {
+  const current = findConcept(slug);
+  if (!current) return [];
+  const sameIndustry = industryShowcase.filter((c) => c.slug !== slug && c.industry === current.industry);
+  const others = industryShowcase.filter((c) => c.slug !== slug && c.industry !== current.industry);
+  return [...sameIndustry, ...others].slice(0, limit);
+}
 
 export const industryShowcase: IndustryShowcaseItem[] = [
   { slug: "noi-that-an-loc", industry: "Nội thất", title: "Nội Thất An Lộc", imagePath: "/assets/v5/du-an/noi-that-an-loc.webp" },

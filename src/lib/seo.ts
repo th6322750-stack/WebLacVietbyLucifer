@@ -23,11 +23,24 @@ export function pageMetadata({
 }): Metadata {
   const url = `${siteSettings.canonicalOrigin}${path}`;
   const images = [{ url: ogImagePath, width: 1200, height: 630, alt: siteSettings.brandName }];
+  const robotIndex = !noindex;
   return {
     title,
     description,
     alternates: { canonical: url },
-    robots: noindex ? { index: false, follow: false } : undefined,
+    // Keep the directives identical for every route. `googleBot` is explicit because the
+    // generic robots tag alone is easy to accidentally override in a nested layout.
+    robots: {
+      index: robotIndex,
+      follow: robotIndex,
+      googleBot: {
+        index: robotIndex,
+        follow: robotIndex,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
     openGraph: {
       title,
       description,
@@ -57,6 +70,19 @@ export function organizationJsonLd() {
   };
 }
 
+/** WebSite data is intentionally limited to the verified brand and canonical origin. Search
+ * actions are not emitted because the public search is a client lightbox, not a crawlable
+ * `/search?q=` endpoint. */
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteSettings.brandName,
+    url: siteSettings.canonicalOrigin,
+    inLanguage: "vi-VN",
+  };
+}
+
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",
@@ -74,16 +100,32 @@ export function articleJsonLd(article: {
   title: string;
   excerpt: string;
   publishedAt: string;
+  dateModified?: string;
   author: string;
   path: string;
+  imagePath?: string;
 }) {
+  const image = article.imagePath
+    ? `${siteSettings.canonicalOrigin}${article.imagePath}`
+    : undefined;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.excerpt,
+    ...(image ? { image: [image] } : {}),
     datePublished: article.publishedAt,
-    author: { "@type": "Organization", name: article.author },
+    dateModified: article.dateModified ?? article.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: article.author,
+      url: siteSettings.canonicalOrigin,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteSettings.brandName,
+      url: siteSettings.canonicalOrigin,
+    },
     mainEntityOfPage: `${siteSettings.canonicalOrigin}${article.path}`,
   };
 }

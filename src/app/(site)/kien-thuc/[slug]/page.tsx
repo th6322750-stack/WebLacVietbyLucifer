@@ -13,6 +13,7 @@ import { seoArticleRelatedPreview } from "@/content/route-fixtures";
 import { assetPath, assetSize } from "@/lib/assets";
 import { formatDate } from "@/lib/format";
 import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
@@ -48,32 +49,24 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       {article.demoOnly ? null : (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
-              articleJsonLd({
-                title: article.title,
-                excerpt: article.excerpt,
-                publishedAt: article.publishedAt,
-                author: article.author,
-                path: `/kien-thuc/${article.slug}`,
-              }),
-            ),
-          }}
+        <JsonLd
+          data={articleJsonLd({
+            title: article.seoTitle ?? article.title,
+            excerpt: article.seoDescription ?? article.excerpt,
+            publishedAt: article.publishedAt,
+            dateModified: (article as { updatedAt?: string }).updatedAt,
+            author: article.author,
+            path: `/kien-thuc/${article.slug}`,
+            imagePath: article.coverAssetId ? assetPath(article.coverAssetId) : undefined,
+          })}
         />
       )}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            breadcrumbJsonLd([
-              { name: "Trang chủ", path: "/" },
-              { name: "Kiến thức", path: "/kien-thuc" },
-              { name: article.title, path: `/kien-thuc/${article.slug}` },
-            ]),
-          ),
-        }}
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Trang chủ", path: "/" },
+          { name: "Kiến thức", path: "/kien-thuc" },
+          { name: article.title, path: `/kien-thuc/${article.slug}` },
+        ])}
       />
 
       <Container className="py-4">
@@ -125,9 +118,12 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
               </header>
 
               <div className="mt-10">
+                {/* Stagger giới hạn 4 (§8): bài dài có hơn mười mục, và `idx * 50` không giới
+                    hạn khiến mục cuối chờ nửa giây mới hiện — người cuộn nhanh sẽ thấy khoảng
+                    trắng chạy trước mặt. Nhịp dọc giữa các mục tăng nhẹ để phân đoạn rõ hơn. */}
                 {article.content.map((sec, idx) => (
-                  <ScrollReveal key={sec.id} direction="up" distance={20} duration={0.6} delay={idx * 50}>
-                    <div className="mb-8 scroll-mt-24">
+                  <ScrollReveal key={sec.id} direction="up" distance={20} duration={0.6} delay={Math.min(idx, 3) * 50}>
+                    <div className="mb-10 scroll-mt-24">
                       <h2 id={sec.id} className="text-h3-mobile lg:text-h3-desktop font-heading text-ink-950">
                         {sec.heading}
                       </h2>

@@ -4,19 +4,23 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/Icon";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/layout/PageHero";
-import { ConsultationNetwork } from "@/components/layout/ConsultationNetwork";
+import { PageJumpNav } from "@/components/layout/PageJumpNav";
+import { PageSignatureAsset } from "@/components/layout/PageSignatureAsset";
 import { ContactChannelCard } from "@/components/conversion/ContactChannelCard";
+import { DirectZaloLink } from "@/components/conversion/DirectZaloLink";
+import { zaloUrl } from "@/lib/zalo";
 import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { FAQAccordion } from "@/components/content/FAQAccordion";
 import { FinalCta } from "@/components/layout/FinalCta";
 import { ContactQuestionCard } from "./ContactQuestionCard";
 import { getFaqsByScope } from "@/content/faqs";
 import { siteSettings } from "@/lib/site-settings";
-import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = pageMetadata({
-  title: "Liên hệ",
-  description: "Liên hệ tư vấn miễn phí với Lạc Việt Media qua Zalo hoặc Telegram.",
+  title: "Liên hệ tư vấn | Lạc Việt Media",
+  description: "Liên hệ tư vấn miễn phí với Lạc Việt Media qua Zalo hoặc Telegram để nhận phương án phù hợp.",
   path: "/lien-he",
 });
 
@@ -36,6 +40,12 @@ export default function ContactPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Trang chủ", path: "/" },
+          { name: "Liên hệ", path: "/lien-he" },
+        ])}
+      />
       <PageHero
         heroRole="heroDisplay"
         eyebrow="Liên hệ – Nhận tư vấn"
@@ -51,13 +61,28 @@ export default function ContactPage() {
         // PRO V2.2 §9: `imageAssetId` never actually rendered anything — PageHero's visual slot
         // only checks `heroSlot`/`heroImage`, not this prop (see its own comment) — so the right
         // column was silently empty on desktop this whole time. `heroSlot` is the real hook.
-        heroSlot={<ConsultationNetwork className="hidden lg:block" />}
+        heroSlot={
+          <PageSignatureAsset
+            assetId="v7-page-contact"
+            priority
+            className="mx-auto w-[220px] lg:w-[360px]"
+          />
+        }
         proofItems={[
-          // "30 phút" is aspirational, not a guaranteed SLA (confirmed with Lucifer — response
-          // time varies) — demoOnly so it stays on display without reading as a hard commitment.
-          { icon: "clock", title: "Phản hồi nhanh", note: "Trong 30 phút", demoOnly: true },
+          // Do not publish a response-time promise until an owner-approved SLA exists.
+          // The contact page still communicates the available channel without inventing a number.
+          { icon: "clock", title: "Phản hồi theo lượt", note: "Trong giờ làm việc" },
           { icon: "messages-square", title: "Tư vấn miễn phí", note: "Giải pháp phù hợp" },
-          { icon: "lock-keyhole", title: "Bảo mật thông tin", note: "Cam kết tuyệt đối" },
+          { icon: "lock-keyhole", title: "Bảo mật thông tin", note: "Xử lý cẩn trọng" },
+        ]}
+      />
+
+      <PageJumpNav
+        items={[
+          { href: "#consultation-section", label: "Nhận tư vấn" },
+          { href: "#quick-channels", label: "Kênh liên hệ" },
+          { href: "#contact-process", label: "Quy trình" },
+          { href: "#faq", label: "Câu hỏi" },
         ]}
       />
 
@@ -106,15 +131,13 @@ export default function ContactPage() {
                     cần điền form, không cần chờ gọi lại.
                   </p>
                 </div>
-                <a
-                  href={`https://zalo.me/${siteSettings.zalo}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex items-center gap-2 rounded-pill bg-gold-500 px-6 py-3 text-button font-semibold text-ink-950 transition-colors hover:bg-gold-600"
+                <DirectZaloLink
+                  sourceComponent="lien-he-primary-zalo"
+                  className="inline-flex min-h-touch items-center gap-2 rounded-pill bg-gold-500 px-6 py-3 text-button font-semibold text-ink-950 transition-colors hover:bg-gold-600"
                 >
                   <Icon name="messages-square" size="inline" />
                   Nhắn tin qua Zalo
-                </a>
+                </DirectZaloLink>
               </div>
             </ScrollReveal>
           </div>
@@ -126,7 +149,10 @@ export default function ContactPage() {
           <ScrollReveal direction="up" distance={20} duration={0.6}>
             <SectionHeading eyebrow="Liên hệ nhanh" title="Kết nối với chúng tôi qua các kênh sau" align="center" />
           </ScrollReveal>
-          <div id="contact-channels" className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {/* Hai tầng, không phải bốn ô ngang hàng. Trước đây hai kênh dùng được và hai kênh
+              "Sắp cập nhật" có cùng kích thước và trọng lượng, nên hàng card đọc như một sản
+              phẩm làm dở — trong khi thực tế là hai kênh chính đang hoạt động tốt. */}
+          <div id="contact-channels" className="mt-8 grid gap-4 sm:grid-cols-2">
             {[
               {
                 brand: "zalo" as const,
@@ -134,14 +160,7 @@ export default function ContactPage() {
                 description: "Nhắn tin nhanh qua Zalo để được hỗ trợ ngay.",
                 ctaLabel: "Nhắn trên Zalo",
                 value: siteSettings.zalo,
-                href: `https://zalo.me/${siteSettings.zalo}`,
-              },
-              {
-                brand: "messenger" as const,
-                title: "Facebook Messenger",
-                description: "Chat trực tiếp qua Fanpage Lạc Việt Media Agency.",
-                value: "Sắp cập nhật",
-                disabled: true,
+                href: zaloUrl(),
               },
               {
                 brand: "telegram" as const,
@@ -151,18 +170,27 @@ export default function ContactPage() {
                 value: siteSettings.telegram,
                 href: `https://t.me/${siteSettings.telegram.replace("@", "")}`,
               },
-              {
-                icon: "mail" as const,
-                title: "Email",
-                description: "Gửi yêu cầu chi tiết qua email để chúng tôi phản hồi.",
-                value: "Sắp cập nhật",
-                disabled: true,
-              },
             ].map((c, idx) => (
               <ScrollReveal key={c.title} direction="up" distance={20} duration={0.6} delay={idx * 100}>
                 <ContactChannelCard {...c} />
               </ScrollReveal>
             ))}
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-border bg-white px-5 py-4">
+            <p className="text-eyebrow uppercase tracking-[0.14em] text-text-muted">
+              Kênh đang cập nhật
+            </p>
+            {/* Chữ giữ đủ tương phản để đọc được; chỉ trọng lượng thị giác giảm. Làm mờ đến mức
+                khó đọc là biến một thông tin thật thành một vệt xám vô nghĩa. */}
+            <ul className="mt-2 flex list-none flex-wrap gap-x-6 gap-y-1">
+              {["Facebook Messenger", "Email"].map((name) => (
+                <li key={name} className="flex items-center gap-2 text-small text-text-secondary">
+                  <Icon name="clock" size="inline" className="shrink-0 text-text-muted" />
+                  {name}
+                </li>
+              ))}
+            </ul>
           </div>
         </Container>
       </Section>
@@ -170,7 +198,7 @@ export default function ContactPage() {
       <Section id="contact-process">
         <Container>
           <ScrollReveal direction="up" distance={20} duration={0.6}>
-            <SectionHeading eyebrow="Quy trình làm việc" title="Điều gì sẽ xảy ra sau khi bạn gửi thông tin?" align="center" />
+            <SectionHeading eyebrow="Quy trình làm việc" title="Điều gì xảy ra sau khi bạn bắt đầu trao đổi?" align="center" />
           </ScrollReveal>
           <div className="mt-10">
             <ScrollReveal direction="up" distance={24} duration={0.7} delay={150}>

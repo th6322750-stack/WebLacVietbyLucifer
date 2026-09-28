@@ -46,17 +46,17 @@ export async function seedFromFixtures(): Promise<Record<string, number>> {
   }
 
   for (const [i, r] of articles.entries()) {
-    const x = r as typeof r & { coverAssetId?: string; heroAssetId?: string; readMinutes?: number };
+    const x = r as typeof r & { coverAssetId?: string; heroAssetId?: string; readMinutes?: number; seoTitle?: string; seoDescription?: string };
     await run(
       `INSERT INTO articles
         (slug,title,category,excerpt,content,published_at,author,demo_only,cover_asset_id,
-         hero_asset_id,read_minutes,published,sort_order,created_at,updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,1,?,?,?)
+         hero_asset_id,read_minutes,seo_title,seo_description,published,sort_order,created_at,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,?,?)
        ON CONFLICT (slug) DO NOTHING`,
       [
         r.slug, r.title, r.category, r.excerpt, toJson(r.content), r.publishedAt, r.author,
         fromBool(r.demoOnly), x.coverAssetId ?? null, x.heroAssetId ?? null,
-        x.readMinutes ?? null, i, now, now,
+        x.readMinutes ?? null, x.seoTitle ?? null, x.seoDescription ?? null, i, now, now,
       ],
     );
   }

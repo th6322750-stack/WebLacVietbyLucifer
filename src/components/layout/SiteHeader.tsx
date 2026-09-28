@@ -7,12 +7,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { assetPath, assetSize } from "@/lib/assets";
 import { useBodyScrollLock, useEscapeClose, useFocusTrap } from "@/lib/a11y-hooks";
-import { navLinks, serviceMenu } from "@/lib/site-settings";
+import { mainNavLinks, isServiceRoute, type NavServiceGroup } from "@/lib/navigation";
 import { useConsultation } from "@/components/conversion/ConsultationProvider";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import { Icon } from "@/components/ui/Icon";
+import { SiteSearch } from "@/components/layout/SiteSearch";
+
+// Sinh một lần ở module scope: registry là dữ liệu tĩnh, không có lý do tính lại mỗi lần
+// header re-render (mà header re-render theo cả scroll).
+const navLinks = mainNavLinks();
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -47,7 +52,7 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isServiceRoute = serviceMenu.some((s) => pathname === s.href || pathname.startsWith(`${s.href}/`));
+  const serviceRouteActive = isServiceRoute(pathname);
 
   return (
     // PRO V2.1 §14: exact rgba/blur values from the brief, using the `surface-0` token (#07080A
@@ -93,7 +98,7 @@ export function SiteHeader() {
               if (link.href === null) {
                 return (
                   <li key={link.label}>
-                    <ServiceDropdown active={isServiceRoute} />
+                    <ServiceDropdown active={serviceRouteActive} groups={link.groups} />
                   </li>
                 );
               }
@@ -120,6 +125,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
+          <SiteSearch />
           <Button size="sm" onClick={() => open("site-header")}>
             Nhận tư vấn
           </Button>
@@ -207,19 +213,37 @@ export function SiteHeader() {
                               />
                             </button>
                             {mobileServicesOpen ? (
-                              <ul className="flex flex-col gap-1 pl-4">
-                                {link.children.map((child) => (
-                                  <li key={child.href}>
-                                    <Link
-                                      href={child.href}
-                                      onClick={() => setMenuOpen(false)}
-                                      className="flex min-h-touch items-center rounded-sm px-2 text-body text-white/80 hover:bg-white/5 hover:text-white"
-                                    >
-                                      {child.label}
-                                    </Link>
-                                  </li>
+                              <div className="flex flex-col gap-3 pb-2 pl-4 pt-1">
+                                {link.groups.map((group) => (
+                                  <div key={group.id}>
+                                    <p className="px-2 text-caption uppercase tracking-[0.12em] text-gold-300/70">
+                                      {group.label}
+                                    </p>
+                                    <ul className="mt-1 flex flex-col gap-1">
+                                      {group.items.map((item) => (
+                                        <li key={item.href}>
+                                          <Link
+                                            href={item.href}
+                                            onClick={() => setMenuOpen(false)}
+                                            className="flex min-h-touch items-center gap-2 rounded-sm px-2 text-body text-white/80 hover:bg-white/5 hover:text-white"
+                                          >
+                                            <span aria-hidden="true" className="text-gold-300/60">›</span>
+                                            {item.label}
+                                          </Link>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
                                 ))}
-                              </ul>
+                                <Link
+                                  href="/dich-vu"
+                                  onClick={() => setMenuOpen(false)}
+                                  className="flex min-h-touch items-center gap-2 rounded-sm px-2 text-body font-semibold text-gold-300 hover:bg-white/5"
+                                >
+                                  Tất cả dịch vụ
+                                  <Icon name="arrow-right" size="inline" />
+                                </Link>
+                              </div>
                             ) : null}
                           </li>
                         );
@@ -239,6 +263,9 @@ export function SiteHeader() {
                     })}
                   </ul>
                 </nav>
+                <div className="mb-3 flex justify-end">
+                  <SiteSearch />
+                </div>
                 <Button
                   className="w-full"
                   onClick={() => {
@@ -257,9 +284,19 @@ export function SiteHeader() {
   );
 }
 
-function ServiceDropdown({ active }: { active: boolean }) {
+/** Mega menu dịch vụ — nội dung sinh từ service registry.
+ *
+ * Dùng disclosure pattern (button `aria-expanded` + danh sách link thường), không phải
+ * `role="menu"`. `role="menu"` là dành cho menu lệnh kiểu ứng dụng: nó bắt trình đọc màn hình
+ * công bố các mục là "menu item" và buộc điều hướng bằng phím mũi tên với Tab thoát ra ngoài.
+ * Đây là các liên kết điều hướng bình thường — khai báo sai vai trò làm người dùng screen reader
+ * mất chính thông tin hữu ích nhất (đây là link, đi tới đâu) để đổi lấy một hợp đồng bàn phím
+ * mà chúng ta không thực sự cài đặt.
+ */
+function ServiceDropdown({ active, groups }: { active: boolean; groups: NavServiceGroup[] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -267,7 +304,11 @@ function ServiceDropdown({ active }: { active: boolean }) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      // Escape mà bỏ focus lơ lửng trong panel vừa biến mất thì người dùng bàn phím mất dấu
+      // hoàn toàn — trả focus về đúng nút vừa mở.
+      triggerRef.current?.focus();
     }
     document.addEventListener("mousedown", onClickOutside);
     document.addEventListener("keydown", onKeyDown);
@@ -277,40 +318,86 @@ function ServiceDropdown({ active }: { active: boolean }) {
     };
   }, [open]);
 
+  // Tab ra khỏi phần tử cuối trong panel phải đóng panel, nếu không nó vẫn mở trong khi focus
+  // đã sang mục nav kế tiếp.
+  const onBlurCapture = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false);
+  };
+
+  if (groups.length === 0) {
+    // Không có dịch vụ nào được publish: hiện link tới hub thay vì một nút mở ra khoảng trắng.
+    return (
+      <Link
+        href="/dich-vu"
+        className="relative py-2 text-nav text-white/90 transition-colors duration-fast hover:text-white"
+      >
+        Dịch vụ
+      </Link>
+    );
+  }
+
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative" onBlurCapture={onBlurCapture}>
       <button
+        ref={triggerRef}
         type="button"
-        aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls="service-mega-menu"
         onClick={() => setOpen((v) => !v)}
         className={`relative flex items-center gap-1 py-2 text-nav text-white/90 transition-colors duration-fast hover:text-white after:absolute after:-bottom-px after:left-0 after:h-px after:w-full after:origin-left after:bg-gold-500 after:transition-transform after:duration-[220ms] after:ease-standard ${
           active ? "font-semibold text-white after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
         }`}
       >
         Dịch vụ
-        <Icon name="chevron-down" size="inline" className={`transition-transform duration-fast ease-standard ${open ? "rotate-180" : ""}`} />
+        <Icon
+          name="chevron-down"
+          size="inline"
+          className={`transition-transform duration-fast ease-standard ${open ? "rotate-180" : ""}`}
+        />
       </button>
-      {open ? (
-        <ul
-          role="menu"
-          aria-label="Dịch vụ"
-          className="absolute left-0 top-full mt-2 min-w-[220px] rounded-md border border-white/10 bg-ink-950 p-2 shadow-lg"
+
+      <div
+        id="service-mega-menu"
+        hidden={!open}
+        className="absolute left-1/2 top-full z-10 mt-2 w-[min(92vw,640px)] -translate-x-1/2 rounded-md border border-white/10 bg-ink-950 p-5 shadow-lg xl:w-[min(92vw,860px)]"
+      >
+        {/* Số cột theo số nhóm thực tế, không cố định. Registry mở thêm năm dịch vụ ngày
+            2026-09-08 nên menu nhảy từ 2 nhóm lên 6; giữ nguyên hai cột sẽ thành một danh sách
+            dọc dài hơn cả màn hình. Đây đúng là loại bố cục "chỉ đúng với đúng chừng ấy phần
+            tử" mà §6.3 yêu cầu bỏ ở lưới dịch vụ — menu cũng không ngoại lệ. */}
+        <div
+          className={`grid gap-x-8 gap-y-5 ${
+            groups.length > 4 ? "sm:grid-cols-2 xl:grid-cols-3" : groups.length > 1 ? "sm:grid-cols-2" : ""
+          }`}
         >
-          {serviceMenu.map((item) => (
-            <li key={item.href} role="none">
-              <Link
-                role="menuitem"
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-sm px-3 py-2 text-nav text-white/85 hover:bg-white/10 hover:text-white"
-              >
-                {item.label}
-              </Link>
-            </li>
+          {groups.map((group) => (
+            <div key={group.id}>
+              <p className="text-caption uppercase tracking-[0.12em] text-gold-300/70">{group.label}</p>
+              <ul className="mt-2 flex flex-col gap-1">
+                {group.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="block rounded-sm px-3 py-2 text-nav text-white/85 transition-colors duration-fast hover:bg-white/10 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
-      ) : null}
+        </div>
+        <Link
+          href="/dich-vu"
+          onClick={() => setOpen(false)}
+          className="mt-5 flex items-center gap-2 border-t border-white/10 px-3 pt-4 text-nav font-semibold text-gold-300 transition-colors duration-fast hover:text-gold-100"
+        >
+          Xem tất cả dịch vụ
+          <Icon name="arrow-right" size="inline" />
+        </Link>
+      </div>
     </div>
   );
 }

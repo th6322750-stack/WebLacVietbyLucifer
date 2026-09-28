@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { listArticles } from "@/lib/db/repositories/articles";
 import { ArticleManager } from "./ArticleManager"; export const metadata: Metadata = { title: "Bài viết" };
+import { AdminDataUnavailable } from "@/components/admin/AdminDataUnavailable";
 export const dynamic = "force-dynamic";
 export default async function AdminArticlesPage() {
-  return <ArticleManager initial={await listArticles({ includeUnpublished: true })} />;
+  try {
+    return <ArticleManager initial={await listArticles({ includeUnpublished: true })} />;
+  } catch {
+    return <AdminDataUnavailable title="Chưa thể tải kho bài viết" />;
+  }
 }
