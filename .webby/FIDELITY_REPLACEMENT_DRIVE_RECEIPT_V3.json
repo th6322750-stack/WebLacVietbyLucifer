@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "revision": "v3-fidelity-replacements-drive-freeze",
+  "status": "DRIVE_UPLOADED_SIZE_VERIFIED_READY_FOR_CLAUDE_REINTEGRATION",
+  "rootFolderId": "1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+  "rootFolderUrl": "https://drive.google.com/drive/folders/1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+  "subfolders": {
+    "project": "18_jgSmXYfGdliL3xry8tCMKC2qaEz8nY",
+    "article": "15QNxS3WeMxNnnVNKWTUvQ8EeyizEY1hL",
+    "hero": "1N2yKYkZvCKByODfJEd_91Hy0DBJY_iGL",
+    "runtimeHero": "10QtFF59FuMp9fjenHkHiyuORk9Dc04J7",
+    "qa": "1TI_cpudzijctnLeuuCQL8PwMtKGVRNLq"
+  },
+  "logicalReplacementCount": 15,
+  "uploadedFileCount": 16,
+  "manifestDriveFileId": "1hQ9F6dY0MnfELQk6P3lVoTUzrl-r4pnc",
+  "driveReceiptFileId": "1T-YXVilGr9s2y1QRFBjq0L6J5GhWjxQZ",
+  "qaContactSheetFileId": "1Ru3xpIr5-QnjmUlqWIjjseam1MOlshSc",
+  "verification": {
+    "localSha256Frozen": true,
+    "driveUploadSuccess": "16/16",
+    "driveByteSizeVerifiedByFolderListing": true,
+    "projectFiles": "8/8 at 1920x1080 PNG lossless",
+    "articleFiles": "6/6 at 1920x1080 PNG lossless",
+    "knowledgeHero": "3840x2160 PNG lossless",
+    "knowledgeRuntime": "1920x1080 deterministic downscale",
+    "referenceRuntimeForbidden": true
+  },
+  "manifestSha256": "a643725435cedbf6b50e574dd5d2eda8caf31e4648ff46d6cfad36db819776ac",
+  "receiptSha256": "0444b5af7b3111302885c48646f8cefe320546be997b5994532e5ff0f6f4f709"
+}

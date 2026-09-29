@@ -1,12 +1,12 @@
 {
-  "revision": "gd3-hardening-v1",
+  "revision": "phuong-an-2026-09-07",
   "confirmed": {
     "brandName": "Lạc Việt Media Agency",
     "slogan": "Cần Kiệm Liêm Chính",
     "market": "Việt Nam",
     "zalo": "0355636882",
     "telegram": "@lucifer_dvmxh",
-    "domain": "lacvietmedia.com",
+    "domain": "www.lacviet.media",
     "servicePriority": [
       "Website doanh nghiệp",
       "Support mạng xã hội",
@@ -26,5 +26,40 @@
     "digital service prices/products shown in mockups unless later confirmed as current production offer",
     "support client-logo strip shown in approved V1 is demo-only visual evidence and must not be represented as a verified client list"
   ],
-  "implementationRule": "Preserve demo content for visual parity in non-production preview, tag it in data as demoOnly=true, and block PRODUCTION_READY until required factual replacements are verified. Pending contact fields may preserve approved card geometry only as disabled/Sắp cập nhật; never invent the factual value. Never inject fake structured Review/AggregateRating schema."
+  "implementationRule": "Nội dung demo được GIỮ trong dữ liệu (không xoá) nhưng bị chặn hiển thị bằng claimState, không phải bằng một cờ mà component phải nhớ kiểm. Markup phát cả data-claim-state (mới) lẫn data-demo-only (cũ), cả hai suy ra từ MỘT chỗ tính trong claimAttrs().",
+  "claimStates": {
+    "model": "src/lib/content-truth.ts — TruthState { published, claimState, verifiedAt, disclosure }",
+    "verified": "Đã có bằng chứng ghi nhận trong bảng verification_evidence. Hiện bình thường.",
+    "system-derived": "Do hệ thống tính ra từ dữ liệu thật (số bài viết, số concept...). Hiện bình thường.",
+    "demo": "Minh hoạ. CHỈ hiện khi có disclosure hiển thị cho người đọc.",
+    "unverified": "Không bao giờ hiện trên production, dù published = true.",
+    "why": "Cờ boolean demoOnly cũ đã thất bại trên thực tế: dữ liệu tự khai demoOnly:true nhưng việc kiểm tra cờ lại là trách nhiệm của từng component, nên bốn thẻ giá dịch vụ số và hai dải số liệu 200+/1000+/98%/24-7 vẫn sống trên production nhiều tháng. Bốn trạng thái + bộ lọc nằm trong hàm đọc thay vì ở phía gọi là để quên không còn gây rò rỉ."
+  },
+  "removedFromProduction": {
+    "date": "2026-09-07",
+    "items": [
+      "Dải số liệu trang chủ: 200+ khách hàng, 1000+ dự án, 4+ năm, 99% hài lòng",
+      "Dải số liệu /support-mxh: 200+ khách hàng, 98% tỷ lệ khôi phục, 24/7, 100% bảo mật",
+      "Dải số liệu /dich-vu-so: 200+ khách hàng, 350+ giao dịch, 4+ năm, 99% hài lòng",
+      "Bốn gói giá dịch vụ số (199.000đ/79.000đ/349.000đ/89.000đ) — ẩn qua claimState unverified",
+      "Tuyên bố 'Tài khoản chính hãng/ủy quyền' và ba câu FAQ hứa bảo hành/SLA/quan hệ nhà cung cấp"
+    ],
+    "enforcedBy": "tests/functional.spec.ts — 'shows no unverified proof numbers'"
+  },
+  "ownerConfirmations": [
+    {
+      "date": "2026-09-08",
+      "subject": "Năng lực triển khai 5 dịch vụ",
+      "slugs": [
+        "google-business-profile",
+        "quang-cao-da-kenh",
+        "seo-tong-the",
+        "nhan-dien-thuong-hieu",
+        "domain-hosting-email"
+      ],
+      "confirmedBy": "chủ sở hữu (Lucifer), xác nhận trực tiếp trong phiên làm việc",
+      "scope": "Xác nhận Lạc Việt TRIỂN KHAI ĐƯỢC năm dịch vụ này. Đây là cơ sở để chuyển published:false -> true và policyClass:conditional -> allowed.",
+      "notCovered": "KHÔNG bao gồm bất kỳ cam kết kết quả nào. Nội dung năm trang chỉ mô tả phạm vi công việc và thứ được bàn giao — không hứa thứ hạng tìm kiếm, doanh số quảng cáo, thời gian Google duyệt hồ sơ hay tỷ lệ uptime, vì những thứ đó do nền tảng và ngân sách của khách quyết định. Cùng ranh giới đã áp cho support MXH."
+    }
+  ]
 }

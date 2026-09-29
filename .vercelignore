@@ -1,0 +1,19 @@
+# Local QA evidence and reference material are not runtime assets.
+.webby/
+maxweb-screenshots/
+test-results/
+playwright-report/
+adm.png
+adm2.png
+adm3.png
+WebLacVietscratch-hero-after.png
+*.zip
+.next-*/
+.playwright-cli/
+output/
+tmp/
+data/
+.claude/
+.visual-editor/
+*.log
+*.rar

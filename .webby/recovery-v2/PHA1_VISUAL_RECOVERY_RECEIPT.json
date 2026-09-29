@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "phase": "PHA1_VISUAL_RECOVERY_V2",
+  "status": "USER_AUTHORIZED_ALL_IN_ONE_RECOVERY_AND_CLAUDE_HANDOFF",
+  "reason": "Final Vercel QA showed material visual divergence from the already-approved master; old 91-asset raster authority is superseded where recovery mapping says REPLACE.",
+  "userInstruction": "audit 11 route và lập bảng MASTER → asset/layout đúng cần phục hồi trước, rồi mới production asset. làm all in one chỉ sẵn gửi cho claude làm",
+  "approvalMeaning": "No new visual design approval required: reconstruction must converge to the already-approved PDF master; this receipt authorizes the recovery production pack and one Claude implementation pass.",
+  "failedVercelEvidence": {
+    "head": "f31d988ea54ab11acbfeeed77849a410747a5a7e",
+    "comparisonBoard": "FINAL_VERCEL_QA_COMPARISON_BOARD(1).pdf",
+    "rawEvidence": "FINAL_VERCEL_QA_RAW_EVIDENCE(1).zip",
+    "result": "FAIL_MAJOR_VISUAL_DIVERGENCE"
+  },
+  "recovery": {
+    "revision": "pha1-visual-recovery-v2",
+    "logicalAssetCount": 106,
+    "recoveryRasterPayloadCount": 45,
+    "replacements": 30,
+    "additions": 15,
+    "audit": "MASTER_ROUTE_RECOVERY_AUDIT.md",
+    "authority": "VISUAL_RECOVERY_AUTHORITY_V2.json",
+    "manifest": "RECOVERY_ASSET_MANIFEST_V2.json",
+    "claudeTask": "CLAUDE_TASK_VISUAL_RECOVERY_V2.md",
+    "producer": "produce_recovery_assets_v2.py",
+    "runtimeOutput": "public/assets/recovery-v2/** exact PNG crops"
+  },
+  "implementationGate": "OPEN_ONE_ALL_IN_ONE_CLAUDE_PASS_THEN_STOP_FOR_CHATGPT_FINAL_VISUAL_QA",
+  "sourceTransport": {
+    "mode": "FROZEN_BUNDLE_REFERENCE_IMAGES_ONLY",
+    "bundle": "LacVietMedia_PHA1_FinalAssetFreeze_91_v2.zip",
+    "allowedPaths": "04_FINAL_UI_REFERENCE/ui-000.png .. ui-010.png only",
+    "rule": "No Drive browsing, no alternate source, no image generation. Exact source SHA verification is mandatory before crop production."
+  }
+}

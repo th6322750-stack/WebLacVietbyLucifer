@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "revision": "master-parity-v4-implementation-handoff-2026-08-20",
+  "status": "USER_AUTHORIZED_CLAUDE_ALL_IN_ONE_MASTER_PARITY_RECOVERY",
+  "userInstruction": "làm luôn đi",
+  "authorityBranch": "chatgpt/pha1-asset-production-v3-hd",
+  "auditedImplementationHead": "c785c1e8bd1764b37433d32535526481f2a5351f",
+  "supremeVisualAuthority": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "lockedSpec": ".webby/MASTER_PARITY_RECOVERY_SPEC_V4.json",
+  "lockedSpecCommit": "e8758855dcd46615aca9f731767b26557114ba15",
+  "implementationTask": ".webby/CLAUDE_TASK.md",
+  "implementationTaskCommit": "516fb91809ede77a303fdc7ac999240bf88eab4a",
+  "scope": {
+    "assetProduction": "LOCKED_NO_CHANGE",
+    "uiRecovery": "11 routes desktop 1440 + 11 routes mobile 390 + 8 states",
+    "totalEvidenceRequired": 30,
+    "goal": "MASTER_PARITY",
+    "allowedDifference": "browser/font rasterization and anti-aliasing only"
+  },
+  "implementationGate": {
+    "status": "OPEN",
+    "owner": "Claude Code",
+    "rule": "Integrate exact latest authority HEAD, then execute .webby/CLAUDE_TASK.md all-in-one. Keep PR #5 Draft/open/unmerged. Return exact final HEAD and STOP for ChatGPT Final Visual QA + user acceptance."
+  },
+  "mergeGate": "CLOSED_UNTIL_USER_ACCEPTANCE"
+}

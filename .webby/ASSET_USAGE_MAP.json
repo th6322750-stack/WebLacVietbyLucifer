@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "protocolVersion": "3.1.0",
-  "rule": "Exact asset IDs only; no array-index guessing or visual substitution.",
+  "resolvedAssetCount": 91,
+  "rule": "Exact asset IDs only; no array-index guessing, no visual substitution, no generated replacement.",
   "shared": {
     "logo": "lac-viet-logo-canonical",
     "uiIcons": [
@@ -63,7 +64,11 @@
       "demo-avatar-02",
       "demo-avatar-03",
       "demo-avatar-04"
-    ]
+    ],
+    "decorative": {
+      "divider": "gold-divider",
+      "texture": "gold-noise"
+    }
   },
   "routes": {
     "/": {
@@ -95,10 +100,12 @@
       "brandMarks": [
         "brand-facebook",
         "brand-tiktok",
-        "brand-meta",
-        "brand-youtube"
+        "brand-meta"
       ],
-      "clientLogoStrip": "support-client-logo-strip"
+      "serviceCard4Icon": "icon-shield-check",
+      "clientLogoStrip": "support-client-logo-strip",
+      "consultationCtaVisual": "support-cta-device-shield-approved-crop",
+      "darkTexture": "gold-noise"
     },
     "/dich-vu-so": {
       "hero": "digital-hero-master",
@@ -107,7 +114,10 @@
         "brand-youtube",
         "brand-microsoft",
         "brand-canva"
-      ]
+      ],
+      "finalCtaVisual": "digital-cta-phoenix-approved-crop",
+      "finalCtaMotif": "dong-son-ring",
+      "finalCtaTexture": "gold-noise"
     },
     "/du-an": {
       "hero": "projects-hero-master",
@@ -143,12 +153,14 @@
     },
     "/du-an/[slug]": {
       "detail": "project-detail-device-master",
+      "visualShowcase": "project-detail-showcase-approved-crop",
       "relatedProjects": [
         "project-cover-01",
         "project-cover-02",
         "project-cover-03",
         "project-cover-04"
-      ]
+      ],
+      "visualShowcaseConstraint": "Approved source is only the visible top strip; no invented continuation."
     },
     "/kien-thuc/[slug]": {
       "detail": "article-seo-hero-master",
@@ -177,6 +189,115 @@
         "icon-circle-alert",
         "icon-arrow-left"
       ]
+    }
+  },
+  "postApprovalCorrection": {
+    "type": "NON_VISUAL_AUTHORITY_CONSISTENCY",
+    "reason": "Removed stale brand-youtube mapping from /support-mxh and explicitly recorded the approved fourth service-card shield icon. The approved master already showed Facebook/TikTok/Meta + shield consulting; YouTube remains correctly mapped only on /dich-vu-so. No approved visual or asset count changed."
+  },
+  "v6ServiceSignatureUsage": {
+    "note": "Mapping route → asset. Một asset một route; dùng lại ở route khác là sai slug.",
+    "routes": {
+      "/dich-vu/google-business-profile": {
+        "hero": "v6-service-google-business-profile"
+      },
+      "/dich-vu/quang-cao-da-kenh": {
+        "hero": "v6-service-omnichannel-ads"
+      },
+      "/dich-vu/seo-tong-the": {
+        "hero": "v6-service-seo-content"
+      },
+      "/dich-vu/nhan-dien-thuong-hieu": {
+        "hero": "v6-service-brand-identity"
+      },
+      "/dich-vu/domain-hosting-email": {
+        "hero": "v6-service-domain-hosting-email"
+      }
+    }
+  },
+  "v12PortfolioCaseRelicUsage": {
+    "note": "One tactile relic per matching application scene; derived from the approved v11 triptych master.",
+    "routes": {
+      "/du-an/preview#folio-09": {
+        "layer": "v12-portfolio-case-tea-object"
+      },
+      "/du-an/preview#folio-11": {
+        "layer": "v12-portfolio-case-light-object"
+      },
+      "/du-an/preview#folio-13": {
+        "layer": "v12-portfolio-case-spa-object"
+      }
+    }
+  },
+  "v13PortfolioEditorialLayerUsage": {
+    "note": "Generated RGBA layers are case-specific and remain below readable content.",
+    "routes": {
+      "/du-an/preview#folio-08..09": {
+        "layer": "v13-portfolio-tea-atmosphere"
+      },
+      "/du-an/preview#folio-10..11": {
+        "layer": "v13-portfolio-light-atelier"
+      },
+      "/du-an/preview#folio-12..13": {
+        "layer": "v13-portfolio-spa-ritual"
+      },
+      "/du-an/preview#folio-16": {
+        "layer": "v13-portfolio-handoff-system"
+      }
+    }
+  },
+  "v14PortfolioSignatureLayerUsage": {
+    "note": "Generated RGBA objects add a distinct physical signature to the remaining flat chapters while staying below content.",
+    "routes": {
+      "/du-an/preview#folio-02..03": {
+        "layer": "v14-portfolio-editorial-tools"
+      },
+      "/du-an/preview#folio-06": {
+        "layer": "v14-portfolio-process-thread"
+      },
+      "/du-an/preview#folio-15": {
+        "layer": "v14-portfolio-gesture-sculpture"
+      },
+      "/du-an/preview#folio-17": {
+        "layer": "v14-portfolio-promise-seal"
+      }
+    }
+  },
+  "v15PortfolioApplicationLayerUsage": {
+    "note": "Additional art-directed RGBA foregrounds created after visual review of the four weakest application scenes.",
+    "routes": {
+      "/du-an/preview#folio-09": {
+        "layer": "v15-portfolio-tea-material-collage"
+      },
+      "/du-an/preview#folio-11": {
+        "layer": "v15-portfolio-light-optical-sculpture"
+      },
+      "/du-an/preview#folio-13": {
+        "layer": "v15-portfolio-spa-ritual-still-life"
+      },
+      "/du-an/preview#folio-15": {
+        "layer": "v15-portfolio-mobile-touch-choreography"
+      }
+    }
+  },
+  "v16PortfolioPhysicalForegroundUsage": {
+    "note": "A distinct generated physical foreground is assigned to each remaining type-heavy chapter.",
+    "routes": {
+      "/du-an/preview#folio-02": {
+        "layer": "v16-portfolio-index-kit"
+      },
+      "/du-an/preview#folio-03": {
+        "layer": "v16-portfolio-manifesto-punctuation"
+      },
+      "/du-an/preview#folio-05": {
+        "layer": "v16-portfolio-capability-instruments"
+      },
+      "/du-an/preview#folio-12": {
+        "layer": "v16-portfolio-spa-water-ritual"
+      },
+      "/du-an/preview#folio-17": {
+        "layer": "v16-portfolio-promise-mechanism"
+      }
     }
   }
 }

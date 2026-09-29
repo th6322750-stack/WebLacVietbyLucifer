@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 2,
+  "revision": "v3-fidelity-replacements-drive-locked-2026-08-20",
+  "status": "DRIVE_LOCKED_READY_FOR_CLAUDE_REINTEGRATION",
+  "supremeVisualAuthority": ".webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+  "replacementCountLogical": 15,
+  "fileCount": 16,
+  "driveRoot": "https://drive.google.com/drive/folders/1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+  "manifestDriveFileId": "1OWMPRGRwdmBc4SwmTpF6QeKg6V9OynfP",
+  "manifestSha256": "1a67b5026c8d40e5e7a296efaf2327df40c8b7c2c1ded4905338791bea21341e",
+  "receiptDriveFileId": "1WMS-DXxsf0gKhWSD2oFxX8kXVgSBOLqj",
+  "qaContactDriveFileId": "1utd4JOYl8sHbXrE28XSNX6e4NCvD9IIW",
+  "policy": {
+    "masterCrops": "REFERENCE_ONLY",
+    "projectArticle": "1920x1080 PNG lossless",
+    "knowledgeHero": "3840x2160 PNG lossless + 1920x1080 deterministic runtime",
+    "noReferenceRuntime": true,
+    "noUpscaleGeneratedSource": true,
+    "stablePathsRequired": true,
+    "driveFileIdsAreAuthoritative": true,
+    "sha256MustMatchBeforeReplace": true
+  },
+  "files": [
+    {
+      "logicalAsset": "article-cover-02",
+      "variant": "production-fhd",
+      "path": "article/article-cover-02.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "b9437b8fba2b3fd2da59944613688f06bf25f07af29b4685d8c5541db6a983d6",
+      "sizeBytes": 6223976,
+      "driveFileId": "1ntUjtBUUO6X29nfShnowLhYhXCB4DKH9",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "article-cover-03",
+      "variant": "production-fhd",
+      "path": "article/article-cover-03.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "7b32dea231d68faaf18560c4012b47bf5b7c040119b2cca3ad49fae2b215085a",
+      "sizeBytes": 6223976,
+      "driveFileId": "1GDHOzI-8y6vqkKZqKFzJ93i51a9FwqeF",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "article-cover-04",
+      "variant": "production-fhd",
+      "path": "article/article-cover-04.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "f1f94304d29f6da830e76595e6e02ded47b04c031f3b65b1f82c815045a67eb8",
+      "sizeBytes": 6223976,
+      "driveFileId": "1jKmsncep1rY04P6-IZ-fekf3ukDcqq6F",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "article-cover-05",
+      "variant": "production-fhd",
+      "path": "article/article-cover-05.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "95e338a2914c2c3e7b32e612003e22b68f2c696fc98a7817c918ea80fa9c8445",
+      "sizeBytes": 6223976,
+      "driveFileId": "1vuRqoHru_M6Guw_1pgoGeO4BRtrRYprV",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "article-cover-06",
+      "variant": "production-fhd",
+      "path": "article/article-cover-06.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "11b6f6d6c7bfdc3aaafb6b5c78e16749ef4f99875c46687d62b58079db74f9b3",
+      "sizeBytes": 6223976,
+      "driveFileId": "1Xbs5DjLuCVOQJfue3VnDbm7rPF6ywcMd",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "article-cover-07",
+      "variant": "production-fhd",
+      "path": "article/article-cover-07.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "edb6f3ebe5396fb5ee5a8315e884bd15f6ada75a9cb80c04eb8581b49125a97d",
+      "sizeBytes": 6223976,
+      "driveFileId": "1F7b-72RPIgR9-k6eQAASSCjbsUgGy_Q6",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "knowledge-hero-master",
+      "variant": "master-4k",
+      "path": "hero/knowledge-hero-master-4k.png",
+      "width": 3840,
+      "height": 2160,
+      "sha256": "95d2c9351e15d20e20a35dc8318d94e14acef700a28472e89dda8d32a40656d3",
+      "sizeBytes": 24893576,
+      "driveFileId": "1JgIboVUAw0C2PN7ab4hQhQhm3uDg0Nmt",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-03",
+      "variant": "production-fhd",
+      "path": "project/project-cover-03.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "acec1196e0a664fe49586e44af7cfa1ac0f051c8825d3c28022107a7c7d8d850",
+      "sizeBytes": 6223976,
+      "driveFileId": "1cw_qtaCSdAryCRVGCMfbLJSOm7Akrbsc",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-04",
+      "variant": "production-fhd",
+      "path": "project/project-cover-04.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "099c56720e52e102ff6d6fba6c46cdcfee6afcd24f0adc34ebe810b32018537c",
+      "sizeBytes": 6223976,
+      "driveFileId": "1D5VkklOm9PxFUPCV7e2PVUxzEUk6qViN",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-06",
+      "variant": "production-fhd",
+      "path": "project/project-cover-06.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "0f7bea3e118529d225d2a8b118f6fa0e0b19fe9a9cba47b19d339df89bd2c1f0",
+      "sizeBytes": 6223976,
+      "driveFileId": "1tSndyQpoMNfwX3x522O9KdYgpN6naANK",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-07",
+      "variant": "production-fhd",
+      "path": "project/project-cover-07.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "5b338f27fe6eb14a526d40756f1ea6c72204471af54828f36159e2a0d4be0513",
+      "sizeBytes": 6223976,
+      "driveFileId": "1fZPWkC4LhxhgE8l9Ljp8vtoptl-YyGYu",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-08",
+      "variant": "production-fhd",
+      "path": "project/project-cover-08.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "bf9cd569b78484e31fcd35b0fe5673e1fea6f972dbd819f7981d8ed1b8fb6348",
+      "sizeBytes": 6223976,
+      "driveFileId": "11-n7VWN_RoXzTXXTP6r5rpVK6pnjkfDx",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-10",
+      "variant": "production-fhd",
+      "path": "project/project-cover-10.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "04f307601c2e1808cef2fc35f732aa3c65f4079aa093a129a5b8cb3973f7691d",
+      "sizeBytes": 6223976,
+      "driveFileId": "1pvnF7MMGth0ruDbl-2C85UqOh6-bVEoV",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-11",
+      "variant": "production-fhd",
+      "path": "project/project-cover-11.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "ba09fbfc2a566821f77dad32e4d718ab008783d5fdd06f97ee2c8fa84b5f0d89",
+      "sizeBytes": 6223976,
+      "driveFileId": "1IPHdPrH68iCeR2xnM_3NnyWwybwknLVL",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "project-cover-12",
+      "variant": "production-fhd",
+      "path": "project/project-cover-12.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "9c0c23484d1a04dd6dd48ba168ecee06b0b2de1ca8d1b59546b72c2fe671986f",
+      "sizeBytes": 6223976,
+      "driveFileId": "1PmZ2_Q2MV-frHjyroJtMDfgOjmkAFM-P",
+      "status": "PRODUCTION_READY"
+    },
+    {
+      "logicalAsset": "knowledge-hero-master",
+      "variant": "runtime-fhd",
+      "path": "runtime/hero/knowledge-hero-fhd.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "e290f9e227c53076f559e87357e38a51682e776292b964125acbe2f29bd481ce",
+      "sizeBytes": 6223976,
+      "driveFileId": "1BngnHNnHpU0nxQ4SLI2WEsb1YFdfIF4c",
+      "status": "PRODUCTION_READY"
+    }
+  ],
+  "nextAction": "Claude downloads exactly the Drive file IDs listed here / in the Drive manifest, verifies SHA256, replaces stable runtime paths, rebuilds/tests/deploys, recaptures 30 evidence + MASTER|VERCEL board, then STOP for ChatGPT QA."
+}

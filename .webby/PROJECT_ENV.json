@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "3.2.0",
+  "buildDir": ".next",
+  "packageManager": "npm",
+  "ports": { "dev": 3400, "test": 3600 },
+  "testServerMode": "PRODUCTION_BUILD",
+  "commands": {
+    "dev": "npm run dev -- --port 3400",
+    "build": "npm run build",
+    "test": "PLAYWRIGHT_PORT=3600 npx playwright test --project=functional",
+    "typecheck": "npx tsc --noEmit",
+    "lint": "npx eslint . --max-warnings=999"
+  },
+  "designSystem": {
+    "framework": "tailwind",
+    "tailwindThemeMode": "REPLACE",
+    "spacingScale": [0,1,2,3,4,5,6,8,10,12,16,20,24,30,"px","full"],
+    "configPath": "tailwind.config.ts"
+  },
+  "canonicalOrigin": "https://lacviet.media",
+  "deploy": {
+    "mechanism": "VERCEL_CLI_MANUAL",
+    "gitTriggered": false,
+    "productionHost": "www.lacviet.media",
+    "uploadRespects": "DIRECTORY_CONTENTS"
+  },
+  "responsiveMatrix": [360, 768, 1024, 1440, 1920],
+  "protectedRefs": ["main", "pull/5"]
+}

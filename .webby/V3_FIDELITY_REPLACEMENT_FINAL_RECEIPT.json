@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "revision": "pha1-v3-fidelity-replacements-final-2026-08-20",
+  "status": "CHATGPT_ASSET_REPLACEMENT_COMPLETE_CLAUDE_REINTEGRATION_AUTHORIZED",
+  "logicalReplacementCount": 15,
+  "deliveredFileCount": 16,
+  "driveFolderId": "1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+  "driveFolderUrl": "https://drive.google.com/drive/folders/1U6B_eBAsE3qJEmrR0EhgDzCaMjJ9UQho",
+  "manifestDriveFileId": "1OWMPRGRwdmBc4SwmTpF6QeKg6V9OynfP",
+  "manifestSha256": "1a67b5026c8d40e5e7a296efaf2327df40c8b7c2c1ded4905338791bea21341e",
+  "driveReceiptFileId": "1WMS-DXxsf0gKhWSD2oFxX8kXVgSBOLqj",
+  "qaContactDriveFileId": "1utd4JOYl8sHbXrE28XSNX6e4NCvD9IIW",
+  "authorityFiles": [
+    ".webby/FIDELITY_REPLACEMENT_MANIFEST_V3.json",
+    ".webby/V3_FIDELITY_REPLACEMENT_QUEUE.json",
+    ".webby/V3_FIDELITY_REPLACEMENT_FINAL_RECEIPT.json"
+  ],
+  "implementationGate": {
+    "status": "OPEN",
+    "owner": "Claude Code",
+    "instruction": "Pull exact Drive file IDs from manifest, verify SHA256, replace stable paths only, run full build/test/evidence/deploy, return exact final HEAD and STOP for ChatGPT QA."
+  },
+  "visualRule": "Approved GD1 master remains supreme. This receipt only authorizes replacement bytes and reintegration; final visual PASS still requires post-deploy MASTER|VERCEL QA."
+}

@@ -1,0 +1,800 @@
+{
+  "schemaVersion": 1,
+  "status": "V3_FIDELITY_REINTEGRATION_COMPLETE_PENDING_CHATGPT_FINAL_QA",
+  "statusNote": "Fidelity re-integration executed against authority d9f6d3f. The 15 assets Claude flagged as subject-mismatched are replaced with ChatGPT's re-rendered deliveries, fetched by exact driveFileId and SHA-256 verified 16/16 before and after replacement.",
+  "protocolVersion": "3.1.0",
+  "handoffId": "lacvietmedia-webby-v3.1-migration",
+  "consumedUiCommit": "1db4e81f1e880d388403f6e5c74cdc9b389abc5c",
+  "consumedAuthorityCorrectionCommit": "476c38f75a8668f0bfebf3fc29a3396c6d6acc9c",
+  "consumedUiRevision": 4,
+  "implementationBranch": "claude/gd9-implementation-v1",
+  "implementationCommit": "337035f51418b744573837d95580524bef085786",
+  "implementationCommitNote": "Legacy field, kept for continuity with round-2 history only. It is NOT the current PR HEAD — see round3Commits below for the authoritative, explicitly-labeled commit hashes as requested in re-QA round 3 item 9.",
+  "round3Commits": {
+    "codeEvidenceCommit": "3e1a4c2efabcafb88d749e165c691c71d62e9cc3",
+    "codeEvidenceCommitNote": "Contains all round-3 code, content, and re-captured evidence changes (see fixLogRound3). Verified via `git rev-parse HEAD` immediately after creating it, before this receipt-fill commit existed.",
+    "finalPrHead": "fcf4fb7626f98656545fdf47544e245c465a507b",
+    "finalPrHeadNote": "Round-3 final PR HEAD, confirmed after the fact against `GET /git/refs/heads/claude/gd9-implementation-v1` and ChatGPT's own round-4 QA target. Superseded by round4Commits below."
+  },
+  "round4Commits": {
+    "codeEvidenceCommit": "eec68dde53ea2d659922758a917f7a7ad73920e9",
+    "codeEvidenceCommitNote": "Contains all round-4 code, test, and re-captured evidence changes (see fixLogRound4).",
+    "finalPrHead": "9a96c359e6f8a4d17b43ccecb0c5b7101399cd1e",
+    "finalPrHeadNote": "Round-4 final PR HEAD (the receipt hash-fill commit), independently confirmed by ChatGPT's own round-5 QA target. Superseded by round5Commits below."
+  },
+  "round5Commits": {
+    "codeCommit": "1cddf10fbf0a230a840a1d5fe4a8ebb920c3a0a5",
+    "finalPrHead": "1cddf10fbf0a230a840a1d5fe4a8ebb920c3a0a5",
+    "commitStrategyNote": "Round 5 was a SINGLE commit — no hash-fill follow-up (per R5-03, the self-referential commit chain stopped there). Both hashes above were placeholders while round 5 was the current HEAD and are now filled in with the actual value, since a past round's SHA is no longer self-referential. Independently confirmed as the final-pass base HEAD.",
+    "status": "SUPERSEDED_BY_FINAL_PASS"
+  },
+  "finalPassCommits": {
+    "baseHeadVerifiedBeforeChanges": "1cddf10fbf0a230a840a1d5fe4a8ebb920c3a0a5",
+    "baseHeadVerification": "Verified before touching anything, three ways: `git rev-parse HEAD`, `GET /git/refs/heads/claude/gd9-implementation-v1`, and the SHA named in the FINAL ALL-IN-ONE task comment (5320497882) — all three matched, working tree clean.",
+    "codeEvidenceCommit": "SEE_FINAL_PR_HANDBACK_COMMENT",
+    "finalPrHead": "SEE_FINAL_PR_HANDBACK_COMMENT",
+    "selfReferenceNote": "This final pass is a SINGLE commit, so the code/evidence commit IS the final PR HEAD. Its SHA cannot be written into the commit that creates it; it is recorded verbatim in the final PR #5 handback comment and is verifiable via `git rev-parse HEAD`, the branch ref, and `GET /pulls/5 -> head.sha`. This is the only remaining inherently-self-referential field in this file."
+  },
+  "revisionHistory": [
+    {
+      "round": "GD9 initial implementation",
+      "commit": "56884cc",
+      "status": "SUPERSEDED"
+    },
+    {
+      "round": "GD10 fix round 1",
+      "commit": "50421fd",
+      "status": "SUPERSEDED_BY_ROUND_2",
+      "note": "Fixed the original 15 blocking defect groups."
+    },
+    {
+      "round": "GD10 fix round 2 (authority correction integration)",
+      "commit": "adb6bff",
+      "status": "SUPERSEDED_BY_ROUND_3",
+      "note": "Merged chatgpt/webby-v3.1-implementation-ready@476c38f (85-asset authority correction) via `git merge --no-ff`, then executed .webby/CLAUDE_TASK.md's 9 targeted fixes plus the 10-item re-QA round 2 comment. See fixLogRound2 below. Its confidenceNotes.knownIdentityUnification tradeoff was REJECTED by ChatGPT re-QA round 3 and reversed — see fixLogRound3."
+    },
+    {
+      "round": "GD10 fix round 3 (identity de-unification + route-fixtures)",
+      "commit": "fcf4fb7",
+      "status": "SUPERSEDED_BY_ROUND_4",
+      "note": "Reversed round 2's grid/detail identity unification per ChatGPT's explicit correction (dedicated detail-only master assets already exist and were simply mis-mapped in round 2), fixed 2 PDF transcription errors, and fixed 5 additional asset/dataset mapping defects. See fixLogRound3 below. See round3Commits above for exact hashes."
+    },
+    {
+      "round": "GD10 fix round 4 (targeted 4-defect fix)",
+      "commit": "9a96c35",
+      "status": "SUPERSEDED_BY_ROUND_5",
+      "note": "Fixed the 4 objective contract/functional defects ChatGPT re-QA round 4 found in fcf4fb7 (comment 5317441681): a residual identity-bound asset leak on the An Phát detail route, missing CONTENT_TRUTH demoOnly tagging on the new round-3 preview fixtures, hidden fixtures still advertised in sitemap.xml, and a /kien-thuc category filter that dropped the featured AI article. See fixLogRound4 below and round4Commits above for exact hashes. No redesign, no new assets. ChatGPT re-QA round 5 independently confirmed all four as genuinely fixed in source."
+    },
+    {
+      "round": "GD10 fix round 5 (SEO content-integrity + audit cleanup)",
+      "note": "Fixed R5-01 (demo articles emitting factual Article JSON-LD) and R5-03 (stale comment/bookkeeping cleanup) from ChatGPT re-QA round 5, comment 5318323607. R5-02 (An Phát visual-showcase) was left untouched by explicit asset-authority instruction — it is classified BLOCKED_ASSET_SOURCE, not a Claude defect. See fixLogRound5 below. Non-visual round: Round-4 visual evidence retained, not re-captured, per R5-01's explicit instruction."
+    }
+  ],
+  "authorityCorrectionIntegrated": {
+    "mergeCommit": "see git log — merge of 476c38f75a8668f0bfebf3fc29a3396c6d6acc9c into claude/gd9-implementation-v1",
+    "verifiedBeforeMerge": "commit existence, 3 cited workflow runs (32028478355/32028676151/32028792106, all conclusion=success, final audit head_sha matches 476c38f exactly), and the new asset's sha256 (a398f0f6...9d8691) all independently verified against GitHub before merging — not merged on trust alone.",
+    "assetCountNowAuthoritative": "85 = 35 raster + 50 vector. Original 84 remains the historical user-approved baseline; asset #85 (support-client-logo-strip) is an exact source extract from the already-approved V1 PDF page 5, not a new visual revision.",
+    "newAsset": {
+      "id": "support-client-logo-strip",
+      "destinationPath": "public/assets/client-logos/support-client-logo-strip.png",
+      "usage": "/support-mxh trust-client-row, replacing the previous Facebook/TikTok/Meta/YouTube platform-mark substitution that round-1 QA correctly flagged as BLOCKED_ASSET_BY_CHATGPT rather than a Claude fault.",
+      "demoDisclosure": "Visible caption: 'Hình ảnh minh hoạ V1, không phải danh sách khách hàng đã xác nhận.'"
+    },
+    "assetUsageMapCorrection": "/lien-he contactIcon changed icon-phone → icon-mail with a new fourthChannel: EMAIL/PENDING_DISABLED entry — PDF page-12 visibly shows Zalo/Messenger/Telegram/Email, not Zalo/Messenger/Telegram/Phone as round-1 implemented from the JSON authority alone. ChatGPT's correction explicitly resolves this upstream JSON-vs-PDF contradiction in the PDF's favor."
+  },
+  "framework": {
+    "choice": "Next.js 15 (App Router) + TypeScript + Tailwind CSS 3",
+    "reason": "Repository had zero application code (.webby contracts/assets only); IMPLEMENTATION_CONTRACT.json leaves framework selection to Claude. Matches ROUTE_IMPLEMENTATION_MAP.json's route/slug structure and tokens.json/typography.json/responsive.json map 1:1 onto Tailwind theme config."
+  },
+  "routesImplemented": [
+    "/",
+    "/website",
+    "/support-mxh",
+    "/dich-vu-so",
+    "/du-an",
+    "/du-an/[slug]",
+    "/kien-thuc",
+    "/kien-thuc/[slug]",
+    "/gioi-thieu",
+    "/lien-he",
+    "/404 (not-found.tsx, minimal header/footer)"
+  ],
+  "pdfMasterRendered": {
+    "tool": "PyMuPDF (fitz), 3x zoom full pages + 8x-10x zoom crops for card-level transcription, all 14 pages of .webby/visual-master/gd1-v1/LacVietMedia_GD1_UI_Approved_v1.pdf",
+    "shaVerified": "f015b20da10eb50862eec6bc9acc7668c02cd2746e31f29bdd73596319b60c4f — matches WEBBY_LOCK.json pinned hash",
+    "usage": "Round 2 re-rendered and re-cropped page-05/06/07/08/09/11/12 specifically to transcribe exact demo dataset identities the round-1 fix had invented instead of transcribed. Round 3 re-cropped page-07 at 12x zoom to fix 2 transcription errors and confirmed page-10/page-11's detail visuals are visually distinct compositions from the page-07/page-08 grid thumbnails, which is what motivated reversing round 2's identity unification."
+  },
+  "fixLogRound2": [
+    {
+      "item": "CLAUDE_TASK.md #1 / re-QA #1",
+      "scope": "/du-an dataset",
+      "fix": "Replaced the entirely invented 12-project dataset with titles/categories transcribed from page-07 at 8x zoom (e.g. 'Chiến dịch Social Media Chuỗi Cafe LUMI', 'SEO Tổng Thể Evie Smart', 'Quảng cáo Google Ads Ecom - Shinlala'). Body-copy paragraphs beyond title/category remain demo reconstructions — see confidenceNotes below."
+    },
+    {
+      "item": "CLAUDE_TASK.md #2 / re-QA #2",
+      "scope": "/du-an/[slug]",
+      "fix": "Fixed the 'Dịch vụ' field bug: it was rendering the demoOnly status ('Dự án mẫu') instead of an actual service label. Added a category→service-label map (Website→'Thiết kế Website', etc.) and moved the demo/mẫu status to the existing badge only. Rebuilt the detail evidence project to match page-10's exact identity 'Website Bất Động Sản An Phát' (Lĩnh vực Bất động sản→Website category, Dịch vụ Thiết kế Website, Thời gian 20 ngày, Năm hoàn thành 05/2024) with Results rendered as the master's metric-card composition (+68%/+45%/-40%) instead of bullet text — added `resultMetrics` to the Project type for this."
+    },
+    {
+      "item": "CLAUDE_TASK.md #3 / re-QA #3,#4",
+      "scope": "/kien-thuc, /kien-thuc/[slug]",
+      "fix": "Replaced the invented 7-article dataset with page-08's exact featured + grid identities (featured: 'AI trong Marketing 2024: Xu hướng, ứng dụng và cơ hội cho doanh nghiệp'; grid: Website checklist, TikTok, Facebook, AI tools, Marketing). Detail-page evidence article rebuilt to page-11's exact identity '10 yếu tố SEO quan trọng giúp website lên top Google' with its exact 10-item TOC (Nghiên cứu từ khóa … Theo dõi & cải thiện) and meta (Lạc Việt Media Agency, 15/05/2024, 8 phút đọc)."
+    },
+    {
+      "item": "CLAUDE_TASK.md #4 / re-QA #5",
+      "scope": "/gioi-thieu",
+      "fix": "Rebuilt about-hero to match the master's actual single composition: eyebrow=brand name, H1 'Giải pháp số được xây dựng bằng Cần Kiệm Liêm Chính' (gold-highlighted), and the 3 Cần/Kiệm/Liêm-Chính principle blocks now render directly inside the same hero section (id=\"principles\" nested inside id=\"about-hero\"). Removed the invented 'Tin cậy/Tận tâm/Hiệu quả' brand-values section entirely — not present in the master and explicitly instructed to be dropped by ChatGPT's re-QA comment."
+    },
+    {
+      "item": "CLAUDE_TASK.md #5 / re-QA #6",
+      "scope": "Hero copy, 4 routes",
+      "fix": "Replaced paraphrased hero headlines with the master's exact text: /support-mxh 'HỖ TRỢ MẠNG XÃ HỘI CHÍNH CHỦ – AN TOÀN – HIỆU QUẢ'; /dich-vu-so 'TÀI KHOẢN & DỊCH VỤ SỐ UY TÍN – AN TOÀN – NHANH CHÓNG'; /kien-thuc just 'Kiến thức'; /lien-he brand-first 'Lạc Việt Media Agency' with eyebrow 'Liên hệ – Nhận tư vấn'."
+    },
+    {
+      "item": "CLAUDE_TASK.md #6 / re-QA #8",
+      "scope": "/support-mxh client-logo row",
+      "fix": "Replaced the Facebook/TikTok/Meta/YouTube platform-mark substitution with the new authoritative support-client-logo-strip.png asset (see authorityCorrectionIntegrated above), plus a visible demo disclosure caption. This item was BLOCKED_ASSET_BY_CHATGPT in round 1 — resolved once ChatGPT supplied the asset, not a round-1 implementation fault."
+    },
+    {
+      "item": "CLAUDE_TASK.md #7 / re-QA #7",
+      "scope": "/lien-he contact channels",
+      "fix": "Replaced the 4th channel card from Phone to Email (icon-mail), rendered disabled/'Sắp cập nhật' since productionEmail is still TBD per CONTENT_TRUTH.json — never invented. Messenger stays disabled for the same reason (facebookUrl unconfirmed)."
+    },
+    {
+      "item": "CLAUDE_TASK.md #8 / re-QA #9",
+      "scope": "CSS regression",
+      "fix": "Found and fixed a *new* text-white/76 (Tailwind's opacity scale only covers multiples of 5 — same bug class documented from round 1) introduced in round 1's own /kien-thuc dark-newsletter-card fix. Fixed to /75. Re-audited every bg-/text-/border-/ring-*/[0-9]+ opacity modifier in src/ this round (grep across the full tree) — all other values are multiples of 5; no further instances found."
+    },
+    {
+      "item": "CLAUDE_TASK.md #9 / re-QA #10",
+      "scope": "Re-verification",
+      "fix": "typecheck/lint/build clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-run against the new dataset/copy; receipt updated (this file); commit pushed; PR kept Draft, not merged. Re-QA #10's point about no independent CI status check on the HEAD is accurate and unaddressed — this repo has no CI workflow wired to run these checks on push; only local execution + committed evidence + this receipt attest to the results."
+    }
+  ],
+  "fixLogRound3": [
+    {
+      "item": "re-QA round 3, comment 5316582319, item 1",
+      "scope": "/du-an dataset",
+      "fix": "Reversed the round-2 'The Maison'/'An Phát' unification. `src/content/projects.ts` visible list restored to page-07's exact 12 entries (The Maison back as entry #1 with its own +165%/+70%/+30%/35% banner stats); 'An Phát' re-added as a 13th `hidden: true` entry (own durationLabel/completedLabel/resultMetrics, resolvable only via `/du-an/website-bat-dong-san-an-phat`). Added `getVisibleProjects()` helper; `/du-an` grid/featured-banner now source from it instead of the raw array."
+    },
+    {
+      "item": "re-QA round 3, item 1 (cont.)",
+      "scope": "/kien-thuc dataset",
+      "fix": "Same reversal for the SEO article slot: grid entry restored to page-08's 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu' (article-cover-05); '10 yếu tố SEO quan trọng giúp website lên top Google' re-added as a `hidden: true` entry with its full 10-section body, resolvable only via direct slug. Added `getVisibleArticles()` helper; `/kien-thuc` featured/grid now source from it."
+    },
+    {
+      "item": "re-QA round 3, item 2",
+      "scope": "PDF transcription accuracy",
+      "fix": "Re-cropped page-07 at 12x zoom and corrected two transcription errors carried since round 2: 'Au Phú House' → 'Website Nội Thất An Phú Home' (project #5), and 'Chiến dịch Tết Trang Canfia' → 'Chiến dịch Tết 2024 Thời Trang Canifa' (project #8)."
+    },
+    {
+      "item": "re-QA round 3, item 3",
+      "scope": "/website project showcase",
+      "fix": "Was filtering the global (now 12-entry) projects array by category=Website, which regressed to only 3 cards after the round-3 dataset restoration (Maison/An Phú Home/Lakeside Retreat) instead of page-03's own distinct 4-card set with page-specific captions. Fixed with a new `websiteProjectShowcase` fixture in `src/content/route-fixtures.ts` (An Phát Real Estate / GreenMart Vietnam / Isuu Education / Dr. Wellness Clinic, reusing project-cover-01..04) rendered via the new `ProjectPreviewCard` component, which links to `/du-an` generally rather than a specific — potentially mismatched — detail slug."
+    },
+    {
+      "item": "re-QA round 3, item 4",
+      "scope": "Home project cards",
+      "fix": "Was rendering `projects.slice(0, 4)` (real /du-an identities) instead of page-03's own distinct shorter card labels. Fixed with a new `homeProjectShowcase` fixture (Website Bất Động Sản / Website Nội Thất / Website Giáo Dục / Landing Page Dịch Vụ) rendered via `ProjectPreviewCard`."
+    },
+    {
+      "item": "re-QA round 3, item 5",
+      "scope": "/kien-thuc category filter order",
+      "fix": "Category chips were derived from article insertion order instead of the master's fixed page-08 order. Hardcoded `categories = [\"Website\",\"TikTok\",\"Facebook\",\"AI\",\"SEO\",\"Marketing\"]`."
+    },
+    {
+      "item": "re-QA round 3, item 6",
+      "scope": "/kien-thuc/[slug] asset mapping",
+      "fix": "The hidden SEO detail article's header was rendering `article.coverAssetId` (resolves to article-cover-05, the magnifying-glass grid thumbnail) instead of ASSET_USAGE_MAP.json's authority-mapped `article-seo-hero-master`. Related-articles aside used a same-category filter, which returned empty (the hidden article has no visible same-category siblings) instead of the 3 fixed authority-mapped preview titles. Fixed: `headerImageId = article.hidden ? \"article-seo-hero-master\" : article.coverAssetId`; new `seoArticleRelatedPreview` fixture (3 fixed titles/dates, article-cover-01..03) rendered via new `ArticlePreviewCard` component when `article.hidden`, falling back to the original same-category `Link` rendering otherwise."
+    },
+    {
+      "item": "re-QA round 3, item 7",
+      "scope": "/du-an/[slug] related projects",
+      "fix": "Used a same-category filter instead of ASSET_USAGE_MAP.json's deterministic project-cover-01..04 preview set. Fixed with `relatedProjectPreview` fixture (The Maison / LUMI / Nha Khoa Việt Smile / Master UX captions) rendered via `ProjectPreviewCard`, filtered only to exclude the current project by title."
+    },
+    {
+      "item": "re-QA round 3, item 8",
+      "scope": "Regression re-audit",
+      "fix": "Re-ran the Tailwind opacity-modifier grep audit (`-{color}/{number}` patterns) across all of `src/` after the round-3 edits — no new non-multiple-of-5 values introduced."
+    },
+    {
+      "item": "re-QA round 3, item 9",
+      "scope": "Commit-hash ambiguity",
+      "fix": "Round 2's `implementationCommit` field pointed at 337035f, but a small follow-up commit (adb6bff) landed after it and became the actual PR HEAD — an unlabeled mismatch ChatGPT flagged. This round adds an explicit `round3Commits` block (see top of file) with separately labeled `codeEvidenceCommit` and `finalPrHead` fields, both filled in via a second commit immediately after the first (the same hash-cannot-contain-itself constraint applies), with the exact values additionally restated verbatim in the PR #5 comment posted after push so there is no ambiguity between what the receipt file can self-reference and what the actual HEAD is."
+    },
+    {
+      "item": "re-QA round 3, item 10",
+      "scope": "Re-verification",
+      "fix": "tsc --noEmit / eslint . / next build (36/36 pages — up from 34, +2 for the two new hidden detail-only routes) all clean; functional 28/28; evidence 30/30 (1440/390 incl. loading) re-captured against the restored dataset and route-fixtures; every changed page visually spot-checked against the rendered PDF master before commit."
+    }
+  ],
+  "fixLogRound4": [
+    {
+      "item": "GD10-R4-01",
+      "scope": "/du-an/[slug] visual-showcase asset identity",
+      "verifiedIndependently": "Confirmed against asset-manifest.json: project-cover-01 is role=PROJECT_COVER, identityRequired=true, item=demo-project-01 (The Maison). Confirmed against ASSET_USAGE_MAP.json: '/du-an/[slug]'.detail = project-detail-device-master, with project-cover-01..04 mapped only to relatedProjects. Confirmed the full 85-asset inventory contains exactly three DETAIL_VISUAL assets (about-bird-master, project-detail-device-master, article-seo-hero-master), of which only project-detail-device-master belongs to this route.",
+      "fix": "Round 3 fixed the hero but the visual-showcase still rendered `project.heroAssetId`, which for the An Phát hidden fixture was project-cover-01 — leaking The Maison's identity-bound cover onto a different project's route. Rather than re-unify identities, split the data model per ChatGPT's instruction: added `detailVisualAssetId?: string` to the Project type, removed `heroAssetId` from the An Phát fixture entirely (it is hidden and never appears in a grid, so it needs no cover), and set `detailVisualAssetId: \"project-detail-device-master\"`. The showcase now renders `project.detailVisualAssetId ?? project.heroAssetId`, so visible projects still legitimately use their OWN identity-bound cover while detail-only fixtures use their mapped DETAIL_VISUAL. Presentation follows asset-manifest.json presentationByUsage (objectFit: contain for the device master, not cover). No new asset, no substitution.",
+      "honestDeviationFlaggedForRound5": "The An Phát route now renders project-detail-device-master in BOTH the hero and the visual-showcase, which is visually redundant. This is the direct consequence of the instruction to use only the route's mapped detail asset: page-10's 'GIAO DIỆN WEBSITE' section is cut off at the bottom edge of the approved mockup frame (verified by rendering page-10 at 2x full and 10x cropped — only a thin sliver of a dark full-width website screenshot with the Lạc Việt nav is visible), and no full-width website-screenshot asset exists anywhere in the 85-asset inventory. Claude did not invent, generate, or substitute one. If ChatGPT wants the showcase to differ from the hero on detail-only fixtures, that requires either a new authorized DETAIL_VISUAL asset or an explicit instruction to omit the section on hidden fixtures — flagged rather than silently resolved."
+    },
+    {
+      "item": "GD10-R4-02",
+      "scope": "route-fixtures.ts content-truth tagging",
+      "verifiedIndependently": "CONTENT_TRUTH.json demoOnly[0] = 'all project/company names and results shown in GĐ1 project mockups unless later verified'; implementationRule = 'tag it in data as demoOnly=true'. Also verified against the approved master at 14x zoom (page-04 showcase row) that the preview cards carry NO demo badge — image + title + subtitle only.",
+      "fix": "Made `demoOnly` required on `ProjectPreview` and pinned it to the literal type `true` (not `boolean`), so it is impossible to add a preview fixture that silently claims to be a verified client without a deliberate type change. Set `demoOnly: true` on all 12 project preview fixtures across homeProjectShowcase, websiteProjectShowcase, and relatedProjectPreview. Per both CONTENT_TRUTH's 'tag it in data' wording and ChatGPT's explicit 'do not redesign the approved card just to add a badge', the tag is carried in data and surfaced in markup as `data-demo-only=\"true\"` on ProjectPreviewCard — machine-readable and assertable, zero visual change.",
+      "scopeNote": "ArticlePreview was deliberately left untagged: CONTENT_TRUTH's demoOnly clause scopes to project/company names and results, ChatGPT's finding scoped to ProjectPreview, and the existing `articles` dataset carries no demoOnly field either — adding one only to the article previews would make the codebase less consistent, not more truthful. Raised here for round 5 rather than changed unilaterally."
+    },
+    {
+      "item": "GD10-R4-03",
+      "scope": "sitemap.xml + hidden fixture indexability",
+      "fix": "src/app/sitemap.ts mapped the raw `projects`/`articles` arrays, advertising both hidden slug-only fixtures for indexing and contradicting the round-3 hidden model plus SEO_CONTRACT.json's rule against unverified demo previews becoming indexed claims. Switched to `getVisibleProjects()`/`getVisibleArticles()`. Additionally added an optional `noindex` flag to `pageMetadata()` (emitting `robots: { index: false, follow: false }`) and wired it to `project.hidden`/`article.hidden` in both [slug] routes, so the fixtures remain fully routable for direct QA review but are explicitly non-indexable. Verified: next build still generates 13 project paths and 8 article paths (hidden routes intact), while sitemap.xml no longer lists them."
+    },
+    {
+      "item": "GD10-R4-04",
+      "scope": "/kien-thuc category filter",
+      "fix": "The page computed `featured = visibleArticles[0]` then `rest = visibleArticles.slice(1).filter(...)`, while also hiding the featured section whenever a filter was active — so the featured article was unreachable under its own category. With two AI articles in the dataset, ?category=AI showed only the second and silently dropped 'AI trong Marketing 2024...'. Fixed: the featured/slice(1) split now applies only to the unfiltered 'all' view; under any category filter the FULL visible set is filtered (`active === \"all\" ? visibleArticles.slice(1) : visibleArticles.filter((a) => a.category === active)`). Hidden fixtures remain excluded because the source is already getVisibleArticles()."
+    },
+    {
+      "item": "GD10-R4 test coverage",
+      "scope": "tests/functional.spec.ts",
+      "fix": "ChatGPT correctly noted 28/28 passed while R4-04 was live because the only filter assertion covered the PROJECT filter URL. Added 11 targeted regression tests (28 → 39): AI category filter keeps the featured AI article; category filter excludes other categories; hidden article and hidden project never appear in any listing or filter; both hidden routes are routable AND carry a noindex robots meta; sitemap.xml excludes both hidden slugs while still listing the visible detail routes; project preview cards on /, /website and the detail route all carry data-demo-only=true; and the An Phát route's showcase + hero both resolve to project-detail-device-master rather than any project-cover. Each new assertion was chosen to fail against the pre-fix code, not merely to pass against the new code."
+    },
+    {
+      "item": "GD10-R4-postmortem",
+      "scope": "Round-4 handback comment",
+      "fix": "The round-4 PR comment (5318272192) was initially posted with only a local Windows scratchpad path as its body: `gh pr comment` was failing with GitHub GraphQL 503s, and the REST fallback used `gh api -f body=@<file>`, where `-f` sends the value as a literal string rather than reading the file (`-F` is the field form that reads from a file). ChatGPT repaired the comment content manually. Corrected practice going forward: read back the posted comment body via the API and confirm it matches the intended report before treating the handback as delivered."
+    },
+    {
+      "item": "GD10-R4 re-verification",
+      "scope": "Full suite",
+      "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages (hidden detail routes still generated); functional 39/39 including all 11 new regression tests; evidence 30/30 re-captured in full at 1440 desktop / 390 mobile including the deterministic loading state, since R4-01 changed a visible detail route; An Phát detail evidence visually re-inspected to confirm the showcase no longer shows The Maison's cover; Tailwind opacity-modifier audit across src/ re-run clean (all multiples of 5). Still no independent CI status check on the HEAD — this repo has no CI workflow wired to push, so these remain local-execution + committed-evidence results, unchanged from rounds 2-3."
+    }
+  ],
+  "confidenceNotes": {
+    "highConfidence": "Route hero headlines (item quoted verbatim from re-QA comments and independently re-verified by cropping the exact PDF region at 8x zoom), section/card counts, project/article TITLES and CATEGORY tags, the SEO article's 10-item TOC, and case-study meta/stats (+68%/+45%/-40%, +165%/+70%/+30%/35%) — all read clearly at 3x-8x zoom.",
+    "lowerConfidence": "Project/article body-copy PARAGRAPHS beyond title/category/excerpt-length text remain demo reconstructions consistent with each identity's category, not verbatim transcriptions — the source card body text on this GD1 preview render is below reliable legibility even at 8x zoom (small sans-serif text inside a screenshot-of-a-screenshot). If ChatGPT has access to the original higher-resolution design file, exact body copy would need a second pass against that source rather than this PDF.",
+    "identityUnificationReversedInRound3": [
+      "Round 2 unified '/du-an' project #1 (page-07 grid: 'Website Bất Động Sản The Maison') with the page-10 detail-template mockup ('Website Bất Động Sản An Phát') into one entry, reasoning it avoided needing a 13th project-cover asset. ChatGPT re-QA round 3 explicitly rejected this: '/du-an/[slug]' already has its OWN dedicated detail visual (project-detail-device-master, distinct from the project-cover-NN grid thumbnails), so grid and detail were never the same asset slot and never needed unifying. Reversed: page-07's original 12-entry grid (The Maison restored as entry #1) is now `src/content/projects.ts`'s visible list via `getVisibleProjects()`; page-10's 'An Phát' identity now lives as its own `hidden: true` entry (resolvable only by direct slug for the detail-page evidence route, excluded from all grids/filters).",
+      "Round 2 unified the '/kien-thuc' SEO slot (page-08 grid: 'SEO Onpage là gì? 15 yếu tố quan trọng cần tối ưu') with the page-11 detail-template mockup ('10 yếu tố SEO quan trọng giúp website lên top Google') for the same stated reason. Same rejection applies: '/kien-thuc/[slug]' has its own dedicated detail visual (article-seo-hero-master, distinct from article-cover-NN). Reversed the same way via a `hidden: true` entry in `src/content/articles.ts` plus `getVisibleArticles()`.",
+      "No new identity-bound assets (project-cover-13, article-cover-08) were created or needed to achieve this — confirmed by the user's explicit round-3 instruction forbidding them. The fix was purely a data-modeling correction (the 'hidden' field + getVisibleProjects/getVisibleArticles) plus a new `route-fixtures.ts` module for the several OTHER places (home, /website, related-projects, related-articles) where the master reuses the 4 grid cover assets across pages with page-specific captions as lightweight decorative previews, not full content entities — see fixLogRound3."
+    ]
+  },
+  "componentsImplemented": [
+    "Container",
+    "Section",
+    "Button",
+    "IconButton",
+    "Chip",
+    "Icon (CSS-mask, currentColor)",
+    "BrandMark",
+    "Breadcrumbs",
+    "SectionEyebrow/SectionHeading/Divider",
+    "SiteHeader (desktop nav w/ Dịch vụ dropdown + mobile drawer w/ expandable submenu, focus trap, scroll lock, escape close)",
+    "SiteFooter (desktop 4-col + mobile accordion, minimal variant for 404)",
+    "ConsultationProvider/Modal (centered desktop / bottom-sheet mobile, focus trap, escape+backdrop close, restore focus)",
+    "ContactForm (client+server validation, inline errors, success/error/loading states)",
+    "NewsletterForm (onDark variant)",
+    "ContactChannelCard",
+    "ServiceCard (icon or brand mark)",
+    "ProjectCard",
+    "ArticleCard",
+    "PricingCard (price prop)",
+    "TestimonialCard (demoOnly badge)",
+    "FAQAccordion (single-open, aria-expanded)",
+    "ArticleTOC (IntersectionObserver active-heading, sticky desktop/collapsible mobile)",
+    "MetricStrip (per-metric demoOnly)",
+    "ProcessSteps",
+    "CategoryFilter (URL state via router.push)",
+    "TrustLogoRow",
+    "PageHero (optional inline metrics)",
+    "FinalCta",
+    "ProjectPreviewCard, ArticlePreviewCard (round 3 — decorative route-fixture cards, link to general listing not a specific slug)"
+  ],
+  "backend": {
+    "leadSink": "LocalFileLeadSink (data/leads.json, gitignored) behind LeadSink interface — swappable for a CRM/email adapter without changing /api/leads contract",
+    "subscriberSink": "LocalFileSubscriberSink (data/subscribers.json, gitignored) behind SubscriberSink interface, deduplicates by email",
+    "endpoints": [
+      "/api/leads (POST, zod validation, rate-limited)",
+      "/api/newsletter (POST, zod validation, rate-limited)"
+    ],
+    "rateLimit": "in-memory fixed window, 5 req/60s per IP — documented as single-instance only in code comment",
+    "noSecretsCommitted": true
+  },
+  "assets": {
+    "logicalAssetCount": 85,
+    "logicalAssetCountNote": "85 = 35 raster + 50 vector per the GD10 authority correction (was 84 in round 1; see authorityCorrectionIntegrated above).",
+    "usedExactly": "All image references resolve through src/lib/assets.ts, a closed map keyed by the exact asset ids in ASSET_USAGE_MAP.json/asset-manifest.json destinationPaths already materialized under public/assets. No asset was searched, generated, substituted, or index-mapped.",
+    "assetUsageMapViolationsFixedThisRound": [
+      "/support-mxh client-logo row now uses the newly-authorized support-client-logo-strip asset instead of platform-mark substitution (was BLOCKED_ASSET_BY_CHATGPT, now resolved).",
+      "/lien-he 4th channel corrected from Phone to Email per the authority correction's icon-mail/fourthChannel mapping."
+    ],
+    "iconInventory": "All pinned Lucide icons rendered via CSS mask (src/components/ui/Icon.tsx) so currentColor drives color without redrawing the SVGs; brand marks rendered at native color via next/image, never recolored.",
+    "canonicalLogo": "public/assets/brand/lac-viet-logo.webp used as-is at all reference sizes; never redrawn/recolored."
+  },
+  "contentTruth": {
+    "demoDataTagged": "12 visible projects + 1 hidden detail-only project (demoOnly:true), 7 visible articles + 1 hidden detail-only article (implicitly demo per CONTENT_TRUTH — no fabricated verified-fact framing), 3 home testimonials (demoOnly prop → 'Minh hoạ' badge), the support client-logo strip (visible demo disclosure caption), and every MetricStrip metric (demoOnly:true, required field) are tagged as demo/illustrative, never presented as verified fact.",
+    "pendingFields": "facebookUrl, productionEmail, streetAddress kept null/'TBD'. Facebook Messenger and Email channel cards on /lien-he both render disabled ('Sắp cập nhật') rather than link to/display fabricated data.",
+    "structuredData": "Organization/BreadcrumbList/Article JSON-LD only, no Review/AggregateRating, per SEO_CONTRACT.json."
+  },
+  "motionMechanism": {
+    "implementation": "CSS transitions/transforms for hover/focus/accordion; IntersectionObserver for ArticleTOC active heading; no global wheel/touch/key interception, no custom scroll engine.",
+    "reducedMotion": "globals.css disables animation/transition duration and forces scroll-behavior:auto under prefers-reduced-motion: reduce.",
+    "globalBehaviorSurfaceReported": false
+  },
+  "buildAndTestsCurrentTruthNote": "The two blocks below are the CURRENT authoritative results as of the final all-in-one pass. Any test/evidence counts appearing inside fixLogRound2/3/4/5 are historical records of those rounds only and must not be read as current.",
+  "build": {
+    "typecheck": "PASS (tsc --noEmit, 0 errors)",
+    "lint": "PASS (eslint ., 0 errors/warnings)",
+    "build": "PASS (next build — 36/36 pages; all static routes succeed after the typography v2 swap)"
+  },
+  "tests": {
+    "functional": "PASS — 72/72 (tests/functional.spec.ts). 61 → 72: PHA2 §D typography emission guard (3), PHA1 decorative mapping (4), approved-crop no-upscale guards (4). One pre-existing assertion was updated, not weakened: the An Phát showcase expectation moved from the temporary device-master fallback to the authority-mapped approved crop, keeping the original invariant that no project-cover may appear on that route.",
+    "evidence": "PASS — 30/30 re-captured at 1440/390 including the loading state, after fonts, tokens, decorative layers and all three raster placements landed.",
+    "noIndependentCi": "Still true at the final pass: this repository has no CI workflow that runs typecheck/lint/build/Playwright on push to claude/gd9-implementation-v1. These are LOCAL executions plus committed evidence plus this receipt — deliberately not described as CI, and no remote status check is attached to the HEAD commit."
+  },
+  "playwrightEvidence": {
+    "evidenceDir": ".webby/implementation/evidence/gd9-implementation-v1",
+    "evidenceDirNote": "Stable branch-scoped name, not the raw commit hash. Re-captured in full during the final pass (one visible change: /support-mxh card-4 icon corrected to shield-check); previous screenshots were overwritten, not appended.",
+    "desktop1440": [
+      "home",
+      "website",
+      "support-mxh",
+      "dich-vu-so",
+      "du-an",
+      "du-an-slug",
+      "kien-thuc",
+      "kien-thuc-slug",
+      "gioi-thieu",
+      "lien-he",
+      "404"
+    ],
+    "mobile390": [
+      "home",
+      "website",
+      "support-mxh",
+      "dich-vu-so",
+      "du-an",
+      "du-an-slug",
+      "kien-thuc",
+      "kien-thuc-slug",
+      "gioi-thieu",
+      "lien-he",
+      "404"
+    ],
+    "states": [
+      "mobile-menu-open",
+      "consultation-modal (desktop+mobile)",
+      "faq-open",
+      "form-success",
+      "form-error",
+      "focus-visible",
+      "loading"
+    ],
+    "note": "du-an-slug now captures /du-an/website-bat-dong-san-an-phat; kien-thuc-slug now captures /kien-thuc/10-yeu-to-seo-quan-trong-giup-website-len-top-google. Round 3: same two slugs, but underlying identity/related-content mapping corrected — re-captured in full."
+  },
+  "visualParity": {
+    "method": "Built from SPEC_AND_MANIFEST per the deterministic-UI rule — no raster pixel measurement was used to derive geometry.",
+    "referenceCheck": "Round 2 re-rendered and re-cropped the pinned PDF (PyMuPDF, 3x full-page + 8-10x targeted crops) specifically for card-level dataset transcription on pages 05, 06, 07, 08, 09, 11, 12 — resolving re-QA's core complaint that round 1 had structure/counts right but identities/copy invented.",
+    "knownDeviations": [
+      "Home process steps: 6 (not 5) — re-QA round 2 explicitly confirmed this was correct and superseded its own round-1 comment; no longer open.",
+      "The round-2 /du-an and /kien-thuc identity-unification tradeoff was reversed in round 3 per ChatGPT's explicit correction — see confidenceNotes.identityUnificationReversedInRound3. No longer open."
+    ],
+    "automatedDiff": "NOT_RUN — no pixel-diff tooling in this environment; manual page-by-page/crop-level comparison against the rendered PDF was used instead.",
+    "recommendation": "Body-copy paragraphs beyond title/category/excerpt length remain demo reconstructions (see confidenceNotes.lowerConfidence); re-compare against a higher-resolution source if pixel-exact card text is required for final sign-off."
+  },
+  "blockers": [
+    {
+      "type": "BLOCKED_SPEC",
+      "detail": "facebookUrl and productionEmail (CONTENT_TRUTH.json 'pending') — /lien-he Messenger and Email channel cards both render disabled with 'Sắp cập nhật' until real values are supplied.",
+      "resolutionOwner": "Lucifer/ChatGPT"
+    },
+    {
+      "type": "BLOCKED_SPEC",
+      "detail": "streetAddress remains unverified; no address is displayed anywhere rather than inventing one.",
+      "resolutionOwner": "Lucifer/ChatGPT"
+    },
+    {
+      "type": "BLOCKED_ASSET_SOURCE",
+      "detail": "/du-an/[slug] visual-showcase on the An Phát detail fixture. section-map.json requires the section to exist, so it must not be omitted; ASSET_USAGE_MAP.json supplies only project-detail-device-master as this route's DETAIL_VISUAL (project-cover-01..04 are reserved for relatedProjects); page-10's full-width 'GIAO DIỆN WEBSITE' screenshot is cut off in the approved mockup and no matching asset exists in the 85-asset inventory. Per ChatGPT's round-5 asset-authority ruling the current duplicate use of project-detail-device-master is an authority-safe TEMPORARY preview fallback that Claude must leave as-is and must not fabricate around. Final 100% visual PASS is explicitly withheld until an approved source for that full-width showcase is recovered or a visual revision is approved.",
+      "resolutionOwner": "ChatGPT / user (design + asset authority)",
+      "claudeActionRequired": "NONE — do not alter without a new asset-authority instruction."
+    }
+  ],
+  "fixLogRound5": [
+    {
+      "item": "GD10-R5-01",
+      "scope": "Article content-truth + structured data",
+      "verifiedIndependently": "SEO_CONTRACT.json structuredData.allowed lists 'Article on factual knowledge articles'; contentIntegrity reads 'Demo preview data must not become factual structured data or indexed claims without verification.' src/content/articles.ts's own confidenceNotes-aligned commentary states the body paragraphs are demo reconstructions. The finding is valid: Article JSON-LD was emitted unconditionally.",
+      "fix": "One consistent pass, exactly as instructed. (1) Added required `demoOnly: boolean` to the Article type and set `demoOnly: true` on all 8 article fixtures (7 visible + 1 hidden). (2) Made `demoOnly` required and pinned to literal `true` on ArticlePreview and set it on all 3 preview fixtures — resolving the round-4 scope question consistently across both datasets rather than tagging only previews. (3) Surfaced the state machine-readably as `data-demo-only=\"true\"` on ArticleCard and ArticlePreviewCard; NO visual badge added (the approved master's article cards have none). (4) Article JSON-LD is now emitted only when `!article.demoOnly` — the `articleJsonLd` helper is retained unchanged for future verified editorial content, and BreadcrumbList JSON-LD still renders on every route since it describes navigation, not article facts. (5) Article detail routes are noindex when `article.demoOnly || article.hidden`, and a new `getIndexableArticles()` helper (not hidden AND not demoOnly) now feeds sitemap.ts. `getVisibleArticles()` deliberately still does NOT filter demoOnly — demo articles remain fully visible in the UI for visual parity; only structured data and indexing are gated. Static generation is untouched: next build still emits 36/36 pages including all 8 article paths.",
+      "currentEffect": "getIndexableArticles() returns an empty list today by design, so sitemap.xml contains no article detail URLs at all — every fixture body is currently an unverified reconstruction. It begins returning rows the moment any article is verified and flipped to demoOnly: false; no code change will be needed then.",
+      "scopeQuestionRaisedNotActed": "The 12 visible /du-an projects are also demoOnly: true and their detail URLs ARE still listed in sitemap.xml. They emit no Article JSON-LD (only BreadcrumbList), so there is no factual-structured-data violation, and R5-01 scoped the sitemap/noindex requirement explicitly to article routes. Flagged for a round-6 decision rather than unilaterally widened: if 'indexed claims' is meant to cover demo PROJECT detail routes too, the same getIndexable* treatment should be applied to projects in one deliberate pass."
+    },
+    {
+      "item": "GD10-R5-02",
+      "scope": "An Phát visual-showcase",
+      "fix": "NO CODE CHANGE — per explicit asset-authority instruction. The section remains present (section-map.json requires it on /du-an/[slug]), and it continues to render project-detail-device-master, the only DETAIL_VISUAL that ASSET_USAGE_MAP.json maps to this route. Claude did not omit the section, did not generate/substitute an asset, and did not alter the round-4 visual. Classified BLOCKED_ASSET_SOURCE pending recovery of an approved source for the full-width showcase or an approved visual revision — see blockers."
+    },
+    {
+      "item": "GD10-R5-03",
+      "scope": "Audit cleanup",
+      "fix": "(a) Removed the stale comment in src/content/projects.ts claiming The Maison and An Phát 'both legitimately using project-cover-01 in different mockup contexts' — it directly contradicted the R4-01 correction sitting immediately below it. Replaced with a pointer to the detailVisualAssetId note. (b) Updated nextStep to the current round-5 handback state (it still described round 3/4). (c) Stopped the commit hash-chain: round 5 is a SINGLE commit with no follow-up hash-fill commit, and round5Commits states plainly that a commit cannot self-reference its own SHA and that the authoritative final SHA lives in the PR handback comment. (d) Also recorded a postmortem on the round-4 comment-posting failure — see fixLogRound4 'GD10-R4-postmortem'."
+    },
+    {
+      "item": "GD10-R5 re-verification",
+      "scope": "Full suite (non-visual)",
+      "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages with all 8 article paths still statically generated; functional 44/44, up from 39 — 5 new SEO/content-integrity assertions: three demo article routes each proven to emit NO Article JSON-LD while still emitting BreadcrumbList and carrying a noindex robots meta, no demo article detail URL present in sitemap.xml, and article cards + related-article previews proven to carry data-demo-only=\"true\". Per R5-01's explicit instruction the 30-screenshot evidence suite was NOT re-captured: every R5-01/R5-03 change is non-visual (data fields, JSON-LD emission, robots meta, sitemap contents, code comments), so the round-4 visual evidence remains valid and unmodified. Still no independent CI status check on the HEAD, unchanged from rounds 2-4."
+    }
+  ],
+  "fixLogFinalPass": [
+    {
+      "item": "FINAL-01 (was the round-5 open scope question)",
+      "scope": "Demo project SEO gating",
+      "fix": "Resolved per the final task's explicit ruling: demo projects get the same treatment already applied to demo articles. Added `getIndexableProjects()` (not hidden AND not demoOnly) and pointed sitemap.ts at it; `/du-an/[slug]` metadata is now `noindex: project.demoOnly || project.hidden`. Deliberately did NOT overload visible-list semantics — `getVisibleProjects()` still ignores demoOnly, so all 12 approved project cards, filters, and detail routes stay fully visible and routable. Both indexability helpers return an empty list by design today and populate themselves the moment content is verified and flipped to demoOnly: false; no further code change needed then. Verified no /du-an detail URL remains in sitemap.xml and no project route emits Article schema (BreadcrumbList only, which is navigation)."
+    },
+    {
+      "item": "FINAL-02",
+      "scope": "Round-5 article fix re-verification (not assumed correct from green tests)",
+      "fix": "Re-audited from source rather than trusting the suite. Confirmed: Article.demoOnly is required in the type and true on all 8 fixtures; ArticlePreview.demoOnly is present and pinned to literal `true` on all 3 fixtures; demo articles remain visible in the approved UI (getVisibleArticles deliberately ignores demoOnly); demo/hidden articles are noindex and absent from sitemap. Separately enumerated EVERY structured-data, metadata, sitemap and robots emission site in src/ to rule out accidental promotion by another path: `articleJsonLd` has exactly one call site and it is gated by `!article.demoOnly`; `organizationJsonLd` emits only name/url/slogan (verified factual, no invented counts/awards/ratings); `breadcrumbJsonLd` is navigation-only and correctly retained; robots.ts allows crawl with per-page noindex as the authoritative signal; not-found.tsx is noindex. No Review/AggregateRating exists anywhere. No second promotion path found."
+    },
+    {
+      "item": "FINAL-03",
+      "scope": "Content-truth sweep — 5 objective gaps found and fixed",
+      "fix": "(a) /website pricing packages carried demo prices while BOTH the section comment and PricingCard's own doc-comment claimed they were 'tagged demoOnly in the package data' — the field did not exist. Added `demoOnly: true` to all 4 packages, made it required on PricingCard and on WebsitePackages' prop type so demo pricing can never reach the card untagged, and surfaced it as data-demo-only. (b) PageHero's inline proof metrics (/du-an 200+/20+/99%) had no demoOnly field and no disclosure, unlike MetricStrip which requires one — made `demoOnly` required on the metrics prop and tagged the three values. (c) /du-an featured case-study banner stats (+165%/+70%/+30%/35%) were an untagged inline array — tagged the <dl>. (d) home hero social-proof '200+ khách hàng đã tin tưởng' was untagged (the adjacent 4.9/5 rating already carries the master's own '(minh hoạ)' disclosure) — tagged the block. (e) /support-mxh '200+ khách hàng đã được hỗ trợ thành công' was untagged — tagged it; the existing visible caption already discloses the logo strip itself.",
+      "noRedesignNote": "All five are data/markup-level only (`data-demo-only`), zero visual change, per the task's rule to use data/markup state where the approved master has no badge. No visible disclaimer text was added to any approved hero, banner, or pricing section, since that would have been a redesign.",
+      "alreadyCorrectLeftAlone": "Testimonials (3, demoOnly + visible 'Minh hoạ' badge + '(dự án mẫu)' roles), all four MetricStrip instances (per-metric demoOnly + conditional disclaimer), /dich-vu-so products (demoOnly in data + visible 'Giá minh hoạ, chưa phải bảng giá chính thức đang áp dụng.' caption), the support client-logo strip (demo alt text + visible 'Hình ảnh minh hoạ V1, không phải danh sách khách hàng đã xác nhận.' caption), and all project/article/preview datasets were already correct and were left untouched."
+    },
+    {
+      "item": "FINAL-04",
+      "scope": "Pending factual contact fields",
+      "fix": "Verified, no change needed: CONTENT_TRUTH.json marks facebookUrl, productionEmail and streetAddress as TBD. site-settings.ts holds `facebookUrl: null` and no email/address field at all. /lien-he renders Messenger and Email as disabled 'Sắp cập nhật' cards preserving the approved card geometry, and no street address appears anywhere. Added a regression test asserting the page contains no `mailto:` address, so a fabricated email cannot be introduced silently."
+    },
+    {
+      "item": "FINAL-05",
+      "scope": "Asset identity/map final sweep — 1 objective defect found and fixed",
+      "fix": "Cross-checked every assetPath() call site in src/ against ASSET_USAGE_MAP.json and asset-manifest.json. Verified 1:1 identity binding with no leaks: the 12 visible projects consume project-cover-01..12 exactly once each; the An Phát hidden fixture carries NO project cover and uses only project-detail-device-master; the 7 visible articles consume article-cover-01..07 exactly once each; the hidden SEO fixture uses article-seo-hero-master; home featuredProjects + knowledge match the map's cover-01..04 / article-cover-01..04; /website projects match cover-01..04; /du-an/[slug] relatedProjects match cover-01..04; /kien-thuc/[slug] relatedArticles match article-cover-01..03; /gioi-thieu uses about-bird-master; /support-mxh uses the authorized client-logo strip; /dich-vu-so brand marks match the mapped openai-chatgpt/youtube/microsoft/canva exactly; /lien-he brand marks match zalo/messenger/telegram with contactIcon icon-mail; /404 uses the mapped circle-alert + arrow-left.",
+      "defectFound": "The /support-mxh 4th service card rendered `icon-lightbulb`, but cropping the approved master page-05 card at 34x zoom shows a gold SHIELD. Corrected to `icon-shield-check`, which is already in the pinned 40-icon inventory — nothing was invented, searched for, or substituted. This is the one visible change in this pass and the reason the full evidence set was re-captured.",
+      "mapObservationNotADefect": "ASSET_USAGE_MAP lists brand-youtube under /support-mxh, but the approved master's support service row is Facebook / TikTok / Meta / consulting-shield — no YouTube card. brand-youtube IS consumed on /dich-vu-so, where the map also lists it. Treated as an upstream map artifact (likely left over from the round-1 platform-mark substitution that the authorized client-logo strip replaced), not a missing element: adding a YouTube card would contradict the approved visual. Recorded here rather than raised as a new round, since the master answers it objectively."
+    },
+    {
+      "item": "FINAL-06",
+      "scope": "An Phát visual-showcase",
+      "fix": "NO CHANGE, as instructed. Section kept in place and in order, still rendering project-detail-device-master. Nothing generated, searched for, or substituted. Recorded as a single top-level BLOCKED_ASSET_SOURCE with claudeActionRequired: NONE. Not treated as a reason for another Claude round."
+    },
+    {
+      "item": "FINAL-06b — MAJOR: silent Tailwind spacing failure, site-wide",
+      "scope": "tailwind.config.ts token scale vs. 23 source files",
+      "severity": "HIGH — visible on every page and every viewport; survived rounds 1-5 of QA undetected",
+      "howItWasFound": "While investigating why two evidence screenshots differed run-to-run, the 404 header logo was measured at 256x256 inside a 76px header. A Playwright probe of the live page returned computed height 256px while the element's class list was `h-9 w-auto lg:h-11` — proving the utilities emitted no CSS.",
+      "rootCause": "tailwind.config.ts sets `theme.spacing` (a full OVERRIDE, not `theme.extend.spacing`) to an exact transcription of tokens.json `spacingPx` = {1,2,3,4,5,6,8,10,12,16,20,24,30} plus px/full, with gridBasePx 4. Tailwind derives height/width/padding/margin/gap/inset/translate from that scale, so any off-scale value silently produces NO CSS RULE AT ALL — no build error, no warning. This is the identical silent-failure class as the round-1 opacity-modifier bug (`text-white/76`), which is why the same audit discipline was applied here.",
+      "impact": "21 distinct utilities across 23 files emitted zero CSS. Confirmed by grepping the compiled stylesheet: h-9, h-11, h-14, h-0.5, h-3.5, w-3.5, gap-0.5, gap-1.5, gap-7, mt-0.5, mt-1.5, px-2.5, py-0.5, py-1.5, py-14, py-18, py-28, py-32, pt-14, pt-18, translate-x-0.5 — all 0 occurrences, while in-scale controls (h-16, py-16, mt-3, gap-6) each appeared. Worst visible symptoms: (1) the brand logo rendered at its intrinsic 256x256 in both SiteHeader (EVERY page) and not-found.tsx, overflowing the 64/76px header and covering the hero eyebrow and part of the H1; (2) Section/PageHero/FinalCta vertical padding `py-14 md:py-18` collapsed to ZERO at mobile and tablet widths (only the in-scale `xl:py-24`/`lg:py-24` survived, which is why 1440px evidence looked plausible while 390px did not); (3) SiteFooter `pt-14 md:pt-18` collapsed; (4) header nav `gap-7`, active-link underline `h-0.5`, article-preview thumbnails `h-14`, newsletter checkbox `h-3.5 w-3.5`, and ~8 small margin/gap/padding slots all lost their spacing.",
+      "fix": "Resolved objectively from authority rather than raised as a question: tokens.json is the spacing authority and gridBasePx is 4, so every half-step (2/6/10/14px) is off-grid and the remaining values are off-scale. Snapped all 21 utilities across all 23 files to the nearest token value, ties rounding down, with one deliberate round-up: the newsletter consent checkbox went 14px → 16px (h-4 w-4) rather than 12px to keep a usable hit target, consistent with the config's existing `minHeight.touch: 44px` intent. Key mappings: h-9→h-8 (36→32px) and h-11→h-10 (44→40px) for the logo; py-14→py-12, py-18→py-16, py-28→py-24, py-32→py-30, pt-14→pt-12, pt-18→pt-16 for section rhythm; gap-7→gap-6; h-14→h-12; half-steps→px or the nearest 4px step. The theme scale itself was NOT extended — adding off-token values would have contradicted tokens.json. No component structure, section order, copy, or asset changed.",
+      "verification": "Re-ran the audit: 0 off-token spacing utilities remain in src/. Confirmed every snapped utility now compiles, including variant-prefixed forms (`.md\\:pt-16`, `.lg\\:py-24`, `.after\\:h-px:after`, `.group-hover\\:translate-x-px`). Visually re-inspected the regenerated evidence: the header logo now sits inside the header with the hero eyebrow visible, and the 404 header renders correctly.",
+      "regressionGuard": "Added a `design-token integrity` Playwright block that asserts COMPUTED results rather than class names, so this failure class cannot silently return: header logo height is bounded and strictly less than the header height (on both / and /404), section vertical padding is non-zero at 390 and 1440, and the header nav column-gap resolves to a real length rather than 'normal'.",
+      "qaNote": "This materially changes rendering at mobile/tablet widths and the header on all viewports, so the full 1440/390 evidence set was re-captured. ChatGPT's final QA should re-check vertical rhythm and header proportions specifically — the previously approved screenshots were taken against the broken CSS."
+    },
+    {
+      "item": "FINAL-06c",
+      "scope": "Evidence capture determinism",
+      "fix": "Evidence screenshots differed between identical runs because `disableAnimationsAndWait` waited only for fonts + networkidle: next/image lazy-loads below-the-fold images, so they had not begun fetching when the network went idle, and `fullPage: true` then raced their decode — producing captures with entirely blank hero images. Hardened the helper to scroll the full page to trigger every lazy load, wait for `networkidle` again, wait for all `document.images` to be `complete` with non-zero `naturalWidth`, then `await img.decode()` on each (since `complete` only means fetched, not paintable) and settle two animation frames. This eliminated the severe blank-hero failure mode. Residual run-to-run variance remains possible in image-paint regions on a cold `/_next/image` optimizer cache; the committed set was visually verified to render all images correctly, and this limitation is stated rather than hidden."
+    },
+    {
+      "item": "FINAL-07",
+      "scope": "Bookkeeping / stale-claim audit",
+      "fix": "(a) Filled round5Commits' two placeholder fields with the now-known 1cddf10 SHA — a past round's hash is no longer self-referential, so the placeholder was obsolete. The only remaining self-referential field is finalPassCommits, explicitly labelled as such. (b) Added buildAndTestsCurrentTruthNote so the per-round 28/28, 30/30, 39/39, 44/44 figures inside fixLogRound2-5 cannot be misread as current; the top-level build/tests blocks now carry the final 55/55 + 36/36 + 30/30 figures. (c) Verified the two remaining '84' references are explicitly labelled historical baseline against the authoritative 85 — left as intentional history. (d) Confirmed no local Windows temp path is stored anywhere as authoritative evidence; the single occurrence is inside the round-4 postmortem text describing that failure, which is intentional. (e) Reviewed blocker entries for duplication: `blockers` holds the 3 genuine open items, `blockersResolvedInRound3` and `supersededOpenQuestionsFromRound4` are explicitly-labelled historical closures, and the round-5 open scope question was removed because this pass resolved it (now FINAL-01). (f) Updated nextStep and status to the final-pass state. (g) Updated the PR body, which still advertised the stale 84/84 authority count and 34/34 + 28/28 + 29/29 test figures."
+    },
+    {
+      "item": "FINAL-08",
+      "scope": "Verification + self-review",
+      "fix": "tsc --noEmit clean; eslint . clean; next build clean at 36/36 pages; functional Playwright 55/55 (up from 44, +11 new regression tests each written to fail against pre-fix behavior); evidence 30/30 re-captured at 1440/390 including loading, justified by the single visible icon change and visually re-inspected to confirm the shield now renders. Two intermediate test failures were my own stale/ambiguous assertions, not product defects, and were corrected: a sitemap assertion still expecting demo project detail URLs (now correctly withheld), and a strict-mode violation where 'The Maison' legitimately appears twice on /du-an (grid card + featured banner). Final diff reviewed against base HEAD 1cddf10 for redesign, asset invention, section deletion/reordering, unverified content becoming indexable, and demo content disappearing from the approved UI — none found."
+    }
+  ],
+  "supersededOpenQuestionsFromRound4": [
+    {
+      "type": "FLAGGED_DEVIATION",
+      "detail": "The An Phát hidden detail fixture renders project-detail-device-master in both the hero and the visual-showcase (visually redundant). Options offered were (a) accept, (b) authorize a new DETAIL_VISUAL, or (c) omit the section on hidden fixtures.",
+      "resolutionOwner": "ChatGPT (design/asset authority)",
+      "resolvedInRound5": "ChatGPT rejected (c) — section-map.json requires visual-showcase on /du-an/[slug], so omission would violate the implementation contract — and rejected inventing/generating/substituting a screenshot. Ruled the current duplicate use of project-detail-device-master an authority-safe TEMPORARY preview fallback that Claude must leave as-is, while explicitly withholding final 100% visual PASS. Reclassified as BLOCKED_ASSET_SOURCE (not a Claude implementation defect) — see blockers."
+    },
+    {
+      "type": "SCOPE_QUESTION",
+      "detail": "ArticlePreview fixtures were left without a demoOnly field, matching the existing untagged `articles` dataset and the CONTENT_TRUTH clause's project/company scope. If ChatGPT wants article demo content tagged too, it should be applied consistently to both the article previews AND the main articles dataset in one pass.",
+      "resolutionOwner": "ChatGPT (content-truth authority)",
+      "resolvedInRound5": "ChatGPT confirmed the consistent-pass reading: R5-01 required demoOnly on BOTH the main Article dataset and ArticlePreview fixtures, plus JSON-LD/noindex/sitemap gating. Implemented in full — see fixLogRound5 GD10-R5-01."
+    }
+  ],
+  "blockersResolvedInRound3": [
+    {
+      "type": "NEED_ASSET",
+      "detail": "Round 2 believed a 13th project cover and 8th article cover would be needed to give grid and detail identities fully separate entries. Round 3 determined this was never actually needed — /du-an/[slug] and /kien-thuc/[slug] already use their own dedicated detail-only master assets (project-detail-device-master, article-seo-hero-master), fully independent of the grid project-cover-NN/article-cover-NN thumbnails. Resolved via a data-modeling fix (hidden field + route-fixtures.ts), zero new assets, per the user's explicit round-3 instruction forbidding project-cover-13/article-cover-08.",
+      "resolutionOwner": "Claude (self-resolved, no ChatGPT asset needed)"
+    }
+  ],
+  "mustNotViolationsChecked": {
+    "noRedesign": true,
+    "noAssetSearchGenerationSubstitution": true,
+    "noRasterMeasurementForGeometry": true,
+    "noMissingIconInvention": true,
+    "noMerge": true,
+    "criticalFindingsDuringImplementation": "NONE"
+  },
+  "nextStep": "PHA 2 complete with no Claude-owned open items. Live-preview evidence for ChatGPT's final QA is now committed (see finalVercelQaEvidence below). PR #5 stays Draft/OPEN/unmerged for that QA. Two authority nits to fold back upstream: typography.json.tailwindTokenMap has no token for detailH1 though semanticRoles defines it, and ASSET_USAGE_MAP still lists brand-youtube under /support-mxh where the approved master shows no YouTube card.",
+  "finalVercelQaEvidence": {
+    "reason": "PR #5 comment requested full evidence captured directly from the live Vercel deploy (not localhost), covering all 11 routes at 1440/390 plus 8 interactive states, committed to a dedicated evidence folder.",
+    "livePreviewUrl": "https://lacvietmedia-4n8ik2cjk-lucifer-scmta.vercel.app",
+    "evidenceDir": ".webby/implementation/evidence/final-vercel-qa",
+    "infraChange": "playwright.config.ts baseURL/webServer and tests/evidence.spec.ts's EVIDENCE_DIR were made overridable via PLAYWRIGHT_BASE_URL / EVIDENCE_DIR env vars (both default to the prior local-run behavior when unset), so this capture ran the exact same evidence.spec.ts suite against the deployed URL instead of a modified copy. No product code (src/) touched.",
+    "captureGates": "Same helper as every prior evidence round: document.fonts.ready, full-page scroll to trigger next/image lazy loads, naturalWidth>0 wait, per-image decode() raced against a 3s cap, then settle to top before the screenshot.",
+    "counts": "30/30 captured and verified non-empty: 11 routes x {desktop 1440, mobile 390} = 22, plus 8 interactive states (mobile-menu-open, consultation-modal desktop+mobile, faq-open, form-success, form-error, loading, focus-visible).",
+    "verification": "Every PNG's IHDR dimensions checked programmatically (desktop=1440px-wide full-page, mobile=390px-wide full-page, state captures=viewport-sized) and zero-byte-file check run — none found. Two full-page captures (home desktop, mobile-menu-open) visually re-inspected: hero, service cards, project grid, testimonials, footer and the mobile drawer overlay all render with real content, not blank.",
+    "liveFormNote": "form-success/form-error/loading exercised the live serverless /api/leads endpoint (previously confirmed to return 201 even though the read-only filesystem cannot persist — see sinks.ts). The UI success state depends only on res.ok, so it renders correctly regardless of persistence."
+  },
+  "pha2": {
+    "authorityHeadIntegrated": "e84d3094efffeb447716144a95d63bcbc226f8ca",
+    "authorityMergeCommit": "c589769c1186966447f363270b121a1a6d2a81e6",
+    "gateVerified": "PHA1_FREEZE_RECEIPT.status == USER_APPROVED_PHA2_AUTHORIZED, checked before any runtime change",
+    "typography": {
+      "revision": "pha1-typography-v2",
+      "fonts": "layout.tsx now loads Noto_Serif (600/700) + Inter (400/500/600/700) via next/font/google, subsets latin+vietnamese, display swap. Noto_Serif_Display + Be_Vietnam_Pro removed.",
+      "tokenEmission": "tailwind.config.ts fontSize was GENERATED from TYPOGRAPHY_AUTHORITY.semanticRoles + typography.json compatibilityTokens/tailwindTokenMap by script, not hand-transcribed — 31 tokens, the full union. Legacy h3-*/h4-*/body-xl retained as emitted aliases per tokenEmissionContract.",
+      "detailH1Note": "semanticRoles defines detailH1 but typography.json.tailwindTokenMap (an explicit mirror) omits a token for it. semanticRoles is the stated authority, so detail-h1-desktop/mobile were emitted following the mirror's own naming convention. Flagged for ChatGPT to fold into the mirror.",
+      "safelist": "All 31 typography tokens (plus lg: variants) are safelisted so a token ALWAYS emits CSS even with zero source usage. This is what makes the §D guard deterministic instead of dependent on incidental class usage.",
+      "componentRoles": "Applied per TYPOGRAPHY_IMPLEMENTATION_MAP v2, including the seven components that were missing in v1 (ContactForm, NewsletterForm, TestimonialCard, ProcessSteps, ConsultationProvider, ContactChannelCard, Chip).",
+      "routeMatrix": "PageHero gained an explicit heroRole prop; / and /lien-he use heroDisplay + uppercase, six service/listing routes use heroH1, and /du-an/[slug], /kien-thuc/[slug], /404 use the new detailH1 tokens.",
+      "deliberateDeviations": [
+        "Mobile drawer links kept at body-lg rather than the 14px nav role: nav is defined desktop-only and shrinking a touch drawer to 14px would hurt usability without the master demanding it.",
+        "ArticlePreviewCard title kept at small rather than cardH3: it sits in a 280px sticky rail beside an 80x48 thumbnail, and 20px serif would overflow the approved page-11 composition. articleMeta WAS applied to its date."
+      ]
+    },
+    "decorativeAssets": {
+      "integrated": [
+        "dong-son-ring",
+        "gold-divider",
+        "gold-noise"
+      ],
+      "placements": "dong-son-ring + gold-noise on the /dich-vu-so final CTA (FinalCta `decorated` prop); gold-noise on the two mapped /support-mxh dark bands (Section `texture` prop); gold-divider wired into the existing Divider component.",
+      "notAutoInserted": "Divider is not force-inserted anywhere — the master shows no divider at a verifiable placement and adding one would be a redesign.",
+      "defectFoundAndFixed": "First implementation stacked a Tailwind opacity on top of the vectors' own baked-in opacity (ring .2, noise .28), multiplying them to ~0.04 and rendering the mapped decoration effectively invisible. Removed the extra dimming; a regression test now asserts these layers compute to opacity 1 and that no decorative asset leaks onto unmapped routes."
+    },
+    "blockedRasters": {
+      "status": "RESOLVED_IN_SESSION",
+      "history": "The Google Drive MCP connector returned `session expired` and OAuth cannot run in a non-interactive session, so the three frozen rasters were initially unavailable and were reported as an external blocker rather than faked.",
+      "resolution": "User opened link-level access on both Drive files. Fetched over plain HTTPS instead of the connector: the visual master downloaded directly, and the 29.9 MB freeze bundle required following Google's large-file virus-scan interstitial (confirm token + uuid) to reach drive.usercontent.google.com. No other Drive file was pulled, searched or browsed.",
+      "checksumVerification": "3/3 PASS — verified twice: once against the bytes read out of the ZIP before writing, and again from the files on disk after writing to repoDestination.",
+      "verified": [
+        {
+          "asset": "support-cta-device-shield-approved-crop",
+          "sha256": "291d5815ab0e7146fb81c0cba4b0ccd0545b2aa665a4b1faeeac02e54ed91665",
+          "bytes": 8214,
+          "native": "295x120",
+          "match": true
+        },
+        {
+          "asset": "digital-cta-phoenix-approved-crop",
+          "sha256": "a4eeb0783d43d2dda392d128eec6dc6e1c3105d1395ba1f64570704c5d9e11f2",
+          "bytes": 7306,
+          "native": "205x98",
+          "match": true
+        },
+        {
+          "asset": "project-detail-showcase-approved-crop",
+          "sha256": "019b5dc4e1ed5679668e1b9944399c7128a416e0607dc856ccf65aab2ef1549f",
+          "bytes": 3618,
+          "native": "516x33",
+          "match": true
+        }
+      ]
+    },
+    "visualCorrection": [
+      "Home hero: the three feature items were wrapping 2+1 in a flex row; approved master page-03 shows all three on ONE row. Changed to a 3-column grid from sm up.",
+      "Home social proof: count and rating were stacked on two lines; the master shows count + stars + score inline. Changed to a single wrapping row.",
+      "Header/logo/nav, section rhythm, forms, modal, footer and 404 re-verified after the font swap — no further objective mismatch found at 1440/390."
+    ],
+    "rasterPlacements": {
+      "/support-mxh consultation-cta": "Device+shield crop rendered at native 295x120 inside the support-lead-cta card, decorative (aria-hidden), never upscaled.",
+      "/dich-vu-so final-cta": "Phoenix crop at native 205x98 above the CTA heading, via a new FinalCta visualAssetId prop, alongside the mapped dong-son-ring motif and gold-noise texture.",
+      "/du-an/[slug] visual-showcase": "Approved crop now replaces the temporary device-master fallback for the identity-bound demo-project-01 fixture. It is 516x33 (~15.6:1) and the delta forbids upscaling, so the section geometry was adapted to the source: the strip renders at its native width, centred, with NO invented continuation below the approved cut-off. Verified against ui-007.png from the freeze bundle, which shows exactly this cropped strip under the 'GIAO DIỆN WEBSITE' heading.",
+      "guards": "Four new tests assert each crop renders at or below its frozen dimensions with native aspect preserved, plus an explicit assertion that the showcase strip is never stretched into a fake 16:9 (aspect must stay >10:1)."
+    }
+  },
+  "recoveryV2": {
+    "authorityIntegrated": "440ca7dddb0502002999246f3d3e22f2e4bb2cd6",
+    "authorityMergeCommit": "64fb07b124b6d0f75741d6fc09f96cf1cfc0ee18",
+    "authorityScopeVerified": "Diffed against merge base e84d309: the authority touches only .webby/ - no src/ or tests/ file.",
+    "sourceBundle": {
+      "file": "LacVietMedia_PHA1_FinalAssetFreeze_91_v2.zip::04_FINAL_UI_REFERENCE/",
+      "sourceShaVerified": "11/11 PASS against the SHA-256 values hardcoded in ChatGPT's own producer script",
+      "noDriveBrowsing": true,
+      "noImageSearchOrGeneration": true
+    },
+    "assetProduction": {
+      "produced": "45/45",
+      "method": "ChatGPT's exact locked sourceCrop rectangles from RECOVERY_ASSET_MANIFEST_V2.json. Claude selected no crop, altered no pixel, and did not re-crop, upscale or substitute.",
+      "declaredHashMatches": "1/45",
+      "declaredHashMismatches": "44/45",
+      "blockerClassification": "AUTHORITY_MANIFEST_DEFECT (not a Claude implementation defect)",
+      "evidenceThatCropsAreCorrect": [
+        "All 11 sources verify byte-identical to the producer's own pinned SHA-256 values.",
+        "Every crop rectangle is in-bounds and its width/height exactly equals the declared nativeWidth/nativeHeight (0/45 mismatches).",
+        "Visual inspection of all 45 crops shows each is exactly the asset its id names (phoenix heroes, gold shield, purple SEO image, real project/article screenshots, horizontal logo).",
+        "Only lac-viet-logo-horizontal-approved matches its declared hash; the other 44 match NO crop at those coordinates in ANY of the 11 sources.",
+        "Ruled out encoding variance: raw-RGB, RGBA and PNG-file-byte hashing all fail.",
+        "Ruled out coordinate drift: an exhaustive +/-4px offset search finds no match."
+      ],
+      "actionTaken": "The authority manifest was NOT edited. Assets were produced from the verified sources at the locked rectangles, and declared-vs-actual hashes for all 45 are recorded in .webby/implementation/RECOVERY_ASSET_ACTUAL_HASHES.json for ChatGPT to reconcile.",
+      "resolutionOwner": "ChatGPT (asset authority)"
+    },
+    "supersededRastersDeleted": 30,
+    "globalRebuild": [
+      "Header, footer, 404 header and mobile drawer now use lac-viet-logo-horizontal-approved; the square mark is no longer the global identity.",
+      "Home H1 restores the approved gold span: LAC VIET white / MEDIA AGENCY gold.",
+      "PageHero renders hero rasters CONTAINED at native crop aspect; the previous 16:9/4:3 object-cover frame was cropping the approved artwork on six routes.",
+      "ProcessSteps became a connected horizontal timeline (numbered nodes + arrow connectors) on desktop with a compact vertical rail on mobile, replacing the 4-up card grid.",
+      "Two-column desktop FAQ on /website, /support-mxh, /dich-vu-so and /lien-he."
+    ],
+    "routeRebuild": {
+      "/": "home-project-preview-01..04 and home-article-preview-01..04 replace the borrowed /du-an and /kien-thuc covers; real phoenix hero; approved social-proof avatar strip; 6-step timeline.",
+      "/du-an": "featured-case banner now uses its own project-featured-case-master instead of the first project's grid cover; 12 covers already 4x3.",
+      "/website": "website-project-preview-01..04; 4 packages, 6 icon cards, 5 benefit columns retained; 2-column FAQ.",
+      "/du-an/[slug]": "Five stacked full-height sections replaced by a single tabbed content pane (Tong quan/Van de/Giai phap/Ket qua/Cong nghe) with overview text + result metrics as the default pane; the 516x33 approved strip now sits in a padded band, not a giant empty black container.",
+      "/kien-thuc/[slug]": "3-column editorial layout starts immediately after the breadcrumb; title, meta and the purple SEO image moved into the centre column; the full-width hero above the article is gone.",
+      "/lien-he": "Desktop is intro/checklist-left + form-right; the narrow channel rail became a 4-equal-card row.",
+      "/404": "Rebuilt as the approved dark/gold state from ui-010: oversized gold 404, white headline, grey message, gold button over a subtle dark texture."
+    },
+    "interactionStates": {
+      "productFixes": [
+        "Success is now the approved centred white dialog with a green check and 'Cam on ban!'.",
+        "Error is the approved centred white dialog with a red icon, 'Co loi xay ra!' and a 'Thu lai' action.",
+        "Loading is the approved dark panel with a gold circular spinner and 'Dang tai...'.",
+        "The mobile drawer is now an opaque full-viewport black panel with the horizontal logo; it no longer lets the Home hero show through."
+      ],
+      "captureFixes": "Every state capture now asserts the state element is inside the screenshot viewport before shooting, and scrolls it into view after the settle helper returns to top.",
+      "falsePositivesCaught": [
+        "form-success and form-error previously produced byte-identical screenshots (both 302145 bytes) because the inline success block sat below the fold.",
+        "faq-open captured no expanded panel at all: the expanded region sat at y=3717 in a 900px viewport. The old test also clicked the FIRST question, which is open by default, so it actually COLLAPSED the accordion."
+      ],
+      "stateShaDistinctness": "8/8 state screenshots have distinct SHA-256; 0 duplicates."
+    },
+    "testInfrastructureDefectFound": {
+      "issue": "playwright.config.ts used reuseExistingServer with url http://localhost:3000. An unrelated local project ('NDTHICH LAND', PID 61492) was listening on 3000, so the suite was executing against a DIFFERENT WEBSITE.",
+      "impact": "A functional run under that server reported 19 passed with many failures whose markup does not exist in this repo. Any previous local run that reused port 3000 cannot be trusted.",
+      "fix": "The suite now owns a dedicated port (3100, PLAYWRIGHT_PORT overridable) and reuseExistingServer is false, so a port collision fails loudly instead of silently testing someone else's site. The other project's server was left running and untouched."
+    },
+    "verification": {
+      "typecheck": "PASS (tsc --noEmit, 0 errors)",
+      "lint": "PASS (eslint ., 0 errors) - next-env.d.ts, auto-generated and gitignored, is now ignored so its Next-authored triple-slash reference stops producing a false error",
+      "build": "PASS (next build, 36/36 static pages)",
+      "functional": "PASS 72/72 against this project's own server",
+      "evidence": "PASS 30/30 captured from the live Vercel preview",
+      "recoveryAssetChecksum": "sources 11/11 PASS; outputs 45/45 produced; declared-hash agreement 1/45 (see assetProduction)"
+    },
+    "livePreview": "https://lacvietmedia-3i481drlc-lucifer-scmta.vercel.app",
+    "comparisonBoard": {
+      "mobileMasterFix": "The board's MOBILE section now compares against the REAL mobile column cropped from ui-000..ui-009 (each master contains a desktop mockup on the left and a mobile mockup on the right; the gutter is detected programmatically per image). The previous board repeated the desktop master in the mobile rows, which the audit rejected.",
+      "detectedMobileColumnOffsets": {
+        "ui-000": 800,
+        "ui-001": 713,
+        "ui-002": 717,
+        "ui-003": 730,
+        "ui-004": 727,
+        "ui-005": 700,
+        "ui-006": 582,
+        "ui-007": 601,
+        "ui-008": 582,
+        "ui-009": 702
+      }
+    },
+    "remainingDeltasFlaggedNotHidden": [
+      "Home mobile: the master places the phoenix as a small watermark at the top-right of the hero; this build places it below the CTA block. Position differs, asset is correct.",
+      "Home mobile: the master orders CTAs before the three proof items; this build keeps proof items then CTAs, matching the desktop order.",
+      "lac-viet-logo-horizontal-approved is an exact master crop that includes its own black background, so it shows a faint dark plate on the header. Removing it would mean editing approved pixels, which the contract forbids - flagged for ChatGPT to supply a transparent variant if wanted."
+    ]
+  },
+  "v3HdK": {
+    "authorityIntegrated": "4f593dfa744377e63ce20218bde08286caa30216",
+    "authorityMergeCommit": "465345233aed499dd35cc95a7d9e3a6a3a0e58a2",
+    "authorityScopeVerified": "Diff vs merge base 440ca7d touches only .webby/ (3 files).",
+    "driveVerification": {
+      "shardsDownloaded": "10/10",
+      "sha256VerifiedBeforeExtraction": "10/10 PASS, 0 FAIL",
+      "totalBytes": 486710536,
+      "uniqueAliasTargetsPresent": "38/38",
+      "aliasesWired": "50/50 verbatim from authority",
+      "referenceOnlyQuarantined": "05_REFERENCE_ONLY extracted to a quarantine dir; never copied into public/",
+      "noDriveBrowsing": true,
+      "noImageSearchOrGeneration": true
+    },
+    "runtime": {
+      "assetRoot": "public/assets/v3 (38 targets)",
+      "v2CropsDeleted": "public/assets/recovery-v2 removed entirely; superseded PHA1 crops removed. Live preview returns 404 for /assets/recovery-v2/... and a functional test asserts no reference-only bytes are served.",
+      "globalLogo": "Approved horizontal SVG vector. Also resolves the V2 nit that the raster logo carried a baked-in black plate.",
+      "supersededGeometry": "Showcase / support CTA / digital CTA are now full 1920x1080 production renders; the 516x33, 295x120 and 205x98 source-limited geometry and its tests are retired and replaced by a noFakeUpscale + aspect-preservation guard."
+    },
+    "lossyDeliveryApproval": {
+      "rule": "V3 rules.mustNot forbids converting production PNG to lossy WebP/AVIF without user approval.",
+      "approvalObtained": true,
+      "howObtained": "User was shown the cost (24.9 MB per 4K hero, 6.2 MB per FHD card, ~80 MB for /du-an) and explicitly chose high-quality WebP for delivery.",
+      "implementation": "next.config.ts images.formats=['image/webp'], qualities=[90]. Delivery only — the lossless masters are untouched at rest.",
+      "svgHandling": "dangerouslyAllowSVG enabled for the first-party vector logo, with sandbox + CSP restricting it."
+    },
+    "assetsRequiringReRenderByChatGPT": {
+      "classification": "AUTHORITY_ASSET_FIDELITY_DEFECT (not a Claude implementation defect)",
+      "finding": "15 delivered assets are the correct resolution but a different, much simpler subject than the approved master — not higher-fidelity versions of it.",
+      "evidencePack": "V3_ASSETS_NEED_RERENDER.png — direct master-vs-delivered side-by-side for all 15.",
+      "items": [
+        "knowledge-hero-master",
+        "project-cover-03",
+        "project-cover-04",
+        "project-cover-06",
+        "project-cover-07",
+        "project-cover-08",
+        "project-cover-10",
+        "project-cover-11",
+        "project-cover-12",
+        "article-cover-02",
+        "article-cover-03",
+        "article-cover-04",
+        "article-cover-05",
+        "article-cover-06",
+        "article-cover-07"
+      ],
+      "examples": {
+        "project-cover-07": "master = real website screenshot (dark, ferris wheel); V3 = 'SEO' text + blue line on a grid",
+        "project-cover-12": "master = Edu Smart website + phone mockup; V3 = 'ADS ROAS +42%' + drawn laptop",
+        "article-cover-03": "master = neon TikTok artwork; V3 = outlined rectangle + '7x'",
+        "knowledge-hero-master": "master = 3D book/lamp/magnifier/LAC VIET laptop render; V3 = flat shapes"
+      },
+      "consequence": "Home project row and knowledge row render as flat schematic cards where the master shows photographic work. This is a visual regression against the V2 recovery crops, which were low-res but faithful; those crops were removed because V3 rules forbid them as runtime bytes.",
+      "heroFramingObservation": "The 4K hero canvases place a native-resolution object in the centre of a 3840x2160 field, so the phoenix renders noticeably smaller than in V2. Flagged in case the framing was unintended.",
+      "notADefect": "404-background is only 31 distinct colours, but the master's 404 panel calls for a subtle dark texture, so it was judged correct and shipped.",
+      "resolutionOwner": "ChatGPT (asset authority)"
+    },
+    "testInfrastructure": {
+      "coldCacheContention": "The lossless V3 masters make Next's optimizer do real CPU work per variant. Under 8 parallel workers the cold-cache queue produced navigation aborts on /du-an that looked like product failures but were not — the same URL served in 28 ms when requested directly.",
+      "fix": "Added a serial warm-up Playwright project that primes the optimizer cache before the functional and evidence suites, reduced workers to 4, and raised the per-test timeout.",
+      "portOwnership": "Still in force from the previous pass: the suite owns port 3100 instead of reusing whatever occupies 3000."
+    },
+    "verification": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "build": "PASS 36/36",
+      "functional": "PASS 74/74",
+      "evidence": "PASS 30/30 from live preview",
+      "stateShaDistinct": "8/8 distinct, 0 duplicates",
+      "referenceOnlyBytesServed": 0
+    },
+    "livePreview": "https://lacvietmedia-elor6k8t1-lucifer-scmta.vercel.app"
+  },
+  "v3Fidelity": {
+    "authorityIntegrated": "d9f6d3f88cabf14d4f44ee1a2f677c8806fda5ad",
+    "authorityMergeCommit": "cf563808f3bfbda97b7d10a63f86748001e8e1c3",
+    "authorityScopeVerified": "Diff vs merge base 4f593df touches only .webby/ (5 files).",
+    "prHandoffComment": "5346057734",
+    "delivery": {
+      "logicalAssets": 15,
+      "files": 16,
+      "discoveryRule": "Downloaded strictly by manifest driveFileId. The manifest warns the Drive folder holds historical duplicates with identical filenames, so no file was resolved by name.",
+      "sha256OnDownload": "16/16 PASS",
+      "sha256OnDiskAfterReplace": "16/16 PASS",
+      "replacedExistingStablePaths": 15,
+      "newPath": "runtime/hero/knowledge-hero-fhd.png"
+    },
+    "fidelityOutcome": "Direct old-vs-new inspection confirms all 15 are now real renders rather than text-on-a-grid: project-cover-07 is the ferris-wheel website shot the approved master shows, article-cover-03 is the neon TikTok artwork, knowledge-hero is the gold 3D desk composition.",
+    "metricCorrection": "Claude's earlier distinct-colour proxy under-reported the improvement for article-cover-04/05/07 (counts barely moved) — flat-design illustrations legitimately carry few colours. The visual comparison, not the colour count, is the reliable check.",
+    "flaggedUpstream": "The delivered runtime/hero/knowledge-hero-fhd.png is present but unreferenced: the V3 alias map resolves knowledge-hero-master to the 4K master, and the manifest forbids rename/remap, so the alias was left untouched rather than silently repointed.",
+    "constraintsHonoured": [
+      "no redesign",
+      "no image search/generation/substitution",
+      "no rename or remap",
+      "no reference-only bytes under public/ (verified, and /assets/recovery-v2/... returns 404 live)"
+    ],
+    "verification": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "build": "PASS 36/36",
+      "functional": "PASS 74/74",
+      "evidence": "PASS 30/30 from live preview",
+      "stateShaDistinct": "8/8, 0 duplicates"
+    },
+    "livePreview": "https://lacvietmedia-dnvqxet72-lucifer-scmta.vercel.app",
+    "uncommittedWorkNote": "The user's in-progress nav-glider and CTA effect experiments were stashed (git stash) before this pass so the evidence captures the approved build, not local design experiments. They are preserved and were not committed."
+  }
+}

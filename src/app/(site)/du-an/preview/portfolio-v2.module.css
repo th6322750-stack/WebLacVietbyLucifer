@@ -1,0 +1,6570 @@
+.portfolio {
+  --ink: #0d120e;
+  --paper: #f1ebdd;
+  --paper-deep: #ddd1bb;
+  --brass: #b58b4c;
+  --red: #912f24;
+  --blue: #071621;
+  --sage: #536c5e;
+  --line: color-mix(in srgb, currentColor 20%, transparent);
+  --pointer-x: 50vw;
+  --pointer-y: 50vh;
+  position: relative;
+  overflow: clip;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body), Arial, sans-serif;
+  cursor: default;
+}
+
+.portfolio *,
+.portfolio *::before,
+.portfolio *::after {
+  box-sizing: border-box;
+}
+
+.portfolio h1,
+.portfolio h2,
+.portfolio h3,
+.portfolio p {
+  margin: 0;
+}
+
+.portfolio h1,
+.portfolio h2,
+.portfolio h3 {
+  text-wrap: balance;
+}
+
+.portfolio a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pointerGlow {
+  position: fixed;
+  z-index: 80;
+  top: var(--pointer-y);
+  left: var(--pointer-x);
+  width: 260px;
+  height: 260px;
+  translate: -50% -50%;
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(221, 174, 96, 0.08),
+    transparent 66%
+  );
+  mix-blend-mode: screen;
+}
+
+.toolbar {
+  position: fixed;
+  z-index: 100;
+  inset: 0 0 auto;
+  height: 70px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 4vw;
+  color: #f5eddf;
+  background: color-mix(in srgb, #07100b 78%, transparent);
+  border-bottom: 1px solid rgba(218, 178, 107, 0.24);
+  backdrop-filter: blur(22px) saturate(130%);
+}
+
+.brand {
+  justify-self: start;
+  font-family: var(--font-heading), serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #d6b06f !important;
+}
+
+.brand span {
+  display: block;
+  margin-top: 2px;
+  font: 600 7px/1 var(--font-body);
+  letter-spacing: 0.32em;
+}
+
+.navManifesto {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  opacity: 0.68;
+}
+
+.menu {
+  justify-self: end;
+}
+
+.menu summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 44px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu summary span {
+  color: #d6b06f;
+}
+
+.menu summary b {
+  position: relative;
+  padding-left: 20px;
+  font-size: 9px;
+}
+
+.menu summary b::before,
+.menu summary b::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 11px;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.35s ease;
+}
+
+.menu summary b::before {
+  top: 5px;
+}
+.menu summary b::after {
+  top: 9px;
+}
+.menu[open] summary b::before {
+  transform: translateY(2px) rotate(45deg);
+}
+.menu[open] summary b::after {
+  transform: translateY(-2px) rotate(-45deg);
+}
+
+.menuPanel {
+  position: fixed;
+  inset: 70px 0 auto;
+  display: grid;
+  grid-template-columns: 0.75fr 2fr;
+  gap: 6vw;
+  padding: 50px 5vw 60px;
+  color: var(--paper);
+  background:
+    linear-gradient(120deg, rgba(145, 47, 36, 0.18), transparent 45%),
+    rgba(9, 14, 10, 0.97);
+  border-bottom: 1px solid rgba(218, 178, 107, 0.35);
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.55);
+  transform-origin: top;
+  animation: menu-open 0.55s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.menuIntro small {
+  display: block;
+  margin-bottom: 20px;
+  color: var(--brass);
+  font-size: 8px;
+  letter-spacing: 0.24em;
+}
+
+.menuIntro strong {
+  display: block;
+  max-width: 250px;
+  font:
+    600 40px/0.98 var(--font-heading),
+    serif;
+}
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 36px;
+}
+
+.menuGrid button {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-height: 40px;
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  text-align: left;
+  font-size: 11px;
+  transition:
+    color 0.25s,
+    padding 0.25s;
+}
+
+.menuGrid button span {
+  color: var(--brass);
+  font-size: 8px;
+}
+
+.menuGrid button:hover,
+.menuGrid button[aria-current="location"] {
+  padding-left: 10px;
+  color: #e4b364;
+}
+
+.progress {
+  position: fixed;
+  z-index: 110;
+  top: 69px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform-origin: left;
+  background: linear-gradient(90deg, #8f2e23, #e7bc73);
+  transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scene {
+  --scene-pad-x: clamp(28px, 5vw, 82px);
+  position: relative;
+  scroll-margin-top: 70px;
+  min-height: max(760px, 100svh);
+  padding: 112px var(--scene-pad-x) 70px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 1px solid rgba(199, 161, 94, 0.16);
+}
+
+.paper {
+  background: var(--paper);
+  color: #171711;
+}
+
+.red {
+  background: var(--red);
+  color: #f3e8d5;
+}
+
+.blue {
+  background: var(--blue);
+  color: #eef1ed;
+}
+
+.sage {
+  background: #d8dfd5;
+  color: #15221a;
+}
+
+.scene::after {
+  content: "";
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.sceneMeta,
+.sceneFoot {
+  position: absolute;
+  z-index: 30;
+  left: var(--scene-pad-x);
+  right: var(--scene-pad-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.sceneMeta {
+  top: 90px;
+}
+.sceneFoot {
+  bottom: 24px;
+}
+
+.portfolio [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.9s ease var(--delay, 0ms),
+    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms),
+    clip-path 1.25s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms);
+}
+
+.portfolio [data-reveal][data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.visual {
+  object-fit: cover;
+  transition: scale 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scene[data-active="true"] .visual {
+  scale: 1.025;
+}
+
+.drumPattern {
+  display: block;
+  aspect-ratio: 1;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 28px 70px rgba(0, 0, 0, 0.35));
+}
+
+.drumAsset {
+  object-fit: contain;
+  object-position: center;
+}
+
+.seal {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  aspect-ratio: 1;
+  color: #e0b46a;
+  border: 1px solid currentColor;
+  outline: 1px solid currentColor;
+  outline-offset: -7px;
+  font:
+    700 15px var(--font-heading),
+    serif;
+  letter-spacing: 0.05em;
+  transform: rotate(-7deg);
+}
+
+/* 01 — cover */
+.cover {
+  min-height: max(820px, 100svh);
+  padding-left: 7vw;
+}
+
+.cover > .visual,
+.coverWash {
+  position: absolute;
+  z-index: -4;
+  inset: 0;
+}
+
+.cover > .visual {
+  object-position: center;
+}
+
+.coverWash {
+  z-index: -3;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(6, 12, 8, 0.98) 0%,
+      rgba(6, 12, 8, 0.72) 34%,
+      transparent 64%
+    ),
+    linear-gradient(0deg, rgba(6, 12, 8, 0.9), transparent 42%);
+}
+
+.coverPattern {
+  position: absolute;
+  z-index: -1;
+  top: 10%;
+  right: 3%;
+  width: min(56vw, 760px);
+  opacity: 0.34;
+  filter: saturate(0.86) contrast(1.08) drop-shadow(0 38px 90px #000);
+  mix-blend-mode: screen;
+  animation: pattern-spin 70s linear infinite;
+}
+
+.coverGhost {
+  position: absolute;
+  z-index: -2;
+  right: -0.04em;
+  bottom: -0.21em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242, 236, 223, 0.16);
+  font:
+    700 clamp(300px, 43vw, 680px)/0.75 var(--font-heading),
+    serif;
+  letter-spacing: -0.11em;
+}
+
+.coverTitle {
+  position: relative;
+  z-index: 4;
+  max-width: 800px;
+  margin-top: 8vh;
+}
+
+.coverTitle > p,
+.caseTitle > span,
+.applicationIntro > span,
+.portalTitle > span,
+.processTitle > span,
+.capabilityTitle > span,
+.languageTitle > span,
+.mobileTitle > span,
+.handoffTitle > span,
+.principleTitle > span,
+.contactTitle > span {
+  display: block;
+  margin-bottom: 20px;
+  color: #d9aa61;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.coverTitle h1 {
+  max-width: 720px;
+  font:
+    600 clamp(90px, 11vw, 178px)/0.72 var(--font-heading),
+    serif;
+  letter-spacing: -0.075em;
+}
+
+.coverTitle h1 span {
+  display: block;
+  margin-left: 0.42em;
+  color: #d8aa62;
+  font-family: var(--font-display), serif;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.coverEdition {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 34px;
+  color: #d8aa62;
+  font:
+    600 34px var(--font-heading),
+    serif;
+}
+
+.coverEdition i {
+  display: block;
+  width: 90px;
+  height: 1px;
+  background: currentColor;
+}
+
+.coverStatement {
+  position: absolute;
+  z-index: 4;
+  right: 5vw;
+  bottom: 10vh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px 24px;
+  width: min(380px, 33vw);
+  padding: 28px;
+  background: rgba(6, 12, 8, 0.56);
+  border: 1px solid rgba(217, 170, 97, 0.38);
+  backdrop-filter: blur(12px);
+}
+
+.coverStatement p {
+  align-self: center;
+  font:
+    600 21px/1.35 var(--font-heading),
+    serif;
+}
+
+.coverStatement a {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.coverStatement a span {
+  font-size: 18px;
+}
+
+/* 02 — index */
+.indexScene {
+  display: grid;
+  grid-template-columns: 0.7fr 1.6fr;
+  gap: 8vw;
+  align-items: center;
+}
+
+.indexPattern {
+  position: absolute;
+  right: -12vw;
+  top: -18vw;
+  width: 52vw;
+  opacity: 0.12;
+  filter: sepia(1) saturate(0.75) contrast(1.25);
+  mix-blend-mode: multiply;
+  transform: rotate(8deg);
+}
+
+.indexLead > span,
+.manifestoCore > span,
+.studioPaper > span,
+.typePoster > span {
+  display: block;
+  margin-bottom: 22px;
+  color: #8d2e24;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+}
+
+.indexLead h2,
+.processTitle h2,
+.capabilityTitle h2,
+.portalTitle h2,
+.applicationIntro h2,
+.languageTitle h2,
+.handoffTitle h2,
+.principleTitle h2,
+.contactTitle h2 {
+  font:
+    600 clamp(58px, 6vw, 104px)/0.88 var(--font-heading),
+    serif;
+  letter-spacing: -0.055em;
+}
+
+.indexLead h2 em,
+.processTitle h2 em,
+.capabilityTitle h2 em,
+.portalTitle h2 em,
+.applicationIntro h2 em,
+.languageTitle h2 em,
+.handoffTitle h2 em,
+.principleTitle h2 em,
+.contactTitle h2 em {
+  color: var(--brass);
+  font-family: var(--font-display), serif;
+  font-weight: 600;
+}
+
+.indexLead > p {
+  max-width: 360px;
+  margin-top: 34px;
+  color: #4d4b43;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.indexColumns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+.indexColumns > div {
+  min-width: 0;
+}
+
+.indexColumns > div:nth-child(2) {
+  margin-top: 70px;
+}
+.indexColumns > div:nth-child(3) {
+  margin-top: 140px;
+}
+
+.indexColumns > div > div {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #161611;
+}
+
+.indexColumns > div > div b {
+  font:
+    600 68px/0.8 var(--font-heading),
+    serif;
+  color: #922f24;
+}
+
+.indexColumns > div > div span {
+  padding-bottom: 4px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.indexColumns a {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(18, 18, 12, 0.18);
+  font: 600 11px var(--font-body);
+  transition:
+    padding 0.25s,
+    color 0.25s;
+}
+
+.indexColumns a:hover {
+  padding-left: 8px;
+  color: #922f24;
+}
+.indexColumns a b {
+  color: #9b2f23;
+  font-size: 8px;
+}
+
+/* 03 — manifesto */
+.manifestoScene {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  align-items: center;
+  padding-bottom: 120px;
+}
+
+.manifestoWord {
+  position: absolute;
+  top: 48%;
+  left: -0.07em;
+  translate: 0 -50%;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 233, 216, 0.18);
+  font:
+    800 clamp(220px, 35vw, 560px)/0.7 var(--font-heading),
+    serif;
+  letter-spacing: -0.1em;
+}
+
+.manifestoCore {
+  position: relative;
+  z-index: 2;
+  padding-left: 4vw;
+}
+
+.manifestoCore > span {
+  color: #f0c37d;
+}
+
+.manifestoCore h2 {
+  font:
+    600 clamp(76px, 8.4vw, 142px)/0.84 var(--font-heading),
+    serif;
+  letter-spacing: -0.065em;
+}
+
+.manifestoCore h2 i {
+  color: #121510;
+  font-family: var(--font-display), serif;
+}
+
+.manifestoCore h2 em {
+  color: #edc98c;
+  font-family: var(--font-display), serif;
+  font-weight: 600;
+}
+
+.manifestoNote {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  max-width: 360px;
+  padding: 28px 0 28px 28px;
+  border-left: 1px solid rgba(244, 233, 216, 0.48);
+}
+
+.manifestoNote b {
+  font-size: 8px;
+  letter-spacing: 0.24em;
+}
+.manifestoNote p {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.marquee {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 45px;
+  overflow: hidden;
+  padding: 12px 0;
+  color: #191812;
+  background: #edc98c;
+  transform: rotate(-1.2deg) scale(1.03);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+}
+
+.marquee span {
+  display: inline-block;
+  min-width: 200%;
+  animation: marquee 20s linear infinite;
+}
+
+/* 04 — studio */
+.studioScene {
+  background: #0b0e0b;
+}
+.studioPhoto {
+  position: absolute;
+  z-index: -2;
+  inset: 70px 0 0 30%;
+  clip-path: polygon(9% 0, 100% 0, 100% 100%, 0 100%);
+}
+.studioPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #0b0e0b 0%, transparent 35%),
+    linear-gradient(0deg, rgba(7, 9, 7, 0.4), transparent);
+}
+.studioPaper {
+  position: relative;
+  z-index: 3;
+  width: min(560px, 44vw);
+  margin: 12vh 0 0 3vw;
+  padding: 50px 54px;
+  color: #171510;
+  background: #ede5d5;
+  box-shadow: 30px 35px 0 rgba(145, 47, 36, 0.72);
+  transform: rotate(-1.4deg);
+}
+.studioPaper h2 {
+  font:
+    650 clamp(62px, 6vw, 104px)/0.86 var(--font-heading),
+    serif;
+  letter-spacing: -0.06em;
+}
+.studioPaper h2 em {
+  color: #963126;
+  font-family: var(--font-display), serif;
+}
+.studioPaper > p {
+  max-width: 420px;
+  margin-top: 30px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.handNote {
+  position: absolute;
+  right: 34px;
+  bottom: -54px;
+  padding: 18px 26px;
+  color: #eee5d4;
+  background: #11150f;
+  font:
+    italic 18px/1.35 var(--font-display),
+    serif;
+  transform: rotate(3deg);
+}
+.studioScene > .seal {
+  position: absolute;
+  right: 4vw;
+  bottom: 9vh;
+  z-index: 4;
+  background: rgba(9, 12, 9, 0.65);
+}
+
+/* 05 — capability orbit */
+.capabilityScene {
+  background: #111611;
+}
+.capabilityPattern {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(65vw, 850px);
+  translate: -50% -50%;
+  opacity: 0.4;
+  filter: saturate(0.8) contrast(1.14) drop-shadow(0 45px 90px #000);
+  mix-blend-mode: screen;
+  animation: pattern-spin 80s linear infinite reverse;
+}
+.capabilityTitle {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+}
+.capabilityTitle h2 {
+  max-width: 9ch;
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(54px, 5.2vw, 86px);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+  text-transform: uppercase;
+}
+.capabilityTitle h2 em {
+  display: block;
+  margin-top: 0.18em;
+  font-family: var(--font-display), serif;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  text-transform: none;
+}
+.capabilityOrbit {
+  position: absolute;
+  z-index: 4;
+  inset: 180px 5vw 75px 42vw;
+}
+.orbitCore {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  color: #16150f;
+  background: #d8aa62;
+  box-shadow:
+    0 0 0 18px rgba(216, 170, 98, 0.08),
+    0 0 80px rgba(216, 170, 98, 0.16);
+}
+.orbitCore span {
+  position: absolute;
+  top: 45px;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+}
+.orbitCore b {
+  position: absolute;
+  top: 66px;
+  font:
+    700 29px var(--font-heading),
+    serif;
+}
+.capabilityNode {
+  --x: calc((var(--i) % 2) * 55%);
+  position: absolute;
+  left: var(--x);
+  top: calc(floor(var(--i) / 2) * 58%);
+  width: 45%;
+  min-height: 150px;
+  padding: 26px;
+  background:
+    linear-gradient(145deg, rgba(19, 25, 18, 0.88), rgba(5, 9, 6, 0.66));
+  border: 1px solid rgba(213, 172, 99, 0.36);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(16px) saturate(125%);
+}
+.capabilityNode:nth-child(2) {
+  left: 0;
+  top: 0;
+}
+.capabilityNode:nth-child(3) {
+  right: 0;
+  left: auto;
+  top: 0;
+}
+.capabilityNode:nth-child(4) {
+  left: 0;
+  bottom: 0;
+  top: auto;
+}
+.capabilityNode:nth-child(5) {
+  right: 0;
+  left: auto;
+  bottom: 0;
+  top: auto;
+}
+.capabilityNode > span {
+  color: #d8aa62;
+  font-size: 9px;
+}
+.capabilityNode h3 {
+  margin-top: 18px;
+  font:
+    600 27px var(--font-heading),
+    serif;
+}
+.capabilityNode p {
+  margin-top: 8px;
+  color: #aca99f;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+/* 06 — process */
+.processScene {
+  padding-top: 130px;
+}
+.processTitle {
+  max-width: 900px;
+}
+.processPath {
+  position: relative;
+  height: 350px;
+  margin-top: 60px;
+}
+.processPath svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.processPath path {
+  fill: none;
+  stroke: #962f25;
+  stroke-width: 2;
+  stroke-dasharray: 8 9;
+  animation: process-dash 16s linear infinite;
+}
+.processCurrent {
+  position: absolute;
+  z-index: 5;
+  inset: 0 auto auto 0;
+  width: 18px;
+  aspect-ratio: 1;
+  border: 2px solid #f1ebdd;
+  border-radius: 50%;
+  background: #982f25;
+  box-shadow:
+    0 0 0 8px rgba(152, 47, 37, 0.12),
+    0 10px 30px rgba(152, 47, 37, 0.35);
+  offset-path: path("M 0 160 C 130 25 215 250 355 116 S 600 42 710 176 S 880 242 1000 92");
+  offset-rotate: 0deg;
+  animation: process-travel 13s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.processCurrent span {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 42px;
+  height: 1px;
+  background: linear-gradient(90deg, #982f25, transparent);
+  transform: translate(-2px, -50%);
+}
+.processStop {
+  position: absolute;
+  width: 190px;
+  padding: 18px;
+  background: rgba(241, 235, 221, 0.88);
+  border-top: 3px solid #982f25;
+  box-shadow: 0 15px 35px rgba(35, 30, 20, 0.1);
+}
+.processStop:nth-of-type(1) {
+  left: 3%;
+  top: 44%;
+}
+.processStop:nth-of-type(2) {
+  left: 29%;
+  top: 5%;
+}
+.processStop:nth-of-type(3) {
+  left: 56%;
+  top: 49%;
+}
+.processStop:nth-of-type(4) {
+  right: 2%;
+  top: 13%;
+}
+.processStop b {
+  color: #982f25;
+  font:
+    600 34px var(--font-heading),
+    serif;
+}
+.processStop h3 {
+  margin-top: 12px;
+  font: 700 14px var(--font-body);
+  letter-spacing: 0.12em;
+}
+.processStop p {
+  margin-top: 10px;
+  color: #625f55;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.processQuote {
+  position: absolute;
+  right: 6vw;
+  bottom: 60px;
+  font:
+    italic 22px var(--font-display),
+    serif;
+  color: #8e2d23;
+}
+
+/* 07 — project portal */
+.projectPortal {
+  background: #090e0a;
+}
+.portalTitle {
+  position: relative;
+  z-index: 3;
+  max-width: 600px;
+}
+.projectMosaic {
+  position: absolute;
+  inset: 180px 5vw 70px 42vw;
+}
+.projectTile {
+  position: absolute;
+  display: block;
+  width: 46%;
+  color: #eee9de;
+}
+.projectTile:nth-child(1) {
+  left: 0;
+  top: 4%;
+  width: 50%;
+}
+.projectTile:nth-child(2) {
+  right: 0;
+  top: 17%;
+  width: 43%;
+}
+.projectTile:nth-child(3) {
+  left: 25%;
+  bottom: 0;
+  width: 48%;
+}
+.projectTile > .tileVisual {
+  position: relative;
+  height: clamp(180px, 22vh, 265px);
+  overflow: hidden;
+  clip-path: polygon(0 0, 94% 5%, 100% 92%, 6% 100%);
+}
+.projectTile::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 10px -10px -10px 10px;
+  background: var(--accent);
+  opacity: 0.55;
+  transform: rotate(-2deg);
+}
+.projectTile:nth-child(2)::before {
+  transform: rotate(2deg);
+}
+.projectTile > span {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: -15px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  aspect-ratio: 1;
+  color: #111;
+  background: #e7ddcb;
+  font-size: 9px;
+}
+.projectTile h3 {
+  margin-top: 12px;
+  font:
+    600 23px var(--font-heading),
+    serif;
+}
+.projectTile p {
+  margin-top: 3px;
+  color: #969a91;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.projectTile > b {
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  color: var(--accent);
+  font-size: 7px;
+  letter-spacing: 0.18em;
+}
+.projectTile:hover .visual {
+  scale: 1.08;
+}
+
+/* case stories */
+.caseStory {
+  min-height: max(850px, 105svh);
+}
+.caseHero,
+.caseMaterial,
+.fullBleed,
+.lightObject,
+.spaCrop,
+.materialBackdrop,
+.lightLab,
+.spaMaterial,
+.languagePhoto,
+.handoffPhoto {
+  position: absolute;
+  overflow: hidden;
+}
+.caseTitle {
+  position: absolute;
+  z-index: 8;
+}
+.caseTitle h2 {
+  font:
+    650 clamp(90px, 11vw, 180px)/0.74 var(--font-heading),
+    serif;
+  letter-spacing: -0.075em;
+}
+.caseTitle h2 em {
+  font-family: var(--font-display), serif;
+  font-weight: 600;
+}
+.caseTitle > p {
+  margin-top: 28px;
+  font:
+    600 24px/1.3 var(--font-heading),
+    serif;
+}
+.caseVertical {
+  position: absolute;
+  z-index: 8;
+  right: 24px;
+  top: 50%;
+  writing-mode: vertical-rl;
+  font-size: 7px;
+  letter-spacing: 0.28em;
+}
+
+.teaStory {
+  background: #e9e0cc;
+  color: #1a1a12;
+}
+.teaStory::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 27%;
+  height: 100%;
+  background: #173021;
+}
+.teaStory .caseHero {
+  z-index: 2;
+  left: 17%;
+  top: 15%;
+  width: 57%;
+  height: 72%;
+  clip-path: polygon(0 5%, 96% 0, 100% 90%, 7% 100%);
+}
+.teaStory .caseMaterial {
+  z-index: 4;
+  right: 4%;
+  bottom: 8%;
+  width: 36%;
+  height: 42%;
+  box-shadow: -25px 25px 0 rgba(145, 47, 36, 0.8);
+  transform: rotate(2deg);
+}
+.teaStory .caseTitle {
+  z-index: 6;
+  left: 5vw;
+  top: 30%;
+  color: #f1eadf;
+}
+.teaStory .caseTitle h2 {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.28);
+}
+.teaStory .caseTitle h2 em {
+  color: #d6b16c;
+}
+.teaStory .caseTitle > p {
+  color: #ece0c9;
+}
+.teaStory > .seal {
+  position: absolute;
+  z-index: 9;
+  left: 68%;
+  top: 17%;
+  color: #912f24;
+  background: #eadfca;
+}
+
+.lightStory {
+  background: #050d13;
+}
+.lightStory .fullBleed {
+  z-index: -4;
+  inset: 0;
+}
+.lightStory .fullBleed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 12, 18, 0.97) 0%,
+      rgba(4, 12, 18, 0.68) 35%,
+      transparent 75%
+    ),
+    linear-gradient(0deg, rgba(4, 12, 18, 0.7), transparent 50%);
+}
+.lightStory .caseTitle {
+  left: 7vw;
+  top: 24%;
+}
+.lightStory .caseTitle h2 {
+  font-size: clamp(120px, 16vw, 240px);
+}
+.lightStory .caseTitle h2 em {
+  color: #f0a33a;
+}
+.lightObject {
+  z-index: 5;
+  right: 4vw;
+  bottom: 6vh;
+  width: 34vw;
+  height: 36vh;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(4% 0, 100% 6%, 95% 100%, 0 91%);
+}
+.lightBeam {
+  position: absolute;
+  z-index: 3;
+  top: -20%;
+  right: 15%;
+  width: 12vw;
+  height: 150%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 180, 65, 0.16),
+    transparent
+  );
+  transform: rotate(18deg);
+  filter: blur(8px);
+  animation: beam 6s ease-in-out infinite alternate;
+}
+.lightNumber {
+  position: absolute;
+  z-index: 2;
+  right: -0.04em;
+  top: -0.16em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(126, 167, 196, 0.22);
+  font:
+    700 520px/1 var(--font-heading),
+    serif;
+}
+
+.spaStory {
+  background: #d9e0d7;
+}
+.spaCrop {
+  z-index: -3;
+  inset: 0 0 0 32%;
+  clip-path: ellipse(72% 86% at 74% 50%);
+}
+.spaCrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #d9e0d7 0%, transparent 38%),
+    linear-gradient(0deg, rgba(48, 72, 60, 0.35), transparent 45%);
+}
+.spaStory .caseTitle {
+  left: 7vw;
+  top: 25%;
+}
+.spaStory .caseTitle > span {
+  color: #476655;
+}
+.spaStory .caseTitle h2 {
+  font-size: clamp(120px, 14vw, 220px);
+  color: #20382c;
+}
+.spaStory .caseTitle > p {
+  color: #385849;
+  font-size: 30px;
+}
+.spaMist {
+  position: absolute;
+  z-index: 1;
+  inset: 35% -10% auto 30%;
+  height: 34%;
+  background: rgba(235, 241, 235, 0.32);
+  filter: blur(40px);
+  animation: mist 10s ease-in-out infinite alternate;
+}
+.spaWords {
+  position: absolute;
+  z-index: 5;
+  right: 3vw;
+  bottom: 7vh;
+  display: flex;
+  gap: 40px;
+  color: #eff3ed;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+}
+.spaStory > .seal {
+  position: absolute;
+  z-index: 6;
+  left: 11vw;
+  bottom: 12vh;
+  color: #557463;
+}
+
+.spaSealCluster {
+  position: absolute;
+  z-index: 6;
+  left: 8vw;
+  bottom: 9vh;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: #456957;
+  transform: rotate(-4deg);
+}
+
+.spaSealCluster .seal {
+  width: 94px;
+  background: rgba(224, 231, 220, 0.64);
+  box-shadow:
+    0 0 0 12px rgba(85, 116, 99, 0.06),
+    0 18px 40px rgba(36, 62, 48, 0.12);
+  font-size: 20px;
+}
+
+.spaSealCluster > i {
+  width: clamp(70px, 8vw, 130px);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.52;
+}
+
+.spaSealCluster > span {
+  display: grid;
+  gap: 7px;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+
+.spaSealCluster b {
+  font-size: 6px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  opacity: 0.68;
+}
+
+/* application scenes 09, 11, 13 */
+.applicationScene {
+  min-height: max(900px, 110svh);
+}
+.applicationIntro {
+  position: absolute;
+  z-index: 8;
+  top: 14%;
+  left: 5vw;
+  width: 37%;
+}
+.applicationIntro h2 {
+  font-size: clamp(52px, 5vw, 82px);
+}
+.applicationIntro > p {
+  max-width: 440px;
+  margin-top: 26px;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.webPlacement {
+  position: absolute;
+  z-index: 6;
+  right: 6vw;
+  top: 19%;
+  width: 56%;
+}
+.phonePlacement {
+  position: absolute;
+  z-index: 9;
+  right: 4vw;
+  bottom: 5%;
+  width: 175px;
+}
+.materialBackdrop {
+  z-index: 0;
+  left: -4%;
+  bottom: -8%;
+  width: 48%;
+  height: 52%;
+  opacity: 0.35;
+  clip-path: polygon(0 15%, 100% 0, 88% 100%, 5% 90%);
+}
+.applicationTokens {
+  position: absolute;
+  z-index: 7;
+  left: 5vw;
+  bottom: 10%;
+  display: flex;
+  gap: 7px;
+}
+.applicationTokens i {
+  padding: 10px 13px;
+  border: 1px solid rgba(20, 20, 14, 0.2);
+  font-size: 7px;
+  font-style: normal;
+  letter-spacing: 0.15em;
+}
+
+.materialPassport {
+  position: absolute;
+  z-index: 8;
+  right: 20vw;
+  bottom: 5.5%;
+  width: min(360px, 25vw);
+  padding: 13px 15px 14px;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  color: #604f35;
+  background: color-mix(in srgb, #eee7d8 84%, transparent);
+  box-shadow: 0 16px 34px rgba(28, 24, 17, 0.08);
+  backdrop-filter: blur(7px);
+}
+
+.materialPassportHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 9px;
+  font-size: 6px;
+  letter-spacing: 0.2em;
+}
+
+.materialPassportHead b {
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.materialPassportItems {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.materialPassportItems > span {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.materialPassportItems i {
+  font-size: 6px;
+  font-style: normal;
+  opacity: 0.48;
+}
+
+.webFrame {
+  position: relative;
+  width: 100%;
+  padding: 9px;
+  color: #171812;
+  background: var(--project-paper, #eee8da);
+  border: 1px solid rgba(25, 25, 18, 0.3);
+  box-shadow: 0 32px 80px rgba(12, 16, 12, 0.2);
+  transform: perspective(1000px) rotateY(-4deg) rotateX(2deg);
+}
+.browserTop {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 6px;
+  border-bottom: 1px solid rgba(40, 40, 30, 0.14);
+}
+.browserTop i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.browserTop span {
+  margin-left: auto;
+  font-size: 5px;
+  letter-spacing: 0.18em;
+}
+.webNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  padding: 0 18px;
+}
+.webNav b {
+  font:
+    600 17px var(--font-heading),
+    serif;
+}
+.webNav span {
+  font-size: 5px;
+}
+.webHero {
+  position: relative;
+  height: clamp(230px, 32vw, 400px);
+  overflow: hidden;
+}
+.webHero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(5, 12, 8, 0.82), transparent 65%);
+}
+.webHero > div {
+  position: absolute;
+  z-index: 2;
+  left: 7%;
+  top: 20%;
+  max-width: 48%;
+  color: #fff;
+}
+.webHero small {
+  display: block;
+  font-size: 5px;
+  letter-spacing: 0.18em;
+}
+.webHero strong {
+  display: block;
+  margin-top: 14px;
+  font:
+    600 clamp(24px, 3vw, 48px)/0.95 var(--font-heading),
+    serif;
+}
+.webHero > div > span {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 14px;
+  color: #171812;
+  background: var(--accent);
+  font-size: 6px;
+}
+.webModules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding: 9px 18px 3px;
+}
+.webModules > div {
+  position: relative;
+  min-height: 50px;
+  padding: 10px 12px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.webModules span,
+.webModules b {
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+.webModules span {
+  color: var(--accent);
+  font-size: 5px;
+}
+.webModules b {
+  margin-top: 8px;
+  font: 600 8px var(--font-heading), serif;
+}
+.webModules i {
+  position: absolute;
+  right: -12px;
+  bottom: -18px;
+  width: 46px;
+  aspect-ratio: 1;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0.35;
+}
+.webRail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 16px 18px 8px;
+}
+.webRail span {
+  padding-top: 8px;
+  border-top: 1px solid currentColor;
+  font-size: 5px;
+  letter-spacing: 0.12em;
+}
+
+.phoneFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.53;
+  overflow: hidden;
+  padding: 14px 7px 7px;
+  color: #161710;
+  background: #f0eadc;
+  border: 6px solid #171b17;
+  border-radius: 30px;
+  box-shadow: 0 28px 55px rgba(0, 0, 0, 0.35);
+  transform: rotate(4deg);
+}
+.phoneNotch {
+  position: absolute;
+  z-index: 5;
+  top: 4px;
+  left: 50%;
+  width: 38%;
+  height: 8px;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #171b17;
+}
+.phoneNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 34px;
+  padding: 0 8px;
+}
+.phoneNav b {
+  font:
+    600 10px var(--font-heading),
+    serif;
+}
+.phoneNav span {
+  font-size: 7px;
+}
+.phoneHero {
+  position: relative;
+  height: 53%;
+  overflow: hidden;
+}
+.phoneHero small {
+  position: absolute;
+  z-index: 2;
+  left: 10px;
+  top: 10px;
+  color: white;
+  font-size: 4px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.phoneHero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(5, 12, 8, 0.75), transparent 65%);
+}
+.phoneHero strong {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+  color: white;
+  font:
+    600 18px/0.98 var(--font-heading),
+    serif;
+}
+
+.phoneStage > div:nth-child(3) .phoneHero strong {
+  bottom: 26px;
+  right: 18px;
+}
+.phoneTabs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  padding: 4px 3px 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 4px;
+}
+.phoneTabs b {
+  padding: 5px 7px;
+  color: #fff;
+  background: var(--accent);
+}
+.phoneCards {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 4px;
+  padding: 8px 2px;
+}
+.phoneCards span {
+  min-height: 40px;
+  padding: 7px 5px;
+  background: color-mix(in srgb, var(--accent) 45%, #e8e0d1);
+  font-size: 4px;
+  font-weight: 700;
+}
+
+.teaApplication {
+  background: #eee7d8;
+  color: #191910;
+}
+.teaApplication .applicationIntro > span {
+  color: #912f24;
+}
+.teaApplication .applicationIntro h2 em {
+  color: #7a6f4e;
+}
+.teaApplication .phonePlacement {
+  right: 5vw;
+}
+.teaFrame {
+  --project-paper: #f1ebdc;
+}
+
+.lightApplication {
+  background: #07131d;
+}
+.lightApplication .applicationIntro {
+  top: 12%;
+  color: #eef2ed;
+}
+.lightApplication .applicationIntro > span {
+  color: #f0a33a;
+}
+.lightApplication .applicationIntro h2 em {
+  color: #f0a33a;
+}
+.lightApplication .lightLab {
+  z-index: 0;
+  inset: 0 47% 0 0;
+  opacity: 0.32;
+  clip-path: polygon(0 0, 100% 8%, 84% 100%, 0 100%);
+}
+.lightApplication .webPlacement {
+  top: 27%;
+  right: 4vw;
+  width: 58%;
+}
+.lightApplication .phonePlacement {
+  right: 3vw;
+}
+.lightApplication .materialPassport {
+  color: #efae4c;
+  background: rgba(5, 16, 24, 0.76);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24);
+}
+.lightFrame {
+  --project-paper: #0e1715;
+  color: #eee7d8;
+  border-color: rgba(239, 159, 47, 0.4);
+}
+.lightFrame .webHero::after {
+  background: linear-gradient(90deg, rgba(4, 9, 13, 0.88), transparent);
+}
+.lightFrame .phoneCards span {
+  background: #192a2e;
+}
+.phoneFrame.lightFrame { background: #122126; color: #fff3de; }
+.beamLabels {
+  position: absolute;
+  z-index: 8;
+  left: 5vw;
+  bottom: 10%;
+  display: flex;
+  gap: 32px;
+  color: #f0a33a;
+  font-size: 7px;
+  letter-spacing: 0.18em;
+}
+
+.spaApplication {
+  background: #e5e5d9;
+  color: #142119;
+}
+.spaApplication .spaMaterial {
+  z-index: 0;
+  inset: 0 50% 0 0;
+  opacity: 0.36;
+  clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
+}
+.spaApplication .applicationIntro > span {
+  color: #496b5a;
+}
+.spaApplication .applicationIntro h2 em {
+  color: #496b5a;
+}
+.spaApplication .webPlacement {
+  top: 23%;
+}
+.spaApplication .materialPassport {
+  color: #3f6652;
+  background: rgba(230, 232, 220, 0.82);
+}
+.spaFrame {
+  --project-paper: #e8eade;
+}
+.bookingCard {
+  position: absolute;
+  z-index: 10;
+  left: 6vw;
+  bottom: 8%;
+  width: 280px;
+  padding: 22px;
+  color: #edf1ea;
+  background: #304c3c;
+  box-shadow: 14px 14px 0 #c6bba5;
+  transform: rotate(-2deg);
+}
+.bookingCard small {
+  font-size: 6px;
+  letter-spacing: 0.18em;
+}
+.bookingCard b {
+  display: block;
+  margin: 14px 0 22px;
+  font:
+    600 21px var(--font-heading),
+    serif;
+}
+.bookingCard span {
+  display: block;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 8px;
+}
+
+/* 14 — visual language */
+.languageScene {
+  min-height: max(880px, 105svh);
+}
+.languagePhoto {
+  z-index: 0;
+  right: 0;
+  top: 0;
+  width: 47%;
+  height: 100%;
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
+}
+.languagePhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f1ebdd, transparent 40%);
+}
+.languageTitle {
+  position: absolute;
+  z-index: 4;
+  left: 5vw;
+  top: 12%;
+  max-width: 620px;
+}
+.languageTitle > span {
+  color: #942f25;
+}
+.typePoster {
+  position: absolute;
+  z-index: 5;
+  left: 5vw;
+  bottom: 8%;
+  width: 38%;
+  min-height: 330px;
+  padding: 30px;
+  color: #ece4d4;
+  background: #10150f;
+  box-shadow: 18px 18px 0 #952f25;
+  transform: rotate(-1deg);
+}
+.typePoster > span {
+  color: #cfa25e;
+}
+.typePoster strong {
+  display: block;
+  font:
+    650 120px/0.72 var(--font-heading),
+    serif;
+  letter-spacing: -0.08em;
+}
+.typePoster em {
+  display: block;
+  margin-left: 120px;
+  color: #d3a55e;
+  font:
+    600 54px var(--font-display),
+    serif;
+}
+.typePoster p {
+  margin-top: 34px;
+  font:
+    500 12px/1.65 var(--font-heading),
+    serif;
+  letter-spacing: 0.1em;
+}
+.paletteStack {
+  position: absolute;
+  z-index: 6;
+  right: 4vw;
+  bottom: 7%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 31vw;
+}
+.paletteStack div {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  aspect-ratio: 2.5;
+  padding: 16px;
+  font-size: 7px;
+  letter-spacing: 0.18em;
+}
+.paletteStack div:nth-child(1) {
+  color: #eee;
+  background: #111510;
+}
+.paletteStack div:nth-child(2) {
+  background: #f1ebdd;
+}
+.paletteStack div:nth-child(3) {
+  color: #eee;
+  background: #9b2f23;
+}
+.paletteStack div:nth-child(4) {
+  background: #b58b4c;
+}
+
+/* 15 — mobile */
+.mobileScene {
+  background: #0a100b;
+}
+.mobileTicker {
+  position: absolute;
+  left: -2%;
+  top: 22%;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(214, 176, 111, 0.15);
+  font:
+    700 150px/1 var(--font-heading),
+    serif;
+  white-space: nowrap;
+  animation: ticker 28s linear infinite;
+}
+.mobileTitle {
+  position: relative;
+  z-index: 3;
+  width: 40%;
+  margin-top: 7vh;
+}
+.mobileTitle h2 {
+  font:
+    650 clamp(65px, 7vw, 115px)/0.82 var(--font-heading),
+    serif;
+  letter-spacing: -0.06em;
+}
+.mobileTitle h2 em {
+  color: #d1a35e;
+  font-family: var(--font-display), serif;
+}
+.mobileTitle > p {
+  max-width: 360px;
+  margin-top: 28px;
+  color: #a4aaa1;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.phoneStage {
+  position: absolute;
+  z-index: 5;
+  right: 4vw;
+  top: 17%;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 34px);
+  width: 56%;
+}
+.phoneStage > div {
+  width: 31%;
+}
+.phoneStage > div:nth-child(1) {
+  transform: translateY(70px) rotate(-8deg);
+}
+.phoneStage > div:nth-child(2) {
+  transform: translateY(-25px);
+}
+.phoneStage > div:nth-child(3) {
+  transform: translateY(90px) rotate(8deg);
+}
+.mobilePattern {
+  position: absolute;
+  right: -10vw;
+  bottom: -20vw;
+  width: 48vw;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  filter: saturate(0.75) brightness(0.82);
+}
+
+/* 16 — handoff */
+.handoffScene {
+  min-height: max(900px, 110svh);
+}
+.handoffPhoto {
+  z-index: 0;
+  inset: 0 0 0 56%;
+  opacity: 0.75;
+}
+.handoffPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f1ebdd, transparent 48%);
+}
+.handoffTitle {
+  position: relative;
+  z-index: 4;
+  width: 48%;
+}
+.handoffTitle > span {
+  color: #942f25;
+}
+.handoffArtifacts {
+  position: absolute;
+  z-index: 6;
+  inset: 44% 4vw 7% 5vw;
+}
+.booklet {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 290px;
+  aspect-ratio: 0.78;
+  padding: 30px;
+  color: #d8ab63;
+  background: #0d150f;
+  border: 1px solid #c59b59;
+  box-shadow:
+    18px 22px 0 #9a3025,
+    35px 42px 50px rgba(0, 0, 0, 0.2);
+  transform: rotate(-7deg);
+}
+.booklet small {
+  font-size: 7px;
+  letter-spacing: 0.18em;
+}
+.booklet strong {
+  margin: auto 0;
+  font:
+    650 47px/0.82 var(--font-heading),
+    serif;
+}
+.booklet span {
+  font-size: 8px;
+}
+.assetCard {
+  position: absolute;
+  width: 250px;
+  min-height: 150px;
+  padding: 24px;
+  color: #171710;
+  background: rgba(246, 240, 226, 0.94);
+  border-top: 4px solid #9a3025;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+.assetCard:nth-child(2) {
+  left: 28%;
+  top: 6%;
+  transform: rotate(2deg);
+}
+.assetCard:nth-child(3) {
+  left: 49%;
+  top: 34%;
+  transform: rotate(-2deg);
+}
+.assetCard:nth-child(4) {
+  left: 70%;
+  top: 0;
+  transform: rotate(3deg);
+}
+.assetCard span {
+  color: #9a3025;
+  font:
+    600 30px var(--font-heading),
+    serif;
+}
+.assetCard b {
+  display: block;
+  margin-top: 12px;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+}
+.assetCard p {
+  margin-top: 18px;
+  color: #67645a;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+/* V4 — editorial rebuild: process, visual grammar, handoff */
+.processScene,
+.languageScene,
+.handoffScene {
+  min-height: max(900px, 100svh);
+  padding-top: 118px;
+}
+
+.processScene {
+  color: #f2eadb;
+  background: #090d0a;
+}
+.processBoard,
+.processShade {
+  position: absolute;
+  inset: 0;
+}
+.processBoard .visual {
+  object-position: center;
+  scale: 1.01;
+}
+.processShade {
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(7, 10, 8, 0.96) 0%, rgba(7, 10, 8, 0.58) 40%, rgba(7, 10, 8, 0.08) 72%),
+    linear-gradient(0deg, rgba(7, 10, 8, 0.96) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(7, 10, 8, 0.48), transparent 24%);
+}
+.processTitle {
+  position: relative;
+  z-index: 3;
+  width: min(620px, 48vw);
+}
+.processTitle > span {
+  color: #d8ad68;
+}
+.processTitle h2 {
+  font-size: clamp(64px, 6.4vw, 106px);
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+}
+.processTitle h2 em {
+  color: #e4b45f;
+  font-family: var(--font-display), serif;
+  font-weight: 500;
+}
+.processPath {
+  position: absolute;
+  z-index: 4;
+  left: 5vw;
+  right: 5vw;
+  bottom: 7%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: auto;
+  margin: 0;
+  border-top: 1px solid rgba(221, 178, 104, 0.5);
+}
+.processStop,
+.processStop:nth-of-type(1),
+.processStop:nth-of-type(2),
+.processStop:nth-of-type(3),
+.processStop:nth-of-type(4) {
+  position: relative;
+  inset: auto;
+  width: auto;
+  min-height: 168px;
+  padding: 26px 24px 22px;
+  color: #f0e8d8;
+  background: rgba(5, 9, 7, 0.72);
+  border: 0;
+  border-right: 1px solid rgba(221, 178, 104, 0.24);
+  box-shadow: none;
+  backdrop-filter: blur(15px) saturate(115%);
+}
+.processStop:last-child {
+  border-right: 0;
+}
+.processStop b {
+  color: #dcae63;
+  font-size: 46px;
+}
+.processStop h3 {
+  margin-top: 12px;
+  color: #fff8eb;
+  font-size: 14px;
+}
+.processStop p {
+  color: #aaa69d;
+  font-size: 12px;
+}
+.processQuote {
+  z-index: 4;
+  right: 5vw;
+  top: 17%;
+  bottom: auto;
+  max-width: 330px;
+  padding-left: 22px;
+  color: #eee5d4;
+  border-left: 1px solid #d8ad68;
+  font-family: var(--font-body), sans-serif;
+  font-style: normal;
+}
+.processQuote span,
+.processQuote b {
+  display: block;
+}
+.processQuote span {
+  margin-bottom: 12px;
+  color: #d8ad68;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.18em;
+}
+.processQuote b {
+  font: 500 24px/1.25 var(--font-heading), serif;
+}
+
+.languageScene {
+  color: #f0e8d9;
+  background: #0d130e;
+}
+.languagePhoto {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: none;
+}
+.languagePhoto::after {
+  background:
+    linear-gradient(90deg, rgba(7, 11, 8, 0.96) 0%, rgba(7, 11, 8, 0.83) 32%, rgba(7, 11, 8, 0.06) 70%),
+    linear-gradient(0deg, rgba(7, 11, 8, 0.87), transparent 40%);
+}
+.languageTitle {
+  left: 5vw;
+  top: 15%;
+  width: 38%;
+  max-width: 610px;
+}
+.languageTitle > span {
+  color: #dfb269;
+}
+.languageTitle h2 {
+  color: #f5ecdc;
+  font-size: clamp(64px, 6.3vw, 105px);
+  line-height: 0.86;
+}
+.languageTitle h2 em {
+  display: block;
+  margin-top: 0.12em;
+  color: #e2b260;
+  font-family: var(--font-display), serif;
+  font-size: 0.72em;
+  line-height: 0.95;
+}
+.languageTitle > p {
+  max-width: 500px;
+  margin-top: 30px;
+  color: #b8b4aa;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.grammarRail {
+  position: absolute;
+  z-index: 6;
+  left: 5vw;
+  right: 5vw;
+  bottom: 6.5%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  color: #f2eadc;
+  background: rgba(7, 11, 8, 0.82);
+  border-top: 1px solid rgba(222, 177, 100, 0.58);
+  backdrop-filter: blur(16px);
+}
+.grammarRail > div {
+  min-height: 120px;
+  padding: 22px 24px;
+  border-right: 1px solid rgba(222, 177, 100, 0.22);
+}
+.grammarRail > div:last-child {
+  border-right: 0;
+}
+.grammarRail span,
+.grammarRail b,
+.grammarRail small {
+  display: block;
+}
+.grammarRail span {
+  color: #d9aa5e;
+  font: 600 25px var(--font-heading), serif;
+}
+.grammarRail b {
+  margin-top: 9px;
+  font-size: 13px;
+  letter-spacing: 0.17em;
+}
+.grammarRail small {
+  margin-top: 9px;
+  color: #aaa69e;
+  font-size: 11px;
+}
+
+.handoffScene {
+  color: #f2eadc;
+  background: #090d0a;
+}
+.handoffPhoto {
+  inset: 0;
+  opacity: 1;
+}
+.handoffPhoto::after {
+  background: none;
+}
+.handoffShade {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 6, 0.97) 0%, rgba(5, 8, 6, 0.77) 34%, rgba(5, 8, 6, 0.05) 69%),
+    linear-gradient(0deg, rgba(5, 8, 6, 0.9), transparent 43%);
+}
+.handoffTitle {
+  position: relative;
+  z-index: 4;
+  width: min(620px, 43vw);
+}
+.handoffTitle > span {
+  color: #deb168;
+}
+.handoffTitle h2 {
+  color: #f5ecdc;
+  font-size: clamp(64px, 6.1vw, 102px);
+  line-height: 0.84;
+}
+.handoffTitle h2 em {
+  color: #e0ae5b;
+  font-family: var(--font-display), serif;
+}
+.handoffTitle > p {
+  max-width: 460px;
+  margin-top: 26px;
+  color: #aaa79e;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.handoffArtifacts {
+  z-index: 6;
+  inset: auto 5vw 6.5% 5vw;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(222, 177, 100, 0.54);
+}
+.handoffLine {
+  min-height: 118px;
+  padding: 22px 22px 18px;
+  background: rgba(5, 8, 6, 0.82);
+  border-right: 1px solid rgba(222, 177, 100, 0.22);
+  backdrop-filter: blur(14px);
+}
+.handoffLine:last-child {
+  border-right: 0;
+}
+.handoffLine span,
+.handoffLine b,
+.handoffLine small {
+  display: block;
+}
+.handoffLine span {
+  color: #d9aa5e;
+  font: 600 26px var(--font-heading), serif;
+}
+.handoffLine b {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+.handoffLine small {
+  margin-top: 8px;
+  color: #aaa69e;
+  font-size: 11px;
+}
+
+/* 17 — principles */
+.principleScene {
+  min-height: max(820px, 100svh);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+.principlePattern {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: min(62vw, 820px);
+  translate: -50% -50%;
+  opacity: 0.46;
+  filter: sepia(0.35) saturate(0.82) contrast(1.12)
+    drop-shadow(0 45px 80px rgba(26, 6, 3, 0.4));
+  mix-blend-mode: screen;
+  animation: pattern-spin 90s linear infinite;
+}
+.principleCenter {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 180px;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  color: #f2d5a2;
+  background: rgba(22, 15, 10, 0.84);
+  border: 1px solid rgba(237, 201, 140, 0.62);
+  box-shadow:
+    0 0 0 14px rgba(237, 201, 140, 0.1),
+    0 30px 65px rgba(40, 8, 4, 0.42);
+  backdrop-filter: blur(12px);
+}
+.principleCenter > span {
+  font: 700 10px/1.5 var(--font-body);
+  letter-spacing: 0.23em;
+  text-align: center;
+}
+.principleCenter .seal {
+  position: absolute;
+  right: -38px;
+  bottom: -12px;
+  color: #171610;
+  border-color: #171610;
+}
+.principleTitle {
+  position: relative;
+  z-index: 3;
+}
+.principleTitle > span {
+  color: #edc98c;
+}
+.principleTitle h2 em {
+  color: #171610;
+}
+.principleList {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px 80px;
+}
+.principleList > div {
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(244, 235, 217, 0.35);
+}
+.principleList span {
+  display: block;
+  margin-bottom: 14px;
+  color: #edc98c;
+  font:
+    600 30px var(--font-heading),
+    serif;
+}
+.principleList b {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+.principleRibbon {
+  position: absolute;
+  bottom: 44px;
+  left: 0;
+  right: 0;
+  padding: 11px;
+  color: #912f24;
+  background: #edc98c;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.6em;
+}
+
+/* 18 — contact */
+.contactScene {
+  min-height: max(850px, 105svh);
+  background: radial-gradient(circle at 70% 40%, #19281d, #070b08 60%);
+}
+.contactPattern {
+  position: absolute;
+  z-index: 0;
+  right: -8vw;
+  top: -11vw;
+  width: 65vw;
+  opacity: 0.44;
+  filter: saturate(0.78) brightness(0.88)
+    drop-shadow(0 55px 100px rgba(0, 0, 0, 0.75));
+  mix-blend-mode: screen;
+  animation: pattern-spin 70s linear infinite reverse;
+}
+.contactGhost {
+  position: absolute;
+  z-index: 0;
+  left: -0.05em;
+  bottom: -0.14em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(211, 166, 95, 0.13);
+  font:
+    800 clamp(320px, 48vw, 720px)/0.7 var(--font-heading),
+    serif;
+  letter-spacing: -0.09em;
+}
+.contactTitle {
+  position: relative;
+  z-index: 4;
+  width: 58%;
+  margin-top: 5vh;
+}
+.contactTitle h2 {
+  font-size: clamp(84px, 9vw, 150px);
+}
+.contactPanel {
+  position: absolute;
+  z-index: 5;
+  right: 6vw;
+  bottom: 13%;
+  width: min(440px, 34vw);
+  padding: 34px;
+  color: #161610;
+  background: #ece3d1;
+  box-shadow: 18px 18px 0 #963025;
+  transform: rotate(1deg);
+}
+.contactPanel > p {
+  font:
+    600 21px/1.45 var(--font-heading),
+    serif;
+}
+.contactPanel > a {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+  padding: 18px;
+  color: #eee5d5;
+  background: #10150f;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+.contactPanel > div {
+  display: flex;
+  gap: 18px;
+  margin-top: 24px;
+}
+.contactPanel > div a,
+.contactPanel button {
+  padding: 0;
+  color: #69231d;
+  background: none;
+  border: 0;
+  font: 700 7px var(--font-body);
+  letter-spacing: 0.14em;
+  cursor: pointer;
+}
+.finalMark {
+  position: absolute;
+  z-index: 4;
+  left: 5vw;
+  bottom: 9%;
+  color: #d3a65f;
+  font:
+    700 28px var(--font-heading),
+    serif;
+}
+.finalMark span {
+  display: block;
+  margin-top: 5px;
+  color: #eee6d6;
+  font: 600 7px var(--font-body);
+  letter-spacing: 0.24em;
+}
+
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 64px;
+  padding: 0 5vw;
+  color: #aaa79d;
+  background: #050806;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+}
+.bottomBar button {
+  min-height: 44px;
+  color: #d2a45e;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: 700 8px var(--font-body);
+  letter-spacing: 0.18em;
+}
+
+@keyframes menu-open {
+  from {
+    opacity: 0;
+    transform: scaleY(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+@keyframes pattern-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes process-dash {
+  to {
+    stroke-dashoffset: -170;
+  }
+}
+@keyframes process-travel {
+  0%,
+  8% {
+    offset-distance: 0%;
+  }
+  92%,
+  100% {
+    offset-distance: 100%;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes beam {
+  from {
+    transform: rotate(15deg) translateX(-40px);
+    opacity: 0.45;
+  }
+  to {
+    transform: rotate(21deg) translateX(40px);
+    opacity: 1;
+  }
+}
+@keyframes mist {
+  to {
+    transform: translateX(12%) scale(1.12);
+    opacity: 0.7;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .caseHero .visual,
+    .fullBleed .visual,
+    .spaCrop .visual {
+      animation: scene-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+@keyframes scene-drift {
+  from {
+    transform: scale(1.06) translate3d(0, -2%, 0);
+  }
+  to {
+    transform: scale(1.06) translate3d(0, 2%, 0);
+  }
+}
+
+@media screen and (max-width: 980px) {
+  .navManifesto {
+    display: none;
+  }
+  .toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .menuPanel {
+    grid-template-columns: 1fr;
+    max-height: calc(100svh - 70px);
+    overflow: auto;
+  }
+  .menuIntro {
+    display: none;
+  }
+  .menuGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .indexScene {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .indexColumns > div:nth-child(2),
+  .indexColumns > div:nth-child(3) {
+    margin-top: 0;
+  }
+  .studioPaper {
+    width: 58vw;
+  }
+  .capabilityOrbit {
+    inset: 330px 5vw 80px;
+  }
+  .projectMosaic {
+    inset: 330px 5vw 80px;
+  }
+  .projectPortal {
+    min-height: 1050px;
+  }
+  .applicationIntro {
+    width: 42%;
+  }
+  .webPlacement {
+    width: 60%;
+  }
+  .handoffPhoto {
+    opacity: 0.45;
+  }
+  .assetCard {
+    width: 210px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .pointerGlow {
+    display: none;
+  }
+  .toolbar {
+    height: 62px;
+    padding: 0 18px;
+  }
+  .brand {
+    font-size: 16px;
+  }
+  .brand span {
+    font-size: 5px;
+  }
+  .menu summary {
+    gap: 12px;
+  }
+  .menuPanel {
+    inset: 62px 0 auto;
+    padding: 25px 18px 35px;
+  }
+  .menuGrid {
+    grid-template-columns: 1fr;
+  }
+  .menuGrid button {
+    min-height: 38px;
+  }
+  .progress {
+    top: 61px;
+  }
+  .scene {
+    --scene-pad-x: 22px;
+    scroll-margin-top: 62px;
+    min-height: 760px;
+    padding: 92px var(--scene-pad-x) 55px;
+  }
+  .sceneMeta {
+    top: 76px;
+  }
+  .sceneFoot {
+    bottom: 18px;
+  }
+  .cover {
+    min-height: 840px;
+    padding-left: 24px;
+  }
+  .cover > .visual {
+    object-position: 62% center;
+  }
+  .coverWash {
+    background: linear-gradient(
+      0deg,
+      rgba(6, 12, 8, 0.98) 0%,
+      rgba(6, 12, 8, 0.76) 52%,
+      rgba(6, 12, 8, 0.15) 100%
+    );
+  }
+  .coverPattern {
+    width: 105vw;
+    right: -34%;
+    top: 8%;
+  }
+  .coverGhost {
+    font-size: 330px;
+    bottom: -0.05em;
+  }
+  .coverTitle {
+    margin-top: 24vh;
+  }
+  .coverTitle > p {
+    font-size: 7px;
+  }
+  .coverTitle h1 {
+    font-size: 74px;
+    line-height: 0.8;
+  }
+  .coverTitle h1 span {
+    margin-left: 0.18em;
+  }
+  .coverEdition {
+    font-size: 24px;
+    margin-top: 24px;
+  }
+  .coverStatement {
+    right: 22px;
+    left: 22px;
+    bottom: 55px;
+    width: auto;
+    padding: 16px;
+    grid-template-columns: auto 1fr;
+  }
+  .coverStatement .seal {
+    width: 44px;
+  }
+  .coverStatement p {
+    font-size: 16px;
+  }
+  .indexScene {
+    display: block;
+    min-height: auto;
+    padding-bottom: 80px;
+  }
+  .indexLead h2,
+  .processTitle h2,
+  .capabilityTitle h2,
+  .portalTitle h2,
+  .applicationIntro h2,
+  .languageTitle h2,
+  .handoffTitle h2,
+  .principleTitle h2,
+  .contactTitle h2 {
+    font-size: 48px;
+  }
+  .indexLead > p {
+    margin-top: 20px;
+  }
+  .indexColumns {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 55px;
+  }
+  .indexColumns > div:nth-child(2),
+  .indexColumns > div:nth-child(3) {
+    margin: 0;
+  }
+  .indexColumns > div > div b {
+    font-size: 45px;
+  }
+  .manifestoScene {
+    display: block;
+    min-height: 800px;
+    padding-top: 150px;
+  }
+  .manifestoWord {
+    font-size: 230px;
+    top: 46%;
+  }
+  .manifestoCore {
+    padding-left: 0;
+  }
+  .manifestoCore h2 {
+    font-size: 61px;
+  }
+  .manifestoNote {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 96px;
+    padding: 18px 0 18px 18px;
+  }
+  .marquee {
+    bottom: 42px;
+  }
+  .studioScene {
+    min-height: 900px;
+  }
+  .studioPhoto {
+    inset: 62px 0 42% 0;
+    clip-path: polygon(0 0, 100% 0, 100% 87%, 0 100%);
+  }
+  .studioPhoto::after {
+    background: linear-gradient(0deg, #0b0e0b 0%, transparent 55%);
+  }
+  .studioPaper {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 80px;
+    width: auto;
+    margin: 0;
+    padding: 30px 26px;
+    box-shadow: 12px 15px 0 rgba(145, 47, 36, 0.8);
+  }
+  .studioPaper h2 {
+    font-size: 49px;
+  }
+  .studioPaper > p {
+    font-size: 12px;
+  }
+  .handNote {
+    right: 16px;
+    bottom: -38px;
+    font-size: 14px;
+  }
+  .studioScene > .seal {
+    display: none;
+  }
+  .capabilityScene {
+    min-height: 1060px;
+  }
+  .capabilityTitle h2 {
+    font-size: 48px;
+  }
+  .capabilityPattern {
+    width: 130vw;
+    opacity: 0.12;
+  }
+  .capabilityOrbit {
+    inset: 330px 22px 60px;
+  }
+  .orbitCore {
+    width: 110px;
+  }
+  .orbitCore span {
+    top: 31px;
+  }
+  .orbitCore b {
+    top: 50px;
+    font-size: 22px;
+  }
+  .capabilityNode {
+    width: 48%;
+    min-height: 180px;
+    padding: 18px;
+  }
+  .capabilityNode h3 {
+    font-size: 22px;
+  }
+  .processScene {
+    min-height: 1050px;
+  }
+  .processPath {
+    height: 650px;
+    margin-top: 35px;
+  }
+  .processPath svg {
+    display: none;
+  }
+  .processCurrent {
+    display: none;
+  }
+  .processStop {
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    position: relative;
+    width: 82%;
+    min-height: 125px;
+    margin: 0 0 18px;
+  }
+  .processStop:nth-of-type(even) {
+    margin-left: 18%;
+  }
+  .processStop b {
+    float: left;
+    margin-right: 18px;
+  }
+  .processQuote {
+    left: 22px;
+    right: 22px;
+    bottom: 55px;
+    font-size: 18px;
+  }
+  .projectPortal {
+    min-height: 1260px;
+  }
+  .portalTitle h2 {
+    font-size: 50px;
+  }
+  .projectMosaic {
+    inset: 360px 22px 60px;
+  }
+  .projectTile,
+  .projectTile:nth-child(1),
+  .projectTile:nth-child(2),
+  .projectTile:nth-child(3) {
+    position: relative;
+    inset: auto;
+    width: 76%;
+    margin-bottom: 34px;
+  }
+  .projectTile:nth-child(2) {
+    margin-left: 24%;
+  }
+  .projectTile:nth-child(3) {
+    margin-left: 8%;
+  }
+  .projectTile > .tileVisual {
+    height: 180px;
+  }
+  .caseStory {
+    min-height: 880px;
+  }
+  .caseTitle h2 {
+    font-size: 78px;
+  }
+  .teaStory::before {
+    width: 20%;
+  }
+  .teaStory .caseHero {
+    left: 10%;
+    top: 14%;
+    width: 82%;
+    height: 48%;
+  }
+  .teaStory .caseMaterial {
+    right: 6%;
+    bottom: 8%;
+    width: 70%;
+    height: 31%;
+    box-shadow: -12px 14px 0 rgba(145, 47, 36, 0.8);
+  }
+  .teaStory .caseTitle {
+    left: 24px;
+    top: 29%;
+  }
+  .teaStory .caseTitle h2 {
+    font-size: 66px;
+  }
+  .teaStory .caseTitle > p {
+    max-width: 228px;
+    margin-left: 58px;
+    font-size: 16px;
+  }
+  .teaStory > .seal {
+    left: auto;
+    right: 25px;
+    top: 13%;
+    width: 50px;
+  }
+  .caseVertical {
+    display: none;
+  }
+  .applicationScene {
+    min-height: 1050px;
+  }
+  .applicationIntro {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+  }
+  .applicationIntro h2 {
+    font-size: 47px;
+  }
+  .applicationIntro > p {
+    font-size: 12px;
+  }
+  .webPlacement {
+    top: 405px;
+    left: 22px;
+    right: 22px;
+    width: auto;
+  }
+  .webHero {
+    height: 220px;
+  }
+  .phonePlacement {
+    right: 18px;
+    bottom: 70px;
+    width: 130px;
+  }
+  .materialBackdrop {
+    width: 100%;
+    height: 35%;
+    opacity: 0.2;
+  }
+  .applicationTokens {
+    left: 22px;
+    bottom: 72px;
+    width: 45%;
+    flex-wrap: wrap;
+  }
+  .lightStory .caseTitle {
+    left: 24px;
+    top: 20%;
+  }
+  .lightStory .caseTitle h2 {
+    font-size: 105px;
+  }
+  .lightObject {
+    width: 70vw;
+    height: 30vh;
+    right: 5vw;
+    bottom: 8vh;
+  }
+  .lightNumber {
+    font-size: 310px;
+    top: 5%;
+  }
+  .lightApplication .applicationIntro {
+    top: auto;
+  }
+  .lightApplication .lightLab {
+    inset: 55% 0 0 0;
+    opacity: 0.24;
+  }
+  .lightApplication .webPlacement {
+    top: 430px;
+    left: 22px;
+    right: 22px;
+    width: auto;
+  }
+  .beamLabels {
+    left: 22px;
+    bottom: 65px;
+    max-width: 50%;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+  }
+  .spaStory .spaCrop {
+    inset: 0 0 0 10%;
+    clip-path: ellipse(100% 75% at 63% 39%);
+  }
+  .spaStory .spaCrop::after {
+    background: linear-gradient(0deg, #d9e0d7 3%, transparent 65%);
+  }
+  .spaStory .caseTitle {
+    left: 24px;
+    top: 46%;
+  }
+  .spaStory .caseTitle h2 {
+    font-size: 92px;
+  }
+  .spaStory .caseTitle > p {
+    font-size: 23px;
+  }
+  .spaWords {
+    right: 18px;
+    bottom: 8%;
+    gap: 17px;
+    writing-mode: vertical-rl;
+  }
+  .spaStory > .seal {
+    left: 25px;
+    bottom: 10%;
+  }
+  .spaSealCluster {
+    left: 24px;
+    bottom: 8%;
+    gap: 10px;
+  }
+  .spaSealCluster .seal {
+    width: 70px;
+    font-size: 15px;
+  }
+  .spaSealCluster > i {
+    width: 48px;
+  }
+  .spaSealCluster > span {
+    font-size: 6px;
+  }
+  .spaApplication .spaMaterial {
+    inset: 55% 0 0 0;
+  }
+  .spaApplication .webPlacement {
+    top: 420px;
+  }
+  .bookingCard {
+    left: 22px;
+    bottom: 65px;
+    width: 210px;
+    padding: 16px;
+  }
+  .bookingCard b {
+    font-size: 16px;
+  }
+  .materialPassport {
+    top: 796px;
+    right: auto;
+    bottom: auto;
+    left: 22px;
+    width: 210px;
+    padding: 10px 11px 11px;
+  }
+  .materialPassportItems {
+    gap: 5px;
+  }
+  .materialPassportItems > span {
+    gap: 4px;
+    font-size: 5px;
+    letter-spacing: 0.06em;
+  }
+  .languageScene {
+    min-height: 1100px;
+  }
+  .languagePhoto {
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 38%;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    opacity: 0.7;
+  }
+  .languagePhoto::after {
+    background: linear-gradient(0deg, #f1ebdd, transparent 65%);
+  }
+  .languageTitle {
+    top: 31%;
+    left: 22px;
+    right: 22px;
+  }
+  .typePoster {
+    left: 22px;
+    bottom: 250px;
+    width: calc(100% - 64px);
+    min-height: 300px;
+    padding: 24px;
+  }
+  .typePoster strong {
+    font-size: 88px;
+  }
+  .typePoster em {
+    margin-left: 80px;
+    font-size: 38px;
+  }
+  .paletteStack {
+    right: 22px;
+    bottom: 62px;
+    width: calc(100% - 44px);
+  }
+  .paletteStack div {
+    aspect-ratio: 2.7;
+    padding: 10px;
+  }
+  .mobileScene {
+    min-height: 900px;
+  }
+  .mobileTicker {
+    font-size: 90px;
+    top: 30%;
+  }
+  .mobileTitle {
+    width: auto;
+    margin-top: 0;
+  }
+  .mobileTitle h2 {
+    font-size: 57px;
+  }
+  .phoneStage {
+    right: 12px;
+    left: 12px;
+    top: 480px;
+    width: auto;
+    gap: 4px;
+  }
+  .phoneStage > div {
+    width: 34%;
+  }
+  .phoneStage .phoneFrame {
+    border-width: 4px;
+    border-radius: 22px;
+  }
+  .phoneStage .phoneHero strong {
+    font-size: 13px;
+    left: 8px;
+    right: 8px;
+  }
+  .handoffScene {
+    min-height: 1180px;
+  }
+  .handoffPhoto {
+    inset: 0 0 65% 0;
+  }
+  .handoffPhoto::after {
+    background: linear-gradient(0deg, #f1ebdd, transparent 70%);
+  }
+  .handoffTitle {
+    position: absolute;
+    z-index: 5;
+    left: 22px;
+    right: 22px;
+    top: 28%;
+    width: auto;
+  }
+  .handoffArtifacts {
+    inset: 53% 22px 55px;
+  }
+  .booklet {
+    width: 170px;
+    padding: 18px;
+  }
+  .booklet strong {
+    font-size: 30px;
+  }
+  .assetCard {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    width: 58%;
+    min-height: 112px;
+    margin: 0 0 10px 42%;
+    padding: 15px;
+    transform: none !important;
+  }
+  .assetCard span {
+    float: left;
+    margin-right: 12px;
+    font-size: 24px;
+  }
+  .assetCard p {
+    margin-top: 10px;
+  }
+  .processScene,
+  .languageScene,
+  .handoffScene {
+    min-height: 1120px;
+    padding-top: 88px;
+  }
+  .processBoard {
+    inset: 0 0 38% 0;
+  }
+  .processBoard .visual {
+    object-position: 60% center;
+  }
+  .processShade {
+    background:
+      linear-gradient(0deg, #080c09 34%, rgba(8, 12, 9, 0.15) 70%),
+      linear-gradient(90deg, rgba(8, 12, 9, 0.88), transparent 85%);
+  }
+  .processTitle {
+    width: auto;
+  }
+  .processTitle h2 {
+    font-size: 49px;
+  }
+  .processQuote {
+    top: 340px;
+    right: 22px;
+    max-width: 245px;
+  }
+  .processQuote b {
+    font-size: 19px;
+  }
+  .processPath {
+    left: 22px;
+    right: 22px;
+    bottom: 62px;
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    border-top: 0;
+  }
+  .processStop,
+  .processStop:nth-of-type(1),
+  .processStop:nth-of-type(2),
+  .processStop:nth-of-type(3),
+  .processStop:nth-of-type(4) {
+    width: 100%;
+    min-height: 130px;
+    margin: 0;
+    padding: 16px 18px 15px 76px;
+    border-top: 1px solid rgba(221, 178, 104, 0.36);
+    border-right: 0;
+  }
+  .processStop b {
+    position: absolute;
+    left: 18px;
+    top: 14px;
+    float: none;
+    margin: 0;
+    font-size: 33px;
+  }
+  .processStop h3 {
+    margin-top: 0;
+  }
+
+  .languagePhoto {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: none;
+    opacity: 1;
+  }
+  .languagePhoto .visual {
+    object-position: 66% center;
+  }
+  .languagePhoto::after {
+    background:
+      linear-gradient(180deg, rgba(7, 11, 8, 0.9) 0%, rgba(7, 11, 8, 0.12) 39%, #071008 76%),
+      linear-gradient(90deg, rgba(7, 11, 8, 0.65), transparent);
+  }
+  .languageTitle {
+    top: 88px;
+    left: 22px;
+    right: 22px;
+    width: auto;
+  }
+  .languageTitle h2 {
+    font-size: 48px;
+  }
+  .languageTitle > p {
+    margin-top: 20px;
+    font-size: 13px;
+  }
+  .grammarRail {
+    left: 22px;
+    right: 22px;
+    bottom: 60px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .grammarRail > div {
+    min-height: 132px;
+    padding: 15px;
+    border-top: 1px solid rgba(222, 177, 100, 0.22);
+  }
+  .grammarRail span {
+    font-size: 21px;
+  }
+  .grammarRail small {
+    font-size: 9px;
+  }
+
+  .handoffPhoto {
+    inset: 0;
+  }
+  .handoffPhoto .visual {
+    object-position: 61% center;
+    filter: brightness(1.22) saturate(1.08);
+  }
+  .handoffPhoto::after {
+    background: none;
+  }
+  .handoffShade {
+    background:
+      linear-gradient(180deg, rgba(5, 8, 6, 0.87) 0%, rgba(5, 8, 6, 0.16) 42%, #050806 77%),
+      linear-gradient(90deg, rgba(5, 8, 6, 0.58), transparent);
+  }
+  .handoffTitle {
+    position: absolute;
+    top: 88px;
+    left: 22px;
+    right: 22px;
+    width: auto;
+  }
+  .handoffTitle h2 {
+    font-size: 49px;
+  }
+  .handoffTitle > p {
+    margin-top: 20px;
+    font-size: 13px;
+  }
+  .handoffArtifacts {
+    inset: auto 22px 62px;
+    grid-template-columns: 1fr 1fr;
+    border-top: 0;
+  }
+  .handoffLine {
+    min-height: 138px;
+    padding: 16px;
+    border-top: 1px solid rgba(222, 177, 100, 0.38);
+  }
+  .handoffLine span {
+    font-size: 22px;
+  }
+  .handoffLine small {
+    font-size: 9px;
+  }
+  .principleScene {
+    display: block;
+    min-height: 1050px;
+  }
+  .principleTitle h2 {
+    font-size: 62px;
+  }
+  .principleCenter {
+    top: 55%;
+    width: 130px;
+  }
+  .principleList {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 90px;
+    gap: 120px 38px;
+  }
+  .principleList span {
+    font-size: 24px;
+  }
+  .principleList b {
+    font-size: 7px;
+  }
+  .principleRibbon {
+    bottom: 42px;
+    font-size: 7px;
+    letter-spacing: 0.22em;
+  }
+  .contactScene {
+    min-height: 900px;
+  }
+  .contactGhost {
+    font-size: 300px;
+    bottom: 10%;
+  }
+  .contactPattern {
+    width: 120vw;
+    right: -50%;
+    top: 12%;
+  }
+  .contactTitle {
+    width: auto;
+    margin-top: 4vh;
+  }
+  .contactTitle h2 {
+    font-size: 72px;
+  }
+  .contactPanel {
+    left: 22px;
+    right: 22px;
+    bottom: 100px;
+    width: auto;
+    padding: 24px;
+    box-shadow: 10px 10px 0 #963025;
+  }
+  .contactPanel > p {
+    font-size: 17px;
+  }
+  .contactPanel > div {
+    flex-wrap: wrap;
+  }
+  .finalMark {
+    left: 22px;
+    bottom: 55px;
+    font-size: 20px;
+  }
+  .bottomBar {
+    padding: 0 22px;
+    font-size: 6px;
+  }
+}
+
+/* V4.1 — remove template-card language from the weakest chapters */
+.capabilityScene {
+  display: block;
+  background:
+    radial-gradient(circle at 69% 48%, rgba(218, 169, 92, 0.1), transparent 26%),
+    #0b120d;
+}
+
+.capabilityScene .capabilityPattern {
+  left: 69%;
+  width: min(55vw, 760px);
+  opacity: 0.3;
+}
+
+.capabilityTitle {
+  width: min(38vw, 560px);
+  padding-top: 8vh;
+}
+
+.capabilityTitle .capabilityNote {
+  max-width: 430px;
+  margin-top: 34px;
+  color: rgba(238, 233, 222, 0.62);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.capabilityOrbit {
+  inset: 150px 5vw 90px 45vw;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  gap: 0;
+}
+
+.capabilityOrbit .orbitCore {
+  z-index: 4;
+  width: 122px;
+  background: rgba(219, 173, 99, 0.94);
+  box-shadow:
+    0 0 0 16px rgba(216, 170, 98, 0.07),
+    0 20px 70px rgba(0, 0, 0, 0.46);
+}
+
+.capabilityOrbit .orbitCore span {
+  top: 34px;
+}
+
+.capabilityOrbit .orbitCore b {
+  top: 54px;
+  font-size: 25px;
+}
+
+.capabilityOrbit .capabilityNode,
+.capabilityOrbit .capabilityNode:nth-child(n) {
+  position: relative;
+  inset: auto;
+  width: auto;
+  min-height: 210px;
+  padding: 34px 36px;
+  background: rgba(6, 12, 8, 0.16);
+  border: 0;
+  border-top: 1px solid rgba(220, 177, 104, 0.46);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.capabilityOrbit .capabilityNode:nth-child(even) {
+  border-right: 1px solid rgba(220, 177, 104, 0.28);
+}
+
+.capabilityOrbit .capabilityNode > span {
+  display: block;
+  font: 500 42px/1 var(--font-display), serif;
+  opacity: 0.5;
+}
+
+.capabilityOrbit .capabilityNode h3 {
+  margin-top: 28px;
+  font-size: clamp(28px, 2.5vw, 40px);
+}
+
+.capabilityOrbit .capabilityNode p {
+  margin-top: 12px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.projectPortal {
+  background:
+    radial-gradient(circle at 76% 42%, rgba(204, 153, 77, 0.08), transparent 30%),
+    #080d09;
+}
+
+.projectPortal .portalTitle {
+  width: min(34vw, 540px);
+  padding-top: 6vh;
+}
+
+.projectMosaic {
+  inset: 140px 5vw 72px 41vw;
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.projectMosaic .projectTile,
+.projectMosaic .projectTile:nth-child(n) {
+  position: relative;
+  inset: auto;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #f4ecdc;
+  background: #121712;
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, #e2c187 40%);
+  isolation: isolate;
+}
+
+.projectMosaic .projectTile:first-child {
+  grid-row: 1 / span 2;
+}
+
+.projectMosaic .projectTile::before {
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 8, 6, 0.06) 18%,
+    rgba(5, 8, 6, 0.46) 58%,
+    rgba(5, 8, 6, 0.96) 100%
+  );
+  opacity: 1;
+  transform: none;
+}
+
+.projectMosaic .tileVisual {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  overflow: hidden;
+  clip-path: none;
+}
+
+.projectMosaic .projectTile:not(:first-child) .tileVisual {
+  filter: saturate(0.88) contrast(1.06);
+}
+
+.tileCopy {
+  position: absolute;
+  z-index: 2;
+  inset: auto 22px 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.tileCopy > div {
+  min-width: 0;
+}
+
+.tileIndex {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  aspect-ratio: 1;
+  color: #18150f;
+  background: var(--accent);
+  font-size: 9px;
+}
+
+.projectMosaic .projectTile h3 {
+  margin-top: 5px;
+  font-size: clamp(20px, 2.1vw, 34px);
+  line-height: 0.95;
+  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.7);
+}
+
+.projectMosaic .projectTile p {
+  margin: 0;
+  color: rgba(255, 244, 222, 0.78);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.projectMosaic .projectTile .tileCopy > b {
+  position: static;
+  padding-bottom: 4px;
+  color: var(--accent);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+.principleScene {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 7vw;
+  background:
+    linear-gradient(115deg, rgba(62, 10, 7, 0.36), transparent 56%),
+    #9f3025;
+}
+
+.principleScene .principlePattern {
+  z-index: 0;
+  left: auto;
+  right: -18vw;
+  top: 56%;
+  width: min(68vw, 920px);
+  opacity: 0.25;
+  transform: rotate(-9deg);
+  animation: none;
+}
+
+.principleTitle {
+  align-self: center;
+}
+
+.principleTitle h2 {
+  font-size: clamp(70px, 7.4vw, 118px);
+}
+
+.principleCenter {
+  left: 38%;
+  top: 26%;
+  width: 108px;
+  background: #24140e;
+}
+
+.principleCenter .seal {
+  display: none;
+}
+
+.principleList {
+  display: block;
+  align-self: center;
+  padding-top: 18px;
+}
+
+.principleList > div {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 18px;
+  align-items: center;
+  min-height: 130px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(244, 235, 217, 0.34);
+}
+
+.principleList span {
+  margin: 0;
+  font-size: 48px;
+  opacity: 0.72;
+}
+
+.principleList b {
+  display: block;
+  font: 600 clamp(20px, 2vw, 30px)/1 var(--font-heading), serif;
+  letter-spacing: -0.02em;
+}
+
+.principleList p {
+  max-width: 430px;
+  margin-top: 9px;
+  color: rgba(255, 242, 220, 0.68);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+@media screen and (max-width: 700px) {
+  .capabilityScene {
+    min-height: 1440px;
+  }
+  .capabilityScene .capabilityPattern {
+    left: 62%;
+    top: 68%;
+    width: 138vw;
+    opacity: 0.18;
+  }
+  .capabilityTitle {
+    width: auto;
+    padding-top: 0;
+  }
+  .capabilityTitle .capabilityNote {
+    margin-top: 72px;
+    font-size: 12px;
+  }
+  .capabilityOrbit {
+    inset: 620px 22px 72px;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+  .capabilityOrbit .orbitCore {
+    left: auto;
+    right: 0;
+    top: -74px;
+    width: 88px;
+    translate: 0;
+  }
+  .capabilityOrbit .orbitCore span {
+    top: 24px;
+    font-size: 7px;
+  }
+  .capabilityOrbit .orbitCore b {
+    top: 41px;
+    font-size: 18px;
+  }
+  .capabilityOrbit .capabilityNode,
+  .capabilityOrbit .capabilityNode:nth-child(n) {
+    min-height: 150px;
+    padding: 22px 10px 18px 0;
+    border-right: 0;
+  }
+  .capabilityOrbit .capabilityNode > span {
+    float: left;
+    width: 66px;
+    font-size: 34px;
+  }
+  .capabilityOrbit .capabilityNode h3 {
+    margin-top: 0;
+    font-size: 27px;
+  }
+  .capabilityOrbit .capabilityNode p {
+    margin-left: 66px;
+    font-size: 8px;
+  }
+
+  .projectPortal {
+    min-height: 1360px;
+  }
+  .projectPortal .portalTitle {
+    width: auto;
+    padding-top: 0;
+  }
+  .projectMosaic {
+    inset: 370px 22px 70px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.32fr 1fr 1fr;
+    gap: 14px;
+  }
+  .projectMosaic .projectTile:first-child {
+    grid-row: auto;
+  }
+  .tileCopy {
+    inset: auto 14px 14px;
+    grid-template-columns: auto 1fr;
+    gap: 11px;
+  }
+  .tileIndex {
+    width: 35px;
+  }
+  .projectMosaic .projectTile .tileCopy > b {
+    display: none;
+  }
+  .projectMosaic .projectTile h3 {
+    max-width: 13ch;
+    font-size: 21px;
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .principleScene {
+    display: block;
+    min-height: 1240px;
+  }
+  .principleScene .principlePattern {
+    right: -70vw;
+    top: 71%;
+    width: 170vw;
+    opacity: 0.18;
+  }
+  .principleTitle h2 {
+    font-size: 66px;
+  }
+  .principleCenter {
+    left: auto;
+    right: 22px;
+    top: 315px;
+    width: 82px;
+    translate: 0;
+  }
+  .principleList {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 95px;
+    padding: 0;
+  }
+  .principleList > div {
+    grid-template-columns: 58px 1fr;
+    min-height: 150px;
+    padding: 18px 0;
+  }
+  .principleList span {
+    font-size: 30px;
+  }
+  .principleList b {
+    font-size: 21px;
+  }
+  .principleList p {
+    font-size: 10px;
+  }
+}
+
+/* V4.2 — measured type spacing and collision fixes */
+.coverTitle > p,
+.caseTitle > span,
+.applicationIntro > span,
+.portalTitle > span,
+.processTitle > span,
+.capabilityTitle > span,
+.languageTitle > span,
+.mobileTitle > span,
+.handoffTitle > span,
+.principleTitle > span,
+.contactTitle > span {
+  margin-bottom: 32px;
+}
+
+.coverTitle h1 {
+  line-height: 0.9;
+}
+
+.indexLead h2,
+.capabilityTitle h2,
+.portalTitle h2,
+.processTitle h2,
+.applicationIntro h2,
+.languageTitle h2,
+.mobileTitle h2,
+.handoffTitle h2,
+.principleTitle h2,
+.contactTitle h2 {
+  line-height: 0.96;
+}
+
+.manifestoCore h2,
+.studioPaper h2 {
+  line-height: 0.96;
+}
+
+.coverEdition {
+  margin-top: 52px;
+}
+
+.caseTitle h2 {
+  line-height: 0.94;
+}
+
+.caseTitle > p {
+  margin-top: 56px;
+}
+
+.applicationIntro {
+  width: 34%;
+}
+
+.applicationIntro h2 {
+  font-size: clamp(48px, 4.6vw, 74px);
+  line-height: 0.94;
+}
+
+.applicationIntro > p,
+.languageTitle > p,
+.handoffTitle > p,
+.mobileTitle > p {
+  margin-top: 38px;
+}
+
+@media screen and (max-width: 700px) {
+  .coverTitle > p,
+  .caseTitle > span,
+  .applicationIntro > span,
+  .portalTitle > span,
+  .processTitle > span,
+  .capabilityTitle > span,
+  .languageTitle > span,
+  .mobileTitle > span,
+  .handoffTitle > span,
+  .principleTitle > span,
+  .contactTitle > span {
+    margin-bottom: 26px;
+  }
+
+  .coverEdition {
+    margin-top: 38px;
+  }
+
+  .caseTitle h2 {
+    line-height: 0.96;
+  }
+
+  .caseTitle > p {
+    margin-top: 40px;
+  }
+
+  .applicationScene {
+    min-height: 1240px;
+  }
+
+  .applicationIntro {
+    width: auto;
+  }
+
+  .applicationIntro h2 {
+    font-size: 45px;
+    line-height: 0.94;
+  }
+
+  .applicationIntro > p,
+  .languageTitle > p,
+  .handoffTitle > p,
+  .mobileTitle > p {
+    margin-top: 30px;
+  }
+
+  .phonePlacement,
+  .teaApplication .phonePlacement,
+  .lightApplication .phonePlacement,
+  .spaApplication .phonePlacement {
+    top: 875px;
+    right: 20px;
+    bottom: auto;
+    width: 142px;
+  }
+}
+
+/* V5 — signature asset layers and editorial depth */
+.scene::before {
+  content: "";
+  position: absolute;
+  z-index: 21;
+  inset: 14px;
+  pointer-events: none;
+  border: 1px solid transparent;
+  border-image: linear-gradient(
+      135deg,
+      rgba(225, 181, 104, 0.28),
+      transparent 24%,
+      transparent 76%,
+      rgba(225, 181, 104, 0.16)
+    )
+    1;
+  opacity: 0.7;
+}
+
+.artLayer {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+}
+
+.artLayerImage {
+  object-fit: contain;
+  transition:
+    transform 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.8s ease;
+}
+
+.chapterBand {
+  position: absolute;
+  z-index: 24;
+  top: 20px;
+  left: 50%;
+  display: grid;
+  grid-template-columns: auto minmax(52px, 9vw) auto;
+  gap: 14px;
+  align-items: center;
+  translate: -50% 0;
+  padding: 9px 16px 10px;
+  color: #d9b36f;
+  background: color-mix(in srgb, #07100b 74%, transparent);
+  border: 1px solid rgba(217, 179, 111, 0.22);
+  border-top: 0;
+  backdrop-filter: blur(14px);
+  font-size: 7px;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+}
+
+.chapterBand b {
+  font: 600 15px/1 var(--font-heading), serif;
+}
+
+.chapterBand i {
+  height: 1px;
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+
+.chapterBand span {
+  opacity: 0.75;
+}
+
+.scene[data-active="true"] .artLayerImage {
+  transform: translate3d(0, -8px, 0) scale(1.018);
+}
+
+.indexLead,
+.indexColumns {
+  position: relative;
+  z-index: 4;
+}
+
+.languageTitle,
+.grammarRail,
+.handoffTitle,
+.handoffArtifacts {
+  z-index: 4;
+}
+
+.indexHeritageLayer {
+  right: -9vw;
+  bottom: -9vw;
+  width: min(48vw, 760px);
+  aspect-ratio: 3 / 2;
+  opacity: 0.2;
+  filter: sepia(0.4) saturate(0.78) contrast(1.08);
+  mix-blend-mode: multiply;
+  transform: rotate(-5deg);
+}
+
+.manifestoCraftLayer {
+  right: -12vw;
+  top: 7%;
+  width: min(60vw, 920px);
+  aspect-ratio: 3 / 2;
+  opacity: 0.32;
+  filter: saturate(0.88) contrast(1.08);
+  mix-blend-mode: soft-light;
+  transform: rotate(4deg);
+}
+
+.capabilityHeritageLayer {
+  right: -12vw;
+  top: -2%;
+  width: min(48vw, 760px);
+  aspect-ratio: 3 / 2;
+  opacity: 0.2;
+  filter: saturate(0.75) brightness(0.88)
+    drop-shadow(0 28px 60px rgba(0, 0, 0, 0.42));
+  mix-blend-mode: screen;
+  transform: rotate(8deg);
+}
+
+.processCraftLayer {
+  right: -8vw;
+  top: 0;
+  width: min(47vw, 760px);
+  aspect-ratio: 3 / 2;
+  opacity: 0.27;
+  filter: saturate(0.72) brightness(0.92);
+  mix-blend-mode: screen;
+  transform: rotate(-3deg);
+}
+
+.portalObjectsLayer {
+  z-index: 4;
+  left: 1.5vw;
+  bottom: 2.5vh;
+  width: min(42vw, 670px);
+  aspect-ratio: 2.4 / 1;
+  opacity: 0.96;
+  filter: saturate(0.9) brightness(1.02)
+    drop-shadow(0 26px 40px rgba(0, 0, 0, 0.58));
+}
+
+/* One recurring tactile object gives each case pair its own visual memory. */
+.teaObjectLayer,
+.teaAppObjectLayer,
+.lightRelicLayer,
+.lightAppRelicLayer,
+.spaObjectLayer,
+.spaAppObjectLayer {
+  z-index: 7;
+  filter: drop-shadow(0 28px 38px rgba(7, 12, 8, 0.34));
+}
+
+/* V7 — case-specific foreground, material and atmospheric layers. */
+.teaAtmosphereLayer,
+.teaAppAtmosphereLayer,
+.lightAtelierLayer,
+.lightAppAtelierLayer,
+.spaRitualLayer,
+.spaAppRitualLayer,
+.handoffSystemLayer,
+.indexEditorialLayer,
+.indexKitLayer,
+.manifestoEditorialLayer,
+.manifestoPunctuationLayer,
+.capabilityInstrumentsLayer,
+.processThreadLayer,
+.mobileGestureLayer,
+.teaMaterialCollageLayer,
+.lightOpticalLayer,
+.spaWaterRitualLayer,
+.spaRitualStillLifeLayer,
+.mobileTouchChoreographyLayer,
+.principleSealLayer {
+  pointer-events: none;
+  transform-origin: center;
+}
+
+.teaAtmosphereLayer {
+  z-index: 5;
+  left: 7vw;
+  bottom: -2vh;
+  width: min(64vw, 970px);
+  height: min(49vh, 450px);
+  opacity: 0.48;
+  filter: saturate(0.7) contrast(1.04)
+    drop-shadow(0 30px 45px rgba(40, 27, 13, 0.2));
+  mix-blend-mode: multiply;
+  transform: rotate(-3deg);
+}
+
+.teaAppAtmosphereLayer {
+  z-index: 2;
+  left: -11vw;
+  bottom: -8vh;
+  width: min(55vw, 840px);
+  height: min(53vh, 480px);
+  opacity: 0.32;
+  filter: saturate(0.6) contrast(0.94);
+  mix-blend-mode: multiply;
+  transform: rotate(4deg);
+}
+
+.lightAtelierLayer {
+  z-index: 4;
+  right: -3vw;
+  top: 5vh;
+  width: min(58vw, 880px);
+  height: min(60vh, 560px);
+  opacity: 0.4;
+  filter: saturate(0.85) brightness(0.8)
+    drop-shadow(0 32px 48px rgba(0, 0, 0, 0.48));
+  mix-blend-mode: screen;
+  transform: rotate(4deg);
+}
+
+.lightAppAtelierLayer {
+  z-index: 2;
+  left: -10vw;
+  bottom: -9vh;
+  width: min(58vw, 900px);
+  height: min(58vh, 540px);
+  opacity: 0.34;
+  filter: saturate(0.7) brightness(0.68);
+  mix-blend-mode: screen;
+  transform: rotate(-5deg);
+}
+
+.spaRitualLayer {
+  z-index: 5;
+  right: -5vw;
+  bottom: -2vh;
+  width: min(52vw, 800px);
+  height: min(47vh, 440px);
+  opacity: 0.76;
+  filter: saturate(0.65) brightness(1.03)
+    drop-shadow(0 28px 42px rgba(35, 55, 43, 0.22));
+  transform: rotate(-2deg);
+}
+
+.spaAppRitualLayer {
+  z-index: 2;
+  left: -12vw;
+  bottom: -11vh;
+  width: min(58vw, 880px);
+  height: min(50vh, 460px);
+  opacity: 0.38;
+  filter: saturate(0.55) brightness(1.03);
+  mix-blend-mode: multiply;
+  transform: rotate(3deg);
+}
+
+.handoffSystemLayer {
+  z-index: 3;
+  right: -8vw;
+  top: 10vh;
+  width: min(52vw, 790px);
+  height: min(66vh, 610px);
+  opacity: 0.46;
+  filter: saturate(0.66) brightness(0.62) contrast(1.08)
+    drop-shadow(0 38px 58px rgba(0, 0, 0, 0.45));
+  mix-blend-mode: screen;
+  transform: rotate(2deg);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 100%);
+}
+
+/* V8 — chapter-specific physical signatures for pages that were still too flat. */
+.indexEditorialLayer {
+  z-index: 3;
+  left: -5vw;
+  bottom: -8vh;
+  width: min(42vw, 640px);
+  height: min(43vh, 390px);
+  opacity: 0.56;
+  filter: saturate(0.72) contrast(0.98)
+    drop-shadow(0 28px 42px rgba(43, 28, 16, 0.2));
+  mix-blend-mode: multiply;
+  transform: rotate(-5deg);
+}
+
+/* V10 — physical foregrounds for the remaining type-heavy chapters. */
+.indexKitLayer {
+  z-index: 4;
+  left: 17vw;
+  top: 8vh;
+  width: min(36vw, 560px);
+  height: min(21vh, 195px);
+  opacity: 0.92;
+  filter: saturate(0.94) contrast(1.03)
+    drop-shadow(0 20px 30px rgba(68, 39, 18, 0.22));
+  mix-blend-mode: normal;
+  transform: rotate(-2.5deg);
+}
+
+.manifestoPunctuationLayer {
+  z-index: 2;
+  right: -1vw;
+  top: 2vh;
+  width: min(29vw, 445px);
+  height: min(60vh, 545px);
+  opacity: 0.82;
+  filter: saturate(0.96) contrast(1.08) brightness(1.03)
+    drop-shadow(0 28px 45px rgba(52, 5, 4, 0.28));
+  mix-blend-mode: normal;
+  transform: rotate(4deg);
+}
+
+.capabilityInstrumentsLayer {
+  z-index: 3;
+  right: 2.5vw;
+  top: 8vh;
+  width: min(56vw, 800px);
+  height: min(79vh, 720px);
+  opacity: 0.74;
+  filter: saturate(0.94) brightness(0.96) contrast(1.04)
+    drop-shadow(0 30px 46px rgba(0, 0, 0, 0.42));
+  mix-blend-mode: normal;
+  transform: rotate(-3deg);
+}
+
+.spaWaterRitualLayer {
+  z-index: 6;
+  left: -8vw;
+  bottom: -9vh;
+  width: min(58vw, 880px);
+  height: min(50vh, 460px);
+  opacity: 0.96;
+  filter: saturate(0.82) contrast(1.04) brightness(1.01)
+    drop-shadow(0 30px 45px rgba(31, 55, 42, 0.28));
+  mix-blend-mode: normal;
+  transform: rotate(-1deg);
+}
+
+.manifestoEditorialLayer {
+  z-index: 1;
+  right: -4vw;
+  bottom: -7vh;
+  width: min(43vw, 660px);
+  height: min(48vh, 440px);
+  opacity: 0.48;
+  filter: saturate(0.78) brightness(0.92)
+    drop-shadow(0 32px 48px rgba(37, 9, 6, 0.24));
+  mix-blend-mode: screen;
+  transform: rotate(7deg);
+}
+
+.processThreadLayer {
+  z-index: 2;
+  left: 1vw;
+  right: 1vw;
+  bottom: 0;
+  height: min(34vh, 315px);
+  opacity: 0.56;
+  filter: saturate(0.72) brightness(0.78)
+    drop-shadow(0 28px 44px rgba(0, 0, 0, 0.38));
+  mix-blend-mode: screen;
+}
+
+.mobileGestureLayer {
+  z-index: 3;
+  left: 30vw;
+  top: 7vh;
+  width: min(30vw, 440px);
+  height: min(80vh, 720px);
+  opacity: 0.68;
+  filter: saturate(0.78) brightness(0.78)
+    drop-shadow(0 35px 50px rgba(0, 0, 0, 0.45));
+  mix-blend-mode: screen;
+  transform: rotate(6deg);
+}
+
+/* V9 — tactile foregrounds for the four application pages called out in review. */
+.teaMaterialCollageLayer {
+  z-index: 5;
+  left: -3vw;
+  bottom: -4vh;
+  width: min(47vw, 720px);
+  height: min(42vh, 385px);
+  opacity: 0.9;
+  filter: saturate(0.78) contrast(1.02)
+    drop-shadow(0 28px 38px rgba(48, 31, 14, 0.24));
+  transform: rotate(-2deg);
+}
+
+.lightOpticalLayer {
+  z-index: 4;
+  left: -4vw;
+  bottom: -7vh;
+  width: min(52vw, 790px);
+  height: min(57vh, 520px);
+  opacity: 0.88;
+  filter: saturate(0.88) brightness(0.9)
+    drop-shadow(0 36px 52px rgba(0, 0, 0, 0.52));
+  mix-blend-mode: screen;
+  transform: rotate(-2deg);
+}
+
+.spaRitualStillLifeLayer {
+  z-index: 7;
+  left: -1vw;
+  bottom: -1vh;
+  width: min(52vw, 790px);
+  height: min(48vh, 440px);
+  opacity: 0.98;
+  filter: saturate(0.8) contrast(1.07) brightness(0.98)
+    drop-shadow(0 30px 42px rgba(36, 52, 42, 0.2));
+  transform: rotate(-1.5deg);
+}
+
+.mobileTouchChoreographyLayer {
+  z-index: 4;
+  left: 32vw;
+  right: auto;
+  top: -1vh;
+  width: min(42vw, 620px);
+  height: min(92vh, 830px);
+  opacity: 0.92;
+  filter: saturate(0.96) brightness(0.94) contrast(1.06)
+    drop-shadow(0 38px 54px rgba(0, 0, 0, 0.5));
+  mix-blend-mode: screen;
+  transform: rotate(-5deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .teaMaterialCollageLayer .artLayerImage,
+  .spaRitualStillLifeLayer .artLayerImage {
+    animation: tactile-breathe 9s ease-in-out infinite alternate;
+  }
+
+  .lightOpticalLayer .artLayerImage,
+  .mobileTouchChoreographyLayer .artLayerImage {
+    animation: optical-drift 11s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes tactile-breathe {
+  from {
+    transform: translate3d(-0.8%, 1.2%, 0) scale(0.99);
+  }
+  to {
+    transform: translate3d(1%, -1.1%, 0) scale(1.015);
+  }
+}
+
+@keyframes optical-drift {
+  from {
+    transform: translate3d(0, 1.5%, 0) rotate(-0.5deg);
+    filter: brightness(0.94);
+  }
+  to {
+    transform: translate3d(1.5%, -1%, 0) rotate(0.6deg);
+    filter: brightness(1.08);
+  }
+}
+
+.principleSealLayer {
+  z-index: 2;
+  left: 25.5vw;
+  top: 2vh;
+  width: min(32vw, 490px);
+  height: min(94vh, 850px);
+  opacity: 0.94;
+  filter: saturate(0.96) brightness(1.03) contrast(1.04)
+    drop-shadow(0 32px 48px rgba(64, 10, 7, 0.34));
+  transform: rotate(-4deg);
+}
+
+.principleCenter {
+  z-index: 4;
+  left: 35.5%;
+  top: 37.5%;
+  width: 82px;
+  background: rgba(36, 20, 14, 0.58);
+  border-color: rgba(237, 201, 140, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.teaObjectLayer {
+  left: 2.4vw;
+  bottom: 2.5vh;
+  width: min(11vw, 165px);
+  height: min(25vh, 225px);
+  transform: rotate(-5deg);
+}
+
+.teaAppObjectLayer {
+  z-index: 3;
+  left: 36vw;
+  bottom: -4vh;
+  width: min(14vw, 205px);
+  height: min(31vh, 285px);
+  opacity: 0.84;
+  transform: rotate(7deg);
+}
+
+.lightRelicLayer {
+  right: 5vw;
+  top: 20vh;
+  bottom: auto;
+  width: min(14vw, 210px);
+  aspect-ratio: 1;
+  opacity: 0.58;
+  filter: saturate(0.84) brightness(0.88)
+    drop-shadow(0 34px 50px rgba(0, 0, 0, 0.58));
+}
+
+.lightAppRelicLayer {
+  z-index: 3;
+  left: 30vw;
+  bottom: -8vh;
+  width: min(24vw, 360px);
+  aspect-ratio: 1;
+  opacity: 0.46;
+  filter: saturate(0.72) brightness(0.72)
+    drop-shadow(0 38px 54px rgba(0, 0, 0, 0.5));
+}
+
+.spaObjectLayer {
+  left: 28vw;
+  bottom: -2vh;
+  width: min(24vw, 360px);
+  aspect-ratio: 1.08;
+  opacity: 0.72;
+  filter: saturate(0.74) brightness(1.02)
+    drop-shadow(0 34px 48px rgba(31, 50, 40, 0.32));
+}
+
+.spaAppObjectLayer {
+  z-index: 3;
+  left: 30vw;
+  bottom: -6vh;
+  width: min(21vw, 320px);
+  aspect-ratio: 1.08;
+  opacity: 0.46;
+  filter: saturate(0.62) brightness(1.04)
+    drop-shadow(0 30px 45px rgba(31, 50, 40, 0.22));
+}
+
+.languageCraftLayer {
+  right: -8vw;
+  top: 3%;
+  width: min(43vw, 680px);
+  aspect-ratio: 3 / 2;
+  opacity: 0.13;
+  filter: saturate(0.62) brightness(0.82);
+  mix-blend-mode: screen;
+  transform: rotate(5deg);
+}
+
+.handoffCraftLayer {
+  z-index: 2;
+  left: -9vw;
+  bottom: 2%;
+  width: min(42vw, 680px);
+  aspect-ratio: 3 / 2;
+  opacity: 0.34;
+  filter: saturate(0.78) brightness(0.92);
+  mix-blend-mode: screen;
+  transform: rotate(-8deg);
+}
+
+.contactHeritageLayer {
+  z-index: 2;
+  right: 0;
+  top: 13%;
+  width: min(30vw, 470px);
+  height: min(63vh, 570px);
+  overflow: hidden;
+  opacity: 0.5;
+  filter: saturate(0.78) brightness(0.9)
+    drop-shadow(0 35px 70px rgba(0, 0, 0, 0.48));
+  mix-blend-mode: screen;
+  transform: rotate(-4deg);
+}
+
+.contactHeritageLayer .artLayerImage {
+  object-fit: cover;
+  object-position: right center;
+}
+
+@media screen and (max-width: 700px) {
+  .scene::before {
+    inset: 8px;
+    opacity: 0.5;
+  }
+
+  .chapterBand {
+    top: 18px;
+    grid-template-columns: auto 34px auto;
+    gap: 9px;
+    padding: 7px 10px 8px;
+    font-size: 6px;
+  }
+
+  .chapterBand b {
+    font-size: 12px;
+  }
+
+  .phonePlacement .phoneHero strong {
+    right: 9px;
+    bottom: 12px;
+    left: 9px;
+    font-size: 15px;
+    line-height: 0.95;
+  }
+
+  .indexHeritageLayer {
+    right: -68vw;
+    bottom: 1%;
+    width: 126vw;
+    opacity: 0.17;
+  }
+
+  .manifestoCraftLayer {
+    right: -76vw;
+    top: 30%;
+    width: 132vw;
+    opacity: 0.25;
+  }
+
+  .capabilityHeritageLayer {
+    right: -70vw;
+    top: 38%;
+    width: 132vw;
+    opacity: 0.18;
+  }
+
+  .processCraftLayer {
+    right: -72vw;
+    top: 5%;
+    width: 126vw;
+    opacity: 0.22;
+  }
+
+  .projectPortal {
+    min-height: 1420px;
+  }
+
+  .portalObjectsLayer {
+    left: 18px;
+    top: 320px;
+    bottom: auto;
+    width: calc(100% - 36px);
+    opacity: 0.94;
+  }
+
+  .teaObjectLayer {
+    z-index: 7;
+    left: auto;
+    right: -14px;
+    bottom: 26px;
+    width: 104px;
+    height: 174px;
+    opacity: 0.82;
+  }
+
+  .teaAppObjectLayer {
+    left: -18px;
+    bottom: 18px;
+    width: 104px;
+    height: 178px;
+    opacity: 0.54;
+  }
+
+  .lightRelicLayer {
+    right: -24px;
+    top: 178px;
+    bottom: auto;
+    width: 132px;
+    opacity: 0.5;
+  }
+
+  .lightAppRelicLayer {
+    left: -70px;
+    bottom: 60px;
+    width: 210px;
+    opacity: 0.32;
+  }
+
+  .spaObjectLayer {
+    left: -44px;
+    bottom: 20px;
+    width: 190px;
+    opacity: 0.58;
+  }
+
+  .spaAppObjectLayer {
+    left: -52px;
+    bottom: 32px;
+    width: 180px;
+    opacity: 0.3;
+  }
+
+  .teaAtmosphereLayer {
+    left: -68vw;
+    bottom: -2%;
+    width: 170vw;
+    height: 45vh;
+    opacity: 0.28;
+  }
+
+  .teaAppAtmosphereLayer {
+    left: -76vw;
+    bottom: -3%;
+    width: 176vw;
+    height: 42vh;
+    opacity: 0.24;
+  }
+
+  .lightAtelierLayer {
+    right: -68vw;
+    top: 42%;
+    width: 156vw;
+    height: 42vh;
+    opacity: 0.32;
+  }
+
+  .lightAppAtelierLayer {
+    left: -82vw;
+    bottom: 2%;
+    width: 164vw;
+    height: 44vh;
+    opacity: 0.28;
+  }
+
+  .spaRitualLayer {
+    right: -66vw;
+    bottom: -4%;
+    width: 164vw;
+    height: 39vh;
+    opacity: 0.58;
+  }
+
+  .spaAppRitualLayer {
+    left: -74vw;
+    bottom: -4%;
+    width: 164vw;
+    height: 41vh;
+    opacity: 0.3;
+  }
+
+  .handoffSystemLayer {
+    right: -28vw;
+    top: 46%;
+    width: 128vw;
+    height: 46vh;
+    opacity: 0.66;
+  }
+
+  .indexEditorialLayer {
+    left: -58vw;
+    bottom: -3%;
+    width: 148vw;
+    height: 31vh;
+    opacity: 0.34;
+  }
+
+  .indexKitLayer {
+    left: -17vw;
+    top: 24%;
+    width: 118vw;
+    height: 20vh;
+    opacity: 0.58;
+  }
+
+  .manifestoEditorialLayer {
+    right: -78vw;
+    bottom: -3%;
+    width: 154vw;
+    height: 38vh;
+    opacity: 0.3;
+  }
+
+  .manifestoPunctuationLayer {
+    right: -38vw;
+    top: 20%;
+    width: 95vw;
+    height: 38vh;
+    opacity: 0.5;
+  }
+
+  .capabilityInstrumentsLayer {
+    right: -46vw;
+    top: 29%;
+    width: 148vw;
+    height: 68vh;
+    opacity: 0.52;
+  }
+
+  .processThreadLayer {
+    left: -72vw;
+    right: auto;
+    bottom: 7%;
+    width: 182vw;
+    height: 30vh;
+    opacity: 0.34;
+  }
+
+  .mobileGestureLayer {
+    right: -48vw;
+    top: 38%;
+    width: 120vw;
+    height: 58vh;
+    opacity: 0.46;
+  }
+
+  .teaMaterialCollageLayer {
+    left: -46vw;
+    bottom: -1%;
+    width: 142vw;
+    height: 33vh;
+    opacity: 0.72;
+  }
+
+  .lightOpticalLayer {
+    left: -66vw;
+    bottom: -2%;
+    width: 154vw;
+    height: 43vh;
+    opacity: 0.72;
+  }
+
+  .spaRitualStillLifeLayer {
+    left: -32vw;
+    bottom: 2%;
+    width: 136vw;
+    height: 40vh;
+    opacity: 0.94;
+  }
+
+  .spaWaterRitualLayer {
+    left: -58vw;
+    bottom: -3%;
+    width: 180vw;
+    height: 44vh;
+    opacity: 0.88;
+  }
+
+  .mobileTouchChoreographyLayer {
+    left: auto;
+    right: -24vw;
+    top: 42%;
+    width: 98vw;
+    height: 50vh;
+    opacity: 0.9;
+  }
+
+  .principleSealLayer {
+    left: auto;
+    right: -28vw;
+    top: 24%;
+    width: 108vw;
+    height: 64vh;
+    opacity: 0.62;
+  }
+
+  .principleCenter {
+    left: auto;
+    right: 22px;
+    top: 315px;
+    width: 82px;
+    translate: 0;
+  }
+
+  .projectMosaic {
+    top: 430px;
+  }
+
+  .languageCraftLayer {
+    right: -72vw;
+    top: auto;
+    bottom: 14%;
+    width: 128vw;
+    opacity: 0.1;
+  }
+
+  .handoffCraftLayer {
+    left: -70vw;
+    bottom: 13%;
+    width: 130vw;
+    opacity: 0.24;
+  }
+
+  .contactHeritageLayer {
+    right: -12vw;
+    top: 18%;
+    bottom: auto;
+    width: 58vw;
+    height: 52vh;
+    opacity: 0.34;
+  }
+}
+
+/* V11 — first-five editorial reset: one visual axis per chapter. */
+.coverStatement {
+  right: 5.5vw;
+  bottom: 8vh;
+  display: block;
+  width: min(330px, 25vw);
+  padding: 2px 0 2px 22px;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid rgba(221, 176, 96, 0.72);
+  backdrop-filter: none;
+}
+
+.coverStatementKicker {
+  display: block;
+  margin-bottom: 13px;
+  color: #d9aa61;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+}
+
+.coverStatement p {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.coverStatement a {
+  margin-top: 18px;
+  padding-top: 13px;
+  border-top-color: rgba(221, 176, 96, 0.36);
+}
+
+.indexScene {
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.58fr);
+  gap: 6vw;
+}
+
+.indexKitLayer {
+  left: 36vw;
+  top: 8vh;
+  width: min(30vw, 460px);
+  height: min(18vh, 165px);
+  opacity: 0.86;
+  transform: rotate(-1deg);
+}
+
+.indexColumns {
+  gap: clamp(24px, 2.5vw, 42px);
+}
+
+.indexColumns > div:nth-child(2),
+.indexColumns > div:nth-child(3) {
+  margin-top: 0;
+}
+
+.manifestoScene {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+}
+
+.manifestoPunctuationLayer {
+  right: -2vw;
+  top: 7vh;
+  width: min(27vw, 415px);
+  height: min(49vh, 445px);
+  opacity: 0.78;
+  transform: rotate(2deg);
+}
+
+.manifestoNote {
+  position: absolute;
+  right: 5.5vw;
+  bottom: 10vh;
+  width: min(300px, 23vw);
+  padding: 22px 0 22px 22px;
+}
+
+.studioPhoto {
+  inset: 70px 0 0 34%;
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.studioPaper {
+  width: min(500px, 38vw);
+  margin: 14vh 0 0 4vw;
+  padding: 46px 48px;
+  box-shadow: 18px 20px 0 rgba(145, 47, 36, 0.58);
+  transform: none;
+}
+
+.handNote {
+  position: static;
+  display: inline-block;
+  margin-top: 26px;
+  padding: 14px 0 0;
+  color: #8f3026;
+  background: transparent;
+  border-top: 1px solid rgba(143, 48, 38, 0.42);
+  font-size: 15px;
+  transform: none;
+}
+
+.capabilityTitle {
+  width: min(36vw, 520px);
+  padding-top: 7vh;
+}
+
+.capabilityInstrumentsLayer {
+  right: 1vw;
+  top: 8vh;
+  width: min(56vw, 800px);
+  height: min(78vh, 710px);
+  opacity: 0.68;
+}
+
+.capabilityOrbit {
+  inset: 150px 5vw 82px 45vw;
+}
+
+.capabilityOrbit .capabilityNode,
+.capabilityOrbit .capabilityNode:nth-child(n) {
+  z-index: 2;
+  background: linear-gradient(
+    135deg,
+    rgba(7, 13, 9, 0.72),
+    rgba(7, 13, 9, 0.18) 68%,
+    transparent
+  );
+}
+
+@media screen and (max-width: 700px) {
+  .coverStatement {
+    right: 22px;
+    bottom: 58px;
+    left: 22px;
+    width: auto;
+    padding: 0 0 0 16px;
+  }
+
+  .coverStatementKicker {
+    margin-bottom: 10px;
+    font-size: 6px;
+  }
+
+  .coverStatement p {
+    font-size: 18px;
+  }
+
+  .coverStatement a {
+    margin-top: 14px;
+    padding-top: 11px;
+  }
+
+  .indexKitLayer {
+    left: -14vw;
+    top: 24%;
+    width: 112vw;
+    height: 18vh;
+    opacity: 0.46;
+  }
+
+  .indexColumns > div:nth-child(2),
+  .indexColumns > div:nth-child(3) {
+    margin-top: 0;
+  }
+
+  .manifestoPunctuationLayer {
+    right: -43vw;
+    top: 37%;
+    width: 94vw;
+    height: 27vh;
+    opacity: 0.42;
+  }
+
+  .manifestoNote {
+    right: 22px;
+    bottom: 88px;
+    left: 22px;
+    width: auto;
+    padding: 20px 0 16px 18px;
+  }
+
+  .studioPhoto {
+    inset: 62px 0 auto;
+    height: 48%;
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  }
+
+  .studioPaper {
+    width: auto;
+    margin: 400px 22px 0;
+    padding: 30px 26px 28px;
+    box-shadow: 12px 14px 0 rgba(145, 47, 36, 0.58);
+  }
+
+  .handNote {
+    margin-top: 22px;
+    font-size: 14px;
+  }
+
+  .capabilityScene {
+    min-height: 1360px;
+  }
+
+  .capabilityTitle {
+    width: auto;
+    padding-top: 0;
+  }
+
+  .capabilityInstrumentsLayer {
+    right: -62vw;
+    top: 31%;
+    width: 164vw;
+    height: 64vh;
+    opacity: 0.44;
+  }
+
+  .capabilityOrbit {
+    inset: 560px 22px 92px;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+
+  .capabilityOrbit .capabilityNode,
+  .capabilityOrbit .capabilityNode:nth-child(n) {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    align-content: center;
+    min-height: 152px;
+    padding: 24px 0;
+    background: linear-gradient(
+      90deg,
+      rgba(7, 13, 9, 0.92),
+      rgba(7, 13, 9, 0.46) 72%,
+      transparent
+    );
+    border-right: 0;
+  }
+
+  .capabilityOrbit .capabilityNode > span {
+    grid-row: 1 / span 2;
+    margin-top: 2px;
+    font-size: 34px;
+  }
+
+  .capabilityOrbit .capabilityNode h3 {
+    grid-column: 2;
+    margin-top: 0;
+    font-size: 27px;
+  }
+
+  .capabilityOrbit .capabilityNode p {
+    grid-column: 2;
+    margin-top: 8px;
+    font-size: 8px;
+  }
+}
+
+/* V12 — pages 06–10: one narrative system, fewer decorative collisions. */
+.processScene {
+  padding-top: 122px;
+}
+
+.processShade {
+  background:
+    linear-gradient(90deg, rgba(7, 10, 8, 0.97) 0%, rgba(7, 10, 8, 0.69) 38%, rgba(7, 10, 8, 0.08) 72%),
+    linear-gradient(0deg, rgba(7, 10, 8, 0.98) 0%, transparent 58%),
+    linear-gradient(180deg, rgba(7, 10, 8, 0.54), transparent 25%);
+}
+
+.processTitle {
+  width: min(560px, 42vw);
+}
+
+.processQuote {
+  right: 5vw;
+  top: 16.5%;
+  width: min(300px, 23vw);
+  padding: 2px 0 2px 20px;
+  background: linear-gradient(90deg, rgba(7, 10, 8, 0.42), transparent);
+}
+
+.processPath {
+  bottom: 6.5%;
+}
+
+.processStop,
+.processStop:nth-of-type(n) {
+  min-height: 158px;
+  padding: 25px 24px 20px;
+  background: linear-gradient(180deg, rgba(5, 9, 7, 0.74), rgba(5, 9, 7, 0.9));
+  backdrop-filter: none;
+}
+
+.projectPortal .portalTitle {
+  width: min(35vw, 510px);
+  padding-top: 5.5vh;
+}
+
+.portalSummary {
+  max-width: 390px;
+  margin-top: 34px;
+  padding: 22px 0 0 22px;
+  color: rgba(238, 230, 213, 0.68);
+  border-top: 1px solid rgba(221, 178, 104, 0.32);
+  border-left: 1px solid rgba(221, 178, 104, 0.5);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.projectMosaic {
+  inset: 138px 5vw 72px 42.5vw;
+  gap: 14px;
+}
+
+.projectMosaic .projectTile {
+  box-shadow: inset 0 0 0 1px rgba(255, 244, 222, 0.03);
+}
+
+.teaStory .caseHero {
+  left: 18%;
+  top: 14%;
+  width: 57%;
+  height: 73%;
+}
+
+.teaStory .caseMaterial {
+  right: 3%;
+  bottom: 7%;
+  width: 35%;
+  height: 41%;
+  box-shadow: -18px 20px 0 rgba(145, 47, 36, 0.72);
+  transform: none;
+}
+
+.teaStory .caseMaterial::after,
+.lightObject::after {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  z-index: 2;
+  padding: 7px 9px;
+  color: #f2eadb;
+  background: rgba(8, 12, 9, 0.72);
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.teaStory .caseMaterial::after {
+  content: "PACKAGING STUDY / 01";
+}
+
+.teaStory .caseTitle {
+  top: 31%;
+}
+
+.teaAtmosphereLayer {
+  left: 5vw;
+  bottom: -1vh;
+  width: min(58vw, 880px);
+  height: min(43vh, 395px);
+  opacity: 0.25;
+  transform: none;
+}
+
+.teaApplication .applicationIntro {
+  top: 13.5%;
+  width: 34%;
+}
+
+.teaApplication .webPlacement {
+  right: 4.5vw;
+  top: 19%;
+  width: 57%;
+}
+
+.teaApplication .phonePlacement {
+  right: 4vw;
+  bottom: 5.5%;
+  width: 166px;
+}
+
+.teaApplication .materialPassport {
+  right: 20vw;
+  bottom: 5.5%;
+}
+
+.teaMaterialCollageLayer {
+  left: -4vw;
+  bottom: -3vh;
+  width: min(48vw, 730px);
+  height: min(41vh, 375px);
+  opacity: 0.72;
+  transform: none;
+}
+
+.lightStory .caseTitle {
+  top: 23%;
+}
+
+.lightObject {
+  right: 4.5vw;
+  bottom: 6vh;
+  width: 32vw;
+  height: 34vh;
+  clip-path: none;
+  border-color: rgba(239, 183, 91, 0.5);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.56);
+}
+
+.lightObject::after {
+  content: "LIGHT MATERIAL STUDY / 02";
+  color: #17130c;
+  background: rgba(239, 174, 76, 0.9);
+}
+
+.lightBeam {
+  right: 18%;
+  width: 10vw;
+  opacity: 0.84;
+}
+
+@media screen and (max-width: 700px) {
+  .processScene {
+    min-height: 1090px;
+    padding-top: 88px;
+  }
+
+  .processTitle {
+    width: auto;
+  }
+
+  .processQuote {
+    top: 338px;
+    right: 22px;
+    width: min(250px, calc(100% - 44px));
+    padding-left: 18px;
+  }
+
+  .processPath {
+    bottom: 60px;
+  }
+
+  .processStop,
+  .processStop:nth-of-type(n) {
+    min-height: 128px;
+    padding: 16px 18px 15px 76px;
+  }
+
+  .projectPortal {
+    min-height: 1320px;
+  }
+
+  .projectPortal .portalTitle {
+    width: auto;
+    padding-top: 0;
+  }
+
+  .portalSummary {
+    max-width: none;
+    margin-top: 24px;
+    padding: 16px 0 0 16px;
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  .projectMosaic {
+    inset: 390px 22px 64px;
+    grid-template-rows: 1.22fr 1fr 1fr;
+  }
+
+  .teaStory::before {
+    width: 22%;
+  }
+
+  .teaStory .caseHero {
+    left: 10%;
+    top: 14%;
+    width: 82%;
+    height: 48%;
+  }
+
+  .teaStory .caseMaterial {
+    right: 6%;
+    bottom: 7%;
+    width: 72%;
+    height: 31%;
+    box-shadow: -11px 13px 0 rgba(145, 47, 36, 0.72);
+  }
+
+  .teaStory .caseMaterial::after {
+    right: 10px;
+    bottom: 9px;
+  }
+
+  .teaStory .caseTitle {
+    top: 29%;
+  }
+
+  .teaAtmosphereLayer {
+    display: none;
+  }
+
+  .teaApplication {
+    min-height: 1120px;
+  }
+
+  .teaApplication .applicationIntro {
+    top: auto;
+    left: auto;
+    width: auto;
+  }
+
+  .teaApplication .webPlacement {
+    top: 390px;
+    right: 22px;
+    left: 22px;
+    width: auto;
+  }
+
+  .teaApplication .materialPassport {
+    top: 786px;
+  }
+
+  .teaApplication .phonePlacement {
+    top: 850px;
+    right: 20px;
+    bottom: auto;
+    width: 138px;
+  }
+
+  .teaApplication .applicationTokens {
+    display: none;
+  }
+
+  .teaMaterialCollageLayer {
+    left: -42vw;
+    bottom: -1%;
+    width: 138vw;
+    height: 30vh;
+    opacity: 0.65;
+  }
+
+  .lightStory .caseTitle {
+    top: 20%;
+  }
+
+  .lightObject {
+    right: 6vw;
+    bottom: 7vh;
+    width: 72vw;
+    height: 29vh;
+  }
+
+  .lightBeam {
+    right: 22%;
+    width: 18vw;
+  }
+}
+
+/* V13 — closing chapters: foregrounds serve content, not compete with it. */
+.lightApplication .lightOpticalLayer {
+  left: -7vw;
+  bottom: -9vh;
+  width: min(47vw, 700px);
+  height: min(45vh, 420px);
+  opacity: 0.65;
+}
+
+.spaApplication .spaRitualStillLifeLayer {
+  left: -4vw;
+  bottom: -3vh;
+  width: min(48vw, 725px);
+  height: min(43vh, 400px);
+  opacity: 0.76;
+}
+
+.mobileScene {
+  overflow: clip;
+}
+
+.mobileTouchChoreographyLayer {
+  left: 34vw;
+  top: 4vh;
+  width: min(38vw, 550px);
+  height: min(75vh, 675px);
+  opacity: 0.62;
+}
+
+.principleSealLayer {
+  left: 29vw;
+  top: 6vh;
+  width: min(30vw, 450px);
+  height: min(82vh, 740px);
+  opacity: 0.66;
+}
+
+@media screen and (max-width: 700px) {
+  .lightApplication .lightOpticalLayer {
+    left: -45vw;
+    bottom: 0;
+    width: 130vw;
+    height: 32vh;
+    opacity: 0.46;
+  }
+
+  .spaApplication .spaRitualStillLifeLayer {
+    left: -28vw;
+    bottom: 1%;
+    width: 128vw;
+    height: 35vh;
+    opacity: 0.74;
+  }
+
+  .languagePhoto .visual {
+    object-position: 88% center;
+    filter: brightness(1.17) saturate(1.08);
+  }
+
+  .languagePhoto::after {
+    background:
+      linear-gradient(180deg, rgba(7, 11, 8, 0.88) 0%, rgba(7, 11, 8, 0.27) 38%, rgba(7, 11, 8, 0.22) 61%, #071008 80%),
+      linear-gradient(90deg, rgba(7, 11, 8, 0.54), transparent 72%);
+  }
+
+  .mobileScene {
+    min-height: 900px;
+  }
+
+  .mobileTouchChoreographyLayer {
+    left: auto;
+    right: -16vw;
+    top: 39%;
+    width: 110vw;
+    height: 48vh;
+    opacity: 0.48;
+  }
+
+  .phoneStage {
+    right: 22px;
+    left: 22px;
+    width: auto;
+    gap: 8px;
+  }
+
+  .phoneStage > div {
+    flex: 0 0 calc((100% - 16px) / 3);
+    min-width: 0;
+    width: auto;
+  }
+
+  .phoneStage > div:nth-child(1),
+  .phoneStage > div:nth-child(2),
+  .phoneStage > div:nth-child(3) {
+    transform: none;
+  }
+
+  .handoffPhoto .visual {
+    object-position: 77% center;
+    filter: brightness(1.32) saturate(1.08);
+  }
+
+  .handoffShade {
+    background:
+      linear-gradient(180deg, rgba(5, 8, 6, 0.9) 0%, rgba(5, 8, 6, 0.22) 36%, rgba(5, 8, 6, 0.26) 60%, #050806 82%),
+      linear-gradient(90deg, rgba(5, 8, 6, 0.46), transparent);
+  }
+
+  .principleScene .principlePattern {
+    opacity: 0.12;
+  }
+
+  .principleSealLayer {
+    left: auto;
+    right: -22vw;
+    top: 26%;
+    width: 100vw;
+    height: 56vh;
+    opacity: 0.52;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio *,
+  .portfolio *::before,
+  .portfolio *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+  .portfolio [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Portfolio review: readable specimens, consistent stages and content-led mobile flow. */
+.caseNotes { position: relative; z-index: 8; }
+.caseNotes > span { font-size: 9px; letter-spacing: .2em; font-weight: 700; }
+.caseNotes h3 { margin-top: 16px; font: 600 26px/1.2 var(--font-heading), serif; }
+.caseNotes p { margin-top: 12px; font-size: 13px; line-height: 1.8; }
+.caseNotes small { display: block; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 10px; }
+.webModules > div { min-height: 100px; display: flex; flex-direction: column; justify-content: end; padding: 12px; }
+.webModules > div::after, .phoneCards > span::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, #08110bea, #08110b08); }
+.webModules > div > span, .webModules > div > b { z-index: 2; color: #fff5e6; }
+.webModules b { font-size: 12px; line-height: 1.2; }
+.webModules i { display: none; }
+.phoneCards > span { position: relative; overflow: hidden; min-height: 52px; display: flex; align-items: end; }
+.phoneCards b { position: relative; z-index: 2; color: white; font-size: 5px; }
+
+@media all {
+  .portfolio .scene[data-folio] { scroll-margin-top: 70px; }
+  .portfolio .sceneMeta, .portfolio .sceneFoot { opacity: .8; }
+  .portfolio :is(.portalTitle, .applicationIntro, .languageTitle, .mobileTitle, .handoffTitle, .principleTitle) h2 { letter-spacing: -.045em; line-height: 1.04; }
+  .portfolio :is(.portalSummary, .applicationIntro > p, .languageTitle > p, .mobileTitle > p, .handoffTitle > p) { font-size: 14px; line-height: 1.75; }
+  .portfolio .projectPortal { min-height: 860px; padding-top: 145px; }
+  .portfolio .projectPortal .portalTitle { width: 32%; padding-top: 45px; }
+  .portfolio .portalTitle h2 { font-size: clamp(46px, 4.8vw, 78px); }
+  .portfolio .portalSummary { padding: 22px 0 0; color: #c4cbbd; border-left: 0; }
+  .portfolio .projectMosaic { inset: 155px 5vw 80px 40%; gap: 18px; }
+  .portfolio .projectMosaic .tileCopy { position: absolute; height: auto; clip-path: none; overflow: visible; inset: auto 20px 24px; grid-template-columns: 1fr; gap: 10px; }
+  .portfolio .projectMosaic .tileVisual { z-index: 0; }
+  .portfolio .tileIndex { width: auto; height: auto; aspect-ratio: auto; display: block; background: none; color: #f5d9a5; font-size: 11px; }
+  .portfolio .projectMosaic .tileCopy h3 { font-size: clamp(23px, 2.3vw, 36px); line-height: 1.12; }
+  .portfolio .projectMosaic .tileCopy p { font-size: 8px; line-height: 1.5; letter-spacing: .1em; }
+  .portfolio .projectMosaic .tileCopy > b { display: block; color: #f5d9a5; }
+  .portfolio .projectTile:focus-visible { outline: 3px solid #e6bd77; outline-offset: 4px; }
+  .portfolio .teaStory { min-height: 880px; background: #eae2d1; }
+  .portfolio .teaStory::before { display: none; }
+  .portfolio .teaStory .caseTitle { left: 5vw; top: 180px; width: 38%; color: #253c2c; }
+  .portfolio .teaStory .caseTitle h2 { font-size: clamp(68px, 7vw, 108px); line-height: 1.04; letter-spacing: -.05em; text-shadow: none; }
+  .portfolio .teaStory .caseTitle h2 em { color: #8a3b2c; }
+  .portfolio .teaStory .caseTitle > span { color: #6c6048; }
+  .portfolio .teaStory .caseTitle > p { color: #384c3c; font-size: 23px; margin-top: 30px; }
+  .portfolio .teaStory .caseHero { left: 46%; top: 120px; width: 49%; height: 61%; clip-path: none; }
+  .portfolio .teaStory .caseMaterial { right: 32%; bottom: 75px; width: 31%; height: 29%; box-shadow: 12px 12px 0 #eae2d1; }
+  .portfolio .teaStory .teaAtmosphereLayer { left: -10%; bottom: 0; opacity: .2; width: 45%; }
+  .portfolio .applicationScene { min-height: 970px; padding: 155px 5vw 90px; display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); column-gap: 5vw; align-content: start; row-gap: 32px; }
+  .portfolio .applicationScene .applicationIntro { position: relative; inset: auto; width: auto; grid-column: 1; grid-row: 1; }
+  .portfolio .applicationScene .applicationIntro h2 { font-size: clamp(42px, 4vw, 64px); }
+  .portfolio .applicationScene .applicationIntro > p { margin-top: 25px; max-width: 440px; }
+  .portfolio .applicationScene .caseNotes { grid-column: 1; grid-row: 2; max-width: 410px; border-left: 2px solid currentColor; padding-left: 20px; }
+  .portfolio .applicationScene .deviceStage { grid-column: 2; grid-row: 1 / span 3; position: relative; min-width: 0; align-self: start; padding-bottom: 135px; z-index: 9; }
+  .portfolio .applicationScene .webPlacement { position: relative; inset: auto; width: 100%; }
+  .portfolio .applicationScene .webFrame { transform: none; border-radius: 8px; box-shadow: 0 25px 70px #0003; }
+  .portfolio .applicationScene .phonePlacement { inset: auto -12px 0 auto; width: 158px; }
+  .portfolio .applicationScene .phoneFrame { transform: rotate(4deg); }
+  .portfolio .applicationScene .webHero { height: clamp(235px, 24vw, 355px); }
+  .portfolio .applicationScene .webHero strong { font-size: clamp(25px, 2.6vw, 38px); line-height: 1.06; }
+  .portfolio .applicationScene .materialPassport { position: relative; inset: auto; width: 100%; max-width: 410px; grid-column: 1; grid-row: 3; align-self: start; box-shadow: none; }
+  .portfolio .materialPassportHead, .portfolio .materialPassportHead b, .portfolio .materialPassportItems > span, .portfolio .materialPassportItems i { font-size: 8px; }
+  .portfolio .applicationScene :is(.applicationTokens, .beamLabels) { display: none; }
+  .portfolio .applicationScene :is(.teaMaterialCollageLayer, .lightOpticalLayer, .spaRitualStillLifeLayer) { left: -6vw; bottom: -70px; width: 43%; height: 220px; opacity: .45; z-index: 0; }
+  .portfolio .lightApplication .lightLab, .portfolio .spaApplication .spaMaterial { opacity: .1; }
+  .portfolio .lightApplication .applicationIntro { color: #f8f0df; }
+  .portfolio .lightApplication .caseNotes { color: #d7e0df; }
+  .portfolio .lightApplication .phoneFrame { color: #fff3de; background: #122126; border-color: #b28b54; }
+  .portfolio .lightStory .caseTitle > p { color: #fff3dc; text-shadow: 0 2px 10px #000; }
+  .portfolio .languageScene, .portfolio .handoffScene { min-height: 900px; }
+  .portfolio .grammarRail, .portfolio .handoffArtifacts { bottom: 65px; padding: 24px; background: #0d1913f5; border-top: 1px solid #c29b5b; gap: 20px; }
+  .portfolio .grammarRail b, .portfolio .handoffLine b { color: #f6edd9; font-size: 13px; }
+  .portfolio .grammarRail small, .portfolio .handoffLine small { color: #c0c9bc; font-size: 12px; line-height: 1.6; }
+  .portfolio .mobileScene { min-height: 890px; }
+  .portfolio .mobileTitle { width: 33%; }
+  .portfolio .mobileTitle h2 { font-size: clamp(48px, 5.2vw, 82px); }
+  .portfolio .phoneStage { z-index: 8; top: 26%; right: 5vw; width: 55%; gap: 20px; }
+  .portfolio .phoneStage > div { opacity: 1; filter: none; flex: 1; min-width: 0; }
+  .portfolio .phoneStage > div:nth-child(n) { transform: none; }
+  .portfolio .phoneStage > div:nth-child(2) { margin-top: 55px; }
+  .portfolio .phoneStage .phoneFrame { transform: none; }
+  .portfolio .mobileTouchChoreographyLayer { z-index: 0; top: auto; bottom: 20px; left: 38%; height: 230px; width: 50%; opacity: .25; }
+  .portfolio .mobilePattern { opacity: .09; }
+  .portfolio .principleScene { grid-template-columns: 1fr 1.1fr; min-height: 860px; gap: 7vw; padding-top: 150px; }
+  .portfolio .principleTitle { position: relative; z-index: 3; align-self: start; padding-top: 30px; }
+  .portfolio .principleTitle h2 { font-size: clamp(65px, 6.8vw, 100px); }
+  .portfolio .principleSealLayer { left: 16%; top: auto; bottom: -110px; width: 26%; height: 440px; opacity: .7; z-index: 0; }
+  .portfolio .principleList { position: relative; inset: auto; z-index: 4; align-self: start; padding-top: 10px; }
+  .portfolio .principleList > div { min-height: 134px; grid-template-columns: 50px 1fr; padding: 22px 0; }
+  .portfolio .principleList span { font-size: 28px; color: #ffe1ae; }
+  .portfolio .principleList b { font-size: 23px; line-height: 1.2; }
+  .portfolio .principleList p { color: #f5dfd1; font-size: 14px; line-height: 1.65; }
+}
+
+@media screen and (max-width: 900px) {
+  .portfolio .scene[data-folio] { scroll-margin-top: 62px; }
+  .portfolio .projectPortal { min-height: 0; padding: 130px 24px 70px; }
+  .portfolio .projectPortal .portalTitle { width: auto; padding: 0; }
+  .portfolio .portalTitle h2 { font-size: 48px; }
+  .portfolio .projectMosaic { position: relative; inset: auto; margin-top: 32px; grid-template-columns: 1fr; grid-template-rows: none; }
+  .portfolio .projectMosaic .projectTile:nth-child(n) { grid-row: auto; min-height: 280px; }
+  .portfolio .projectMosaic .tileCopy { grid-template-columns: 1fr; }
+  .portfolio .teaStory { min-height: 1050px; }
+  .portfolio .teaStory .caseTitle { left: 24px; right: 24px; top: 145px; width: auto; }
+  .portfolio .teaStory .caseTitle h2 { font-size: clamp(52px, 10vw, 80px); }
+  .portfolio .teaStory .caseTitle > p { margin-top: 18px; font-size: 20px; }
+  .portfolio .teaStory .caseHero { left: 24px; top: 440px; width: calc(100% - 48px); height: 365px; }
+  .portfolio .teaStory .caseMaterial { right: 35px; bottom: 65px; width: 67%; height: 240px; }
+  .portfolio .teaStory .caseVertical { display: none; }
+  .portfolio .applicationScene { display: flex; flex-direction: column; gap: 28px; min-height: 0; padding: 140px 24px 80px; }
+  .portfolio .applicationScene .applicationIntro { order: 0; }
+  .portfolio .applicationScene .applicationIntro h2 { font-size: clamp(38px, 9vw, 58px); }
+  .portfolio .applicationScene .deviceStage { order: 1; width: 100%; padding-bottom: 170px; }
+  .portfolio .applicationScene .phonePlacement { width: 130px; right: 0; bottom: 0; }
+  .portfolio .applicationScene .webHero { height: 235px; }
+  .portfolio .applicationScene .webHero strong { font-size: 26px; }
+  .portfolio .applicationScene .webHero > div { max-width: 69%; }
+  .portfolio .applicationScene .caseNotes { order: 2; max-width: none; }
+  .portfolio .applicationScene .materialPassport { order: 3; max-width: none; }
+  .portfolio .webModules { padding: 7px 0; gap: 5px; }
+  .portfolio .webModules > div { min-height: 85px; padding: 7px; }
+  .portfolio .webModules b { font-size: 10px; }
+  .portfolio .applicationScene :is(.teaMaterialCollageLayer, .lightOpticalLayer, .spaRitualStillLifeLayer) { width: 70%; left: -10%; bottom: auto; top: 710px; height: 170px; opacity: .7; }
+  .portfolio .languageScene, .portfolio .handoffScene { min-height: 0; padding: 145px 24px 70px; }
+  .portfolio .languageTitle, .portfolio .handoffTitle { position: relative; inset: auto; width: auto; max-width: none; }
+  .portfolio .languageTitle h2, .portfolio .handoffTitle h2 { font-size: 46px; }
+  .portfolio .grammarRail, .portfolio .handoffArtifacts { position: relative; inset: auto; margin-top: 280px; padding: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 15px; }
+  .portfolio .grammarRail > div, .portfolio .handoffLine { padding: 0; border: 0; min-height: 115px; }
+  .portfolio .grammarRail b, .portfolio .handoffLine b { font-size: 11px; }
+  .portfolio .grammarRail small, .portfolio .handoffLine small { font-size: 11px; }
+  .portfolio .mobileScene { min-height: 0; padding: 140px 24px 100px; }
+  .portfolio .mobileTitle { position: relative; inset: auto; width: auto; }
+  .portfolio .mobileTitle h2 { font-size: 49px; }
+  .portfolio .phoneStage { position: relative; inset: auto; width: 100%; margin-top: 45px; gap: 8px; align-items: start; }
+  .portfolio .phoneStage > div { flex: 1 1 0; width: 0; }
+  .portfolio .phoneStage > div:nth-child(2) { margin-top: 24px; }
+  .portfolio .phoneStage .phoneFrame { padding: 12px 3px 3px; border-width: 3px; border-radius: 15px; }
+  .portfolio .phoneStage .phoneHero strong { font-size: 10px; left: 5px; right: 5px; bottom: 8px; }
+  .portfolio .phoneStage .phoneNav { height: 20px; padding: 0 3px; }
+  .portfolio .phoneStage .phoneNav b { font-size: 7px; }
+  .portfolio .phoneStage .phoneCards { padding: 3px 0; gap: 2px; }
+  .portfolio .phoneStage .phoneCards span { min-height: 28px; padding: 2px; }
+  .portfolio .phoneStage .phoneCards b { font-size: 3px; }
+  .portfolio .phoneStage .phoneTabs { min-height: 17px; gap: 3px; font-size: 3px; }
+  .portfolio .phoneStage .phoneTabs b { padding: 3px; }
+  .portfolio .mobileTouchChoreographyLayer { left: 15%; right: auto; bottom: 0; top: auto; width: 80%; height: 130px; opacity: .2; }
+  .portfolio .principleScene { display: block; min-height: 0; padding: 140px 24px 105px; }
+  .portfolio .principleTitle { padding: 0; }
+  .portfolio .principleTitle h2 { font-size: 62px; }
+  .portfolio .principleList { margin-top: 38px; padding: 0; }
+  .portfolio .principleList > div { min-height: 125px; gap: 12px; grid-template-columns: 36px 1fr; }
+  .portfolio .principleList b { font-size: 20px; }
+  .portfolio .principleList p { font-size: 13px; }
+  .portfolio .principleSealLayer { left: auto; right: -20%; bottom: 0; top: auto; width: 60%; height: 230px; opacity: .16; }
+}
+
+/* Editorial refinement: legible hierarchy and complete concept specimens. */
+.webFeature { display: grid; grid-template-columns: .8fr 1.2fr; gap: 18px; padding: 18px 4px 8px; border-top: 1px solid #8885; }
+.featureImage { position: relative; min-width: 0; overflow: hidden; }
+.webFeature .featureImage { min-height: 124px; }
+.webFeature > div:last-child { padding: 5px 0; min-width: 0; }
+.deviceCaption { display: none; }
+.webFeature small { display: block; font-size: 7px; letter-spacing: .12em; color: var(--accent); }
+.webFeature b { display: block; margin-top: 9px; font: 600 19px/1.15 var(--font-heading), serif; }
+.webFeature p { margin-top: 8px; font-size: 9px; line-height: 1.5; opacity: .8; }
+.webFeature span { display: inline-block; margin-top: 9px; font-size: 8px; border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+.phoneFeature { display: grid; grid-template-columns: .8fr 1.2fr; gap: 8px; margin-top: 8px; padding-top: 9px; border-top: 1px solid #8885; }
+.phoneFeature .featureImage { min-height: 64px; }
+.phoneFeature small { display: block; font-size: 4px; letter-spacing: .1em; opacity: .7; }
+.phoneFeature b { display: block; margin-top: 5px; font: 600 10px/1.2 var(--font-heading), serif; }
+.phoneFeature span { display: block; margin-top: 6px; font-size: 5px; color: var(--accent); }
+.phoneBottom { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 12px 0 4px; font-size: 4px; opacity: .7; }
+.phoneBottom b { font: 600 8px var(--font-heading), serif; }
+
+@media all {
+  .portfolio :is(a, button, summary):focus-visible { outline: 2px solid #cf9f54; outline-offset: 5px; }
+  .portfolio .sceneMeta, .portfolio .sceneFoot { font-size: 9px; letter-spacing: .13em; opacity: .88; }
+  .portfolio .sceneMeta { top: 72px; }
+  .portfolio .sceneFoot { bottom: 25px; }
+  .portfolio :is(.coverTitle, .indexLead, .manifestoCore, .studioPaper, .capabilityTitle, .processTitle, .portalTitle, .caseTitle, .applicationIntro, .languageTitle, .mobileTitle, .handoffTitle, .principleTitle, .contactTitle) > span,
+  .portfolio .coverTitle > p { font-size: 10px; letter-spacing: .17em; line-height: 1.6; }
+  .portfolio :is(.indexLead, .studioPaper, .manifestoNote) > p { font-size: 15px; line-height: 1.75; }
+  .portfolio .coverStatement { width: min(370px, 30vw); padding: 18px 24px; background: #09110cb8; backdrop-filter: blur(8px); border: 1px solid #cda46050; }
+  .portfolio .coverStatementKicker { font-size: 10px; }
+  .portfolio .coverStatement p { font-size: 25px; line-height: 1.25; }
+  .portfolio .coverStatement a { font-size: 11px; min-height: 44px; }
+  .portfolio .indexScene { min-height: 940px; align-items: center; }
+  .portfolio .indexLead h2 { font-size: clamp(62px, 5.7vw, 88px); letter-spacing: -.05em; }
+  .portfolio .indexColumns a { min-height: 46px; gap: 12px; align-items: center; font-size: 13px; line-height: 1.5; }
+  .portfolio .indexColumns a b { font-size: 12px; }
+  .portfolio .indexColumns > div > div span { font-size: 10px; }
+  .portfolio .indexKitLayer { top: 95px; left: 40%; height: 130px; opacity: .55; }
+  .portfolio .indexPattern { opacity: .08; }
+  .portfolio .manifestoNote { width: 340px; padding: 20px 24px; background: #6021199c; border-left: 1px solid #e5bc7d; }
+  .portfolio .manifestoNote b { font-size: 11px; }
+  .portfolio .manifestoPunctuationLayer { opacity: .55; }
+  .portfolio .studioPaper { width: 40%; max-width: 560px; padding: 45px; }
+  .portfolio .studioPaper h2 { font-size: clamp(45px, 4.6vw, 70px); line-height: 1.06; letter-spacing: -.04em; }
+  .portfolio .handNote { font-size: 21px; }
+  .portfolio .capabilityScene { min-height: 920px; display: grid; grid-template-columns: .85fr 1.15fr; gap: 7vw; align-items: center; padding: 150px 5vw 95px; }
+  .portfolio .capabilityTitle { position: relative; inset: auto; width: auto; padding: 0; z-index: 4; }
+  .portfolio .capabilityTitle h2 { font-family: var(--font-heading), serif; font-size: clamp(48px, 4.9vw, 74px); line-height: 1.08; text-transform: none; letter-spacing: -.045em; }
+  .portfolio .capabilityTitle h2 em { display: block; margin-top: 16px; }
+  .portfolio .capabilityNote { font-size: 15px; line-height: 1.8; max-width: 410px; }
+  .portfolio .capabilityOrbit { position: relative; inset: auto; width: auto; height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0; z-index: 5; background: #09120ff2; border: 1px solid #b99b604d; }
+  .portfolio .capabilityOrbit .capabilityNode:nth-child(n) { position: relative; inset: auto; width: auto; display: flex; flex-direction: column; justify-content: start; align-items: start; min-height: 215px; padding: 30px; background: none; transform: none; border: 0; border-bottom: 1px solid #b99b604d; }
+  .portfolio .capabilityOrbit .capabilityNode:nth-child(odd) { border-right: 1px solid #b99b604d; }
+  .portfolio .capabilityOrbit .capabilityNode:nth-child(n+3) { border-bottom: 0; }
+  .portfolio .capabilityOrbit .capabilityNode > span { font: italic 28px var(--font-heading), serif; color: #cead70; }
+  .portfolio .capabilityOrbit .capabilityNode h3 { font-size: 28px; margin-top: 22px; }
+  .portfolio .capabilityOrbit .capabilityNode p { font-size: 13px; line-height: 1.65; margin-top: 12px; letter-spacing: 0; }
+  .portfolio .capabilityInstrumentsLayer { opacity: .3; right: -8%; top: 8%; width: 66%; }
+  .portfolio .capabilityPattern { opacity: .07; }
+  .portfolio .processTitle h2 { font-size: clamp(54px, 5.2vw, 80px); line-height: 1.06; }
+  .portfolio .processQuote { top: 150px; padding: 20px; background: #0c130de6; }
+  .portfolio .processQuote span { font-size: 10px; }
+  .portfolio .processQuote b { font-size: 23px; line-height: 1.3; }
+  .portfolio .processStop p { font-size: 14px; line-height: 1.6; }
+  .portfolio .processStop h3 { font-size: 14px; }
+  .portfolio .projectMosaic .tileCopy p { font-size: 10px; letter-spacing: .04em; }
+  .portfolio .projectMosaic .tileCopy > b { font-size: 10px; }
+  .portfolio .caseNotes > span { font-size: 10px; }
+  .portfolio .caseNotes p { font-size: 15px; }
+  .portfolio .caseNotes small { font-size: 12px; line-height: 1.6; }
+  .portfolio .applicationScene { min-height: 1060px; }
+  .portfolio .applicationScene .deviceStage { display: grid; grid-template-columns: minmax(0, 1fr) 140px; gap: 18px; padding-bottom: 0; align-items: start; }
+  .portfolio .applicationScene .webPlacement { width: 100%; }
+  .portfolio .applicationScene .phonePlacement { position: relative; inset: auto; width: 100%; margin-top: 160px; }
+  .portfolio .applicationScene .phoneFrame { transform: none; }
+  .portfolio .applicationScene .webHero { height: 310px; }
+  .portfolio .applicationScene .webHero strong { font-size: 30px; }
+  .portfolio .materialPassportHead, .portfolio .materialPassportHead b, .portfolio .materialPassportItems > span, .portfolio .materialPassportItems i { font-size: 10px; line-height: 1.5; }
+  .portfolio .lightStory .caseTitle h2 { font-size: clamp(90px, 9vw, 145px); }
+  .portfolio .spaStory .caseTitle h2 { font-size: clamp(80px, 8vw, 130px); }
+  .portfolio .phoneFrame { height: auto; min-height: 0; aspect-ratio: auto; }
+  .portfolio .phoneHero { height: auto; aspect-ratio: .88; }
+  .portfolio .mobileScene { min-height: 1020px; }
+  .portfolio .phoneStage { top: 235px; }
+  .portfolio .languageTitle h2, .portfolio .handoffTitle h2 { font-size: clamp(48px, 5.4vw, 80px); line-height: 1.04; }
+  .portfolio .principlePattern { opacity: .1; }
+  .portfolio .principleList p { font-size: 15px; }
+  .portfolio .contactPanel { width: 440px; max-width: 38%; padding: 30px; }
+  .portfolio .contactPanel > p { font-size: 27px; line-height: 1.3; }
+  .portfolio .contactPanel > a { min-height: 50px; font-size: 11px; line-height: 1.5; }
+  .portfolio .contactPanel > div { flex-wrap: wrap; gap: 12px 20px; }
+  .portfolio .contactPanel > div a, .portfolio .contactPanel button { font-size: 10px; min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+@media screen and (max-width: 900px) {
+  .portfolio .sceneMeta { top: 62px; }
+  .portfolio .sceneMeta, .portfolio .sceneFoot { font-size: 8px; letter-spacing: .08em; }
+  .portfolio .coverStatement { width: auto; max-width: 345px; left: 24px; right: 24px; bottom: 65px; padding: 18px 20px; }
+  .portfolio .coverStatement p { font-size: 23px; }
+  .portfolio .indexScene { display: block; min-height: 0; padding: 125px 24px 75px; }
+  .portfolio .indexLead h2 { font-size: 58px; }
+  .portfolio .indexLead p { max-width: 480px; }
+  .portfolio .indexColumns { position: relative; inset: auto; margin-top: 45px; display: grid; grid-template-columns: 1fr; gap: 32px; }
+  .portfolio .indexColumns > div:nth-child(n) { padding-top: 0; margin-top: 0; }
+  .portfolio .indexColumns a { font-size: 14px; }
+  .portfolio .indexKitLayer { display: none; }
+  .portfolio .manifestoNote { position: relative; inset: auto; width: auto; margin-top: 58px; }
+  .portfolio .manifestoScene { min-height: 900px; padding: 135px 24px 105px; }
+  .portfolio .manifestoCore { position: relative; inset: auto; margin: 0; }
+  .portfolio .manifestoCore h2 { font-size: clamp(44px, 9.5vw, 70px); }
+  .portfolio .studioScene { min-height: 0; padding: 390px 24px 80px; }
+  .portfolio .studioPaper { position: relative; inset: auto; width: auto; max-width: none; margin: 0; padding: 30px 25px; }
+  .portfolio .studioPaper h2 { font-size: 45px; }
+  .portfolio .studioPhoto { top: 95px; left: 24px; right: 24px; height: 380px; width: auto; }
+  .portfolio .capabilityScene { display: block; min-height: 0; padding: 130px 24px 80px; }
+  .portfolio .capabilityTitle h2 { font-size: clamp(43px, 8vw, 65px); }
+  .portfolio .capabilityOrbit { margin-top: 40px; grid-template-columns: 1fr; }
+  .portfolio .capabilityOrbit .capabilityNode:nth-child(n) { padding: 24px; min-height: 175px; border: 0; border-bottom: 1px solid #b99b604d; }
+  .portfolio .capabilityOrbit .capabilityNode:last-child { border-bottom: 0; }
+  .portfolio .capabilityOrbit .capabilityNode h3 { margin-top: 14px; }
+  .portfolio .capabilityInstrumentsLayer { right: -40%; top: 15%; width: 120%; height: 450px; opacity: .15; }
+  .portfolio .processScene { min-height: 0; padding: 130px 24px 80px; }
+  .portfolio .processTitle { position: relative; inset: auto; width: auto; }
+  .portfolio .processTitle h2 { font-size: 49px; }
+  .portfolio .processQuote { position: relative; inset: auto; width: auto; margin: 30px 0; }
+  .portfolio .processPath { position: relative; inset: auto; margin-top: 80px; display: grid; grid-template-columns: 1fr; }
+  .portfolio .processStop:nth-child(n) { position: relative; inset: auto; min-height: 130px; padding: 24px 20px 24px 80px; width: auto; }
+  .portfolio .processStop b { position: absolute; left: 20px; top: 25px; font-size: 33px; }
+  .portfolio .processStop h3 { margin-top: 0; }
+  .portfolio .applicationScene { min-height: 0; }
+  .portfolio .applicationScene .deviceStage { grid-template-columns: minmax(0, 1fr) 130px; gap: 30px 20px; }
+  .portfolio .applicationScene .webPlacement { grid-column: 1 / -1; }
+  .portfolio .applicationScene .phonePlacement { grid-column: 2; margin-top: 0; }
+  .portfolio .applicationScene .webHero { height: 235px; }
+  .portfolio .applicationScene .webHero strong { font-size: 26px; }
+  .portfolio .deviceCaption { display: block; align-self: center; border-top: 1px solid currentColor; padding-top: 18px; opacity: .85; }
+  .portfolio .deviceCaption > span { font-size: 8px; line-height: 1.6; letter-spacing: .12em; }
+  .portfolio .deviceCaption p { font: 600 21px/1.25 var(--font-heading),serif; margin-top: 18px; }
+  .portfolio .deviceCaption small { display: block; font-size: 10px; line-height: 1.6; margin-top: 20px; }
+  .portfolio .webFeature { gap: 10px; padding-top: 12px; }
+  .portfolio .webFeature b { font-size: 16px; }
+  .portfolio .webFeature p { font-size: 9px; }
+  .portfolio .webFeature .featureImage { min-height: 115px; }
+  .portfolio .lightStory .caseTitle h2 { font-size: clamp(76px, 15vw, 115px); }
+  .portfolio .spaStory .caseTitle h2 { font-size: clamp(64px, 13vw, 105px); }
+  .portfolio .mobileScene { min-height: 0; }
+  .portfolio .phoneStage { top: auto; }
+  .portfolio .phoneStage .phoneFeature { gap: 3px; padding-top: 5px; margin-top: 4px; }
+  .portfolio .phoneStage .phoneFeature .featureImage { min-height: 38px; }
+  .portfolio .phoneStage .phoneFeature small { font-size: 2px; }
+  .portfolio .phoneStage .phoneFeature b { font-size: 5px; margin-top: 3px; }
+  .portfolio .phoneStage .phoneFeature span { font-size: 3px; margin-top: 3px; }
+  .portfolio .phoneStage .phoneBottom { font-size: 2px; padding-top: 6px; }
+  .portfolio .phoneStage .phoneBottom b { font-size: 4px; }
+  .portfolio .languageTitle h2, .portfolio .handoffTitle h2 { font-size: 46px; }
+  .portfolio .contactScene { min-height: 1080px; }
+  .portfolio .contactPanel { position: absolute; inset: auto 24px 130px; width: auto; max-width: none; padding: 25px; }
+  .portfolio .contactPanel > p { font-size: 25px; }
+}
+
+.portfolio .toolbar { grid-template-columns: 1fr auto auto auto; gap: 24px; }
+.chapterControls { display: flex; gap: 6px; }
+.chapterControls button { width: 44px; height: 44px; border: 1px solid #d4b57b55; color: #f5ead6; background: #112018; font-size: 21px; cursor: pointer; }
+.chapterControls button:hover:not(:disabled) { background: #344835; }
+.chapterControls button:disabled { opacity: .3; cursor: default; }
+.portfolio .caseNotes { border-left: 0; padding-left: 0; }
+.portfolio .caseNotes h3 { font-size: 26px; margin-top: 12px; }
+.caseReasoning { margin-top: 24px; }
+.caseReasoning > div { padding: 17px 0; border-top: 1px solid var(--line); }
+.caseReasoning dt { font-size: 10px; letter-spacing: .1em; font-weight: 700; }
+.caseReasoning dd { margin: 9px 0 0; font-size: 14px; line-height: 1.65; }
+.caseShowcase { position: relative; grid-column: 2; grid-row: 1 / span 3; min-width: 0; z-index: 5; align-self: start; border: 1px solid #85765355; }
+.packagingPhoto { position: relative; height: 335px; }
+.packagingPhoto > span { position: absolute; top: 20px; left: 20px; background: #f5eadbcc; padding: 8px 12px; font-size: 9px; letter-spacing: .12em; color: #473d26; }
+.teaLabelBoard { display: grid; grid-template-columns: 1fr 130px; gap: 24px; padding: 28px; background: #e6dbc4; }
+.teaLabelBoard small { font-size: 9px; letter-spacing: .12em; }
+.teaLabelBoard h3 { font: 500 32px/1.13 var(--font-heading),serif; margin-top: 20px; color: #2c432f; }
+.teaLabelBoard h3 em { color: #8c3528; }
+.teaLabel { padding: 18px 12px; text-align: center; border: 1px solid #983b2e; outline: 1px solid #983b2e; outline-offset: -5px; background: #f5efdf; color: #873526; transform: rotate(3deg); }
+.teaLabel > span { font-size: 8px; letter-spacing: .16em; }
+.teaLabel b { display: block; font: 600 34px/1.02 var(--font-heading),serif; margin: 12px 0; }
+.teaLabel small { display: block; font-size: 6px; line-height: 1.6; }
+.materialSwatches { display: flex; gap: 18px; grid-column: 1 / -1; }
+.materialSwatches span { display: flex; align-items: center; gap: 7px; font-size: 11px; }
+.materialSwatches i { width: 17px; height: 17px; border: 1px solid #6b57464d; border-radius: 50%; }
+.lightShowcase { background: #081a24; color: #f7eddc; border-color: #d2a36266; }
+.catalogueHead { display: flex; justify-content: space-between; align-items: center; padding: 22px; gap: 15px; font-size: 10px; letter-spacing: .1em; }
+.catalogueHead b { color: #f4bb62; font-size: 17px; }
+.cataloguePhoto { position: relative; height: 340px; }
+.cataloguePhoto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg,#031119e6,transparent 65%); }
+.cataloguePhoto h3 { position: absolute; z-index: 1; bottom: 28px; left: 28px; right: 28px; font: 500 38px/1.15 var(--font-heading),serif; }
+.studyChoices { display: flex; gap: 0; padding: 18px 22px; }
+.studyChoices button { flex: 1; min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #acb9b05c; background: transparent; color: inherit; font-size: 11px; padding: 10px; cursor: pointer; }
+.studyChoices button[aria-pressed=true] { background: #e9b867; color: #182019; border-color: #e9b867; }
+.studyDetail { min-height: 100px; padding: 0 22px 24px; font-size: 14px; line-height: 1.7; color: #d2dfe0; }
+.spaShowcase { background: #e6ece3; color: #233e30; border-radius: 80px 0 0 0; overflow: hidden; }
+.ritualHead { padding: 35px 30px 10px; }
+.ritualHead > span { font-size: 9px; letter-spacing: .13em; }
+.ritualHead h3 { font: 500 32px/1.15 var(--font-heading),serif; margin-top: 16px; }
+.spaShowcase .studyChoices { padding: 15px 30px 25px; }
+.spaShowcase .studyChoices button[aria-pressed=true] { background: #355643; color: #fff9e9; border-color: #355643; }
+.ritualPhoto { position: relative; height: 260px; margin: 0 30px; }
+.ritualSummary { padding: 25px 30px; }
+.ritualSummary h3 { font: 500 26px/1.2 var(--font-heading),serif; }
+.ritualSummary p { font-size: 13px; line-height: 1.7; margin-top: 14px; }
+.ritualSummary ol { display: flex; list-style: decimal; gap: 24px; margin: 24px 0 0; padding: 16px 0 0 16px; border-top: 1px solid #35564350; font-size: 10px; line-height: 1.6; }
+.digitalDisclosure { border-top: 1px solid currentColor; }
+.digitalDisclosure summary { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; min-height: 52px; cursor: pointer; font-size: 12px; }
+.digitalDisclosure summary::-webkit-details-marker { display: none; }
+.digitalDisclosure[open] summary span { transform: rotate(90deg); }
+.digitalDisclosure > div { margin: 0; }
+.portfolio .applicationScene { min-height: 1060px; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 26px 5vw; }
+.portfolio .applicationScene .applicationIntro h2 { font-size: clamp(40px,3.7vw,58px); }
+.portfolio .applicationScene .caseNotes { max-width: none; }
+.portfolio .applicationScene .materialPassport { max-width: none; }
+.portfolio .manifestoCore h2 i, .portfolio .principleTitle h2 em { color: #fff0ce; }
+.portfolio .manifestoCore h2 em { color: #ffdda2; }
+.portfolio .caseNotes > span { color: inherit; }
+.portfolio .languageTitle h2 em, .portfolio .handoffTitle h2 em { font-style: normal; }
+.portfolio .mobileTitle h2 em { color: #e9bf74; }
+.portfolio .materialPassport { backdrop-filter: none; }
+
+@media screen and (max-width: 900px) {
+  .portfolio .toolbar { grid-template-columns: 1fr auto auto; gap: 12px; padding: 0 16px; }
+  .portfolio .navManifesto { display: none; }
+  .portfolio .brand { font-size: 17px; }
+  .portfolio .brand span { font-size: 5px; letter-spacing: .15em; }
+  .portfolio .menu summary { gap: 8px; }
+  .chapterControls { gap: 3px; }
+  .chapterControls button { width: 40px; min-height: 44px; }
+  .portfolio .applicationScene { min-height: 0; gap: 24px; padding: 125px 24px 65px; }
+  .portfolio .applicationScene .applicationIntro h2 { font-size: 39px; }
+  .portfolio .applicationScene .applicationIntro > p { font-size: 13px; line-height: 1.65; margin-top: 16px; }
+  .caseShowcase { order: 1; width: 100%; }
+  .packagingPhoto { height: 220px; }
+  .teaLabelBoard { grid-template-columns: 1fr 90px; gap: 18px 12px; padding: 20px; }
+  .teaLabelBoard h3 { font-size: 25px; }
+  .teaLabelBoard small { font-size: 7px; }
+  .teaLabel { padding: 14px 8px; }
+  .teaLabel b { font-size: 28px; }
+  .teaLabel small { font-size: 5px; }
+  .materialSwatches { gap: 11px; }
+  .materialSwatches span { font-size: 10px; gap: 5px; }
+  .catalogueHead { padding: 18px; font-size: 8px; }
+  .cataloguePhoto { height: 240px; }
+  .cataloguePhoto h3 { left: 20px; right: 20px; bottom: 20px; font-size: 29px; }
+  .studyChoices { padding: 16px; }
+  .studyChoices button { min-height: 50px; font-size: 10px; gap: 5px; flex-direction: column; padding: 8px 4px; }
+  .studyDetail { font-size: 12px; padding: 0 18px 18px; min-height: 90px; }
+  .spaShowcase { border-radius: 45px 0 0 0; }
+  .ritualHead { padding: 28px 20px 6px; }
+  .ritualHead h3 { font-size: 27px; }
+  .spaShowcase .studyChoices { padding: 14px 20px 18px; }
+  .ritualPhoto { height: 190px; margin: 0 20px; }
+  .ritualSummary { padding: 20px; }
+  .ritualSummary h3 { font-size: 24px; }
+  .ritualSummary p { font-size: 12px; }
+  .ritualSummary ol { gap: 18px; font-size: 9px; }
+  .portfolio .caseNotes h3 { font-size: 24px; }
+  .caseReasoning { margin-top: 17px; }
+  .caseReasoning > div { padding: 13px 0; }
+  .caseReasoning dd { font-size: 13px; line-height: 1.65; }
+  .portfolio .applicationScene .materialPassport { display: none; }
+  .portfolio .contactScene { min-height: 1040px; padding: 130px 24px 140px; }
+  .portfolio .contactTitle { position: relative; inset: auto; width: auto; padding: 0; margin: 0; }
+  .portfolio .contactTitle h2 { font-size: clamp(50px, 11vw, 78px); }
+  .portfolio .contactPanel { position: relative; inset: auto; margin-top: 150px; width: auto; max-width: none; }
+  .portfolio .contactScene .finalMark { bottom: 65px; }
+}
+
+/* V12: application artwork, readable supporting copy and restrained motion. */
+.artworkImage { position: absolute; inset: 0; overflow: hidden; }
+.artworkZoom { position: absolute; z-index: 3; right: 14px; bottom: 14px; display: flex; gap: 16px; align-items: center; min-height: 44px; padding: 10px 15px; border: 1px solid #f5eed8aa; background: #102018ed; color: #fff7e7; font: 600 11px/1.4 var(--font-body),sans-serif; letter-spacing: .04em; cursor: pointer; }
+.artworkZoom:hover { background: #334b38; }
+.artworkZoom:focus-visible, .artworkDialog button:focus-visible, .studyChoices button:focus-visible { outline: 3px solid #b77731; outline-offset: 4px; }
+.artworkDialog { position: fixed; inset: 0; margin: auto; padding: 0; width: min(1200px,95vw); max-width: 95vw; max-height: 94dvh; overflow: auto; border: 1px solid #c6ad78; background: #102018; color: #fff7e7; z-index: 100; box-shadow: 0 25px 90px #0008; }
+.artworkDialog:not([open]) { display: none; }
+.artworkDialog::backdrop { background: #030807ed; }
+.artworkDialogTop { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 20px; background: #102018; }
+.artworkDialogTop > span { font-size: 15px; line-height: 1.5; }
+.artworkDialogTop button { flex-shrink: 0; min-height: 44px; padding: 10px 16px; background: #eee4ce; color: #102018; border: 0; cursor: pointer; }
+.artworkDialog > img { display: block; width: 100%; height: auto; }
+:global(body):has(.artworkDialog[open]) { overflow: hidden; }
+.portfolio .packagingPhoto, .portfolio .cataloguePhoto, .portfolio .ritualPhoto { height: auto; aspect-ratio: 3 / 2; overflow: hidden; }
+.portfolio .cataloguePhoto::after { display: none; }
+.portfolio .catalogueTitle { font: 500 29px/1.2 var(--font-heading),serif; padding: 22px 24px 0; }
+.portfolio .teaLabelBoard { padding: 23px 28px; }
+.portfolio .teaLabelBoard h3 { font-size: 29px; }
+.portfolio .studyChoices { padding-top: 18px; padding-bottom: 18px; }
+.portfolio .studyDetail { min-height: 88px; font-size: 15px; }
+.portfolio .ritualSummary p { font-size: 14px; }
+.portfolio .ritualSummary ol { font-size: 12px; }
+.portfolio .caseReasoning dd { font-size: 15px; }
+.portfolio .capabilityOrbit .capabilityNode p { font-size: 16px; line-height: 1.65; max-width: 32ch; color: #e1e5d9; text-transform: none; }
+.portfolio .capabilityOrbit .capabilityNode:nth-child(n) { min-height: 255px; }
+.portfolio .processStop p { font-size: 16px; line-height: 1.65; }
+.portfolio .grammarRail small, .portfolio .handoffLine small { font-size: 15px; line-height: 1.65; color: #e0e4d9; }
+.portfolio .grammarRail b, .portfolio .handoffLine b { font-size: 14px; line-height: 1.5; }
+.portfolio .portalSummary { font-size: 16px; line-height: 1.7; }
+.portfolio .applicationScene .applicationIntro > p { font-size: 16px; line-height: 1.7; }
+.portfolio .handoffTitle > p, .portfolio .languageTitle > p { font-size: 16px; line-height: 1.7; max-width: 42ch; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .artworkImage { animation: artworkSettle 450ms ease-out both; }
+  .studyChoices button { transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease; }
+  .projectTile .tileVisual { transition: transform 500ms cubic-bezier(.2,.65,.3,1); }
+  .projectTile:hover .tileVisual, .projectTile:focus-visible .tileVisual { transform: scale(1.035); }
+  .projectTile .tileCopy > b { transition: transform 180ms ease; }
+  .projectTile:hover .tileCopy > b { transform: translateX(5px); }
+  .teaShowcase .teaLabel { transition: transform 400ms ease; }
+  .teaShowcase:hover .teaLabel { transform: rotate(0); }
+}
+@keyframes artworkSettle { from { opacity: .45; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+@media screen and (max-width: 900px) {
+  .portfolio .capabilityOrbit .capabilityNode:nth-child(n) { min-height: 0; padding: 23px; }
+  .portfolio .capabilityOrbit .capabilityNode p { font-size: 15px; max-width: none; }
+  .portfolio .processStop p, .portfolio .grammarRail small, .portfolio .handoffLine small { font-size: 14px; }
+  .portfolio .grammarRail b, .portfolio .handoffLine b { font-size: 12px; }
+  .portfolio .grammarRail > div, .portfolio .handoffLine { min-height: 150px; }
+  .portfolio .applicationScene .applicationIntro > p, .portfolio .caseReasoning dd { font-size: 14px; }
+  .portfolio .catalogueTitle { font-size: 25px; padding: 20px 18px 0; }
+  .portfolio .studyDetail { font-size: 14px; min-height: 100px; }
+  .portfolio .ritualSummary ol { flex-wrap: wrap; gap: 8px 26px; font-size: 11px; }
+  .portfolio .teaLabelBoard { padding: 20px; }
+  .portfolio .teaLabelBoard h3 { font-size: 24px; }
+  .portfolio .artworkZoom { right: 8px; bottom: 8px; padding: 8px 10px; font-size: 10px; }
+  .portfolio .packagingPhoto > span { top: 10px; left: 10px; font-size: 8px; padding: 6px 8px; }
+  .artworkDialogTop { padding: 10px; gap: 10px; }
+  .artworkDialogTop > span { font-size: 13px; }
+}
+
+@media print {
+  .portfolio .artworkZoom, .portfolio .artworkDialog { display: none !important; }
+  .portfolio .artworkImage { animation: none; }
+  @page {
+    size: 1440px 1080px;
+    margin: 0;
+  }
+  .toolbar,
+  .progress,
+  .bottomBar,
+  .pointerGlow {
+    display: none !important;
+  }
+  .portfolio .scene[data-folio] {
+    width: 1440px;
+    height: 1080px;
+    min-height: 1080px;
+    max-height: 1080px;
+    padding: 150px 72px 90px;
+    break-after: page;
+    page-break-after: always;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .portfolio .sceneMeta {
+    top: 55px;
+  }
+  .portfolio .sceneFoot {
+    bottom: 30px;
+  }
+  .portfolio .scene:last-of-type { break-after: auto; page-break-after: auto; }
+  .portfolio .digitalDisclosure { display: none; }
+  .portfolio .pointerGlow, .portfolio .chapterControls { display: none; }
+  .portfolio .coverTitle { margin-top: 30px; }
+  .portfolio .caseShowcase { break-inside: avoid; }
+  .portfolio .caseReasoning dd { font-size: 14px; }
+  .portfolio .caseReasoning > div { padding: 12px 0; }
+  :global(body):has(.portfolio) { margin: 0 !important; }
+  :global(body):has(.portfolio) :global(a[href="#main-content"]) { display: none !important; }
+  .portfolio [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+:global(body):has(.portfolio) :global(header),
+:global(body):has(.portfolio) :global(footer),
+:global(body):has(.portfolio) :global(aside[aria-label="Kênh liên hệ nhanh"]),
+:global(body):has(.portfolio) :global([data-testid="sticky-mobile-cta"]),
+:global(body):has(.portfolio) :global(button[aria-label="Về đầu trang"]),
+:global(body):has(.portfolio) :global(div.origin-left[aria-hidden="true"]) {
+  display: none !important;
+}
+
+/* Cover: one illustration, with text in a separate, readable column. */
+@media screen {
+  .portfolio .cover {
+    display: block;
+    min-height: max(820px, 100svh);
+    padding: 160px 6.5vw 100px;
+    background: #060c08;
+  }
+  .portfolio .cover > .visual {
+    z-index: 0;
+    scale: 1;
+    top: 70px !important;
+    height: calc(100% - 70px) !important;
+    object-position: right center;
+  }
+  .portfolio .coverWash {
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(90deg, #060c08 0%, #060c08ed 30%, #060c0850 53%, transparent 70%),
+      linear-gradient(0deg, #060c0870, transparent 32%);
+  }
+  .portfolio .coverTitle {
+    width: 45%;
+    max-width: 600px;
+    margin-top: 0;
+  }
+  .portfolio .coverTitle > p { margin-bottom: 28px; }
+  .portfolio .coverTitle h1 {
+    font-size: clamp(64px, 7.7vw, 112px);
+    line-height: 1.08;
+    letter-spacing: -.055em;
+    text-wrap: nowrap;
+  }
+  .portfolio .coverTitle h1 span { margin-left: 0; }
+  .portfolio .coverEdition { margin-top: 28px; font-size: 26px; }
+  .portfolio .coverStatement {
+    position: relative;
+    inset: auto;
+    width: 40%;
+    max-width: 440px;
+    margin-top: 46px;
+    padding: 25px 0 0;
+    border: 0;
+    border-top: 1px solid #cda46060;
+    background: none;
+    backdrop-filter: none;
+  }
+  .portfolio .coverStatementKicker { display: none; }
+  .portfolio .coverStatement p { font-size: 23px; line-height: 1.4; }
+  .portfolio .coverStatement a {
+    margin-top: 20px;
+    padding: 10px 0;
+    border: 0;
+    min-height: 44px;
+  }
+  .portfolio .cover [data-reveal] { opacity: 1; transform: none; }
+}
+
+@media screen and (max-width: 900px) {
+  .portfolio .cover { min-height: 0; padding: 380px 28px 88px; }
+  .portfolio .cover > .visual {
+    top: 62px !important;
+    height: 300px !important;
+    object-position: right center;
+  }
+  .portfolio .coverWash {
+    background: linear-gradient(to bottom, rgba(6, 12, 8, 0), #060c08);
+    height: 100px;
+    top: 262px;
+    bottom: auto;
+  }
+  .portfolio .coverTitle { width: 100%; max-width: 600px; }
+  .portfolio .coverTitle > p { font-size: 10px; margin-bottom: 20px; }
+  .portfolio .coverTitle h1 { font-size: clamp(58px, 10.5vw, 88px); }
+  .portfolio .coverEdition { font-size: 22px; margin-top: 24px; }
+  .portfolio .coverStatement {
+    width: 100%;
+    max-width: 540px;
+    margin-top: 30px;
+    padding: 22px 0 0;
+  }
+  .portfolio .coverStatement p { font-size: 22px; }
+}
+
+@media screen and (max-width: 360px) {
+  .portfolio .brand { font-size: 13px; white-space: nowrap; letter-spacing: .04em; }
+}
+
+/* Closing chapter: artwork and content occupy separate grid areas. */
+@media screen {
+  .portfolio .contactScene {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas: "title artwork" "contact contact" "signature signature";
+    align-content: center;
+    align-items: center;
+    gap: 44px 60px;
+    min-height: max(900px, 100svh);
+    padding: 160px 6vw 80px;
+  }
+  .portfolio .contactTitle {
+    grid-area: title;
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .portfolio .contactTitle > span { margin-bottom: 26px; }
+  .portfolio .contactTitle h2 {
+    font-size: clamp(62px, 6.8vw, 98px);
+    line-height: 1.06;
+    letter-spacing: -.055em;
+  }
+  .portfolio .contactPattern {
+    grid-area: artwork;
+    position: relative;
+    inset: auto;
+    justify-self: center;
+    width: min(100%, 390px);
+    height: auto;
+    opacity: 1;
+    mix-blend-mode: normal;
+    filter: drop-shadow(0 18px 30px #0005);
+    animation: none;
+    transform: none;
+  }
+  .portfolio .contactPanel {
+    grid-area: contact;
+    position: relative;
+    inset: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 12px 48px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 32px 36px;
+    box-shadow: none;
+    transform: none;
+    border-top: 3px solid #c49a53;
+  }
+  .portfolio .contactPanel > p {
+    grid-row: span 2;
+    max-width: 26ch;
+    font-size: clamp(23px, 2vw, 29px);
+    line-height: 1.4;
+  }
+  .portfolio .contactPanel > a { margin: 0; min-height: 52px; font-size: 11px; line-height: 1.5; }
+  .portfolio .contactPanel > div { margin: 0; flex-wrap: wrap; gap: 8px 22px; }
+  .portfolio .contactPanel > div a { min-height: 44px; display: inline-flex; align-items: center; }
+  .portfolio .contactScene .finalMark {
+    grid-area: signature;
+    position: relative;
+    inset: auto;
+    margin: 0;
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .portfolio .contactScene {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "artwork" "contact" "signature";
+    gap: 30px;
+    min-height: 0;
+    padding: 132px 24px 84px;
+  }
+  .portfolio .contactTitle h2 { font-size: clamp(48px, 9vw, 72px); }
+  .portfolio .contactTitle > span { font-size: 9px; margin-bottom: 22px; }
+  .portfolio .contactPattern { width: min(70vw, 260px); }
+  .portfolio .contactPanel { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 25px 22px; }
+  .portfolio .contactPanel > p { grid-row: auto; font-size: 23px; }
+  .portfolio .contactPanel > a { font-size: 10px; padding: 16px; letter-spacing: .08em; }
+  .portfolio .contactPanel > div { gap: 8px 18px; }
+  .portfolio .contactPanel > div a { font-size: 10px; }
+  .portfolio .contactScene .finalMark { font-size: 23px; }
+}
+
+/* Contents: navigation first, decoration kept outside the reading area. */
+@media screen {
+  .portfolio .indexScene {
+    display: grid;
+    grid-template-columns: minmax(280px, .72fr) minmax(0, 1.7fr);
+    align-items: start;
+    gap: clamp(42px, 5vw, 82px);
+    min-height: max(820px, 100svh);
+    padding: 165px 5vw 90px;
+  }
+  .portfolio .indexLead { position: relative; z-index: 3; padding-top: 12px; }
+  .portfolio .indexLead > span { margin-bottom: 18px; }
+  .portfolio .indexLead h2 { font-size: clamp(60px, 5.4vw, 84px); line-height: .95; }
+  .portfolio .indexLead > p { margin-top: 28px; max-width: 32ch; }
+  .portfolio .indexColumns {
+    position: relative;
+    z-index: 3;
+    align-self: start;
+    gap: clamp(24px, 2.5vw, 40px);
+  }
+  .portfolio .indexColumns > div:nth-child(n) { margin-top: 0; }
+  .portfolio .indexColumns > div > div { padding-bottom: 13px; }
+  .portfolio .indexColumns > div > div b { font-size: 58px; }
+  .portfolio .indexColumns > div > div span { font-size: 10px; }
+  .portfolio .indexColumns a { min-height: 48px; padding: 11px 0; font-size: 14px; }
+  .portfolio .indexColumns a b { font-size: 12px; }
+  .portfolio .indexPattern {
+    right: -48px;
+    top: 82px;
+    width: min(29vw, 360px);
+    opacity: .045;
+    filter: sepia(1) saturate(.45) contrast(1.08);
+    mix-blend-mode: multiply;
+    animation: none;
+    transform: rotate(8deg);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .portfolio .indexScene {
+    display: block;
+    min-height: 0;
+    padding: 124px 24px 78px;
+  }
+  .portfolio .indexLead { padding-top: 0; }
+  .portfolio .indexLead h2 { font-size: clamp(54px, 12vw, 72px); }
+  .portfolio .indexLead > p { max-width: 42ch; }
+  .portfolio .indexColumns { margin-top: 42px; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .portfolio .indexColumns a { font-size: 14px; }
+  .portfolio .indexPattern { display: none; }
+}
+
+@media print {
+  .portfolio .cover {
+    display: block;
+    padding: 160px 6.5vw 100px !important;
+    background: #060c08;
+  }
+  .portfolio .cover > .visual {
+    z-index: 0;
+    top: 0 !important;
+    height: 100% !important;
+    scale: 1;
+    object-position: right center;
+  }
+  .portfolio .coverWash {
+    z-index: 1;
+    background: linear-gradient(90deg, #060c08 0%, #060c08ed 30%, #060c0850 53%, transparent 70%),
+      linear-gradient(0deg, #060c0870, transparent 32%);
+  }
+  .portfolio .coverTitle { width: 45%; max-width: 600px; margin-top: 0; }
+  .portfolio .coverTitle h1 { font-size: 112px; line-height: 1.08; letter-spacing: -.055em; text-wrap: nowrap; }
+  .portfolio .coverTitle h1 span { margin-left: 0; }
+  .portfolio .coverEdition { margin-top: 28px; font-size: 26px; }
+  .portfolio .coverStatement {
+    position: relative;
+    inset: auto;
+    width: 40%;
+    max-width: 440px;
+    margin-top: 46px;
+    padding: 25px 0 0;
+    border: 0;
+    border-top: 1px solid #cda46060;
+    background: none;
+    backdrop-filter: none;
+  }
+  .portfolio .coverStatementKicker { display: none; }
+  .portfolio .coverStatement p { font-size: 23px; line-height: 1.4; }
+
+  .portfolio .indexScene {
+    display: grid !important;
+    grid-template-columns: minmax(300px, .72fr) minmax(0, 1.7fr);
+    align-items: start;
+    gap: 70px;
+    padding: 165px 72px 90px !important;
+  }
+  .portfolio .indexLead { padding-top: 12px; }
+  .portfolio .indexLead h2 { font-size: 84px; line-height: .95; }
+  .portfolio .indexColumns { gap: 32px; }
+  .portfolio .indexColumns > div:nth-child(n) { margin-top: 0; }
+  .portfolio .indexColumns a { min-height: 48px; font-size: 14px; }
+  .portfolio .indexPattern { right: -48px; top: 82px; width: 360px; opacity: .045; animation: none; }
+
+  .portfolio .contactScene {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas: "title artwork" "contact contact" "signature signature";
+    align-content: center;
+    align-items: center;
+    gap: 38px 60px;
+    padding: 135px 72px 75px !important;
+  }
+  .portfolio .contactTitle { grid-area: title; position: relative; inset: auto; width: auto; margin: 0; padding: 0; }
+  .portfolio .contactTitle h2 { font-size: 92px; line-height: 1.06; letter-spacing: -.055em; }
+  .portfolio .contactPattern {
+    grid-area: artwork;
+    position: relative;
+    inset: auto;
+    justify-self: center;
+    width: 370px;
+    opacity: 1;
+    mix-blend-mode: normal;
+    filter: drop-shadow(0 18px 30px #0005);
+    animation: none;
+    transform: none;
+  }
+  .portfolio .contactPanel {
+    grid-area: contact;
+    position: relative;
+    inset: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 12px 48px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 28px 34px;
+    border-top: 3px solid #c49a53;
+    box-shadow: none;
+    transform: none;
+  }
+  .portfolio .contactPanel > p { grid-row: span 2; max-width: 26ch; font-size: 27px; line-height: 1.4; }
+  .portfolio .contactPanel > a { margin: 0; min-height: 52px; font-size: 11px; }
+  .portfolio .contactPanel > div { margin: 0; }
+  .portfolio .contactScene .finalMark { grid-area: signature; position: relative; inset: auto; margin: 0; font-size: 25px; }
+}
