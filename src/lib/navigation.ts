@@ -79,7 +79,7 @@ export function mainNavLinks(): NavLink[] {
     { href: "/", label: "Trang chủ" },
     { href: "/gioi-thieu", label: "Giới thiệu" },
     { href: null, label: "Dịch vụ", groups: serviceNavGroups() },
-    { href: "/du-an", label: "Dự án" },
+    { href: "/ho-so-nang-luc", label: "Hồ sơ năng lực" },
     { href: "/kho-giao-dien", label: "Kho giao diện" },
     { href: "/tin-tuc", label: "Tin tức" },
     { href: "/lien-he", label: "Liên hệ" },
@@ -95,6 +95,7 @@ export function footerNav() {
     ],
     brand: [
       { href: "/gioi-thieu", label: "Giới thiệu" },
+      { href: "/ho-so-nang-luc", label: "Hồ sơ năng lực" },
       { href: "/du-an", label: "Dự án" },
       { href: "/kho-giao-dien", label: "Kho giao diện" },
       { href: "/tin-tuc", label: "Tin tức" },
